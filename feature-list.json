@@ -20,7 +20,7 @@
             "shadcn/ui 초기화",
             "src/ 디렉토리 구조 생성 (app, components, lib, types)"
           ],
-          "passes": false
+          "passes": true
         },
         {
           "id": "P0-02",
@@ -806,8 +806,8 @@
   ],
   "summary": {
     "total_features": 55,
-    "passed": 0,
-    "failed": 55,
-    "completion_pct": 0
+    "passed": 1,
+    "failed": 54,
+    "completion_pct": 1.8
   }
 }
