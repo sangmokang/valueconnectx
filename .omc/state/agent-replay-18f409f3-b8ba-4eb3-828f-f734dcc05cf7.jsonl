@@ -1,0 +1,12 @@
+{"t":0,"agent":"system","event":"keyword_detected","keyword":"ralplan"}
+{"t":0,"agent":"system","event":"keyword_detected","keyword":"ralplan"}
+{"t":0,"agent":"a94f325","agent_type":"planner","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a94f325","agent_type":"planner","event":"agent_stop","success":true,"duration_ms":36228}
+{"t":0,"agent":"ac6c880","agent_type":"writer","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"aa148cb","agent_type":"writer","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a4a5c28","agent_type":"writer","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"ac6c880","agent_type":"writer","event":"agent_stop","success":true,"duration_ms":38269}
+{"t":0,"agent":"a7d39b2","agent_type":"writer","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"aa148cb","agent_type":"writer","event":"agent_stop","success":true,"duration_ms":206614}
+{"t":0,"agent":"a4a5c28","agent_type":"writer","event":"agent_stop","success":true,"duration_ms":217741}
+{"t":0,"agent":"a7d39b2","agent_type":"writer","event":"agent_stop","success":true,"duration_ms":242310}

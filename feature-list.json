@@ -1,0 +1,813 @@
+{
+  "project": "VXMI - ValueConnect Market Intelligence",
+  "version": "1.0.0",
+  "created_at": "2026-03-13",
+  "instructions": "각 feature의 passes 필드만 true/false로 변경할 것. 절대 feature를 삭제하거나 description을 수정하지 말 것. 이 파일은 프로젝트 완료의 유일한 기준이다.",
+  "phases": [
+    {
+      "phase": "P0",
+      "name": "Infrastructure Setup",
+      "description": "프로젝트 기반 인프라 및 DB 스키마 구성",
+      "features": [
+        {
+          "id": "P0-01",
+          "category": "infra",
+          "description": "Next.js 14 App Router 프로젝트 초기화 (TypeScript strict mode)",
+          "steps": [
+            "npx create-next-app@latest으로 프로젝트 생성",
+            "TypeScript strict mode 설정 확인",
+            "Tailwind CSS 설치 및 설정 확인",
+            "shadcn/ui 초기화",
+            "src/ 디렉토리 구조 생성 (app, components, lib, types)"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P0-02",
+          "category": "infra",
+          "description": "Supabase 프로젝트 연결 및 환경변수 설정",
+          "steps": [
+            ".env.local 파일에 NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY 설정",
+            "SUPABASE_SERVICE_ROLE_KEY, DISCORD_WEBHOOK_URL 설정",
+            "@supabase/supabase-js 설치",
+            "src/lib/supabase/client.ts 생성 (브라우저 클라이언트)",
+            "src/lib/supabase/server.ts 생성 (서버 클라이언트)"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P0-03",
+          "category": "database",
+          "description": "Supabase market_index 테이블 생성",
+          "steps": [
+            "Supabase SQL Editor에서 market_index 테이블 생성 쿼리 실행",
+            "PRIMARY KEY (snapshot_date, segment) 확인",
+            "market_status TEXT 컬럼 CHECK constraint 추가 (극심한_공급부족/공급부족/균형/공급과잉)",
+            "테이블 생성 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P0-04",
+          "category": "database",
+          "description": "Supabase company_attractiveness 테이블 생성",
+          "steps": [
+            "company_attractiveness 테이블 생성 쿼리 실행",
+            "PRIMARY KEY (snapshot_date, company) 확인",
+            "segment_list TEXT[] 컬럼 확인",
+            "테이블 생성 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P0-05",
+          "category": "database",
+          "description": "Materialized View 4개 생성 (mv_market_latest, mv_company_ranking, mv_sector_weekly, mv_anomalies)",
+          "steps": [
+            "mv_market_latest 뷰 생성 및 UNIQUE INDEX 생성",
+            "mv_company_ranking 뷰 생성 및 UNIQUE INDEX 생성",
+            "mv_sector_weekly 뷰 생성 (sector_map CTE 포함) 및 UNIQUE INDEX 생성",
+            "mv_anomalies 뷰 생성 및 UNIQUE INDEX 생성",
+            "각 뷰에 대해 REFRESH MATERIALIZED VIEW 테스트 실행"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P0-06",
+          "category": "database",
+          "description": "Supabase market_index SQL 계산 쿼리 검증",
+          "steps": [
+            "weekly_snapshot + supply_snapshot JOIN 쿼리 작성",
+            "sd_ratio 계산 (NULLIF 0 처리 포함) 검증",
+            "market_status CASE WHEN 분기 검증 (< 3, < 7, < 15, >= 15)",
+            "ON CONFLICT DO UPDATE 확인",
+            "실제 데이터로 INSERT 테스트"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P0-07",
+          "category": "infra",
+          "description": "src/lib/constants/segments.ts - 세그먼트/섹터 상수 정의",
+          "steps": [
+            "SEGMENT_LIST 14개 정의",
+            "SECTOR_MAP (5개 섹터 → 세그먼트 배열) 정의",
+            "MARKET_STATUS_CONFIG (색상, 라벨, 수수료 범위) 정의",
+            "TypeScript export 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P0-08",
+          "category": "infra",
+          "description": "src/types/index.ts - 핵심 TypeScript 타입 정의",
+          "steps": [
+            "MarketIndex, WeeklySnapshot, SupplySnapshot 인터페이스 정의",
+            "CompanyWeekly, CompanyAttractiveness 인터페이스 정의",
+            "MarketStatus enum/type 정의",
+            "Segment, Sector type 정의",
+            "API response 공통 타입 정의"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P0-09",
+          "category": "infra",
+          "description": "src/lib/utils/calculations.ts - OppScore, S/D Ratio 계산 함수",
+          "steps": [
+            "calculateSdRatio(otw: number, demand: number): number 함수 구현",
+            "getMarketStatus(sdRatio: number): MarketStatus 함수 구현",
+            "formatSdRatio(ratio: number): string 함수 구현",
+            "getMarketStatusColor(status: MarketStatus): string 함수 구현",
+            "각 함수 단위 테스트 작성"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P0-10",
+          "category": "infra",
+          "description": "Vercel 배포 설정 및 환경변수 등록",
+          "steps": [
+            "vercel.json 또는 next.config.ts 설정",
+            "Vercel 프로젝트에 환경변수 등록",
+            "main 브랜치 자동 배포 확인",
+            "배포 URL 접근 가능 확인"
+          ],
+          "passes": false
+        }
+      ]
+    },
+    {
+      "phase": "P1",
+      "name": "Layout & Navigation",
+      "description": "전체 레이아웃, 네비게이션, 공통 컴포넌트",
+      "features": [
+        {
+          "id": "P1-01",
+          "category": "layout",
+          "description": "루트 레이아웃 (src/app/layout.tsx) - 사이드바 + 메인 영역 구조",
+          "steps": [
+            "사이드바 네비게이션 포함 전체 레이아웃 구현",
+            "Tailwind CSS로 사이드바(240px) + 메인 영역 레이아웃",
+            "브라우저에서 레이아웃 구조 확인",
+            "모바일 뷰에서 사이드바 숨김 처리"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P1-02",
+          "category": "layout",
+          "description": "사이드바 네비게이션 컴포넌트 (6개 메뉴: Dashboard, Company, Sector, Feed, Trend, Search)",
+          "steps": [
+            "src/components/layout/Sidebar.tsx 구현",
+            "각 메뉴 아이콘 + 라벨 + 활성 상태 표시",
+            "현재 경로 기반 active 상태 처리",
+            "VXMI 로고/브랜드 영역 구현",
+            "브라우저에서 모든 메뉴 클릭 → 경로 이동 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P1-03",
+          "category": "layout",
+          "description": "주차 선택기 컴포넌트 (WeekPicker) - 전역 상단 고정",
+          "steps": [
+            "src/components/layout/WeekPicker.tsx 구현",
+            "현재 주차 'YYYY-Www' 형식 표시",
+            "좌우 화살표로 이전/다음 주 이동",
+            "프리셋 버튼 (최근주/4주/13주/26주/52주)",
+            "URL 쿼리 파라미터 (?week=2026-W11) 동기화",
+            "브라우저에서 주차 변경 후 URL 변경 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P1-04",
+          "category": "ui",
+          "description": "KPI 카드 공통 컴포넌트 (KpiCard) - 값 + WoW delta + 스파크라인",
+          "steps": [
+            "src/components/cards/KpiCard.tsx 구현",
+            "title, value, unit, wowDelta, sparklineData props 처리",
+            "WoW delta 양수(초록)/음수(빨강) 색상 표시",
+            "스파크라인 미니 차트 (Recharts LineChart)",
+            "브라우저에서 카드 렌더링 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P1-05",
+          "category": "ui",
+          "description": "Market Status 배지 컴포넌트 (MarketStatusBadge) - 4단계 색상",
+          "steps": [
+            "src/components/ui/MarketStatusBadge.tsx 구현",
+            "극심한_공급부족(🔴), 공급부족(🟠), 균형(🟡), 공급과잉(🟢) 배지",
+            "상태별 배경색/텍스트색 처리",
+            "브라우저에서 4가지 상태 배지 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P1-06",
+          "category": "ui",
+          "description": "로딩 스켈레톤 컴포넌트 (ChartSkeleton, TableSkeleton)",
+          "steps": [
+            "src/components/ui/Skeleton.tsx 구현",
+            "차트 영역용 ChartSkeleton (높이 가변)",
+            "테이블용 TableSkeleton (행 수 가변)",
+            "Tailwind animate-pulse 효과",
+            "브라우저에서 로딩 상태 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P1-07",
+          "category": "ui",
+          "description": "에러 바운더리 컴포넌트 (ErrorBoundary) 및 에러 상태 UI",
+          "steps": [
+            "src/components/ui/ErrorBoundary.tsx 구현",
+            "데이터 없음(EmptyState) 컴포넌트 구현",
+            "API 오류 메시지 표시 컴포넌트",
+            "브라우저에서 에러 상태 렌더링 확인"
+          ],
+          "passes": false
+        }
+      ]
+    },
+    {
+      "phase": "P2",
+      "name": "F1 - Market Overview Dashboard",
+      "description": "수요-공급 매트릭스 대시보드 (P0 핵심 기능)",
+      "features": [
+        {
+          "id": "P2-01",
+          "category": "api",
+          "description": "GET /api/market/overview API Route 구현",
+          "steps": [
+            "src/app/api/market/overview/route.ts 생성",
+            "week 쿼리 파라미터 처리 (없으면 최신 주차)",
+            "mv_market_latest 또는 market_index 조회",
+            "JSON 응답 반환",
+            "curl 또는 브라우저에서 /api/market/overview 응답 확인",
+            "?week=2026-W10 파라미터로 과거 조회 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P2-02",
+          "category": "chart",
+          "description": "Chart 1-3: 시장 상태 요약 KPI 카드 6개 (총수요, 총공급, 전체 S/D, 극심부족 수, 최대성장, 최대하락)",
+          "steps": [
+            "src/components/charts/MarketKpiCards.tsx 구현",
+            "/api/market/overview 데이터로 6개 KPI 카드 렌더링",
+            "각 카드에 WoW delta % 표시",
+            "8주 스파크라인 데이터 연결",
+            "브라우저에서 6개 카드 정상 렌더링 확인",
+            "WoW delta 색상 (양수 초록, 음수 빨강) 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P2-03",
+          "category": "chart",
+          "description": "Chart 1-2: 세그먼트 수급 랭킹 Diverging Bar Chart",
+          "steps": [
+            "src/components/charts/SegmentRankingChart.tsx 구현",
+            "Recharts BarChart으로 수평 diverging bar 구현",
+            "13개 세그먼트를 S/D ratio 기준 정렬",
+            "균형 기준선(10:1) 표시",
+            "MarketStatus 색상 적용 (4단계)",
+            "hover 툴팁 (세그먼트, S/D ratio, 수요, 공급)",
+            "정렬 토글 버튼 (S/D ratio / 수요량 / WoW)",
+            "브라우저에서 차트 렌더링 및 정렬 토글 동작 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P2-04",
+          "category": "chart",
+          "description": "Chart 1-1: 수요-공급 버블 매트릭스 (Scatter Plot)",
+          "steps": [
+            "src/components/charts/BubbleMatrixChart.tsx 구현",
+            "Recharts ScatterChart으로 버블 차트 구현",
+            "X=수요, Y=OTW공급, 버블크기=전체Pool, 색상=market_status",
+            "세그먼트 라벨 버블 위/옆에 표시",
+            "hover 툴팁 (세그먼트명, 수치, S/D, WoW)",
+            "클릭 시 세그먼트 drill-down (시계열 페이지 이동)",
+            "이번주/4주평균 토글 버튼",
+            "브라우저에서 버블 차트 렌더링 및 모든 인터랙션 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P2-05",
+          "category": "page",
+          "description": "/dashboard 페이지 조립 - KPI 카드 + Diverging Bar + Bubble Matrix",
+          "steps": [
+            "src/app/dashboard/page.tsx 구현",
+            "Server Component로 초기 데이터 SSR 로드",
+            "KpiCards, SegmentRankingChart, BubbleMatrixChart 조합",
+            "WeekPicker 상단 고정",
+            "페이지 로드 시간 확인 (< 2초 목표)",
+            "브라우저에서 /dashboard 접근 → 전체 화면 확인",
+            "주차 변경 시 데이터 갱신 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P2-06",
+          "category": "table",
+          "description": "세그먼트 수요-공급 데이터 테이블 (14행 × S/D/상태/WoW 컬럼)",
+          "steps": [
+            "src/components/cards/SegmentTable.tsx 구현",
+            "14개 세그먼트 행, 컬럼: 세그먼트명, 수요, 공급Pool, OTW, S/D, 상태, WoW%",
+            "MarketStatusBadge 연동",
+            "S/D ratio 기준 정렬",
+            "CSV 내보내기 버튼",
+            "브라우저에서 테이블 렌더링 및 정렬 확인"
+          ],
+          "passes": false
+        }
+      ]
+    },
+    {
+      "phase": "P3",
+      "name": "F5 - Time Series Trend",
+      "description": "52주 트렌드 분석 페이지",
+      "features": [
+        {
+          "id": "P3-01",
+          "category": "api",
+          "description": "GET /api/market/trend API Route 구현",
+          "steps": [
+            "src/app/api/market/trend/route.ts 생성",
+            "segment, weeks 쿼리 파라미터 처리",
+            "weekly_snapshot + market_index 조인 쿼리",
+            "배열 형태 시계열 데이터 반환",
+            "curl로 /api/market/trend?segment=dev_mlai&weeks=52 응답 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P3-02",
+          "category": "chart",
+          "description": "Chart 2-1: 세그먼트 수요 추이 Multi-Line Chart (최대 5개 세그먼트, 이동평균 오버레이)",
+          "steps": [
+            "src/components/charts/MultiLineTrendChart.tsx 구현",
+            "세그먼트 다중 선택 (최대 5개) UI",
+            "4주/13주/52주 이동평균 오버레이 토글",
+            "brush zoom 기능 (Recharts Brush)",
+            "hover crosshair 전 세그먼트 동시 표시",
+            "브라우저에서 세그먼트 선택 후 차트 변경 확인",
+            "이동평균 토글 정상 동작 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P3-03",
+          "category": "chart",
+          "description": "Chart 2-2: 수요-공급 갭 Stacked Area Chart",
+          "steps": [
+            "src/components/charts/SupplyDemandGapChart.tsx 구현",
+            "수요(파랑)/공급(초록) 이중 영역 차트",
+            "갭 영역 음영 처리",
+            "WoW 20%+ 스파이크 자동 마커 표시",
+            "세그먼트 드롭다운 선택",
+            "브라우저에서 차트 렌더링 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P3-04",
+          "category": "chart",
+          "description": "Chart 2-3: 월별 채용 계절성 Calendar Heatmap",
+          "steps": [
+            "src/components/charts/SeasonalityHeatmap.tsx 구현",
+            "월(1-12) × 주(1-5) 매트릭스 D3.js 또는 커스텀 SVG",
+            "수요 강도 기반 색상 농도",
+            "세그먼트 드롭다운",
+            "클릭 시 Chart 2-1로 해당 주차 이동",
+            "브라우저에서 히트맵 렌더링 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P3-05",
+          "category": "page",
+          "description": "/trend 페이지 조립",
+          "steps": [
+            "src/app/trend/page.tsx 구현",
+            "MultiLineTrendChart, SupplyDemandGapChart, SeasonalityHeatmap 조합",
+            "브라우저에서 /trend 접근 → 전체 화면 확인"
+          ],
+          "passes": false
+        }
+      ]
+    },
+    {
+      "phase": "P4",
+      "name": "F2 - Company Timeline",
+      "description": "기업 채용 활동 타임라인 페이지",
+      "features": [
+        {
+          "id": "P4-01",
+          "category": "api",
+          "description": "GET /api/companies/[slug] API Route 구현",
+          "steps": [
+            "src/app/api/companies/[slug]/route.ts 생성",
+            "company_weekly 12주 데이터 조회",
+            "company_attractiveness 조인",
+            "segment_breakdown JSONB 파싱 처리",
+            "curl로 /api/companies/카카오?weeks=12 응답 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P4-02",
+          "category": "ui",
+          "description": "기업 검색 컴포넌트 (CompanySearch) - Supabase full-text search",
+          "steps": [
+            "src/components/ui/CompanySearch.tsx 구현",
+            "입력 debounce (300ms)",
+            "positions 테이블에서 company 실시간 검색",
+            "드롭다운 결과 목록",
+            "선택 시 /company/[slug] 이동",
+            "브라우저에서 검색 → 결과 드롭다운 → 이동 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P4-03",
+          "category": "chart",
+          "description": "Chart 3-2: 기업 채용활동 12주 Line Chart",
+          "steps": [
+            "src/components/charts/CompanyTrendChart.tsx 구현",
+            "Recharts LineChart으로 12주 포지션 수 추이",
+            "세그먼트별 색상 구분 (stacked 옵션)",
+            "주차 클릭 시 해당 시점 포지션 목록 표시",
+            "브라우저에서 차트 렌더링 및 클릭 인터랙션 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P4-04",
+          "category": "chart",
+          "description": "Chart 3-3: 기업별 세그먼트 분포 Stacked Bar Chart",
+          "steps": [
+            "src/components/charts/CompanySegmentBreakdown.tsx 구현",
+            "주차별 세그먼트 구성 스택 바",
+            "절대값/비율(100%) 토글",
+            "세그먼트 클릭 시 하이라이트",
+            "브라우저에서 토글 동작 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P4-05",
+          "category": "page",
+          "description": "/company/[slug] 페이지 - 트렌드 차트 + 세그먼트 분포 + 현재 포지션 목록",
+          "steps": [
+            "src/app/company/[slug]/page.tsx 구현",
+            "기업 정보 헤더 (회사명, 연속채용주, 현재 포지션 수)",
+            "CompanyTrendChart, CompanySegmentBreakdown 조합",
+            "현재 채용 중인 포지션 목록 테이블",
+            "브라우저에서 /company/kakao 접근 → 전체 화면 확인"
+          ],
+          "passes": false
+        }
+      ]
+    },
+    {
+      "phase": "P5",
+      "name": "F4 - Sales Intelligence Feed",
+      "description": "영업 인텔리전스 피드 페이지",
+      "features": [
+        {
+          "id": "P5-01",
+          "category": "api",
+          "description": "GET /api/companies/ranking API Route 구현",
+          "steps": [
+            "src/app/api/companies/ranking/route.ts 생성",
+            "mv_company_ranking에서 Top 50 조회",
+            "week, top 파라미터 처리",
+            "curl로 /api/companies/ranking?week=2026-W11&top=50 응답 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P5-02",
+          "category": "chart",
+          "description": "Chart 5-3: 기업 급증 탐지 Lollipop Chart (WoW 변화 Top 20)",
+          "steps": [
+            "src/components/charts/CompanySurgeChart.tsx 구현",
+            "Recharts 또는 D3.js로 lollipop/dot chart 구현",
+            "Y=기업명, X=WoW포지션 변화",
+            "점 색상 = weeks_consecutive 등급 (A/B/C)",
+            "hover 툴팁 (현재/이전/변화량/연속주)",
+            "증가만/감소만/전체 필터 버튼",
+            "브라우저에서 차트 렌더링 및 필터 동작 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P5-03",
+          "category": "ui",
+          "description": "영업 시그널 카드 컴포넌트 (SignalCard) - Top Signal, 신규진입, 급증, CFO알람",
+          "steps": [
+            "src/components/cards/SignalCard.tsx 구현",
+            "시그널 유형별 아이콘/색상 구분",
+            "기업명, 포지션 수, 연속주, 세그먼트 breakdown 표시",
+            "클릭 시 /company/[slug] 이동",
+            "브라우저에서 카드 렌더링 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P5-04",
+          "category": "ui",
+          "description": "S/D 시그널 배너 컴포넌트 - 이번 주 수수료 협상 포인트 요약",
+          "steps": [
+            "src/components/cards/SdSignalBanner.tsx 구현",
+            "S/D < 5 세그먼트 하이라이트 (빨강 배너)",
+            "\"ML/AI 가장 희소 → 수수료 20-25% 협상 가능\" 형식 메시지",
+            "브라우저에서 배너 표시 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P5-05",
+          "category": "page",
+          "description": "/feed 페이지 조립 - 5개 시그널 섹션 + Lollipop Chart",
+          "steps": [
+            "src/app/feed/page.tsx 구현",
+            "SdSignalBanner 상단 고정",
+            "Top Signal / 신규진입 / 급증알람 / CFO알람 / S/D시그널 섹션 구성",
+            "CompanySurgeChart 하단 배치",
+            "브라우저에서 /feed 접근 → 전체 화면 확인"
+          ],
+          "passes": false
+        }
+      ]
+    },
+    {
+      "phase": "P6",
+      "name": "F3 - Sector Analysis",
+      "description": "섹터 분석 페이지",
+      "features": [
+        {
+          "id": "P6-01",
+          "category": "api",
+          "description": "GET /api/market/sectors API Route 구현",
+          "steps": [
+            "src/app/api/market/sectors/route.ts 생성",
+            "mv_sector_weekly 조회",
+            "섹터별 세그먼트 breakdown 포함",
+            "curl로 /api/market/sectors?week=2026-W11 응답 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P6-02",
+          "category": "chart",
+          "description": "Chart 4-1: 섹터별 수요 트리맵 (D3.js 또는 Recharts Treemap)",
+          "steps": [
+            "src/components/charts/SectorTreemap.tsx 구현",
+            "외곽=섹터(5색), 내부=세그먼트별 수요 면적",
+            "라벨 = 세그먼트명 + 수치 + WoW%",
+            "hover 시 S/D ratio/market_status 툴팁",
+            "섹터 클릭 시 zoom-in",
+            "수요/공급/S/D ratio 토글 버튼",
+            "브라우저에서 트리맵 렌더링 및 인터랙션 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P6-03",
+          "category": "chart",
+          "description": "Chart 4-2: 섹터별 추세 Small Multiples (5개 미니 라인 차트)",
+          "steps": [
+            "src/components/charts/SectorSmallMultiples.tsx 구현",
+            "5개 섹터 미니 라인 차트 (52주)",
+            "hover 시 5개 차트 동기화",
+            "클릭 시 확대 + 세그먼트 분해",
+            "브라우저에서 Small multiples 렌더링 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P6-04",
+          "category": "page",
+          "description": "/sector 페이지 조립 - Treemap + Small Multiples",
+          "steps": [
+            "src/app/sector/page.tsx 구현",
+            "SectorTreemap, SectorSmallMultiples 조합",
+            "브라우저에서 /sector 접근 → 전체 화면 확인"
+          ],
+          "passes": false
+        }
+      ]
+    },
+    {
+      "phase": "P7",
+      "name": "F7 - Historical Data & Export",
+      "description": "과거 데이터 인터페이스 및 내보내기",
+      "features": [
+        {
+          "id": "P7-01",
+          "category": "ui",
+          "description": "비교 모드 (Comparison Mode) 토글 - 두 주차 side-by-side",
+          "steps": [
+            "src/components/layout/ComparisonToggle.tsx 구현",
+            "토글 ON 시 두 번째 WeekPicker 표시",
+            "빠른 프리셋 (1주전/4주전/13주전/52주전)",
+            "브라우저에서 비교 모드 활성화 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P7-02",
+          "category": "api",
+          "description": "GET /api/export/[type] API Route 구현 (CSV, PNG/SVG)",
+          "steps": [
+            "src/app/api/export/[type]/route.ts 생성",
+            "type=csv: 해당 주차 market_index 전체 CSV 반환",
+            "Content-Disposition 헤더 설정",
+            "브라우저에서 다운로드 버튼 클릭 → 파일 다운로드 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P7-03",
+          "category": "page",
+          "description": "/history 스냅샷 브라우저 페이지",
+          "steps": [
+            "src/app/history/page.tsx 구현",
+            "캘린더 뷰로 데이터 보유 주차 표시",
+            "주차 클릭 시 market_index 전체 테이블",
+            "데이터 완전성 배지 (13/13 segments)",
+            "브라우저에서 /history 접근 → 캘린더 확인"
+          ],
+          "passes": false
+        }
+      ]
+    },
+    {
+      "phase": "P8",
+      "name": "F8 - Anomaly Detection",
+      "description": "이상 탐지 대시보드",
+      "features": [
+        {
+          "id": "P8-01",
+          "category": "api",
+          "description": "GET /api/market/anomalies API Route 구현",
+          "steps": [
+            "src/app/api/market/anomalies/route.ts 생성",
+            "mv_anomalies 조회",
+            "weeks, threshold 파라미터 처리",
+            "curl로 응답 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P8-02",
+          "category": "chart",
+          "description": "Chart 5-1: 전주 대비 변화 Waterfall Chart",
+          "steps": [
+            "src/components/charts/WowWaterfallChart.tsx 구현",
+            "Recharts 커스텀 또는 D3.js Waterfall",
+            "녹색=증가, 빨강=감소, 회색=합계",
+            "클릭 시 세그먼트 시계열 이동",
+            "브라우저에서 차트 렌더링 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P8-03",
+          "category": "chart",
+          "description": "Chart 5-2: 이상치 타임라인 Strip Plot (52주 × 13세그먼트)",
+          "steps": [
+            "src/components/charts/AnomalyTimelineChart.tsx 구현",
+            "D3.js 또는 커스텀 SVG Strip plot",
+            "마커 크기=변동 크기, 색상=급등(빨강)/급락(파랑)",
+            "임계값 슬라이더 (10-50%)",
+            "브라우저에서 스트립 플롯 렌더링 및 슬라이더 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P8-04",
+          "category": "page",
+          "description": "/anomaly (또는 /dashboard 하위 섹션) 이상탐지 화면 조립",
+          "steps": [
+            "Waterfall Chart, Strip Plot 조합 페이지 구현",
+            "브라우저에서 전체 이상탐지 화면 확인"
+          ],
+          "passes": false
+        }
+      ]
+    },
+    {
+      "phase": "P9",
+      "name": "F6 - Global Company Search",
+      "description": "실시간 기업 검색 (헤더 전역 배치)",
+      "features": [
+        {
+          "id": "P9-01",
+          "category": "api",
+          "description": "GET /api/companies/search API Route - 기업명 검색",
+          "steps": [
+            "src/app/api/companies/search/route.ts 생성",
+            "q 파라미터로 positions 테이블 ILIKE 검색",
+            "상위 10개 기업명 + 현재 포지션 수 반환",
+            "curl로 /api/companies/search?q=카카오 응답 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P9-02",
+          "category": "ui",
+          "description": "글로벌 검색바 - 사이드바 상단 또는 헤더 배치",
+          "steps": [
+            "CompanySearch 컴포넌트를 레이아웃에 통합",
+            "Cmd+K 단축키 열기",
+            "검색 → 결과 드롭다운 → 클릭 → 이동",
+            "브라우저에서 검색 플로우 End-to-End 확인"
+          ],
+          "passes": false
+        }
+      ]
+    },
+    {
+      "phase": "P10",
+      "name": "Performance & Quality",
+      "description": "성능 최적화, 반응형, 최종 QA",
+      "features": [
+        {
+          "id": "P10-01",
+          "category": "performance",
+          "description": "대시보드 초기 로드 < 2초 (SSR + 캐싱 최적화)",
+          "steps": [
+            "Server Component SSR에서 초기 데이터 직접 로드",
+            "SWR revalidate: 3600 설정",
+            "Next.js revalidate: 3600 적용",
+            "Lighthouse 또는 브라우저 DevTools로 로드 시간 측정",
+            "< 2초 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P10-02",
+          "category": "responsive",
+          "description": "모바일 반응형 - 요약 카드 기준 레이아웃",
+          "steps": [
+            "모바일(375px) 뷰에서 KPI 카드 정상 렌더링 확인",
+            "사이드바 모바일 숨김/햄버거 메뉴",
+            "차트 컨테이너 반응형 리사이징",
+            "Chrome DevTools 모바일 뷰 전체 페이지 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P10-03",
+          "category": "data-quality",
+          "description": "데이터 없음/부분 데이터 처리 - EmptyState, 부분 렌더링",
+          "steps": [
+            "market_index 데이터 없는 주차 → EmptyState 컴포넌트 표시",
+            "13/13 미만 세그먼트 → 경고 배지 표시",
+            "API 오류 시 ErrorBoundary 작동 확인",
+            "브라우저에서 빈 데이터 시나리오 테스트"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P10-04",
+          "category": "ux",
+          "description": "URL 공유 가능성 - 주차/세그먼트/기업 파라미터 유지",
+          "steps": [
+            "WeekPicker 변경 시 URL ?week= 파라미터 업데이트 확인",
+            "세그먼트 선택 상태 URL에 반영",
+            "URL 복사 → 새 탭 붙여넣기 → 동일 상태 로드 확인"
+          ],
+          "passes": false
+        },
+        {
+          "id": "P10-05",
+          "category": "export",
+          "description": "모든 테이블/차트에 CSV 내보내기 버튼 동작",
+          "steps": [
+            "각 테이블 컴포넌트에 export 버튼 추가",
+            "클릭 시 /api/export/csv?week=... 호출",
+            "파일 다운로드 완료 확인",
+            "Excel에서 파일 열기 확인"
+          ],
+          "passes": false
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total_features": 55,
+    "passed": 0,
+    "failed": 55,
+    "completion_pct": 0
+  }
+}

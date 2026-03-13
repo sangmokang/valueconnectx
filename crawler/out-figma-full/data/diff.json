@@ -1,0 +1,90 @@
+{
+  "summary": {
+    "host": "route-online-79776131.figma.site",
+    "expectedCount": 8,
+    "visitedCount": 8,
+    "coveredCount": 8,
+    "missingCount": 0,
+    "extraCount": 0
+  },
+  "expectedRoutes": [
+    "/",
+    "/service-overview",
+    "/coffee-chat",
+    "/ceo-coffeechat",
+    "/anonymous-board",
+    "/job-positions",
+    "/member-directory",
+    "/benefit"
+  ],
+  "foundRoutes": [
+    "/",
+    "/anonymous-board",
+    "/benefit",
+    "/ceo-coffeechat",
+    "/coffee-chat",
+    "/job-positions",
+    "/member-directory",
+    "/service-overview"
+  ],
+  "coveredStatus": [
+    {
+      "route": "/",
+      "status": 200,
+      "ok": true,
+      "url": "https://route-online-79776131.figma.site/",
+      "title": "ValueconnectX"
+    },
+    {
+      "route": "/anonymous-board",
+      "status": 200,
+      "ok": true,
+      "url": "https://route-online-79776131.figma.site/anonymous-board",
+      "title": "ValueconnectX"
+    },
+    {
+      "route": "/benefit",
+      "status": 200,
+      "ok": true,
+      "url": "https://route-online-79776131.figma.site/benefit",
+      "title": "ValueconnectX"
+    },
+    {
+      "route": "/ceo-coffeechat",
+      "status": 200,
+      "ok": true,
+      "url": "https://route-online-79776131.figma.site/ceo-coffeechat",
+      "title": "ValueconnectX"
+    },
+    {
+      "route": "/coffee-chat",
+      "status": 200,
+      "ok": true,
+      "url": "https://route-online-79776131.figma.site/coffee-chat",
+      "title": "ValueconnectX"
+    },
+    {
+      "route": "/job-positions",
+      "status": 200,
+      "ok": true,
+      "url": "https://route-online-79776131.figma.site/job-positions",
+      "title": "ValueconnectX"
+    },
+    {
+      "route": "/member-directory",
+      "status": 200,
+      "ok": true,
+      "url": "https://route-online-79776131.figma.site/member-directory",
+      "title": "ValueconnectX"
+    },
+    {
+      "route": "/service-overview",
+      "status": 200,
+      "ok": true,
+      "url": "https://route-online-79776131.figma.site/service-overview",
+      "title": "ValueconnectX"
+    }
+  ],
+  "missing": [],
+  "extras": []
+}

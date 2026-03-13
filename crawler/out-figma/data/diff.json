@@ -1,0 +1,70 @@
+{
+  "summary": {
+    "host": "route-online-79776131.figma.site",
+    "expectedCount": 8,
+    "visitedCount": 5,
+    "coveredCount": 5,
+    "missingCount": 3,
+    "extraCount": 0
+  },
+  "expectedRoutes": [
+    "/",
+    "/service-overview",
+    "/coffee-chat",
+    "/ceo-coffeechat",
+    "/anonymous-board",
+    "/job-positions",
+    "/member-directory",
+    "/benefit"
+  ],
+  "foundRoutes": [
+    "/",
+    "/anonymous-board",
+    "/ceo-coffeechat",
+    "/coffee-chat",
+    "/service-overview"
+  ],
+  "coveredStatus": [
+    {
+      "route": "/",
+      "status": 200,
+      "ok": true,
+      "url": "https://route-online-79776131.figma.site/",
+      "title": "ValueconnectX"
+    },
+    {
+      "route": "/anonymous-board",
+      "status": 200,
+      "ok": true,
+      "url": "https://route-online-79776131.figma.site/anonymous-board",
+      "title": "ValueconnectX"
+    },
+    {
+      "route": "/ceo-coffeechat",
+      "status": 200,
+      "ok": true,
+      "url": "https://route-online-79776131.figma.site/ceo-coffeechat",
+      "title": "ValueconnectX"
+    },
+    {
+      "route": "/coffee-chat",
+      "status": 200,
+      "ok": true,
+      "url": "https://route-online-79776131.figma.site/coffee-chat",
+      "title": "ValueconnectX"
+    },
+    {
+      "route": "/service-overview",
+      "status": 200,
+      "ok": true,
+      "url": "https://route-online-79776131.figma.site/service-overview",
+      "title": "ValueconnectX"
+    }
+  ],
+  "missing": [
+    "/benefit",
+    "/job-positions",
+    "/member-directory"
+  ],
+  "extras": []
+}

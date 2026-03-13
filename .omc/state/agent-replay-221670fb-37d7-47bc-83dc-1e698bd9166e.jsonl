@@ -1,0 +1,8 @@
+{"t":0,"agent":"system","event":"keyword_detected","keyword":"ralph"}
+{"t":0,"agent":"system","event":"mode_change","mode_from":"none","mode_to":"ralph"}
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"oh-my-claudecode:ralph"}
+{"t":0,"agent":"afc0833","agent_type":"architect","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"afc0833","agent_type":"architect","event":"agent_stop","success":true,"duration_ms":132396}
+{"t":0,"agent":"a6535d5","agent_type":"architect","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a6535d5","agent_type":"architect","event":"agent_stop","success":true,"duration_ms":47610}
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"oh-my-claudecode:cancel"}

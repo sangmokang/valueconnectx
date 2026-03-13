@@ -1,0 +1,166 @@
+{
+  "startedAt": "2026-03-06T14:07:32.770Z",
+  "options": {
+    "urls": [
+      "https://route-online-79776131.figma.site/"
+    ],
+    "maxPages": 2000,
+    "concurrency": 4,
+    "browser": "chromium",
+    "sameHost": true,
+    "includeHashRoutes": false
+  },
+  "pages": [
+    {
+      "url": "https://route-online-79776131.figma.site/",
+      "title": "ValueconnectX",
+      "status": 200,
+      "ok": true,
+      "console": [
+        {
+          "type": "log",
+          "text": "[Hydrated]"
+        }
+      ],
+      "requests": [],
+      "responses": [],
+      "failedRequests": [
+        {
+          "url": "https://route-online-79776131.figma.site/_json/dce9908f-431d-4ac7-97fb-a80cec983dac/_cms/_index.json",
+          "method": "GET",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        }
+      ],
+      "assets": {
+        "screenshot": "/Users/kangsangmo/Desktop/valueconnectx/crawler/out-figma/screenshots/route-online-79776131.figma.site/index.png",
+        "html": "/Users/kangsangmo/Desktop/valueconnectx/crawler/out-figma/html/route-online-79776131.figma.site/index.html"
+      }
+    },
+    {
+      "url": "https://route-online-79776131.figma.site/service-overview",
+      "title": "ValueconnectX",
+      "status": 200,
+      "ok": true,
+      "console": [
+        {
+          "type": "log",
+          "text": "[Hydrated]"
+        }
+      ],
+      "requests": [],
+      "responses": [],
+      "failedRequests": [
+        {
+          "url": "https://route-online-79776131.figma.site/_json/dce9908f-431d-4ac7-97fb-a80cec983dac/_cms/service-overview.json",
+          "method": "GET",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        }
+      ],
+      "assets": {
+        "screenshot": "/Users/kangsangmo/Desktop/valueconnectx/crawler/out-figma/screenshots/route-online-79776131.figma.site/service-overview.png",
+        "html": "/Users/kangsangmo/Desktop/valueconnectx/crawler/out-figma/html/route-online-79776131.figma.site/service-overview.html"
+      }
+    },
+    {
+      "url": "https://route-online-79776131.figma.site/coffee-chat",
+      "title": "ValueconnectX",
+      "status": 200,
+      "ok": true,
+      "console": [
+        {
+          "type": "log",
+          "text": "[Hydrated]"
+        }
+      ],
+      "requests": [],
+      "responses": [],
+      "failedRequests": [
+        {
+          "url": "https://route-online-79776131.figma.site/_json/dce9908f-431d-4ac7-97fb-a80cec983dac/_cms/coffee-chat.json",
+          "method": "GET",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        }
+      ],
+      "assets": {
+        "screenshot": "/Users/kangsangmo/Desktop/valueconnectx/crawler/out-figma/screenshots/route-online-79776131.figma.site/coffee-chat.png",
+        "html": "/Users/kangsangmo/Desktop/valueconnectx/crawler/out-figma/html/route-online-79776131.figma.site/coffee-chat.html"
+      }
+    },
+    {
+      "url": "https://route-online-79776131.figma.site/ceo-coffeechat",
+      "title": "ValueconnectX",
+      "status": 200,
+      "ok": true,
+      "console": [
+        {
+          "type": "log",
+          "text": "[Hydrated]"
+        }
+      ],
+      "requests": [],
+      "responses": [],
+      "failedRequests": [
+        {
+          "url": "https://route-online-79776131.figma.site/_json/dce9908f-431d-4ac7-97fb-a80cec983dac/_cms/ceo-coffeechat.json",
+          "method": "GET",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        }
+      ],
+      "assets": {
+        "screenshot": "/Users/kangsangmo/Desktop/valueconnectx/crawler/out-figma/screenshots/route-online-79776131.figma.site/ceo-coffeechat.png",
+        "html": "/Users/kangsangmo/Desktop/valueconnectx/crawler/out-figma/html/route-online-79776131.figma.site/ceo-coffeechat.html"
+      }
+    },
+    {
+      "url": "https://route-online-79776131.figma.site/anonymous-board",
+      "title": "ValueconnectX",
+      "status": 200,
+      "ok": true,
+      "console": [
+        {
+          "type": "log",
+          "text": "[Hydrated]"
+        }
+      ],
+      "requests": [],
+      "responses": [],
+      "failedRequests": [
+        {
+          "url": "https://route-online-79776131.figma.site/_json/dce9908f-431d-4ac7-97fb-a80cec983dac/_cms/anonymous-board.json",
+          "method": "GET",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        }
+      ],
+      "assets": {
+        "screenshot": "/Users/kangsangmo/Desktop/valueconnectx/crawler/out-figma/screenshots/route-online-79776131.figma.site/anonymous-board.png",
+        "html": "/Users/kangsangmo/Desktop/valueconnectx/crawler/out-figma/html/route-online-79776131.figma.site/anonymous-board.html"
+      }
+    }
+  ],
+  "errors": [
+    {
+      "url": "https://route-online-79776131.figma.site/job-positions",
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://route-online-79776131.figma.site/job-positions\", waiting until \"networkidle\"\u001b[22m\n"
+    },
+    {
+      "url": "https://route-online-79776131.figma.site/member-directory",
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://route-online-79776131.figma.site/member-directory\", waiting until \"networkidle\"\u001b[22m\n"
+    },
+    {
+      "url": "https://route-online-79776131.figma.site/benefit",
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://route-online-79776131.figma.site/benefit\", waiting until \"networkidle\"\u001b[22m\n"
+    }
+  ],
+  "networkErrors": [],
+  "finishedAt": "2026-03-06T14:09:15.459Z"
+}

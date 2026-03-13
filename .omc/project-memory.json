@@ -1,0 +1,115 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1773363287207,
+  "projectRoot": "/Users/kangsangmo/Desktop/valueconnectx",
+  "techStack": {
+    "languages": [],
+    "frameworks": [],
+    "packageManager": null,
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": null,
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {}
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "crawler": {
+      "path": "crawler",
+      "purpose": null,
+      "fileCount": 4,
+      "lastAccessed": 1773363287183,
+      "keyFiles": [
+        "analyze.js",
+        "crawl.js",
+        "package-lock.json",
+        "package.json"
+      ]
+    },
+    "figma": {
+      "path": "figma",
+      "purpose": null,
+      "fileCount": 7,
+      "lastAccessed": 1773363287186,
+      "keyFiles": [
+        "anonymousboard.jsx",
+        "anonymousboard.md",
+        "ceocoffeechat.jsx",
+        "ceocoffeechat.md",
+        "member-intro.jsx"
+      ]
+    },
+    "vcx-mcp-server": {
+      "path": "vcx-mcp-server",
+      "purpose": null,
+      "fileCount": 3,
+      "lastAccessed": 1773363287187,
+      "keyFiles": [
+        "package-lock.json",
+        "package.json",
+        "tsconfig.json"
+      ]
+    },
+    "crawler/node_modules": {
+      "path": "crawler/node_modules",
+      "purpose": "Dependencies",
+      "fileCount": 1,
+      "lastAccessed": 1773363287190,
+      "keyFiles": []
+    },
+    "vcx-mcp-server/bin": {
+      "path": "vcx-mcp-server/bin",
+      "purpose": "Executable scripts",
+      "fileCount": 0,
+      "lastAccessed": 1773363287191,
+      "keyFiles": []
+    },
+    "vcx-mcp-server/node_modules": {
+      "path": "vcx-mcp-server/node_modules",
+      "purpose": "Dependencies",
+      "fileCount": 1,
+      "lastAccessed": 1773363287192,
+      "keyFiles": []
+    },
+    "vcx-mcp-server/src": {
+      "path": "vcx-mcp-server/src",
+      "purpose": "Source code",
+      "fileCount": 2,
+      "lastAccessed": 1773363287193,
+      "keyFiles": [
+        "index.ts",
+        "types.ts"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "feature-list.json",
+      "accessCount": 1,
+      "lastAccessed": 1773363301516,
+      "type": "file"
+    },
+    {
+      "path": "implementationplan.md",
+      "accessCount": 1,
+      "lastAccessed": 1773363306034,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}
