@@ -1,15 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import GNB from "@/components/layout/gnb";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "VXMI - ValueConnect Market Intelligence",
-  description: "수요-공급 매트릭스 기반 시장 인텔리전스 대시보드",
+  title: "ValueConnect X",
+  description: "검증된 인재와 기업 리더를 연결하는 Private Talent Network",
 };
 
 export default function RootLayout({
@@ -19,7 +14,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={`${inter.variable} antialiased`}>
+      <body
+        style={{
+          margin: 0,
+          padding: 0,
+          background: "#f0ebe2",
+          fontFamily: "Georgia, serif",
+        }}
+      >
+        <GNB />
         {children}
       </body>
     </html>

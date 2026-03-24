@@ -45,6 +45,21 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* VCX Design System Colors */
+  --color-beige: #f0ebe2;
+  --color-beige-light: #f7f3ed;
+  --color-beige-dark: #ebe5da;
+  --color-dark: #1a1a1a;
+  --color-gold: #c9a84c;
+  --color-sub-1: #444444;
+  --color-sub-2: #555555;
+  --color-sub-3: #666666;
+  --color-sub-4: #888888;
+  --color-sub-5: #999999;
+
+  /* VCX Typography */
+  --font-serif: Georgia, serif;
 }
 
 :root {
@@ -71,7 +86,7 @@
   --chart-3: oklch(0.546 0.245 262.881);
   --chart-4: oklch(0.488 0.243 264.376);
   --chart-5: oklch(0.424 0.199 265.638);
-  --radius: 0.625rem;
+  --radius: 0rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -119,11 +134,56 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    border-radius: 0 !important;
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: #f0ebe2;
+    color: #1a1a1a;
+    font-family: Georgia, serif;
   }
   html {
-    @apply font-sans;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+}
+
+@layer utilities {
+  /* VCX Color Utilities */
+  .bg-vcx-beige { background-color: #f0ebe2; }
+  .bg-vcx-beige-light { background-color: #f7f3ed; }
+  .bg-vcx-beige-dark { background-color: #ebe5da; }
+  .bg-vcx-dark { background-color: #1a1a1a; }
+  .bg-vcx-gold { background-color: #c9a84c; }
+
+  .text-vcx-beige { color: #f0ebe2; }
+  .text-vcx-dark { color: #1a1a1a; }
+  .text-vcx-gold { color: #c9a84c; }
+  .text-vcx-sub-1 { color: #444444; }
+  .text-vcx-sub-2 { color: #555555; }
+  .text-vcx-sub-3 { color: #666666; }
+  .text-vcx-sub-4 { color: #888888; }
+  .text-vcx-sub-5 { color: #999999; }
+
+  .border-vcx-dark { border-color: #1a1a1a; }
+  .border-vcx-gold { border-color: #c9a84c; }
+
+  /* VCX Typography Utilities */
+  .font-vcx-serif { font-family: Georgia, serif; }
+  .font-vcx-sans { font-family: system-ui, -apple-system, sans-serif; }
+
+  /* VCX Label Style */
+  .vcx-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  /* VCX Section Label */
+  .vcx-section-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-family: system-ui, -apple-system, sans-serif;
+    color: #c9a84c;
   }
 }
