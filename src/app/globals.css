@@ -57,6 +57,7 @@
   --color-sub-3: #666666;
   --color-sub-4: #888888;
   --color-sub-5: #999999;
+  --color-deep-navy: #0F172A;
 
   /* VCX Typography */
   --font-serif: Georgia, serif;
@@ -186,4 +187,5 @@
     font-family: system-ui, -apple-system, sans-serif;
     color: #c9a84c;
   }
+
 }

@@ -1,105 +1,39 @@
 export default function ServiceOverviewPage() {
   return (
-    <main
-      style={{
-        background: "#f0ebe2",
-        minHeight: "100vh",
-        fontFamily: "Georgia, serif",
-      }}
-    >
+    <main className="bg-vcx-beige min-h-screen font-vcx-serif">
       {/* Hero Section */}
-      <section
-        style={{
-          maxWidth: "1100px",
-          margin: "0 auto",
-          padding: "80px 40px 60px",
-        }}
-      >
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "55% 1fr",
-            gap: "60px",
-            alignItems: "start",
-          }}
-        >
+      <section className="max-w-[1100px] mx-auto px-5 pt-10 pb-8 md:px-10 md:pt-[60px] md:pb-[50px] lg:px-10 lg:pt-20 lg:pb-[60px]">
+        <div className="grid grid-cols-1 gap-10 items-start md:grid-cols-[55%_1fr] md:gap-[60px]">
           {/* Left Column */}
           <div>
             {/* Label Row */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
-                marginBottom: "28px",
-              }}
-            >
-              <div
-                style={{
-                  width: "32px",
-                  height: "1.5px",
-                  background: "#c9a84c",
-                }}
-              />
-              <span
-                style={{
-                  fontSize: "10px",
-                  fontFamily: "system-ui, sans-serif",
-                  letterSpacing: "0.22em",
-                  textTransform: "uppercase",
-                  color: "#c9a84c",
-                }}
-              >
-                SERVICE OVERVIEW · PRIVATE TALENT NETWORK
+            <div className="flex items-center gap-3 mb-7">
+              <div className="w-8 h-[1.5px] bg-vcx-gold" />
+              <span className="vcx-section-label">
+                PRIVATE TALENT NETWORK · BY INVITATION ONLY
               </span>
             </div>
 
             {/* H1 */}
-            <h1
-              style={{
-                fontSize: "52px",
-                fontWeight: 800,
-                letterSpacing: "-2px",
-                lineHeight: 1.15,
-                color: "#1a1a1a",
-                margin: "0 0 28px 0",
-                fontFamily: "Georgia, serif",
-              }}
-            >
-              검증된 인재와
+            <h1 className="text-[28px] sm:text-[36px] md:text-[44px] lg:text-[52px] font-extrabold tracking-[-1px] md:tracking-[-2px] leading-[1.15] text-vcx-dark mt-0 mb-7 font-vcx-serif">
+              최고 수준의 인재들이
               <br />
-              <em style={{ color: "#c9a84c", fontStyle: "italic" }}>
-                기업 리더를 연결하다
-              </em>
+              <em className="text-vcx-gold italic">함께 성장하는 네트워크</em>
             </h1>
 
             {/* Body Text */}
-            <p
-              style={{
-                fontSize: "15px",
-                lineHeight: 1.85,
-                color: "#444",
-                margin: "0 0 20px 0",
-                fontFamily: "Georgia, serif",
-              }}
-            >
-              현재 채용 시장에는 후보자의 커리어에 부정적 영향을 미치는 구조적
-              리스크가 존재합니다.{" "}
-              <strong style={{ color: "#1a1a1a" }}>경영자 리스크</strong>,{" "}
-              <strong style={{ color: "#1a1a1a" }}>회사 리스크</strong>,{" "}
-              <strong style={{ color: "#1a1a1a" }}>채용 채널 리스크</strong> —
-              ValueConnect X는 이 모든 필터를 통과한 연결만을 제공합니다.
+            <p className="text-[15px] leading-[1.85] text-vcx-sub-1 mb-5 font-vcx-serif">
+              시장 최고 수준의 인재는 드뭅니다.
+              <br />
+              그리고 대부분, 지금 있는 자리에서 묵묵히 최선을 다하고 있습니다.
             </p>
-            <p
-              style={{
-                fontSize: "15px",
-                lineHeight: 1.85,
-                color: "#444",
-                margin: "0 0 40px 0",
-                fontFamily: "Georgia, serif",
-              }}
-            >
-              <strong style={{ color: "#1a1a1a" }}>
+            <p className="text-[15px] leading-[1.85] text-vcx-sub-1 mb-5 font-vcx-serif">
+              ValueConnect X는 그런 분들이 가장 잘 맞는 기회와 제약 없이 직접
+              연결되고, 같은 수준의 사람들과 허심탄회하게 커리어를 이야기하며,
+              함께 성장할 수 있는 폐쇄형 네트워크입니다.
+            </p>
+            <p className="text-[15px] leading-[1.85] text-vcx-sub-1 mb-10 font-vcx-serif">
+              <strong className="text-vcx-dark">
                 Selective Hiring × Selective Talent.
               </strong>{" "}
               기업은 더 적은 인원으로 높은 성과를 요구하고 있으며, 핵심 인재
@@ -109,102 +43,47 @@ export default function ServiceOverviewPage() {
             {/* CTA */}
             <a
               href="#pillars"
-              style={{
-                display: "inline-block",
-                background: "#1a1a1a",
-                color: "#f0ebe2",
-                fontSize: "14px",
-                fontFamily: "system-ui, sans-serif",
-                padding: "14px 28px",
-                textDecoration: "none",
-                borderRadius: 0,
-              }}
+              className="block w-full text-center sm:inline-block sm:w-auto bg-vcx-dark text-vcx-beige text-[14px] font-vcx-sans px-7 py-[14px] no-underline"
             >
               서비스 살펴보기 →
             </a>
           </div>
 
           {/* Right Column - WHY THIS EXISTS */}
-          <div
-            style={{
-              borderTop: "1.5px solid #c9a84c",
-            }}
-          >
+          <div className="border-t-[1.5px] border-vcx-gold">
             {[
               {
-                risk: "경영자 리스크",
-                desc: "비전 불일치, 과장된 채용 조건",
-                action: "필터링",
+                risk: "직접 연결",
+                desc: "중간 단계 없이, 결정권자와 바로 만납니다",
+                action: "연결",
               },
               {
-                risk: "회사 리스크",
-                desc: "재무 불안정, 조직 문화 괴리",
-                action: "검증",
+                risk: "최적의 기회",
+                desc: "검증된 포지션만, 시장 최고의 선택지만",
+                action: "큐레이션",
               },
               {
-                risk: "채용 채널 리스크",
-                desc: "후보자 정보 무단 유통",
-                action: "차단",
+                risk: "커리어 자율성",
+                desc: "내 정보, 내 결정, 내 속도로",
+                action: "보호",
               },
             ].map((item, i) => (
               <div
                 key={i}
-                style={{
-                  padding: "24px 0",
-                  borderBottom: "1px solid rgba(0,0,0,0.08)",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "flex-start",
-                }}
+                className="py-6 border-b border-black/[0.08] flex justify-between items-start"
               >
                 <div>
-                  <div
-                    style={{
-                      fontSize: "10px",
-                      fontFamily: "system-ui, sans-serif",
-                      letterSpacing: "0.15em",
-                      textTransform: "uppercase",
-                      color: "#c9a84c",
-                      marginBottom: "6px",
-                    }}
-                  >
+                  <div className="vcx-section-label mb-1.5">
                     WHY THIS EXISTS
                   </div>
-                  <div
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: 700,
-                      color: "#1a1a1a",
-                      marginBottom: "4px",
-                      fontFamily: "Georgia, serif",
-                    }}
-                  >
+                  <div className="text-[16px] font-bold text-vcx-dark mb-1 font-vcx-serif">
                     {item.risk}
                   </div>
-                  <div
-                    style={{
-                      fontSize: "13.5px",
-                      color: "#666",
-                      lineHeight: 1.7,
-                      fontFamily: "system-ui, sans-serif",
-                    }}
-                  >
+                  <div className="text-[13.5px] text-vcx-sub-3 leading-[1.7] font-vcx-sans">
                     {item.desc}
                   </div>
                 </div>
-                <div
-                  style={{
-                    fontSize: "11px",
-                    fontFamily: "system-ui, sans-serif",
-                    color: "#c9a84c",
-                    border: "1px solid #c9a84c",
-                    padding: "4px 10px",
-                    letterSpacing: "0.1em",
-                    whiteSpace: "nowrap",
-                    marginLeft: "16px",
-                    marginTop: "20px",
-                  }}
-                >
+                <div className="text-[11px] font-vcx-sans text-vcx-gold border border-vcx-gold px-2.5 py-1 tracking-[0.1em] whitespace-nowrap ml-4 mt-5">
                   {item.action}
                 </div>
               </div>
@@ -216,172 +95,82 @@ export default function ServiceOverviewPage() {
       {/* Five Pillars Section */}
       <section
         id="pillars"
-        style={{
-          maxWidth: "1100px",
-          margin: "0 auto",
-          padding: "60px 40px 80px",
-          borderTop: "1px solid rgba(0,0,0,0.08)",
-        }}
+        className="max-w-[1100px] mx-auto px-5 py-10 md:px-10 md:py-16 lg:px-10 lg:pt-[60px] lg:pb-20 border-t border-black/[0.08]"
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-            marginBottom: "48px",
-          }}
-        >
-          <div
-            style={{ width: "32px", height: "1.5px", background: "#c9a84c" }}
-          />
-          <span
-            style={{
-              fontSize: "10px",
-              fontFamily: "system-ui, sans-serif",
-              letterSpacing: "0.22em",
-              textTransform: "uppercase",
-              color: "#c9a84c",
-            }}
-          >
-            FIVE PILLARS · CORE SERVICES
-          </span>
+        <div className="flex items-center gap-3 mb-10 md:mb-12">
+          <div className="w-8 h-[1.5px] bg-vcx-gold" />
+          <span className="vcx-section-label">FIVE PILLARS · CORE SERVICES</span>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
+        <div className="flex flex-col gap-0">
           {[
             {
               num: "01",
               en: "MEMBER DIRECTORY",
-              ko: "검증된 핵심인재 디렉토리",
-              desc: "Core Member와 Endorsed Member로 구성된 폐쇄형 인재 네트워크. 이름, 직군, 전문 분야로 검색하고, Member Profile을 통해 커리어 신뢰를 확인할 수 있습니다.",
+              ko: "높은 수준의 인재들이 있는 곳",
+              desc: "검증이 필요 없을 정도의 인재들이 모입니다. Core Member와 Endorsed Member로 구성된 폐쇄형 네트워크에서 이름, 직군, 전문 분야로 탐색하고, 서로에게서 배우며 성장합니다.",
               insight:
-                "Anti-Scraping 정책으로 멤버 정보를 보호합니다. 1분 내 10 프로필 조회 시 경고, 20 프로필 조회 시 세션 종료, 하루 50 프로필 조회 시 접근 제한.",
+                "스타트업 CTO, 유니콘 PM, 글로벌 기업 리더 등 각 분야에서 실질적인 영향력을 가진 인재들이 모입니다. 검증된 인재들과 같은 공간에서 커리어를 탐색하고, 서로에게서 성장의 기준을 발견할 수 있습니다.",
             },
             {
               num: "02",
               en: "POSITION BOARD",
-              ko: "검증된 포지션만 게시",
-              desc: "기업이 직접 포지션을 등록하지 않습니다. CEO/HR 구두 동의 후 ValueConnect Admin이 내부 검증을 거쳐 등록합니다. 검증되지 않은 포지션은 게시하지 않습니다.",
+              ko: "시장 최적의 기회와 직접 연결",
+              desc: "기업이 직접 포지션을 올리지 않습니다. ValueConnect가 구두 동의 후 내부 검토를 거쳐 등록한 포지션만 존재합니다. 검증되지 않은 포지션은 처음부터 게시되지 않습니다.",
               insight:
-                "멤버는 관심 있음 / 관심 없음 / 나중에 보기로 반응할 수 있습니다. 포지션 관심 데이터만 채용에 활용되며, 커뮤니티 활동 데이터는 채용에 절대 활용되지 않습니다.",
+                "일반 채용 플랫폼에서는 볼 수 없는 포지션들이 모입니다. ValueConnect가 직접 큐레이션한 기회만 게시되며, 성장 가능성 높은 조직의 핵심 포지션들과 시장에 공개되지 않는 기회들을 가장 먼저 만날 수 있습니다.",
             },
             {
               num: "03",
               en: "CEO COFFEE CHAT",
               ko: "의사결정자와의 직접 채널",
-              desc: "CEO/Founder/C-Level이 직접 세션을 생성하고, 멤버가 신청하며, CEO가 선택하는 1:1 Coffee Chat. 세션 생성 시 약식 헤드헌팅 계약 조건에 동의해야 합니다.",
+              desc: "CEO / Founder / C-Level이 직접 세션을 생성하고, 멤버가 신청하며, CEO가 선택하는 1:1 Coffee Chat. 불필요한 중간 단계 없이, 결정권자와 직접 만납니다.",
               insight:
-                "채용이 발생할 경우 ValueConnect 소개 수수료가 적용됩니다. VCX Network를 우회하는 행동을 방지하는 구조입니다.",
+                "일반적으로 만나기 어려운 결정권자와 중간 단계 없이 직접 대화할 수 있습니다. 조직 문화와 비전을 직접 확인하고, 커리어의 다음 스텝을 결정권자와 함께 논의하는 기회입니다.",
             },
             {
               num: "04",
               en: "COMMUNITY BOARD",
-              ko: "멤버 전용 익명 커뮤니티",
-              desc: "커리어 고민, 조직 고민·리더쉽, 연봉 협상, 번아웃, 생산성·News, '이 회사 어때요?' 등 6개 카테고리. CEO는 접근할 수 없습니다.",
+              ko: "허심탄회하게 이야기할 수 있는 공간",
+              desc: "커리어 고민, 조직·리더십, 연봉 협상, 번아웃, 생산성·News, '이 회사 어때요?' — 6개 카테고리의 멤버 전용 커뮤니티. 같은 수준의 사람들과 솔직하게 이야기할 수 있는 유일한 공간입니다.",
               insight:
-                "모든 커뮤니티 글은 채용 활용이 불가합니다(Privacy Model). 사실 기반 정보만 허용되며, 가이드라인 위반 글은 Admin이 즉시 삭제합니다.",
+                "비슷한 고민을 가진 업계 동료들의 경험과 인사이트를 직접 들을 수 있습니다. 연봉 협상, 리더십, 커리어 전환 등 민감한 주제도 완전한 프라이버시가 보장되는 환경에서 솔직하게 나눌 수 있습니다.",
             },
             {
               num: "05",
               en: "PEER COFFEE CHAT",
-              ko: "멤버 간 신뢰 기반 연결",
-              desc: "사연을 올리면 비밀 댓글로 신청받고, 작성자가 직접 선택하는 P2P 연결. 커리어 대화뿐 아니라 채용을 전제로 한 Coffee Chat도 가능합니다.",
+              ko: "비슷한 경험을 하는 업계 동료를 만나는 경험",
+              desc: "사연을 올리면 비밀 댓글로 신청받고, 직접 선택하는 P2P 연결. 커리어 대화부터 채용을 전제로 한 대화까지 — 모두 신뢰 기반으로 이루어집니다.",
               insight:
-                "Coffee Chat을 통해 채용으로 이어지는 경우, 해당 채용은 ValueConnect의 소개·알선 구조를 통해 진행됩니다. Self Introduction Reward 지급.",
+                "같은 직군, 같은 고민을 가진 동료와 1:1로 연결됩니다. 커리어 고민부터 업계 트렌드까지 신뢰 기반으로 나누고, 나와 비슷한 경험을 하는 사람과의 네트워킹을 통해 새로운 관점을 얻을 수 있습니다.",
             },
           ].map((pillar, i) => (
             <div
               key={i}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "80px 1fr 1fr",
-                gap: "40px",
-                padding: "40px 0",
-                borderBottom: "1px solid rgba(0,0,0,0.08)",
-                alignItems: "start",
-              }}
+              className="grid grid-cols-1 gap-6 py-8 border-b border-black/[0.08] items-start md:grid-cols-[80px_1fr_1fr] md:gap-10 md:py-10"
             >
               {/* Number */}
-              <div
-                style={{
-                  fontSize: "32px",
-                  fontWeight: 800,
-                  color: "#c9a84c",
-                  fontFamily: "Georgia, serif",
-                  letterSpacing: "-1px",
-                }}
-              >
+              <div className="text-[32px] font-extrabold text-vcx-gold font-vcx-serif tracking-[-1px]">
                 {pillar.num}
               </div>
 
               {/* Title Block */}
               <div>
-                <div
-                  style={{
-                    fontSize: "10px",
-                    fontFamily: "system-ui, sans-serif",
-                    letterSpacing: "0.18em",
-                    textTransform: "uppercase",
-                    color: "#c9a84c",
-                    marginBottom: "8px",
-                  }}
-                >
-                  {pillar.en}
-                </div>
-                <h3
-                  style={{
-                    fontSize: "20px",
-                    fontWeight: 700,
-                    color: "#1a1a1a",
-                    margin: "0 0 14px 0",
-                    letterSpacing: "-0.3px",
-                    fontFamily: "Georgia, serif",
-                  }}
-                >
+                <div className="vcx-section-label mb-2">{pillar.en}</div>
+                <h3 className="text-[20px] font-bold text-vcx-dark mt-0 mb-3.5 tracking-[-0.3px] font-vcx-serif">
                   {pillar.ko}
                 </h3>
-                <p
-                  style={{
-                    fontSize: "14px",
-                    lineHeight: 1.8,
-                    color: "#555",
-                    margin: 0,
-                    fontFamily: "system-ui, sans-serif",
-                  }}
-                >
+                <p className="text-[14px] leading-[1.8] text-vcx-sub-2 m-0 font-vcx-sans">
                   {pillar.desc}
                 </p>
               </div>
 
               {/* Insight Box */}
-              <div
-                style={{
-                  background: "#e8e2d9",
-                  padding: "20px 22px",
-                  borderLeft: "2px solid #c9a84c",
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: "9px",
-                    fontFamily: "system-ui, sans-serif",
-                    letterSpacing: "0.2em",
-                    textTransform: "uppercase",
-                    color: "#c9a84c",
-                    marginBottom: "8px",
-                  }}
-                >
+              <div className="bg-[#e8e2d9] p-5 border-l-2 border-vcx-gold">
+                <div className="vcx-label text-vcx-gold tracking-[0.2em] mb-2">
                   INSIGHT
                 </div>
-                <p
-                  style={{
-                    fontSize: "13px",
-                    lineHeight: 1.75,
-                    color: "#555",
-                    margin: 0,
-                    fontFamily: "system-ui, sans-serif",
-                  }}
-                >
+                <p className="text-[13px] leading-[1.75] text-vcx-sub-2 m-0 font-vcx-sans">
                   {pillar.insight}
                 </p>
               </div>
@@ -391,99 +180,43 @@ export default function ServiceOverviewPage() {
       </section>
 
       {/* Closing Section - OUR THESIS */}
-      <section
-        style={{
-          background: "#1a1a1a",
-          padding: "80px 40px",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "1100px",
-            margin: "0 auto",
-            textAlign: "center",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "12px",
-              marginBottom: "36px",
-            }}
-          >
-            <div
-              style={{ width: "32px", height: "1.5px", background: "#c9a84c" }}
-            />
-            <span
-              style={{
-                fontSize: "10px",
-                fontFamily: "system-ui, sans-serif",
-                letterSpacing: "0.22em",
-                textTransform: "uppercase",
-                color: "#c9a84c",
-              }}
-            >
-              OUR THESIS
-            </span>
-            <div
-              style={{ width: "32px", height: "1.5px", background: "#c9a84c" }}
-            />
+      <section className="bg-vcx-dark px-5 py-[60px] sm:py-[70px] md:px-10 md:py-20">
+        <div className="max-w-[1100px] mx-auto text-center">
+          <div className="flex items-center justify-center gap-3 mb-9">
+            <div className="w-8 h-[1.5px] bg-vcx-gold" />
+            <span className="vcx-section-label">OUR THESIS</span>
+            <div className="w-8 h-[1.5px] bg-vcx-gold" />
           </div>
 
-          <blockquote
-            style={{
-              fontSize: "22px",
-              fontFamily: "Georgia, serif",
-              fontStyle: "italic",
-              lineHeight: 1.7,
-              color: "#f0ebe2",
-              maxWidth: "700px",
-              margin: "0 auto 48px",
-              padding: 0,
-              borderLeft: "none",
-            }}
-          >
-            "후보자 보호가 최우선 원칙입니다. 검증되지 않은 포지션은 게시하지
-            않으며, 부정적 요소가 확인된 기업은 네트워크에서 제외합니다."
+          <blockquote className="text-[16px] sm:text-[18px] lg:text-[22px] font-vcx-serif italic leading-[1.7] text-vcx-beige max-w-[700px] mx-auto mb-6 p-0 border-l-0">
+            &ldquo;자신보다 더 나은 사람들과 어울리십시오.
+            <br />
+            당신보다 행동이 나은 사람을 곁에 두면,
+            <br />
+            자연스럽게 그 방향으로 나아가게 됩니다.&rdquo;
           </blockquote>
 
-          <div
-            style={{ display: "flex", gap: "16px", justifyContent: "center" }}
-          >
+          <p className="text-[14px] font-vcx-sans text-vcx-gold mb-2 tracking-[0.05em]">
+            — Warren Buffett
+          </p>
+          <p className="text-[12px] font-vcx-sans italic text-[rgba(240,235,226,0.5)] mb-12">
+            &ldquo;It&apos;s better to hang out with people better than you.
+            Pick out associates whose behavior is better than yours and
+            you&apos;ll drift in that direction.&rdquo;
+          </p>
+
+          <div className="flex flex-col gap-3 items-stretch sm:flex-row sm:items-center sm:justify-center sm:gap-4">
             <a
               href="/member-directory"
-              style={{
-                display: "inline-block",
-                background: "#c9a84c",
-                color: "#1a1a1a",
-                fontSize: "14px",
-                fontFamily: "system-ui, sans-serif",
-                fontWeight: 600,
-                padding: "14px 28px",
-                textDecoration: "none",
-                borderRadius: 0,
-              }}
+              className="bg-vcx-gold text-vcx-dark text-[14px] font-vcx-sans font-semibold px-7 py-[14px] no-underline text-center"
             >
-              Member Directory 보기 →
+              멤버로 합류하기 →
             </a>
             <a
-              href="/benefit"
-              style={{
-                display: "inline-block",
-                background: "transparent",
-                color: "#c9a84c",
-                fontSize: "14px",
-                fontFamily: "system-ui, sans-serif",
-                fontWeight: 600,
-                padding: "14px 28px",
-                textDecoration: "none",
-                border: "1px solid #c9a84c",
-                borderRadius: 0,
-              }}
+              href="#pillars"
+              className="bg-transparent text-vcx-gold text-[14px] font-vcx-sans font-semibold px-7 py-[14px] no-underline border border-vcx-gold text-center"
             >
-              멤버 혜택 확인하기
+              네트워크 살펴보기
             </a>
           </div>
         </div>

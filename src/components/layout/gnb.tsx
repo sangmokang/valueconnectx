@@ -1,196 +1,98 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
+import { mainNavItems } from "@/constants/navigation";
+import { getVcxUser, isAdmin } from "@/lib/auth/get-vcx-user";
+import { UserMenu } from "@/components/auth/user-menu";
+import { GNBDropdown, MobileMenu } from "./gnb-dropdown";
 
-const menuItems = [
-  {
-    label: "서비스 소개",
-    href: "/",
-    dropdown: ["서비스 소개", "Member Directory", "Benefit"],
-  },
-  { label: "Coffee Chat", href: "/coffeechat" },
-  { label: "CEO Coffee Chat", href: "/ceo-coffee-chat" },
-  { label: "Community Board", href: "/community" },
-  { label: "Position Board", href: "/positions" },
-];
+function LockIcon() {
+  return (
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#c9a84c"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="ml-1"
+    >
+      <rect width="18" height="11" x="3" y="11" rx="0" ry="0" />
+      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+    </svg>
+  );
+}
 
-export default function GNB({ activeMenu }: { activeMenu?: string }) {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+export default async function GNB() {
+  const user = await getVcxUser();
+  const admin = user ? isAdmin(user) : false;
 
   return (
-    <nav
-      style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 100,
-        height: "60px",
-        background: "#f0ebe2",
-        borderBottom: "1px solid rgba(0,0,0,0.08)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "0 40px",
-      }}
-    >
+    <nav className="sticky top-0 z-[100] h-[60px] bg-[#f0ebe2] border-b border-black/[0.08] flex items-center justify-between px-4 md:px-10">
       {/* Logo */}
-      <Link
-        href="/"
-        style={{
-          textDecoration: "none",
-          display: "flex",
-          alignItems: "baseline",
-          gap: "2px",
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "Georgia, serif",
-            fontSize: "17px",
-            fontWeight: 700,
-            color: "#1a1a1a",
-            letterSpacing: "-0.3px",
-          }}
-        >
+      <Link href="/" className="no-underline flex items-baseline gap-[2px]">
+        <span className="font-serif text-[17px] font-bold text-[#1a1a1a] tracking-[-0.3px]">
           ValueConnect
         </span>
-        <span
-          style={{
-            fontFamily: "Georgia, serif",
-            fontSize: "17px",
-            fontWeight: 700,
-            color: "#c9a84c",
-          }}
-        >
-          {" "}X
-        </span>
+        <span className="font-serif text-[17px] font-bold text-[#c9a84c]"> X</span>
       </Link>
 
-      {/* Center Menu */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "32px",
-          fontSize: "13.5px",
-          fontFamily: "system-ui, sans-serif",
-        }}
-      >
-        {menuItems.map((item) => {
-          const isActive = activeMenu === item.label;
-          if (item.dropdown) {
+      {/* Desktop Center Menu */}
+      <div className="hidden md:flex items-center gap-8 text-[13.5px] font-[system-ui,sans-serif]">
+        {mainNavItems.map((item) => {
+          if (item.children) {
             return (
-              <div
+              <GNBDropdown
                 key={item.label}
-                style={{ position: "relative" }}
-                onMouseEnter={() => setDropdownOpen(true)}
-                onMouseLeave={() => setDropdownOpen(false)}
-              >
-                <button
-                  style={{
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    fontSize: "13.5px",
-                    fontFamily: "system-ui, sans-serif",
-                    color: isActive ? "#1a1a1a" : "#555",
-                    fontWeight: isActive ? 600 : 400,
-                    padding: 0,
-                    borderBottom: isActive
-                      ? "1.5px solid #c9a84c"
-                      : "1.5px solid transparent",
-                    paddingBottom: "2px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "4px",
-                  }}
-                >
-                  {item.label}
-                  <span style={{ fontSize: "11px", color: "#888" }}>▾</span>
-                </button>
-                {dropdownOpen && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: "100%",
-                      left: 0,
-                      marginTop: "8px",
-                      background: "#f0ebe2",
-                      border: "1px solid rgba(0,0,0,0.08)",
-                      minWidth: "160px",
-                      zIndex: 200,
-                    }}
-                  >
-                    {item.dropdown.map((sub) => (
-                      <Link
-                        key={sub}
-                        href="#"
-                        style={{
-                          display: "block",
-                          padding: "10px 16px",
-                          fontSize: "13px",
-                          color: "#333",
-                          textDecoration: "none",
-                          fontFamily: "system-ui, sans-serif",
-                          borderBottom: "1px solid rgba(0,0,0,0.05)",
-                        }}
-                      >
-                        {sub}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+                label={item.label}
+                items={item.children}
+                requiresAuth={item.requiresAuth}
+                isAuthenticated={!!user}
+              />
             );
           }
           return (
             <Link
               key={item.label}
               href={item.href}
-              style={{
-                textDecoration: "none",
-                color: isActive ? "#1a1a1a" : "#555",
-                fontWeight: isActive ? 600 : 400,
-                borderBottom: isActive
-                  ? "1.5px solid #c9a84c"
-                  : "1.5px solid transparent",
-                paddingBottom: "2px",
-              }}
+              className="no-underline text-[#555] font-normal border-b-[1.5px] border-transparent pb-[2px] flex items-center hover:text-[#1a1a1a] transition-colors"
             >
               {item.label}
+              {item.requiresAuth && !user && <LockIcon />}
             </Link>
           );
         })}
       </div>
 
-      {/* Right */}
-      <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-        <Link
-          href="/login"
-          style={{
-            fontSize: "13.5px",
-            fontFamily: "system-ui, sans-serif",
-            color: "#1a1a1a",
-            textDecoration: "none",
-          }}
-        >
-          로그인
-        </Link>
-        <Link
-          href="/invite"
-          style={{
-            fontSize: "13.5px",
-            fontFamily: "system-ui, sans-serif",
-            background: "#1a1a1a",
-            color: "#f0ebe2",
-            padding: "9px 18px",
-            textDecoration: "none",
-            borderRadius: 0,
-            display: "inline-block",
-          }}
-        >
-          초대 확인하기 →
-        </Link>
+      {/* Desktop Right */}
+      <div className="hidden md:flex items-center gap-5">
+        {user ? (
+          <UserMenu userName={user.name} isAdmin={admin} />
+        ) : (
+          <>
+            <Link
+              href="/login"
+              className="text-[13.5px] font-[system-ui,sans-serif] text-[#1a1a1a] no-underline"
+            >
+              로그인
+            </Link>
+            <Link
+              href="/invite/accept"
+              className="text-[13.5px] font-[system-ui,sans-serif] bg-[#1a1a1a] text-[#f0ebe2] px-[18px] py-[9px] no-underline inline-block"
+            >
+              초대 확인하기 →
+            </Link>
+          </>
+        )}
+      </div>
+
+      {/* Mobile Hamburger */}
+      <div className="md:hidden">
+        <MobileMenu
+          isAuthenticated={!!user}
+          userName={user?.name}
+          isAdmin={admin}
+        />
       </div>
     </nav>
   );
