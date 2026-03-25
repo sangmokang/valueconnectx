@@ -1,4 +1,0 @@
-[    5808ms] [WARNING] Duplicate atom key "selectedPageId". This is a FATAL ERROR in
-      production. But it is safe to ignore this warning if it occurred because of
-      hot module replacement. @ https://team.bgzt.co.kr/_next/static/chunks/pages/_app-d7b26ded374d2bc8.js:19
-[    5883ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://team.bgzt.co.kr/_vercel/insights/script.js:0
