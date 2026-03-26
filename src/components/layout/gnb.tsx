@@ -3,6 +3,7 @@ import { mainNavItems } from "@/constants/navigation";
 import { getVcxUser, isAdmin } from "@/lib/auth/get-vcx-user";
 import { UserMenu } from "@/components/auth/user-menu";
 import { GNBDropdown, MobileMenu } from "./gnb-dropdown";
+import { NotificationBell } from "./notification-bell";
 
 function LockIcon() {
   return (
@@ -67,7 +68,10 @@ export default async function GNB() {
       {/* Desktop Right */}
       <div className="hidden md:flex items-center gap-5">
         {user ? (
-          <UserMenu userName={user.name} isAdmin={admin} />
+          <>
+            <NotificationBell />
+            <UserMenu userName={user.name} isAdmin={admin} />
+          </>
         ) : (
           <>
             <Link

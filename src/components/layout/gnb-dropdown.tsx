@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Menu, X, ChevronDown } from "lucide-react";
 import type { NavItem } from "@/types";
 import { mainNavItems } from "@/constants/navigation";
+import { NotificationBell } from "./notification-bell";
 
 // ─── Desktop Dropdown (hover) + Mobile Accordion (click) ─────────────────────
 
@@ -223,13 +224,16 @@ export function MobileMenu({
           {/* Bottom CTA */}
           <div className="shrink-0 px-4 py-6 border-t border-black/[0.08] flex flex-col gap-3">
             {isAuthenticated ? (
-              <div className="text-[13.5px] font-[system-ui,sans-serif] text-[#555]">
-                {userName && (
-                  <span className="font-medium text-[#1a1a1a]">{userName}</span>
-                )}
-                {isAdmin && (
-                  <span className="ml-2 text-[12px] text-[#c9a84c] font-medium">관리자</span>
-                )}
+              <div className="flex items-center justify-between">
+                <div className="text-[13.5px] font-[system-ui,sans-serif] text-[#555]">
+                  {userName && (
+                    <span className="font-medium text-[#1a1a1a]">{userName}</span>
+                  )}
+                  {isAdmin && (
+                    <span className="ml-2 text-[12px] text-[#c9a84c] font-medium">관리자</span>
+                  )}
+                </div>
+                <NotificationBell />
               </div>
             ) : (
               <>

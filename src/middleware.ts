@@ -1,0 +1,98 @@
+import { NextResponse, type NextRequest } from 'next/server'
+import { createServerClient } from '@supabase/ssr'
+import { isPublicRoute, isSemiPublicRoute, isProtectedRoute, isAdminRoute, isAuthRoute } from '@/lib/auth/routes'
+import type { Database } from '@/types/supabase'
+import { rateLimit, apiLimiter } from '@/lib/rate-limit'
+
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  if (
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/api/invites/verify') ||
+    pathname.includes('.')
+  ) {
+    return NextResponse.next()
+  }
+
+  if (isAuthRoute(pathname)) return NextResponse.next()
+  if (isPublicRoute(pathname)) return NextResponse.next()
+
+  let response = NextResponse.next({ request })
+  const supabase = createServerClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() { return request.cookies.getAll() },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+          response = NextResponse.next({ request })
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options)
+          )
+        },
+      },
+    }
+  )
+
+  // DB call 1: JWT 검증 (불가피)
+  const { data: { user } } = await supabase.auth.getUser()
+
+  // API routes
+  if (pathname.startsWith('/api/')) {
+    // Rate limit check (before auth to prevent brute force)
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || 'unknown'
+    const { success: rateLimitOk } = await rateLimit(apiLimiter, `api:${ip}`)
+    if (!rateLimitOk) {
+      return NextResponse.json(
+        { error: '요청 한도를 초과했습니다. 잠시 후 다시 시도해주세요.' },
+        { status: 429 }
+      )
+    }
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    // DB call 2: member + corporate 단일 RPC 호출 (기존 2회 → 1회)
+    const { data: info } = await supabase.rpc('vcx_get_user_info', { p_user_id: user.id })
+    if (!info?.member && !info?.corporate) {
+      return NextResponse.json({ error: 'Not a VCX member' }, { status: 403 })
+    }
+    return response
+  }
+
+  if (isSemiPublicRoute(pathname)) {
+    response.headers.set('x-vcx-authenticated', user ? 'true' : 'false')
+    return response
+  }
+
+  if (isAdminRoute(pathname)) {
+    if (!user) {
+      const loginUrl = new URL('/login', request.url)
+      loginUrl.searchParams.set('redirect', pathname)
+      return NextResponse.redirect(loginUrl)
+    }
+    // DB call 2: member + corporate 단일 RPC 호출
+    const { data: info } = await supabase.rpc('vcx_get_user_info', { p_user_id: user.id })
+    const isAdmin =
+      info?.member?.system_role === 'admin' ||
+      info?.member?.system_role === 'super_admin'
+    if (!isAdmin) return NextResponse.redirect(new URL('/', request.url))
+    return response
+  }
+
+  if (isProtectedRoute(pathname)) {
+    if (!user) {
+      response.headers.set('x-vcx-authenticated', 'false')
+      return response
+    }
+    // DB call 2: member + corporate 단일 RPC 호출
+    const { data: info } = await supabase.rpc('vcx_get_user_info', { p_user_id: user.id })
+    response.headers.set('x-vcx-authenticated', (!info?.member && !info?.corporate) ? 'false' : 'true')
+    return response
+  }
+
+  return response
+}
+
+export const config = {
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
+}

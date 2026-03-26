@@ -378,7 +378,7 @@ function CEOCard({ post, isOpen, onToggle, applyInput, onApplyChange, onApply, i
           <div style={{ padding: "28px 36px 24px 36px" }}>
             <div style={{ paddingLeft: 78 }}>
               <div style={{ fontSize: 11, color: "#b8902a", letterSpacing: "0.12em", fontWeight: 700, marginBottom: 12 }}>CEO DIRECT MESSAGE</div>
-              <p style={{ fontSize: 15, color: "#3a3a3a", lineHeight: 1.9, fontStyle: "italic" }}>"{post.message}"</p>
+              <p style={{ fontSize: 15, color: "#3a3a3a", lineHeight: 1.9, fontStyle: "italic" }}>&ldquo;{post.message}&rdquo;</p>
 
               {/* LOOKING FOR */}
               <div style={{ marginTop: 20, display: "flex", alignItems: "flex-start", gap: 14 }}>

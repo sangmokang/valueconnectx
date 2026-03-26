@@ -38,6 +38,8 @@
   ],
   "exclude": [
     "node_modules",
-    "vcx-mcp-server"
+    "vcx-mcp-server",
+    "e2e",
+    "playwright.config.ts"
   ]
 }

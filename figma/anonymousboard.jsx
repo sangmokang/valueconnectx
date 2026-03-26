@@ -104,6 +104,7 @@ export default function AnonymousBoard() {
     const text = commentInputs[postId];
     if (!text?.trim()) return;
     const anonNames = ["익명 멤버 F", "익명 멤버 G", "익명 멤버 H", "익명 멤버 I"];
+    // eslint-disable-next-line react-hooks/purity
     const randomName = anonNames[Math.floor(Math.random() * anonNames.length)];
     setPosts(prev => prev.map(p => {
       if (p.id !== postId) return p;

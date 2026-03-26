@@ -47,6 +47,7 @@ export interface NavItem {
   href: string;
   children?: NavItem[];
   isActive?: boolean;
+  requiresAuth?: boolean;
 }
 
 // Position

@@ -229,7 +229,7 @@ function ServicePage({ setActivePage }) {
             <span style={{ fontSize: 10, color: "#c9a84c", letterSpacing: "0.18em", fontFamily: "sans-serif" }}>OUR THESIS</span>
           </div>
           <p style={{ fontSize: 20, fontWeight: 700, color: "#f0ebe2", lineHeight: 1.6, maxWidth: 680, letterSpacing: "-0.3px", margin: "0 0 24px" }}>
-            "네트워크의 질은 구성원의 질을 초과할 수 없다. 하지만 올바른 구조가 주어진다면, 개인의 자본이 집단의 자본으로 전환된다."
+            &ldquo;네트워크의 질은 구성원의 질을 초과할 수 없다. 하지만 올바른 구조가 주어진다면, 개인의 자본이 집단의 자본으로 전환된다.&rdquo;
           </p>
           <div style={{ display: "flex", gap: 16 }}>
             <button
