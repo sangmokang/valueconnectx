@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { trackEvent } from '@/lib/analytics'
 
 export function LoginForm({ redirectTo }: { redirectTo?: string }) {
   const [email, setEmail] = useState('')
@@ -19,6 +20,7 @@ export function LoginForm({ redirectTo }: { redirectTo?: string }) {
       const supabase = createClient()
       const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
       if (signInError) { setError('이메일 또는 비밀번호가 올바르지 않습니다'); setLoading(false); return }
+      trackEvent('user_login', { method: 'email' })
       router.push(redirectTo || '/')
       router.refresh()
     } catch {

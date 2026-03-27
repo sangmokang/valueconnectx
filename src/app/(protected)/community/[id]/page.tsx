@@ -21,6 +21,12 @@ export default async function CommunityPostPage({
   const { id } = await params
   const supabase = await createClient()
 
+  // Determine if current user is a corporate user (for privacy enforcement)
+  const { data: { user: authUser } } = await supabase.auth.getUser()
+  const isCorporateUser = authUser
+    ? !!(await supabase.from('vcx_corporate_users').select('id').eq('id', authUser.id).single()).data
+    : false
+
   const { data: post, error } = await supabase
     .from('community_posts')
     .select('id, author_id, category, title, content, is_anonymous, status, created_at, updated_at')
@@ -29,6 +35,15 @@ export default async function CommunityPostPage({
     .single()
 
   if (error || !post) notFound()
+
+  // Mask author_id: anonymous posts always masked; company_review masked for corporate users
+  const maskedPost = {
+    ...post,
+    author_id:
+      post!.is_anonymous || (post!.category === 'company_review' && isCorporateUser)
+        ? null
+        : post!.author_id,
+  }
 
   const { data: commentsData } = await supabase
     .from('community_comments')
@@ -47,8 +62,8 @@ export default async function CommunityPostPage({
     created_at: c.created_at,
   }))
 
-  const categoryLabel = CATEGORIES[post.category as CategoryKey] ?? post.category
-  const isCompanyReview = post.category === 'company_review'
+  const categoryLabel = CATEGORIES[maskedPost.category as CategoryKey] ?? maskedPost.category
+  const isCompanyReview = maskedPost.category === 'company_review'
 
   return (
     <ProtectedPageWrapper currentPath={`/community/${id}`}>
@@ -76,17 +91,17 @@ export default async function CommunityPostPage({
             >
               {categoryLabel}
             </span>
-            {post.is_anonymous && (
+            {maskedPost.is_anonymous || (isCompanyReview && isCorporateUser) ? (
               <span style={{ fontSize: '11px', fontFamily: 'system-ui, sans-serif', color: '#aaaaaa' }}>익명</span>
-            )}
+            ) : null}
           </div>
 
           <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '22px', fontWeight: 800, color: '#1a1a1a', marginBottom: '12px', lineHeight: '1.4' }}>
-            {post.title}
+            {maskedPost.title}
           </h1>
 
           <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#aaaaaa', marginBottom: '24px' }}>
-            {formatDate(post.created_at)}
+            {formatDate(maskedPost.created_at)}
           </p>
 
           {isCompanyReview && (
@@ -116,12 +131,12 @@ export default async function CommunityPostPage({
               wordBreak: 'break-word',
             }}
           >
-            {post.content}
+            {maskedPost.content}
           </div>
 
           <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid #f0ebe2', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <LikeButton postId={post.id} />
-            <ReportButton postId={post.id} />
+            <LikeButton postId={maskedPost.id} />
+            <ReportButton postId={maskedPost.id} />
           </div>
         </div>
 

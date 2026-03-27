@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { ApplyModal } from './apply-modal'
+import { trackEvent } from '@/lib/analytics'
 
 interface ApplyButtonProps {
   sessionId: string
@@ -22,6 +23,7 @@ export function ApplyButton({ sessionId, sessionTitle, sessionStatus, hasApplied
   function handleSuccess() {
     setApplied(true)
     setModalOpen(false)
+    trackEvent('coffeechat_applied', { session_id: sessionId, session_title: sessionTitle, type: 'ceo' })
     router.refresh()
   }
 

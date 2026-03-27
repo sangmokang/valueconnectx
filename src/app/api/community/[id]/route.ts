@@ -24,6 +24,14 @@ export async function GET(
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError || !user) return unauthorized()
 
+    // Check if current user is a corporate user
+    const { data: corporateUser } = await supabase
+      .from('vcx_corporate_users')
+      .select('id')
+      .eq('id', user.id)
+      .single()
+    const isCorporateUser = !!corporateUser
+
     const { data: post, error } = await supabase
       .from('community_posts')
       .select('id, author_id, category, title, content, is_anonymous, status, created_at, updated_at')
@@ -36,7 +44,10 @@ export async function GET(
     return NextResponse.json({
       data: {
         ...post,
-        author_id: post.is_anonymous ? null : post.author_id,
+        author_id:
+          post.is_anonymous || (post.category === 'company_review' && isCorporateUser)
+            ? null
+            : post.author_id,
       }
     })
   } catch (error) {

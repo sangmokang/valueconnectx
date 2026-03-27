@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
+import { trackEvent } from '@/lib/analytics'
 
 type InterestType = 'interested' | 'not_interested' | 'bookmark'
 
@@ -24,7 +25,10 @@ export function InterestButton({ positionId, initialInterest }: InterestButtonPr
       if (current === type) {
         // Toggle off
         const res = await fetch(`/api/positions/${positionId}/interest`, { method: 'DELETE' })
-        if (res.ok) setCurrent(null)
+        if (res.ok) {
+          setCurrent(null)
+          trackEvent('position_interested', { position_id: positionId, interest_type: null })
+        }
       } else {
         // Set interest
         const res = await fetch(`/api/positions/${positionId}/interest`, {
@@ -32,7 +36,10 @@ export function InterestButton({ positionId, initialInterest }: InterestButtonPr
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ interest_type: type }),
         })
-        if (res.ok) setCurrent(type)
+        if (res.ok) {
+          setCurrent(type)
+          trackEvent('position_interested', { position_id: positionId, interest_type: type })
+        }
       }
     })
   }

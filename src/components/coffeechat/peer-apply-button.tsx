@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
+import { trackEvent } from '@/lib/analytics'
 
 interface PeerApplyButtonProps {
   chatId: string
@@ -41,6 +42,7 @@ export function PeerApplyButton({ chatId, chatTitle, chatStatus, hasApplied, app
       }
       setApplied(true)
       setModalOpen(false)
+      trackEvent('coffeechat_applied', { session_id: chatId, session_title: chatTitle, type: 'peer' })
       router.refresh()
     } catch {
       setError('네트워크 오류가 발생했습니다')

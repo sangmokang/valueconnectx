@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { z } from 'zod'
+import { trackEvent } from '@/lib/analytics'
 
 const linkedinSchema = z
   .string()
@@ -82,6 +83,7 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
       })
 
       if (res.ok) {
+        trackEvent('profile_updated', { fields_updated: ['bio', 'industry', 'location', 'is_open_to_chat', 'profile_visibility', 'professional_fields', 'linkedin_url'] })
         setMessage({ type: 'success', text: '프로필이 저장되었습니다.' })
       } else {
         const json = await res.json()

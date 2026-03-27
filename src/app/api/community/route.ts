@@ -25,6 +25,14 @@ export async function GET(request: NextRequest) {
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError || !user) return unauthorized()
 
+    // Check if current user is a corporate user
+    const { data: corporateUser } = await supabase
+      .from('vcx_corporate_users')
+      .select('id')
+      .eq('id', user.id)
+      .single()
+    const isCorporateUser = !!corporateUser
+
     const { searchParams } = new URL(request.url)
     const parsed = parseSearchParams(searchParams, querySchema)
     if (parsed.error) return parsed.error
@@ -50,10 +58,13 @@ export async function GET(request: NextRequest) {
       return serverError()
     }
 
-    // Mask author_id for anonymous posts
+    // Mask author_id for anonymous posts and company_review posts viewed by corporate users
     const posts = (data ?? []).map((post) => ({
       ...post,
-      author_id: post.is_anonymous ? null : post.author_id,
+      author_id:
+        post.is_anonymous || (post.category === 'company_review' && isCorporateUser)
+          ? null
+          : post.author_id,
     }))
 
     return NextResponse.json({ data: posts, total: count, page, limit })

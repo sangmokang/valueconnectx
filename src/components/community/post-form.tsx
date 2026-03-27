@@ -3,6 +3,7 @@
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { CATEGORIES, CategoryKey } from './category-tabs'
+import { trackEvent } from '@/lib/analytics'
 
 export function PostForm({ defaultCategory }: { defaultCategory?: CategoryKey }) {
   const router = useRouter()
@@ -34,6 +35,7 @@ export function PostForm({ defaultCategory }: { defaultCategory?: CategoryKey })
         }
 
         const json = await res.json()
+        trackEvent('community_posted', { category, is_anonymous: isAnonymous })
         router.push(`/community/${json.data.id}`)
         router.refresh()
       } catch {
