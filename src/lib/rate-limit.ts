@@ -58,6 +58,10 @@ export async function rateLimit(
   identifier: string
 ): Promise<{ success: boolean; remaining: number }> {
   if (!limiter) {
+    if (process.env.NODE_ENV === 'production') {
+      console.error('SECURITY: Rate limiter unavailable in production')
+      return { success: false, remaining: 0 }
+    }
     return { success: true, remaining: 999 }
   }
   const result = await limiter.limit(identifier)

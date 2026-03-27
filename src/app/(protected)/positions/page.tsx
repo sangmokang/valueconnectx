@@ -6,6 +6,10 @@ import { PositionFilters } from '@/components/positions/position-filters'
 import { PositionMatchSection } from '@/components/positions/position-match-section'
 import Link from 'next/link'
 
+function escapeIlike(str: string): string {
+  return str.replace(/%/g, '\\%').replace(/_/g, '\\_').replace(/,/g, '').replace(/\./g, '')
+}
+
 interface SearchParams {
   page?: string
   q?: string
@@ -30,10 +34,11 @@ async function PositionsContent({ searchParams }: { searchParams: SearchParams }
     .range(offset, offset + limit - 1)
 
   if (searchParams.q) {
-    query = query.or(`company_name.ilike.%${searchParams.q}%,title.ilike.%${searchParams.q}%,role_description.ilike.%${searchParams.q}%`)
+    const eq = escapeIlike(searchParams.q)
+    query = query.or(`company_name.ilike.%${eq}%,title.ilike.%${eq}%,role_description.ilike.%${eq}%`)
   }
   if (searchParams.company) {
-    query = query.ilike('company_name', `%${searchParams.company}%`)
+    query = query.ilike('company_name', `%${escapeIlike(searchParams.company)}%`)
   }
 
   const { data: positions, count } = await query

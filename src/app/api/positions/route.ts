@@ -32,6 +32,10 @@ function db(supabase: any) {
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
+function escapeIlike(str: string): string {
+  return str.replace(/%/g, '\\%').replace(/_/g, '\\_').replace(/,/g, '').replace(/\./g, '')
+}
+
 async function isAdmin(supabase: SupabaseClient, userId: string) {
   const { data } = await supabase
     .from('vcx_members')
@@ -75,10 +79,11 @@ export async function GET(request: NextRequest) {
       .range(offset, offset + limit - 1)
 
     if (q) {
-      query = query.or(`company_name.ilike.%${q}%,title.ilike.%${q}%,role_description.ilike.%${q}%`)
+      const eq = escapeIlike(q)
+      query = query.or(`company_name.ilike.%${eq}%,title.ilike.%${eq}%,role_description.ilike.%${eq}%`)
     }
-    if (company) query = query.ilike('company_name', `%${company}%`)
-    if (title) query = query.ilike('title', `%${title}%`)
+    if (company) query = query.ilike('company_name', `%${escapeIlike(company)}%`)
+    if (title) query = query.ilike('title', `%${escapeIlike(title)}%`)
 
     const { data, error, count } = await query
     if (error) {

@@ -11,7 +11,8 @@ export async function POST(request: NextRequest) {
     const { success: rateLimitOk } = await rateLimit(authLimiter, `invite-accept:${ip}`)
     if (!rateLimitOk) return NextResponse.json({ error: '너무 많은 요청입니다. 잠시 후 다시 시도해주세요.' }, { status: 429 })
 
-    const body = await request.json()
+    let body
+    try { body = await request.json() } catch { return NextResponse.json({ error: '유효하지 않은 요청 형식입니다' }, { status: 400 }) }
     const { token, password, name, linkedin_url } = body
     if (!token || !password || !name) return NextResponse.json({ error: '모든 필드를 입력해주세요' }, { status: 400 })
     if (password.length < 8) return NextResponse.json({ error: '비밀번호는 8자 이상이어야 합니다' }, { status: 400 })

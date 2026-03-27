@@ -4,6 +4,8 @@ import { unauthorized, forbidden, serverError } from '@/lib/api/error'
 import { matchPositions } from '@/lib/position-matcher'
 import type { MemberProfile, PositionData } from '@/lib/position-matcher'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     const supabase = await createClient()

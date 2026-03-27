@@ -38,7 +38,7 @@ export function searchMembers(args: { query?: string; tier?: string }): string {
   return formatMemberList(members, args.query);
 }
 
-export function writeIntroduction(args: {
+export function writeIntroduction(_args: {
   bio: string;
   expertise: string[];
 }): string {

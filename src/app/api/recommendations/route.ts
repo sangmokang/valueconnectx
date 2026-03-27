@@ -19,7 +19,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Core Member만 추천할 수 있습니다' }, { status: 403 })
     }
 
-    const body = await request.json()
+    let body
+    try { body = await request.json() } catch { return NextResponse.json({ error: '유효하지 않은 요청 형식입니다' }, { status: 400 }) }
     const { recommended_email, recommended_name, reason, member_tier } = body
 
     if (!recommended_email || !recommended_name || !member_tier) {

@@ -6,7 +6,7 @@ import { parseBody } from '@/lib/api/validation'
 import { sendNotification } from '@/lib/notification'
 
 const reactionSchema = z.object({
-  reaction_type: z.string().default('like'),
+  reaction_type: z.enum(['like']).default('like'),
 })
 
 export async function GET(

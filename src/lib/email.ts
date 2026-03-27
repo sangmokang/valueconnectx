@@ -1,5 +1,9 @@
 import { Resend } from 'resend'
 
+function escapeHtml(str: string): string {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+}
+
 function getResend() {
   return new Resend(process.env.RESEND_API_KEY || '')
 }
@@ -28,7 +32,7 @@ export async function sendInviteEmail({ to, inviterName, token, memberTier }: Se
   const { data, error } = await getResend().emails.send({
     from: 'ValueConnect X <invite@valueconnectx.com>',
     to,
-    subject: `${inviterName}님이 ValueConnect X에 초대했습니다`,
+    subject: `${escapeHtml(inviterName)}님이 ValueConnect X에 초대했습니다`,
     html: `
       <!DOCTYPE html>
       <html>
@@ -44,7 +48,7 @@ export async function sendInviteEmail({ to, inviterName, token, memberTier }: Se
             당신은 이미 검증되었습니다
           </h1>
           <p style="font-size:14px;text-align:center;color:#666;line-height:1.8;font-family:system-ui,sans-serif;margin:0 0 32px;">
-            <strong style="color:#1a1a1a;">${inviterName}</strong>님이 당신을 ValueConnect X 네트워크에 초대했습니다.<br/>
+            <strong style="color:#1a1a1a;">${escapeHtml(inviterName)}</strong>님이 당신을 ValueConnect X 네트워크에 초대했습니다.<br/>
             ${memberTier === 'core' ? 'Core Member' : 'Endorsed Member'}로 초대되었습니다.
           </p>
           <div style="text-align:center;margin-bottom:32px;">
@@ -147,9 +151,9 @@ export async function sendNotificationEmail({
           </div>
           <div style="width:32px;height:1.5px;background:${accentColor};margin:0 auto 24px;"></div>
           <h1 style="font-size:20px;text-align:center;color:#1a1a1a;margin:0 0 16px;font-family:Georgia,serif;">
-            ${title}
+            ${escapeHtml(title)}
           </h1>
-          ${body ? `<p style="font-size:14px;text-align:center;color:#666;line-height:1.8;font-family:system-ui,sans-serif;margin:0 0 32px;">${body}</p>` : '<div style="margin-bottom:32px;"></div>'}
+          ${body ? `<p style="font-size:14px;text-align:center;color:#666;line-height:1.8;font-family:system-ui,sans-serif;margin:0 0 32px;">${escapeHtml(body)}</p>` : '<div style="margin-bottom:32px;"></div>'}
           <div style="text-align:center;margin-bottom:32px;">
             <a href="${actionUrl}" style="display:inline-block;background:#1a1a1a;color:#f0ebe2;font-size:14px;font-family:system-ui,sans-serif;padding:14px 32px;text-decoration:none;font-weight:600;">
               ${actionLabel}

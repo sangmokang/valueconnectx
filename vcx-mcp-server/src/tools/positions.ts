@@ -1,6 +1,5 @@
 import { POSITIONS } from "../data/mock.js";
 import { formatPositionList, formatPositionDetail, formatInterestExpressed } from "../cli/formatters.js";
-import type { Position } from "../types.js";
 
 export function searchPositions(args: {
   category?: string;

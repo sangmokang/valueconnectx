@@ -1,12 +1,12 @@
 import {
-  banner, welcomeBanner, sectionHeader, divider, dashboardRow,
+  welcomeBanner, sectionHeader, divider, dashboardRow,
   positionCard, positionCardCompact,
   coffeeChatCard, coffeeChatCompact,
   ceoSessionCard, anonymousPostCard, memberCard,
-  successMsg, errorMsg, infoMsg, warningMsg,
-  labelValue, numberedList, commandHelp, box, subHeader,
+  successMsg,
+  labelValue, commandHelp, subHeader,
 } from "./components.js";
-import { ANSI, ICONS, c, bold, dim, tierBadge, matchScoreColor } from "./theme.js";
+import { ICONS, c, bold, dim, tierBadge } from "./theme.js";
 import type { Position, CoffeeChat, CeoSession, AnonymousPost, Member, UserProfile } from "../types.js";
 
 // ─── Dashboard Formatter ────────────────────────────────────────────

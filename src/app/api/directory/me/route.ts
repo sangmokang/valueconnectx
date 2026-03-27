@@ -4,6 +4,8 @@ import { createClient } from '@/lib/supabase/server'
 import { unauthorized, forbidden, notFound, serverError } from '@/lib/api/error'
 import { parseBody } from '@/lib/api/validation'
 
+export const dynamic = 'force-dynamic'
+
 const updateSchema = z.object({
   name: z.string().min(1).max(100).optional(),
   current_company: z.string().min(1).max(200).optional(),

@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
+export const dynamic = 'force-dynamic'
+
 function getWeekAgo(): string {
   const d = new Date()
   d.setDate(d.getDate() - 7)

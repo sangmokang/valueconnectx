@@ -13,7 +13,8 @@ export async function POST(request: NextRequest) {
     const { data: admin } = await supabase.from('vcx_members').select('id, name, system_role').eq('id', user.id).in('system_role', ['admin', 'super_admin']).single()
     if (!admin) return NextResponse.json({ error: '관리자 권한이 필요합니다' }, { status: 403 })
 
-    const body = await request.json()
+    let body
+    try { body = await request.json() } catch { return NextResponse.json({ error: '유효하지 않은 요청 형식입니다' }, { status: 400 }) }
     const { email, member_tier } = body
     if (!email || !member_tier) return NextResponse.json({ error: '필수 항목을 입력해주세요' }, { status: 400 })
 

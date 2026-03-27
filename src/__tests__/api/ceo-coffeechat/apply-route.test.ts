@@ -94,7 +94,7 @@ describe('POST /api/ceo-coffeechat/[id]/apply', () => {
   it('returns 404 when session does not exist', async () => {
     mocks.mockGetUser.mockResolvedValue({ data: { user: MEMBER_USER }, error: null })
 
-    let callCount = 0
+    const callCount = 0
     mocks.mockFrom.mockImplementation((table: string) => {
       if (table === 'vcx_members') {
         return {

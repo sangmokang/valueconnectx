@@ -3,6 +3,8 @@ import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { unauthorized, forbidden, serverError } from '@/lib/api/error'
 import { parseSearchParams } from '@/lib/api/validation'
+
+export const dynamic = 'force-dynamic'
 import { checkDirectoryAccess } from '@/lib/anti-scraping'
 
 const querySchema = z.object({
