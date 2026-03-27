@@ -108,3 +108,59 @@ export async function PUT(
     return serverError('서버 오류가 발생했습니다')
   }
 }
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const supabase = await createClient()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) {
+      return unauthorized('인증이 필요합니다')
+    }
+
+    const { id } = await params
+
+    const { data: session } = await supabase
+      .from('vcx_ceo_coffee_sessions')
+      .select('host_id')
+      .eq('id', id)
+      .single()
+
+    if (!session) {
+      return notFound('세션을 찾을 수 없습니다')
+    }
+
+    const isHost = session.host_id === user.id
+
+    if (!isHost) {
+      // Check if user is admin
+      const { data: adminUser } = await supabase
+        .from('vcx_members')
+        .select('system_role')
+        .eq('id', user.id)
+        .in('system_role', ['admin', 'super_admin'])
+        .single()
+
+      if (!adminUser) {
+        return forbidden('삭제 권한이 없습니다')
+      }
+    }
+
+    const { error: updateError } = await supabase
+      .from('vcx_ceo_coffee_sessions')
+      .update({ status: 'cancelled' })
+      .eq('id', id)
+
+    if (updateError) {
+      console.error('Session delete error:', updateError)
+      return serverError('세션 삭제에 실패했습니다')
+    }
+
+    return NextResponse.json({ message: '세션이 취소되었습니다' })
+  } catch (error) {
+    console.error('DELETE /api/ceo-coffeechat/[id] error:', error)
+    return serverError('서버 오류가 발생했습니다')
+  }
+}

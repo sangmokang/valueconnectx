@@ -140,8 +140,9 @@ export function SessionForm({ initialData, sessionId }: SessionFormProps) {
 
       {/* Date/Time */}
       <div>
-        <label className="vcx-label text-vcx-sub-3 block mb-2">날짜 및 시간 *</label>
+        <label htmlFor="session_date" className="vcx-label text-vcx-sub-3 block mb-2">날짜 및 시간 *</label>
         <input
+          id="session_date"
           type="datetime-local"
           value={form.session_date ?? ''}
           onChange={(e) => setField('session_date', e.target.value)}
@@ -154,8 +155,9 @@ export function SessionForm({ initialData, sessionId }: SessionFormProps) {
       {/* Duration + Max participants */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="vcx-label text-vcx-sub-3 block mb-2">소요 시간 (분) *</label>
+          <label htmlFor="duration_minutes" className="vcx-label text-vcx-sub-3 block mb-2">소요 시간 (분) *</label>
           <input
+            id="duration_minutes"
             type="number"
             min={15}
             max={480}
@@ -167,8 +169,9 @@ export function SessionForm({ initialData, sessionId }: SessionFormProps) {
           {errors.duration_minutes && <p className="text-[12px] text-red-500 mt-1">{errors.duration_minutes}</p>}
         </div>
         <div>
-          <label className="vcx-label text-vcx-sub-3 block mb-2">최대 참가 인원 *</label>
+          <label htmlFor="max_participants" className="vcx-label text-vcx-sub-3 block mb-2">최대 참가 인원 *</label>
           <input
+            id="max_participants"
             type="number"
             min={1}
             max={50}
