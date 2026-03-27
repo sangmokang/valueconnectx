@@ -1,96 +1,254 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1773363287207,
+  "lastScanned": 1774532752324,
   "projectRoot": "/Users/kangsangmo/Desktop/valueconnectx",
   "techStack": {
-    "languages": [],
-    "frameworks": [],
-    "packageManager": null,
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "next",
+        "version": "14.2.35",
+        "category": "fullstack"
+      },
+      {
+        "name": "react",
+        "version": "18.3.1",
+        "category": "frontend"
+      },
+      {
+        "name": "react-dom",
+        "version": "18.3.1",
+        "category": "frontend"
+      }
+    ],
+    "packageManager": "npm",
     "runtime": null
   },
   "build": {
-    "buildCommand": null,
+    "buildCommand": "npm run build",
     "testCommand": null,
-    "lintCommand": null,
-    "devCommand": null,
-    "scripts": {}
+    "lintCommand": "npm run lint",
+    "devCommand": "npm run dev",
+    "scripts": {
+      "dev": "next dev",
+      "build": "next build",
+      "start": "next start",
+      "lint": "eslint"
+    }
   },
   "conventions": {
     "namingStyle": null,
     "importStyle": null,
     "testPattern": null,
-    "fileOrganization": null
+    "fileOrganization": "type-based"
   },
   "structure": {
     "isMonorepo": false,
     "workspaces": [],
-    "mainDirectories": [],
+    "mainDirectories": [
+      "docs",
+      "public",
+      "src"
+    ],
     "gitBranches": null
   },
   "customNotes": [],
   "directoryMap": {
-    "crawler": {
-      "path": "crawler",
-      "purpose": null,
-      "fileCount": 4,
-      "lastAccessed": 1773363287183,
+    "docs": {
+      "path": "docs",
+      "purpose": "Documentation",
+      "fileCount": 14,
+      "lastAccessed": 1774532752304,
       "keyFiles": [
-        "analyze.js",
-        "crawl.js",
-        "package-lock.json",
-        "package.json"
+        "BMplan.md",
+        "Branding.md",
+        "Operationplan.md",
+        "figma-design-prompt.md",
+        "invite-only-auth.md"
+      ]
+    },
+    "e2e": {
+      "path": "e2e",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1774532752304,
+      "keyFiles": [
+        "example.spec.ts"
       ]
     },
     "figma": {
       "path": "figma",
       "purpose": null,
-      "fileCount": 7,
-      "lastAccessed": 1773363287186,
+      "fileCount": 10,
+      "lastAccessed": 1774532752304,
       "keyFiles": [
         "anonymousboard.jsx",
         "anonymousboard.md",
         "ceocoffeechat.jsx",
         "ceocoffeechat.md",
-        "member-intro.jsx"
+        "coffeechat.md"
       ]
+    },
+    "playwright-report": {
+      "path": "playwright-report",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1774532752309,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "public": {
+      "path": "public",
+      "purpose": "Public files",
+      "fileCount": 5,
+      "lastAccessed": 1774532752309,
+      "keyFiles": [
+        "file.svg",
+        "globe.svg",
+        "next.svg",
+        "vercel.svg",
+        "window.svg"
+      ]
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 2,
+      "lastAccessed": 1774532752309,
+      "keyFiles": [
+        "middleware.ts"
+      ]
+    },
+    "supabase": {
+      "path": "supabase",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1774532752310,
+      "keyFiles": []
     },
     "vcx-mcp-server": {
       "path": "vcx-mcp-server",
       "purpose": null,
-      "fileCount": 3,
-      "lastAccessed": 1773363287187,
+      "fileCount": 4,
+      "lastAccessed": 1774532752310,
       "keyFiles": [
         "package-lock.json",
         "package.json",
         "tsconfig.json"
       ]
     },
-    "crawler/node_modules": {
-      "path": "crawler/node_modules",
-      "purpose": "Dependencies",
+    "e2e/helpers": {
+      "path": "e2e/helpers",
+      "purpose": "Helper functions",
+      "fileCount": 3,
+      "lastAccessed": 1774532752310,
+      "keyFiles": [
+        "auth.ts",
+        "constants.ts",
+        "seed.ts"
+      ]
+    },
+    "src/__tests__": {
+      "path": "src/__tests__",
+      "purpose": "Test files",
+      "fileCount": 4,
+      "lastAccessed": 1774532752310,
+      "keyFiles": [
+        "middleware.test.ts",
+        "setup.test.ts",
+        "setup.ts"
+      ]
+    },
+    "src/app": {
+      "path": "src/app",
+      "purpose": "Application code",
+      "fileCount": 6,
+      "lastAccessed": 1774532752310,
+      "keyFiles": [
+        "favicon.ico",
+        "globals.css",
+        "layout.tsx"
+      ]
+    },
+    "src/components": {
+      "path": "src/components",
+      "purpose": "UI components",
       "fileCount": 1,
-      "lastAccessed": 1773363287190,
+      "lastAccessed": 1774532752311,
       "keyFiles": []
     },
-    "vcx-mcp-server/bin": {
-      "path": "vcx-mcp-server/bin",
-      "purpose": "Executable scripts",
-      "fileCount": 0,
-      "lastAccessed": 1773363287191,
-      "keyFiles": []
+    "src/data": {
+      "path": "src/data",
+      "purpose": "Data files",
+      "fileCount": 2,
+      "lastAccessed": 1774532752311,
+      "keyFiles": [
+        "navigation.ts",
+        "service-pillars.ts"
+      ]
+    },
+    "src/lib": {
+      "path": "src/lib",
+      "purpose": "Library code",
+      "fileCount": 6,
+      "lastAccessed": 1774532752311,
+      "keyFiles": [
+        "constants.ts",
+        "email.ts",
+        "invite.ts"
+      ]
+    },
+    "src/types": {
+      "path": "src/types",
+      "purpose": "Type definitions",
+      "fileCount": 2,
+      "lastAccessed": 1774532752311,
+      "keyFiles": [
+        "index.ts",
+        "supabase.ts"
+      ]
+    },
+    "supabase/migrations": {
+      "path": "supabase/migrations",
+      "purpose": "Database migrations",
+      "fileCount": 12,
+      "lastAccessed": 1774532752311,
+      "keyFiles": [
+        "001_vcx_auth_schema.sql",
+        "002_vcx_rls_policies.sql",
+        "003_vcx_atomic_invite.sql"
+      ]
     },
     "vcx-mcp-server/node_modules": {
       "path": "vcx-mcp-server/node_modules",
       "purpose": "Dependencies",
-      "fileCount": 1,
-      "lastAccessed": 1773363287192,
+      "fileCount": 2,
+      "lastAccessed": 1774532752311,
       "keyFiles": []
     },
     "vcx-mcp-server/src": {
       "path": "vcx-mcp-server/src",
       "purpose": "Source code",
-      "fileCount": 2,
-      "lastAccessed": 1773363287193,
+      "fileCount": 3,
+      "lastAccessed": 1774532752311,
       "keyFiles": [
         "index.ts",
         "types.ts"
@@ -99,16 +257,304 @@
   },
   "hotPaths": [
     {
-      "path": "feature-list.json",
-      "accessCount": 1,
-      "lastAccessed": 1773363301516,
+      "path": "",
+      "accessCount": 56,
+      "lastAccessed": 1774593822497,
+      "type": "directory"
+    },
+    {
+      "path": "src/lib/rate-limit.ts",
+      "accessCount": 15,
+      "lastAccessed": 1774603215422,
       "type": "file"
     },
     {
-      "path": "implementationplan.md",
-      "accessCount": 1,
-      "lastAccessed": 1773363306034,
+      "path": "src",
+      "accessCount": 13,
+      "lastAccessed": 1774588755097,
+      "type": "directory"
+    },
+    {
+      "path": "src/app/api/ceo-coffeechat/[id]/applications/[appId]/route.ts",
+      "accessCount": 12,
+      "lastAccessed": 1774603244302,
       "type": "file"
+    },
+    {
+      "path": "src/app/api/peer-coffeechat/[id]/applications/[appId]/route.ts",
+      "accessCount": 12,
+      "lastAccessed": 1774603244719,
+      "type": "file"
+    },
+    {
+      "path": "docs/BMplan.md",
+      "accessCount": 11,
+      "lastAccessed": 1774533999918,
+      "type": "file"
+    },
+    {
+      "path": "src/app/api/directory/route.ts",
+      "accessCount": 11,
+      "lastAccessed": 1774543140454,
+      "type": "file"
+    },
+    {
+      "path": "src/middleware.ts",
+      "accessCount": 11,
+      "lastAccessed": 1774543389601,
+      "type": "file"
+    },
+    {
+      "path": "next.config.mjs",
+      "accessCount": 10,
+      "lastAccessed": 1774536260572,
+      "type": "file"
+    },
+    {
+      "path": "src/components/admin/admin-tabs.tsx",
+      "accessCount": 9,
+      "lastAccessed": 1774592555422,
+      "type": "file"
+    },
+    {
+      "path": "BMplan.md",
+      "accessCount": 8,
+      "lastAccessed": 1774533941993,
+      "type": "file"
+    },
+    {
+      "path": "src/app/api/invites/accept/route.ts",
+      "accessCount": 8,
+      "lastAccessed": 1774543373363,
+      "type": "file"
+    },
+    {
+      "path": "src/components/layout/gnb.tsx",
+      "accessCount": 6,
+      "lastAccessed": 1774535325017,
+      "type": "file"
+    },
+    {
+      "path": "src/app/api/peer-coffeechat/[id]/apply/route.ts",
+      "accessCount": 6,
+      "lastAccessed": 1774535345913,
+      "type": "file"
+    },
+    {
+      "path": "src/types/index.ts",
+      "accessCount": 6,
+      "lastAccessed": 1774593817365,
+      "type": "file"
+    },
+    {
+      "path": "src/app/api/ceo-coffeechat/route.ts",
+      "accessCount": 6,
+      "lastAccessed": 1774593827316,
+      "type": "file"
+    },
+    {
+      "path": "supabase/migrations/011_vcx_notifications.sql",
+      "accessCount": 6,
+      "lastAccessed": 1774603215034,
+      "type": "file"
+    },
+    {
+      "path": "src/app/api/ceo-coffeechat/[id]/apply/route.ts",
+      "accessCount": 5,
+      "lastAccessed": 1774535345373,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/email.ts",
+      "accessCount": 5,
+      "lastAccessed": 1774536274677,
+      "type": "file"
+    },
+    {
+      "path": "src/components/coffeechat/session-form.tsx",
+      "accessCount": 5,
+      "lastAccessed": 1774536566226,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/supabase/admin.ts",
+      "accessCount": 5,
+      "lastAccessed": 1774592412599,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/api/error.ts",
+      "accessCount": 5,
+      "lastAccessed": 1774593792995,
+      "type": "directory"
+    },
+    {
+      "path": "docs/prd5.1.md",
+      "accessCount": 4,
+      "lastAccessed": 1774533351039,
+      "type": "file"
+    },
+    {
+      "path": "supabase",
+      "accessCount": 4,
+      "lastAccessed": 1774533694299,
+      "type": "directory"
+    },
+    {
+      "path": "src/app/api/community/route.ts",
+      "accessCount": 4,
+      "lastAccessed": 1774588788717,
+      "type": "file"
+    },
+    {
+      "path": "src/components/community/post-form.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1774588789674,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/auth/get-vcx-user.ts",
+      "accessCount": 4,
+      "lastAccessed": 1774592408233,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(protected)/positions/page.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1774593867688,
+      "type": "file"
+    },
+    {
+      "path": "src/app/api/ceo-coffeechat",
+      "accessCount": 3,
+      "lastAccessed": 1774533701188,
+      "type": "directory"
+    },
+    {
+      "path": "src/lib/auth/routes.ts",
+      "accessCount": 3,
+      "lastAccessed": 1774534608376,
+      "type": "file"
+    },
+    {
+      "path": "src/components/admin/recommendation-list.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1774536548580,
+      "type": "file"
+    },
+    {
+      "path": "src/components/auth/login-form.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1774588795094,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/supabase/server.ts",
+      "accessCount": 3,
+      "lastAccessed": 1774593802327,
+      "type": "file"
+    },
+    {
+      "path": "src/components/layout/protected-page-wrapper.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1774534504394,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(protected)/community/page.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1774534511930,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(protected)/admin/page.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1774592423541,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(protected)/directory/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1774533044484,
+      "type": "file"
+    },
+    {
+      "path": "src/components/directory/member-filters.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1774533044528,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(protected)/ceo-coffeechat/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1774533044879,
+      "type": "file"
+    },
+    {
+      "path": "src/components/auth/forgot-password-form.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1774533056202,
+      "type": "file"
+    },
+    {
+      "path": "src/components/auth/reset-password-form.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1774533056429,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(protected)/admin/invites/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1774533061335,
+      "type": "file"
+    },
+    {
+      "path": "src/components/coffeechat/peer-chat-form.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1774533061569,
+      "type": "file"
+    },
+    {
+      "path": "src/app/api/invites/direct/route.ts",
+      "accessCount": 1,
+      "lastAccessed": 1774533064598,
+      "type": "file"
+    },
+    {
+      "path": "src/app",
+      "accessCount": 1,
+      "lastAccessed": 1774533340623,
+      "type": "directory"
+    },
+    {
+      "path": "src/components",
+      "accessCount": 1,
+      "lastAccessed": 1774533349170,
+      "type": "directory"
+    },
+    {
+      "path": "e2e/example.spec.ts",
+      "accessCount": 1,
+      "lastAccessed": 1774533356497,
+      "type": "file"
+    },
+    {
+      "path": "src/components/directory",
+      "accessCount": 1,
+      "lastAccessed": 1774533364980,
+      "type": "directory"
+    },
+    {
+      "path": "supabase/migrations",
+      "accessCount": 1,
+      "lastAccessed": 1774533371121,
+      "type": "directory"
+    },
+    {
+      "path": "src/app/api/peer-coffeechat",
+      "accessCount": 1,
+      "lastAccessed": 1774533694737,
+      "type": "directory"
     }
   ],
   "userDirectives": []
