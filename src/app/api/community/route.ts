@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
     let query = supabase
       .from('community_posts')
       .select(
-        'id, author_id, category, title, content, is_anonymous, status, created_at, updated_at',
+        'id, author_id, category, title, content, is_anonymous, status, created_at, updated_at, likes_count, comments_count',
         { count: 'exact' }
       )
       .eq('status', 'active')

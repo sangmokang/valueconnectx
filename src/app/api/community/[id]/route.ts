@@ -34,7 +34,7 @@ export async function GET(
 
     const { data: post, error } = await supabase
       .from('community_posts')
-      .select('id, author_id, category, title, content, is_anonymous, status, created_at, updated_at')
+      .select('id, author_id, category, title, content, is_anonymous, status, created_at, updated_at, likes_count, comments_count')
       .eq('id', id)
       .eq('status', 'active')
       .single()

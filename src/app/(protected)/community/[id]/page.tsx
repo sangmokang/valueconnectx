@@ -29,7 +29,7 @@ export default async function CommunityPostPage({
 
   const { data: post, error } = await supabase
     .from('community_posts')
-    .select('id, author_id, category, title, content, is_anonymous, status, created_at, updated_at')
+    .select('id, author_id, category, title, content, is_anonymous, status, created_at, updated_at, likes_count, comments_count')
     .eq('id', id)
     .eq('status', 'active')
     .single()
@@ -38,7 +38,7 @@ export default async function CommunityPostPage({
 
   // Mask author_id: anonymous posts always masked; company_review masked for corporate users
   const maskedPost = {
-    ...post,
+    ...post!,
     author_id:
       post!.is_anonymous || (post!.category === 'company_review' && isCorporateUser)
         ? null

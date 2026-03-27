@@ -19,7 +19,7 @@ async function CommunityList({ searchParams }: { searchParams: SearchParams }) {
 
   let query = supabase
     .from('community_posts')
-    .select('id, author_id, category, title, content, is_anonymous, status, created_at, updated_at', { count: 'exact' })
+    .select('id, author_id, category, title, content, is_anonymous, status, created_at, updated_at, likes_count, comments_count', { count: 'exact' })
     .eq('status', 'active')
     .order('created_at', { ascending: false })
     .range(offset, offset + limit - 1)
@@ -42,6 +42,8 @@ async function CommunityList({ searchParams }: { searchParams: SearchParams }) {
     status: p.status,
     created_at: p.created_at,
     updated_at: p.updated_at,
+    likes_count: p.likes_count ?? 0,
+    comments_count: p.comments_count ?? 0,
   }))
 
   return (

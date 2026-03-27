@@ -34,13 +34,15 @@ function makeMemberBuilder(memberResult: unknown, listResult: unknown) {
   memberB.eq = vi.fn().mockImplementation(memberReturnSelf)
   memberB.single = vi.fn().mockResolvedValue(memberResult)
 
-  // second call: directory list — chain: .select().eq().range().order().order()
+  // second call: directory list — chain: .select().eq().range().neq().order().order()
   // order() is called twice; second call must resolve
   const listB: Record<string, unknown> = {}
   const listReturnSelf = () => listB
   listB.select = vi.fn().mockImplementation(listReturnSelf)
   listB.eq = vi.fn().mockImplementation(listReturnSelf)
+  listB.neq = vi.fn().mockImplementation(listReturnSelf)
   listB.range = vi.fn().mockImplementation(listReturnSelf)
+  listB.textSearch = vi.fn().mockImplementation(listReturnSelf)
   listB.order = vi.fn()
     .mockImplementationOnce(listReturnSelf)
     .mockResolvedValue(listResult)

@@ -415,6 +415,8 @@ export type Database = {
           status: 'active' | 'hidden' | 'deleted'
           created_at: string
           updated_at: string
+          likes_count: number
+          comments_count: number
         }
         Insert: {
           id?: string
@@ -426,6 +428,8 @@ export type Database = {
           status?: 'active' | 'hidden' | 'deleted'
           created_at?: string
           updated_at?: string
+          likes_count?: number
+          comments_count?: number
         }
         Update: {
           category?: 'career' | 'leadership' | 'salary' | 'burnout' | 'productivity' | 'company_review'
@@ -434,6 +438,8 @@ export type Database = {
           is_anonymous?: boolean
           status?: 'active' | 'hidden' | 'deleted'
           updated_at?: string
+          likes_count?: number
+          comments_count?: number
         }
       }
       community_comments: {

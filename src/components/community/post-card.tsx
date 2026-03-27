@@ -11,6 +11,8 @@ export interface CommunityPost {
   status: string
   created_at: string
   updated_at: string
+  likes_count: number
+  comments_count: number
 }
 
 function formatDate(iso: string) {
@@ -92,9 +94,43 @@ export function PostCard({ post }: { post: CommunityPost }) {
           {post.content}
         </p>
 
-        <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#aaaaaa' }}>
-          {formatDate(post.created_at)}
-        </p>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <span
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
+                fontFamily: 'system-ui, sans-serif',
+                fontSize: '12px',
+                color: post.likes_count > 0 ? '#c9a84c' : '#aaaaaa',
+              }}
+            >
+              ♥ {post.likes_count}
+            </span>
+            <span
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
+                fontFamily: 'system-ui, sans-serif',
+                fontSize: '12px',
+                color: post.comments_count > 0 ? '#666666' : '#aaaaaa',
+              }}
+            >
+              💬 {post.comments_count}
+            </span>
+          </div>
+          <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#aaaaaa', margin: 0 }}>
+            {formatDate(post.created_at)}
+          </p>
+        </div>
       </div>
     </Link>
   )
