@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { ProtectedPageWrapper } from '@/components/layout/protected-page-wrapper'
 import { PeerChatCard } from '@/components/coffeechat/peer-chat-card'
+import { RecommendationsSection } from '@/components/coffeechat/recommendations-section'
 import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
@@ -93,6 +94,9 @@ export default async function CoffeeChatPage({ searchParams }: PageProps) {
               </Link>
             )}
           </div>
+
+          {/* Recommendations section */}
+          {user && <RecommendationsSection />}
 
           {/* Category filter */}
           <div className="flex flex-wrap gap-2 mb-8">

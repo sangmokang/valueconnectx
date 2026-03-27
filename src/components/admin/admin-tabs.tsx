@@ -9,6 +9,8 @@ const tabs = [
   { href: '/admin/corporate-users', label: '기업 사용자' },
   { href: '/admin/positions', label: '포지션 관리' },
   { href: '/admin/reports', label: '신고 관리' },
+  { href: '/admin/analytics', label: '분석' },
+  { href: '/admin/hiring', label: '수수료' },
 ]
 
 export function AdminTabs() {
