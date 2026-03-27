@@ -19,13 +19,29 @@ export async function GET(request: NextRequest) {
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError || !user) return unauthorized()
 
+    // Determine requester type: vcx_member or vcx_corporate_user
     const { data: member } = await supabase
       .from('vcx_members')
       .select('id')
       .eq('id', user.id)
       .eq('is_active', true)
       .single()
-    if (!member) return forbidden('VCX 멤버만 접근할 수 있습니다')
+
+    const { data: corporateUser } = member
+      ? { data: null }
+      : await supabase
+          .from('vcx_corporate_users')
+          .select('id')
+          .eq('id', user.id)
+          .eq('is_active', true)
+          .single()
+
+    if (!member && !corporateUser) {
+      return forbidden('VCX 멤버 또는 기업 회원만 접근할 수 있습니다')
+    }
+
+    const requesterIsMember = !!member
+    const requesterIsCorporate = !!corporateUser
 
     const { action, message } = await checkDirectoryAccess(user.id)
     if (action === 'restrict' || action === 'block') {
@@ -47,6 +63,15 @@ export async function GET(request: NextRequest) {
       )
       .eq('is_active', true)
       .range(offset, offset + limit - 1)
+
+    // Enforce profile_visibility: filter out profiles the requester cannot see
+    if (requesterIsCorporate) {
+      // Corporate users cannot see members_only profiles
+      query = query.neq('profile_visibility', 'members_only')
+    } else if (requesterIsMember) {
+      // Members cannot see corporate_only profiles
+      query = query.neq('profile_visibility', 'corporate_only')
+    }
 
     if (tier) query = query.eq('member_tier', tier)
     if (industry) query = query.eq('industry', industry)

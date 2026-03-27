@@ -68,21 +68,30 @@ const baseMemberDetail = {
   endorsed_by_name: null,
 }
 
+function makeSingleBuilder(data: unknown) {
+  return {
+    select: vi.fn().mockReturnValue({
+      eq: vi.fn().mockReturnThis(),
+      single: vi.fn().mockResolvedValue({ data, error: null }),
+    }),
+  }
+}
+
 function setupMembershipCheck(userId = 'user-id-1', isMember = true) {
   mocks.mockAuthGetUser.mockResolvedValue({
     data: { user: { id: userId } },
     error: null,
   })
 
-  mocks.mockFrom.mockImplementationOnce(() => ({
-    select: vi.fn().mockReturnValue({
-      eq: vi.fn().mockReturnThis(),
-      single: vi.fn().mockResolvedValue({
-        data: isMember ? { id: userId } : null,
-        error: null,
-      }),
-    }),
-  }))
+  if (isMember) {
+    // Member found — only one from() call needed
+    mocks.mockFrom.mockImplementationOnce(() => makeSingleBuilder({ id: userId }))
+  } else {
+    // Member not found → corporate check also returns null
+    mocks.mockFrom
+      .mockImplementationOnce(() => makeSingleBuilder(null))
+      .mockImplementationOnce(() => makeSingleBuilder(null))
+  }
 }
 
 describe('GET /api/directory/[id]', () => {
@@ -112,7 +121,7 @@ describe('GET /api/directory/[id]', () => {
 
     expect(res.status).toBe(403)
     const body = await res.json()
-    expect(body.error).toBe('VCX 멤버만 접근할 수 있습니다')
+    expect(body.error).toBe('VCX 멤버 또는 기업 회원만 접근할 수 있습니다')
   })
 
   it('returns 429 when daily rate limit is exceeded', async () => {

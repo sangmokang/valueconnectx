@@ -165,7 +165,7 @@ describe('GET /api/directory', () => {
 
     expect(res.status).toBe(403)
     const body = await res.json()
-    expect(body.error).toBe('VCX 멤버만 접근할 수 있습니다')
+    expect(body.error).toBe('VCX 멤버 또는 기업 회원만 접근할 수 있습니다')
   })
 
   it('returns 429 when daily rate limit is exceeded (restrict action)', async () => {
