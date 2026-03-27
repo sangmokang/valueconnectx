@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { ProfileEditForm } from '@/components/directory/profile-edit-form'
 import { ProfileCompletion } from '@/components/directory/profile-completion'
+import { ProfileMatchSection } from '@/components/positions/profile-match-section'
 
 export default async function ProfileEditPage() {
   const supabase = await createClient()
@@ -62,6 +63,9 @@ export default async function ProfileEditPage() {
           }}
         />
       </div>
+
+      {/* 내 프로필에 맞는 포지션 */}
+      <ProfileMatchSection />
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { ProtectedPageWrapper } from '@/components/layout/protected-page-wrapper'
 import { PositionCard, PositionCardData } from '@/components/positions/position-card'
 import { PositionFilters } from '@/components/positions/position-filters'
+import { PositionMatchSection } from '@/components/positions/position-match-section'
 import Link from 'next/link'
 
 interface SearchParams {
@@ -148,6 +149,9 @@ export default async function PositionsPage({
           <p className="vcx-section-label mb-1">포지션 보드</p>
           <h1 className="font-vcx-serif font-bold text-[#1a1a1a] text-3xl">Position Board</h1>
         </div>
+
+        {/* AI 추천 포지션 */}
+        <PositionMatchSection />
 
         {/* Filters */}
         <Suspense>

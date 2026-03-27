@@ -40,6 +40,7 @@
     "node_modules",
     "vcx-mcp-server",
     "e2e",
-    "playwright.config.ts"
+    "playwright.config.ts",
+    "cli"
   ]
 }
