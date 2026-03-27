@@ -17,19 +17,30 @@ const mocks = vi.hoisted(() => {
     rpc: mockRpc,
     auth: mockAdminAuth,
   }
+  const mockServerSignIn = vi.fn()
+  const mockServerClient = {
+    auth: { signInWithPassword: mockServerSignIn },
+  }
   return {
     mockFrom,
     mockRpc,
     mockAdminAuth,
     mockAdminClient,
+    mockServerSignIn,
+    mockServerClient,
     mockRateLimit: vi.fn(),
     mockHashToken: vi.fn(),
     createAdminClient: vi.fn(() => mockAdminClient),
+    createClient: vi.fn(async () => mockServerClient),
   }
 })
 
 vi.mock('@/lib/supabase/admin', () => ({
   createAdminClient: mocks.createAdminClient,
+}))
+
+vi.mock('@/lib/supabase/server', () => ({
+  createClient: mocks.createClient,
 }))
 
 vi.mock('@/lib/rate-limit', () => ({
@@ -116,7 +127,7 @@ describe('POST /api/invites/accept', () => {
 
     expect(res.status).toBe(400)
     const body = await res.json()
-    expect(body.error).toBe('유효하지 않은 초대 링크입니다')
+    expect(body.error).toBe('초대 링크가 유효하지 않습니다')
   })
 
   it('returns 400 for expired invite and updates status to expired', async () => {
@@ -142,7 +153,7 @@ describe('POST /api/invites/accept', () => {
 
     expect(res.status).toBe(400)
     const body = await res.json()
-    expect(body.error).toBe('초대가 만료되었습니다')
+    expect(body.error).toBe('초대 링크가 유효하지 않습니다')
     expect(mockUpdate).toHaveBeenCalledWith({ status: 'expired' })
   })
 
@@ -171,7 +182,7 @@ describe('POST /api/invites/accept', () => {
       data: { user: { id: 'new-user-id' } },
       error: null,
     })
-    mocks.mockAdminAuth.signInWithPassword.mockResolvedValue({
+    mocks.mockServerSignIn.mockResolvedValue({
       data: { session: 'mock-session' },
       error: null,
     })
@@ -210,7 +221,7 @@ describe('POST /api/invites/accept', () => {
       }
     })
 
-    mocks.mockAdminAuth.signInWithPassword.mockResolvedValue({
+    mocks.mockServerSignIn.mockResolvedValue({
       data: { session: 'mock-session' },
       error: null,
     })
@@ -250,7 +261,7 @@ describe('POST /api/invites/accept', () => {
       data: { user: { id: 'new-user-id' } },
       error: null,
     })
-    mocks.mockAdminAuth.signInWithPassword.mockResolvedValue({
+    mocks.mockServerSignIn.mockResolvedValue({
       data: { session: 'mock-session' },
       error: null,
     })
@@ -293,7 +304,7 @@ describe('POST /api/invites/accept', () => {
       data: { user: { id: 'new-user-id' } },
       error: null,
     })
-    mocks.mockAdminAuth.signInWithPassword.mockResolvedValue({
+    mocks.mockServerSignIn.mockResolvedValue({
       data: { session: 'mock-session' },
       error: null,
     })
@@ -330,7 +341,7 @@ describe('POST /api/invites/accept', () => {
       data: { user: { id: 'new-user-id' } },
       error: null,
     })
-    mocks.mockAdminAuth.signInWithPassword.mockResolvedValue({
+    mocks.mockServerSignIn.mockResolvedValue({
       data: { session: 'mock-session' },
       error: null,
     })
@@ -368,7 +379,7 @@ describe('POST /api/invites/accept', () => {
       data: { user: { id: 'new-user-id' } },
       error: null,
     })
-    mocks.mockAdminAuth.signInWithPassword.mockResolvedValue({
+    mocks.mockServerSignIn.mockResolvedValue({
       data: { session: 'mock-session' },
       error: null,
     })

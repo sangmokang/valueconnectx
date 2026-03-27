@@ -21,9 +21,18 @@ export async function GET(
       .select('email, invited_by_name, member_tier, expires_at, status')
       .eq('token_hash', tokenHash).single()
 
-    if (error || !invite) return NextResponse.json({ valid: false, reason: '유효하지 않은 초대 링크입니다' })
-    if (invite.status !== 'pending') return NextResponse.json({ valid: false, reason: '이미 사용된 초대 링크입니다' })
-    if (new Date(invite.expires_at) < new Date()) return NextResponse.json({ valid: false, reason: '초대가 만료되었습니다. 추천인에게 다시 요청해주세요.' })
+    if (error || !invite) {
+      console.warn('Invite verify failed: token not found', { tokenHash })
+      return NextResponse.json({ valid: false, reason: '초대 링크가 유효하지 않습니다' })
+    }
+    if (invite.status !== 'pending') {
+      console.warn('Invite verify failed: status is not pending', { status: invite.status, tokenHash })
+      return NextResponse.json({ valid: false, reason: '초대 링크가 유효하지 않습니다' })
+    }
+    if (new Date(invite.expires_at) < new Date()) {
+      console.warn('Invite verify failed: token expired', { expires_at: invite.expires_at, tokenHash })
+      return NextResponse.json({ valid: false, reason: '초대 링크가 유효하지 않습니다' })
+    }
 
     return NextResponse.json({ valid: true, email: invite.email, invitedByName: invite.invited_by_name, memberTier: invite.member_tier })
   } catch (error) {

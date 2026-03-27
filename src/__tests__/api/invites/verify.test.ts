@@ -69,10 +69,10 @@ describe('GET /api/invites/verify/[token]', () => {
     expect(res.status).toBe(200)
     const body = await res.json()
     expect(body.valid).toBe(false)
-    expect(body.reason).toBe('유효하지 않은 초대 링크입니다')
+    expect(body.reason).toBe('초대 링크가 유효하지 않습니다')
   })
 
-  it('returns { valid: false, reason: "이미 사용된..." } for non-pending invite', async () => {
+  it('returns { valid: false } for non-pending invite', async () => {
     mocks.mockRateLimit.mockReturnValue({ success: true, remaining: 4 })
 
     const invite = {
@@ -91,10 +91,10 @@ describe('GET /api/invites/verify/[token]', () => {
     expect(res.status).toBe(200)
     const body = await res.json()
     expect(body.valid).toBe(false)
-    expect(body.reason).toBe('이미 사용된 초대 링크입니다')
+    expect(body.reason).toBe('초대 링크가 유효하지 않습니다')
   })
 
-  it('returns { valid: false, reason: "초대가 만료..." } for expired invite', async () => {
+  it('returns { valid: false } for expired invite', async () => {
     mocks.mockRateLimit.mockReturnValue({ success: true, remaining: 4 })
 
     const invite = {
@@ -113,7 +113,7 @@ describe('GET /api/invites/verify/[token]', () => {
     expect(res.status).toBe(200)
     const body = await res.json()
     expect(body.valid).toBe(false)
-    expect(body.reason).toBe('초대가 만료되었습니다. 추천인에게 다시 요청해주세요.')
+    expect(body.reason).toBe('초대 링크가 유효하지 않습니다')
   })
 
   it('returns { valid: true, email, invitedByName, memberTier } for valid invite', async () => {

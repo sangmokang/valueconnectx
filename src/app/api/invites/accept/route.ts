@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { createClient } from '@/lib/supabase/server'
 import { hashToken } from '@/lib/invite'
 import { rateLimit, authLimiter } from '@/lib/rate-limit'
 
@@ -20,14 +21,16 @@ export async function POST(request: NextRequest) {
     // S4.5.1: Atomic invite consumption via RPC to prevent race conditions
     const { data: inviteRows, error: rpcError } = await adminClient.rpc('vcx_consume_invite', { p_token_hash: tokenHash })
     if (rpcError || !inviteRows || inviteRows.length === 0) {
-      return NextResponse.json({ error: '유효하지 않은 초대 링크입니다' }, { status: 400 })
+      console.warn('Invite accept failed: token not found or already consumed', { rpcError, tokenHash })
+      return NextResponse.json({ error: '초대 링크가 유효하지 않습니다' }, { status: 400 })
     }
     const invite = inviteRows[0]
 
     // Check expiry AFTER consuming atomically; revert to expired if past expiry
     if (new Date(invite.expires_at) < new Date()) {
       await adminClient.from('vcx_invites').update({ status: 'expired' }).eq('id', invite.id)
-      return NextResponse.json({ error: '초대가 만료되었습니다' }, { status: 400 })
+      console.warn('Invite accept failed: token expired', { expires_at: invite.expires_at, inviteId: invite.id })
+      return NextResponse.json({ error: '초대 링크가 유효하지 않습니다' }, { status: 400 })
     }
 
     // S4.5.2: Use filtered listUsers instead of fetching all users
@@ -69,11 +72,12 @@ export async function POST(request: NextRequest) {
 
     // Note: invite status already set to 'accepted' atomically by vcx_consume_invite RPC
 
-    const { data: session, error: signInError } = await adminClient.auth.signInWithPassword({ email: invite.email, password })
+    const serverClient = await createClient()
+    const { error: signInError } = await serverClient.auth.signInWithPassword({ email: invite.email, password })
     if (signInError) {
       return NextResponse.json({ success: true, message: '계정이 생성되었습니다. 로그인해주세요.', redirectTo: '/login' })
     }
-    return NextResponse.json({ success: true, session: session.session, redirectTo: '/onboarding' })
+    return NextResponse.json({ success: true, redirectTo: '/onboarding' })
   } catch (error) {
     console.error('Accept error:', error)
     return NextResponse.json({ error: '서버 오류가 발생했습니다' }, { status: 500 })

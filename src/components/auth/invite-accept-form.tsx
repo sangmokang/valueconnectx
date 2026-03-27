@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
 
 interface InviteInfo { email: string; invitedByName: string; memberTier: 'core' | 'endorsed' }
 
@@ -41,11 +40,7 @@ export function InviteAcceptForm({ initialToken }: { initialToken?: string }) {
       const res = await fetch('/api/invites/accept', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token, password, name, linkedin_url: linkedinUrl }) })
       const data = await res.json()
       if (data.success) {
-        if (data.session?.access_token && data.session?.refresh_token) {
-          const supabase = createClient()
-          await supabase.auth.setSession({ access_token: data.session.access_token, refresh_token: data.session.refresh_token })
-        }
-        router.push('/onboarding'); router.refresh()
+        router.push(data.redirectTo); router.refresh()
       }
       else { setError(data.error || '계정 생성에 실패했습니다'); setLoading(false) }
     } catch { setError('계정 생성 중 오류가 발생했습니다'); setLoading(false) }
