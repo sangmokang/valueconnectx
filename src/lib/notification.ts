@@ -9,6 +9,9 @@ export type NotificationType =
   | 'peer_chat_accepted'
   | 'peer_chat_rejected'
   | 'invite_accepted'
+  | 'community_comment'
+  | 'community_reaction'
+  | 'position_interest'
 
 interface NotificationData {
   title: string

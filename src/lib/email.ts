@@ -105,6 +105,19 @@ export async function sendNotificationEmail({
     subject = '커피챗 신청 결과를 확인해주세요'
     actionLabel = '결과 확인하기 →'
     accentColor = '#999'
+  } else if (type === 'community_comment') {
+    subject = '새 댓글이 달렸습니다'
+    actionLabel = '댓글 확인하기 →'
+  } else if (type === 'community_reaction') {
+    subject = '게시글에 좋아요가 달렸습니다'
+    actionLabel = '게시글 보기 →'
+  } else if (type === 'position_interest') {
+    subject = '포지션에 관심 표현이 있습니다'
+    actionLabel = '포지션 확인하기 →'
+  } else if (type === 'invite_accepted') {
+    subject = '초대가 수락되었습니다'
+    actionLabel = '초대 현황 보기 →'
+    accentColor = '#4caf7d'
   }
 
   if (!process.env.RESEND_API_KEY) {

@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { unauthorized, forbidden, notFound, serverError } from '@/lib/api/error'
 import { parseBody } from '@/lib/api/validation'
+import { sendNotification } from '@/lib/notification'
 
 const commentSchema = z.object({
   content: z.string().min(1).max(5000),
@@ -92,6 +93,19 @@ export async function POST(
     if (error) {
       console.error('Comment insert error:', error)
       return serverError()
+    }
+
+    // Notify post author (fire-and-forget, skip self-comment)
+    const { data: postForNotify } = await supabase
+      .from('community_posts')
+      .select('author_id')
+      .eq('id', id)
+      .single()
+    if (postForNotify && postForNotify.author_id !== user.id) {
+      sendNotification(postForNotify.author_id, 'community_comment', {
+        title: '새 댓글이 달렸습니다',
+        link: `/community/${id}`,
+      }).catch(() => {})
     }
 
     return NextResponse.json({ data }, { status: 201 })

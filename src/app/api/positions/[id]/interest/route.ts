@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { unauthorized, forbidden, serverError } from '@/lib/api/error'
 import { parseBody } from '@/lib/api/validation'
+import { sendNotification } from '@/lib/notification'
 
 const interestSchema = z.object({
   interest_type: z.enum(['interested', 'not_interested', 'bookmark']),
@@ -43,6 +44,22 @@ export async function POST(
     if (error) {
       console.error('Interest POST error:', error)
       return serverError()
+    }
+
+    // Notify position creator when someone shows interest (fire-and-forget)
+    if (parsed.data.interest_type === 'interested') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data: position } = await (supabase as any)
+        .from('positions')
+        .select('created_by')
+        .eq('id', position_id)
+        .single()
+      if (position?.created_by && position.created_by !== user.id) {
+        sendNotification(position.created_by, 'position_interest', {
+          title: '포지션에 관심 표현이 있습니다',
+          link: `/positions/${position_id}`,
+        }).catch(() => {})
+      }
     }
 
     return NextResponse.json({ data }, { status: 201 })

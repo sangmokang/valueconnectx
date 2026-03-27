@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { unauthorized, forbidden, serverError } from '@/lib/api/error'
 import { parseBody } from '@/lib/api/validation'
+import { sendNotification } from '@/lib/notification'
 
 const reactionSchema = z.object({
   reaction_type: z.string().default('like'),
@@ -103,6 +104,19 @@ export async function POST(
         console.error('Reaction insert error:', error)
         return serverError()
       }
+      // Notify post author (fire-and-forget, skip self-reaction)
+      const { data: postForNotify } = await supabase
+        .from('community_posts')
+        .select('author_id')
+        .eq('id', id)
+        .single()
+      if (postForNotify && postForNotify.author_id !== user.id) {
+        sendNotification(postForNotify.author_id, 'community_reaction', {
+          title: '게시글에 좋아요가 달렸습니다',
+          link: `/community/${id}`,
+        }).catch(() => {})
+      }
+
       return NextResponse.json({ action: 'added', reaction_type }, { status: 201 })
     }
   } catch (error) {

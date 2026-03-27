@@ -11,11 +11,21 @@ const categoryOptions = [
   { value: 'mentoring', label: '멘토링' },
 ]
 
-export function PeerChatForm() {
+interface PeerChatFormProps {
+  initialData?: {
+    title: string
+    content: string
+    category: 'general' | 'career' | 'hiring' | 'mentoring'
+  }
+  chatId?: string
+}
+
+export function PeerChatForm({ initialData, chatId }: PeerChatFormProps) {
+  const isEdit = !!chatId && !!initialData
   const router = useRouter()
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
-  const [category, setCategory] = useState<'general' | 'career' | 'hiring' | 'mentoring'>('general')
+  const [title, setTitle] = useState(initialData?.title ?? '')
+  const [content, setContent] = useState(initialData?.content ?? '')
+  const [category, setCategory] = useState<'general' | 'career' | 'hiring' | 'mentoring'>(initialData?.category ?? 'general')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -25,17 +35,21 @@ export function PeerChatForm() {
     setError(null)
 
     try {
-      const res = await fetch('/api/peer-coffeechat', {
-        method: 'POST',
+      const url = isEdit ? `/api/peer-coffeechat/${chatId}` : '/api/peer-coffeechat'
+      const method = isEdit ? 'PUT' : 'POST'
+
+      const res = await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: title.trim(), content: content.trim(), category }),
       })
       const data = await res.json()
       if (!res.ok) {
-        setError(data.error ?? '글 작성에 실패했습니다')
+        setError(data.error ?? (isEdit ? '글 수정에 실패했습니다' : '글 작성에 실패했습니다'))
         return
       }
-      router.push(`/coffeechat/${data.data.id}`)
+      const targetId = isEdit ? chatId : data.data.id
+      router.push(`/coffeechat/${targetId}`)
       router.refresh()
     } catch {
       setError('네트워크 오류가 발생했습니다')
@@ -130,7 +144,7 @@ export function PeerChatForm() {
           disabled={loading || !title.trim() || !content.trim()}
           className="flex-1"
         >
-          {loading ? '등록 중...' : '글 등록하기'}
+          {loading ? (isEdit ? '수정 중...' : '등록 중...') : (isEdit ? '글 수정하기' : '글 등록하기')}
         </Button>
       </div>
     </form>

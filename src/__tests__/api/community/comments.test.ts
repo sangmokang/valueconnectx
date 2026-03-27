@@ -20,6 +20,10 @@ vi.mock('@/lib/supabase/server', () => ({
   createClient: mocks.createClient,
 }))
 
+vi.mock('@/lib/notification', () => ({
+  sendNotification: vi.fn().mockResolvedValue(undefined),
+}))
+
 vi.mock('@/lib/rate-limit', () => ({
   rateLimit: vi.fn(),
   authLimiter: null,
@@ -406,15 +410,12 @@ describe('POST /api/community/[id]/comments', () => {
         }
       }
       if (table === 'community_posts') {
-        return {
-          select: vi.fn().mockReturnValue({
-            eq: vi.fn().mockReturnValue({
-              eq: vi.fn().mockReturnValue({
-                single: vi.fn().mockResolvedValue({ data: { id: 'post-id-1' }, error: null }),
-              }),
-            }),
-          }),
-        }
+        const postChain: Record<string, unknown> = {}
+        const returnSelf = () => postChain
+        postChain.select = vi.fn().mockImplementation(returnSelf)
+        postChain.eq = vi.fn().mockImplementation(returnSelf)
+        postChain.single = vi.fn().mockResolvedValue({ data: { id: 'post-id-1', author_id: 'other-user' }, error: null })
+        return postChain
       }
       if (table === 'community_comments') {
         return { insert: mockInsert }
@@ -456,15 +457,12 @@ describe('POST /api/community/[id]/comments', () => {
         }
       }
       if (table === 'community_posts') {
-        return {
-          select: vi.fn().mockReturnValue({
-            eq: vi.fn().mockReturnValue({
-              eq: vi.fn().mockReturnValue({
-                single: vi.fn().mockResolvedValue({ data: { id: 'post-id-1' }, error: null }),
-              }),
-            }),
-          }),
-        }
+        const postChain: Record<string, unknown> = {}
+        const returnSelf = () => postChain
+        postChain.select = vi.fn().mockImplementation(returnSelf)
+        postChain.eq = vi.fn().mockImplementation(returnSelf)
+        postChain.single = vi.fn().mockResolvedValue({ data: { id: 'post-id-1', author_id: 'other-user' }, error: null })
+        return postChain
       }
       if (table === 'community_comments') {
         return { insert: mockInsert }

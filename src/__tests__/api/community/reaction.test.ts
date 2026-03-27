@@ -20,6 +20,10 @@ vi.mock('@/lib/supabase/server', () => ({
   createClient: mocks.createClient,
 }))
 
+vi.mock('@/lib/notification', () => ({
+  sendNotification: vi.fn().mockResolvedValue(undefined),
+}))
+
 vi.mock('@/lib/rate-limit', () => ({
   rateLimit: vi.fn(),
   authLimiter: null,
@@ -194,6 +198,15 @@ describe('POST /api/community/[id]/reaction', () => {
           insert: mockInsert,
         }
       }
+      if (table === 'community_posts') {
+        return {
+          select: vi.fn().mockReturnValue({
+            eq: vi.fn().mockReturnValue({
+              single: vi.fn().mockResolvedValue({ data: { author_id: 'other-user' }, error: null }),
+            }),
+          }),
+        }
+      }
       return {}
     })
 
@@ -286,6 +299,15 @@ describe('POST /api/community/[id]/reaction', () => {
             }),
           }),
           insert: mockInsert,
+        }
+      }
+      if (table === 'community_posts') {
+        return {
+          select: vi.fn().mockReturnValue({
+            eq: vi.fn().mockReturnValue({
+              single: vi.fn().mockResolvedValue({ data: { author_id: 'other-user' }, error: null }),
+            }),
+          }),
         }
       }
       return {}

@@ -3,6 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { hashToken } from '@/lib/invite'
 import { rateLimit, authLimiter } from '@/lib/rate-limit'
+import { sendNotification } from '@/lib/notification'
 
 export async function POST(request: NextRequest) {
   try {
@@ -71,6 +72,15 @@ export async function POST(request: NextRequest) {
     if (memberError) return NextResponse.json({ error: '멤버 프로필 생성에 실패했습니다' }, { status: 500 })
 
     // Note: invite status already set to 'accepted' atomically by vcx_consume_invite RPC
+
+    // Notify inviter that their invite was accepted (fire-and-forget)
+    if (invite.invited_by) {
+      sendNotification(invite.invited_by, 'invite_accepted', {
+        title: '초대가 수락되었습니다',
+        body: `${name}님이 초대를 수락하고 VCX에 가입했습니다.`,
+        link: '/admin/invitations',
+      }).catch(() => {})
+    }
 
     const serverClient = await createClient()
     const { error: signInError } = await serverClient.auth.signInWithPassword({ email: invite.email, password })
