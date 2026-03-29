@@ -97,8 +97,8 @@ describe('middleware', () => {
 
   it('8. sets x-vcx-authenticated header for protected routes', async () => {
     mockGetUser.mockResolvedValue({ data: { user: { id: 'user-123' } } })
-    // rpc returns a member
-    mockRpc.mockResolvedValue({ data: { member: { id: 'user-123' }, corporate: null } })
+    // rpc returns a member with complete profile (onboarding redirect skipped)
+    mockRpc.mockResolvedValue({ data: { member: { id: 'user-123', name: '테스트', current_company: '테스트회사', title: 'Engineer', linkedin_url: 'https://linkedin.com/in/test' }, corporate: null } })
     const req = makeRequest('/coffeechat')
     const res = await middleware(req)
     expect(res.headers.get('x-vcx-authenticated')).toBe('true')
