@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 import { isPublicRoute, isSemiPublicRoute, isProtectedRoute, isAdminRoute, isAuthRoute } from '@/lib/auth/routes'
 import type { Database } from '@/types/supabase'
-import { rateLimit, apiLimiter } from '@/lib/rate-limit'
+import { rateLimit, apiLimiter, directoryLimiter, directoryBurstLimiter, directoryDailyLimiter } from '@/lib/rate-limit'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -55,6 +55,29 @@ export async function middleware(request: NextRequest) {
     const { data: info } = await supabase.rpc('vcx_get_user_info', { p_user_id: user.id })
     if (!info?.member && !info?.corporate) {
       return NextResponse.json({ error: 'Not a VCX member' }, { status: 403 })
+    }
+
+    // 디렉토리 API 스크래핑 방지
+    if (pathname.startsWith('/api/directory')) {
+      const dirId = `dir:${ip}`
+      const { success: dailyOk } = await rateLimit(directoryDailyLimiter, dirId)
+      if (!dailyOk) {
+        return NextResponse.json(
+          { error: '일일 프로필 조회 한도를 초과했습니다. 내일 다시 시도해주세요.' },
+          { status: 429 }
+        )
+      }
+      const { success: burstOk } = await rateLimit(directoryBurstLimiter, dirId)
+      if (!burstOk) {
+        return NextResponse.json(
+          { error: '프로필 조회가 너무 빠릅니다. 잠시 후 다시 시도해주세요.' },
+          { status: 429, headers: { 'x-vcx-scraping-warning': 'blocked' } }
+        )
+      }
+      const { success: limitOk } = await rateLimit(directoryLimiter, dirId)
+      if (!limitOk) {
+        response.headers.set('x-vcx-scraping-warning', 'slow-down')
+      }
     }
 
     // 프로필 미완성 멤버의 쓰기 API 차단 (GET/directory/me는 허용 — 온보딩 폼에서 사용)
