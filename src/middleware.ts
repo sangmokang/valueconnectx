@@ -56,6 +56,20 @@ export async function middleware(request: NextRequest) {
     if (!info?.member && !info?.corporate) {
       return NextResponse.json({ error: 'Not a VCX member' }, { status: 403 })
     }
+
+    // 프로필 미완성 멤버의 쓰기 API 차단 (GET/directory/me는 허용 — 온보딩 폼에서 사용)
+    if (
+      info?.member &&
+      !info?.corporate &&
+      request.method !== 'GET' &&
+      !pathname.startsWith('/api/directory/me')
+    ) {
+      const m = info.member as { name?: string | null; current_company?: string | null; title?: string | null; linkedin_url?: string | null }
+      if (!m.name || !m.current_company || !m.title || !m.linkedin_url) {
+        return NextResponse.json({ error: '프로필을 먼저 완성해주세요' }, { status: 403 })
+      }
+    }
+
     return response
   }
 
@@ -87,6 +101,21 @@ export async function middleware(request: NextRequest) {
     // DB call 2: member + corporate 단일 RPC 호출
     const { data: info } = await supabase.rpc('vcx_get_user_info', { p_user_id: user.id })
     response.headers.set('x-vcx-authenticated', (!info?.member && !info?.corporate) ? 'false' : 'true')
+
+    // 멤버 프로필 미완성 시 온보딩 강제 리다이렉트 (corporate 유저 제외)
+    if (
+      info?.member &&
+      !info?.corporate &&
+      !pathname.startsWith('/onboarding')
+    ) {
+      const m = info.member as { name?: string | null; current_company?: string | null; title?: string | null; linkedin_url?: string | null }
+      const isProfileIncomplete =
+        !m.name || !m.current_company || !m.title || !m.linkedin_url
+      if (isProfileIncomplete) {
+        return NextResponse.redirect(new URL('/onboarding', request.url))
+      }
+    }
+
     return response
   }
 
