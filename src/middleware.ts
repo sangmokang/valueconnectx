@@ -52,7 +52,11 @@ export async function middleware(request: NextRequest) {
     }
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     // DB call 2: member + corporate 단일 RPC 호출 (기존 2회 → 1회)
-    const { data: info } = await supabase.rpc('vcx_get_user_info', { p_user_id: user.id })
+    const { data: info, error: rpcError } = await supabase.rpc('vcx_get_user_info', { p_user_id: user.id })
+    if (rpcError) {
+      console.error('[middleware] vcx_get_user_info RPC failed (API):', rpcError.message)
+      return NextResponse.json({ error: '서버 오류가 발생했습니다' }, { status: 500 })
+    }
     if (!info?.member && !info?.corporate) {
       return NextResponse.json({ error: 'Not a VCX member' }, { status: 403 })
     }
@@ -108,7 +112,11 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(loginUrl)
     }
     // DB call 2: member + corporate 단일 RPC 호출
-    const { data: info } = await supabase.rpc('vcx_get_user_info', { p_user_id: user.id })
+    const { data: info, error: rpcError } = await supabase.rpc('vcx_get_user_info', { p_user_id: user.id })
+    if (rpcError) {
+      console.error('[middleware] vcx_get_user_info RPC failed (admin):', rpcError.message)
+      return NextResponse.redirect(new URL('/', request.url))
+    }
     const isAdmin =
       info?.member?.system_role === 'admin' ||
       info?.member?.system_role === 'super_admin'
@@ -122,7 +130,12 @@ export async function middleware(request: NextRequest) {
       return response
     }
     // DB call 2: member + corporate 단일 RPC 호출
-    const { data: info } = await supabase.rpc('vcx_get_user_info', { p_user_id: user.id })
+    const { data: info, error: rpcError } = await supabase.rpc('vcx_get_user_info', { p_user_id: user.id })
+    if (rpcError) {
+      console.error('[middleware] vcx_get_user_info RPC failed (protected):', rpcError.message)
+      response.headers.set('x-vcx-authenticated', 'false')
+      return response
+    }
     response.headers.set('x-vcx-authenticated', (!info?.member && !info?.corporate) ? 'false' : 'true')
 
     // 멤버 프로필 미완성 시 온보딩 강제 리다이렉트 (corporate 유저 제외)

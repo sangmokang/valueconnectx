@@ -86,7 +86,7 @@ describe('LoginForm', () => {
     await user.click(screen.getByRole('button', { name: '로그인' }))
 
     await screen.findByRole('button')
-    expect(mockPush).toHaveBeenCalledWith('/')
+    expect(mockPush).toHaveBeenCalledWith('/directory')
   })
 
   it('button shows "로그인 중..." during loading', async () => {
