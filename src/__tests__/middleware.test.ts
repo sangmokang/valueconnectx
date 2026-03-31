@@ -74,7 +74,7 @@ describe('middleware', () => {
     const res = await middleware(req)
     expect(res.status).toBe(401)
     const body = await res.json()
-    expect(body).toEqual({ error: 'Unauthorized' })
+    expect(body.error).toBe('인증이 필요합니다')
   })
 
   it('6. redirects to /login for unauthenticated admin access', async () => {

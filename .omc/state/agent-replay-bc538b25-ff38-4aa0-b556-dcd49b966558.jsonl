@@ -1,0 +1,16 @@
+{"t":0,"agent":"system","event":"keyword_detected","keyword":"ralplan"}
+{"t":0,"agent":"system","event":"keyword_detected","keyword":"ralplan"}
+{"t":0,"agent":"af07b6d","agent_type":"planner","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"af07b6d","agent_type":"planner","event":"agent_stop","success":true,"duration_ms":238904}
+{"t":0,"agent":"a982514","agent_type":"architect","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"af0818b","agent_type":"critic","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a982514","agent_type":"architect","event":"agent_stop","success":true,"duration_ms":120329}
+{"t":0,"agent":"af0818b","agent_type":"critic","event":"agent_stop","success":true,"duration_ms":128766}
+{"t":0,"agent":"acca26f","agent_type":"planner","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"acca26f","agent_type":"planner","event":"agent_stop","success":true,"duration_ms":296072}
+{"t":0,"agent":"a576b14","agent_type":"architect","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"ae43ee9","agent_type":"critic","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"ae43ee9","agent_type":"critic","event":"agent_stop","success":true,"duration_ms":78372}
+{"t":0,"agent":"a576b14","agent_type":"architect","event":"agent_stop","success":true,"duration_ms":90619}
+{"t":0,"agent":"a5cb98f","agent_type":"executor","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a5cb98f","agent_type":"executor","event":"agent_stop","success":true,"duration_ms":51945}

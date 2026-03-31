@@ -18,6 +18,11 @@
 - [ ] 갱신 패키지(3회 묶음) 구매 UX: 선불 크레딧 방식 vs 할인 코드 방식 — 결제 시스템 구현 복잡도에 영향
 - [ ] 팀 역량 대비 MVP 4-6주 일정 현실성 검증 — 현재 진행 중인 auth/admin 작업과의 우선순위 충돌 가능
 
+## P0 Critical Bugs Post-Login - 2026-03-31
+- [ ] `vcx_get_user_info` RPC가 실제 Supabase DB에 적용되어 있는지 확인 필요 — `src/lib/supabase/migrations/`에만 존재하고 `supabase/migrations/`에는 없음. 수동 적용 여부 불명. 미적용 시 RPC 자체가 없어 모든 사용자 403.
+- [ ] Migration 019 적용 방법 결정: `supabase db push` vs `supabase migration up` vs Supabase Dashboard SQL Editor — 로컬 개발 환경과 프로덕션 환경 각각에 대해 적용 절차 확인 필요
+- [ ] 프로필 완성도 판단 기준 재검토: 현재 4개 필드(name, current_company, title, linkedin_url) 모두 필수인지 — linkedin_url이 없는 멤버도 서비스 이용 가능해야 하는지 비즈니스 결정 필요
+
 ## BMplan 멀티 버티컬 비전 업데이트 - 2026-03-26
 - [ ] 버티컬 확장 시 분야별 Advisory Board 구성 방안 — 각 분야(요리, 음악, 예술 등)의 검증 기준을 누가 정할 것인가. 외부 자문위원 영입 비용/시기 결정 필요
 - [ ] 창의/문화 분야의 수수료 구조 적정성 — IT/Tech의 25% 채용 수수료와 달리 에이전시형 15~20% 모델이 시장에서 수용 가능한지 벤치마킹 필요

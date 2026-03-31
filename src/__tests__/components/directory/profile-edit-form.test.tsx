@@ -93,7 +93,7 @@ describe('ProfileEditForm', () => {
     )
     await user.click(screen.getByRole('button', { name: '프로필 저장' }))
 
-    expect(await screen.findByText('linkedin.com/in/ 형식의 URL을 입력해주세요')).toBeInTheDocument()
+    expect(await screen.findByText('LinkedIn 프로필 URL이어야 합니다 (linkedin.com/in/...)')).toBeInTheDocument()
   })
 
   it('shows LinkedIn validation error when URL is valid but not LinkedIn', async () => {
@@ -105,7 +105,7 @@ describe('ProfileEditForm', () => {
     await user.click(screen.getByRole('button', { name: '프로필 저장' }))
 
     // Valid URL but fails linkedin.com/in/ regex check
-    expect(await screen.findByText('linkedin.com/in/ 형식의 URL을 입력해주세요')).toBeInTheDocument()
+    expect(await screen.findByText('LinkedIn 프로필 URL이어야 합니다 (linkedin.com/in/...)')).toBeInTheDocument()
   })
 
   it('shows LinkedIn validation error when URL is empty', async () => {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import GNB from "@/components/layout/gnb";
+import Providers from "@/app/providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -23,7 +24,7 @@ export default function RootLayout({
         }}
       >
         <GNB />
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

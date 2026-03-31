@@ -1,0 +1,10 @@
+  Deployment Pipeline [MISSING]    [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 0/3
+  State Management [MISSING]       [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 0/3
+  Component Patterns [MISSING]     [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 0/3
+  Performance Guidelines [MISSING] [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 0/3
+  Output Format Spec [MISSING]     [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 0/3
+  Tool Inventory [MISSING]         [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 0/3
+  i18n Rules [PARTIAL]             [██████████░░░░░░░░░░░░░░░░░░░░] 1/3
+  Data Model Docs [PARTIAL]        [██████████░░░░░░░░░░░░░░░░░░░░] 1/3
+  Error Handling [PARTIAL]         [██████████░░░░░░░░░░░░░░░░░░░░] 1/3
+  Security Considerations [PARTIAL] [██████████░░░░░░░░░░░░░░░░░░░░] 1/3

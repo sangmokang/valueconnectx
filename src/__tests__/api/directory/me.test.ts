@@ -394,13 +394,32 @@ describe('PUT /api/directory/me', () => {
     expect(body.data.title).toBe('VP Engineering')
   })
 
-  it('accepts nullable fields like linkedin_url and industry as null', async () => {
+  it('rejects linkedin_url as null (not nullable, only optional)', async () => {
     mocks.mockAuthGetUser.mockResolvedValue({
       data: { user: { id: 'user-id-1' } },
       error: null,
     })
 
-    const updatedProfile = { ...baseProfile, linkedin_url: null, industry: null }
+    mocks.mockFrom.mockReturnValue({
+      select: vi.fn().mockReturnValue({
+        eq: vi.fn().mockReturnThis(),
+        single: vi.fn().mockResolvedValue({ data: { id: 'user-id-1' }, error: null }),
+      }),
+    })
+
+    const req = makePutRequest({ linkedin_url: null })
+    const res = await PUT(req)
+
+    expect(res.status).toBe(400)
+  })
+
+  it('accepts nullable fields like industry as null', async () => {
+    mocks.mockAuthGetUser.mockResolvedValue({
+      data: { user: { id: 'user-id-1' } },
+      error: null,
+    })
+
+    const updatedProfile = { ...baseProfile, industry: null }
 
     let callCount = 0
     mocks.mockFrom.mockImplementation(() => {
@@ -424,12 +443,11 @@ describe('PUT /api/directory/me', () => {
       }
     })
 
-    const req = makePutRequest({ linkedin_url: null, industry: null })
+    const req = makePutRequest({ industry: null })
     const res = await PUT(req)
 
     expect(res.status).toBe(200)
     const body = await res.json()
-    expect(body.data.linkedin_url).toBeNull()
     expect(body.data.industry).toBeNull()
   })
 

@@ -1,14 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { z } from 'zod'
 import { trackEvent } from '@/lib/analytics'
-
-const linkedinSchema = z
-  .string()
-  .min(1, 'LinkedIn URL을 입력해주세요')
-  .url('올바른 URL 형식으로 입력해주세요')
-  .regex(/linkedin\.com\/in\//i, 'linkedin.com/in/ 형식의 URL을 입력해주세요')
+import { linkedinUrlSchema } from '@/lib/validation/linkedin'
 
 const INDUSTRIES = [
   'IT/소프트웨어',
@@ -55,7 +49,7 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
     setMessage(null)
     setLinkedinError(null)
 
-    const linkedinResult = linkedinSchema.safeParse(linkedinUrl)
+    const linkedinResult = linkedinUrlSchema.safeParse(linkedinUrl)
     if (!linkedinResult.success) {
       setLinkedinError(linkedinResult.error.issues[0]?.message ?? 'LinkedIn URL이 올바르지 않습니다')
       setLoading(false)

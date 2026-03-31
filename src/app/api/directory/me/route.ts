@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { unauthorized, forbidden, notFound, serverError } from '@/lib/api/error'
 import { parseBody } from '@/lib/api/validation'
+import { linkedinUrlSchema } from '@/lib/validation/linkedin'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,7 +11,7 @@ const updateSchema = z.object({
   name: z.string().min(1).max(100).optional(),
   current_company: z.string().min(1).max(200).optional(),
   title: z.string().min(1).max(200).optional(),
-  linkedin_url: z.string().url().optional().nullable(),
+  linkedin_url: linkedinUrlSchema.optional(),
   years_of_experience: z.number().int().min(0).max(60).optional().nullable(),
   bio: z.string().max(1000).optional(),
   industry: z.string().max(100).optional().nullable(),

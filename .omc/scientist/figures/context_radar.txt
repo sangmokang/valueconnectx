@@ -1,0 +1,16 @@
+  Pillar                       Gemini      OMC      VCX
+  ------------------------------------------------------
+  Role/Persona                    ■■■      ■■■      ■□□
+  Tool Inventory                  ■■■      ■■■      □□□
+  Constraints                     ■■■      ■■■      ■■□
+  Success Criteria                ■■■      ■■□      ■■□
+  Exec Protocol                   ■■■      ■■■      ■■□
+  Output Format Spec              ■■■      ■■□      □□□
+  Failure Modes                   ■■■      ■■□      ■□□
+  Context Persistence             ■■□      ■■■      ■■□
+  Inter-Agent Protocol            ■■■      ■■■      ■□□
+  Domain Knowledge                ■■■      ■□□      ■■■
+  ------------------------------------------------------
+  TOTAL Gemini                  29/30  (97%)
+  TOTAL OMC Global              25/30  (83%)
+  TOTAL VCX Project             14/30  (47%)

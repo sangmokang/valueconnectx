@@ -1,0 +1,12 @@
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"oh-my-claudecode:autopilot"}
+{"t":0,"agent":"a8e9b13","agent_type":"explore","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a8e9b13","agent_type":"explore","event":"agent_stop","success":true,"duration_ms":43299}
+{"t":0,"agent":"abc2c01","agent_type":"explore","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"abc2c01","agent_type":"explore","event":"agent_stop","success":true,"duration_ms":55101}
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"oh-my-claudecode:autopilot"}
+{"t":0,"agent":"a7e1cca","agent_type":"explore","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"aecc6e9","agent_type":"unknown","event":"agent_stop","success":true}
+{"t":0,"agent":"a7e1cca","agent_type":"explore","event":"agent_stop","success":true,"duration_ms":51975}
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"oh-my-claudecode:autopilot"}
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"oh-my-claudecode:autopilot"}
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"webapp-testing"}

@@ -3,6 +3,7 @@ import { createServerClient } from '@supabase/ssr'
 import { isPublicRoute, isSemiPublicRoute, isProtectedRoute, isAdminRoute, isAuthRoute } from '@/lib/auth/routes'
 import type { Database } from '@/types/supabase'
 import { rateLimit, apiLimiter, directoryLimiter, directoryBurstLimiter, directoryDailyLimiter } from '@/lib/rate-limit'
+import { createApiError, unauthorized, forbidden, serverError } from '@/lib/api/error'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -45,20 +46,17 @@ export async function middleware(request: NextRequest) {
     const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || 'unknown'
     const { success: rateLimitOk } = await rateLimit(apiLimiter, `api:${ip}`)
     if (!rateLimitOk) {
-      return NextResponse.json(
-        { error: '요청 한도를 초과했습니다. 잠시 후 다시 시도해주세요.' },
-        { status: 429 }
-      )
+      return createApiError(429, '요청 한도를 초과했습니다. 잠시 후 다시 시도해주세요.', 'RATE_LIMITED')
     }
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!user) return unauthorized('인증이 필요합니다')
     // DB call 2: member + corporate 단일 RPC 호출 (기존 2회 → 1회)
     const { data: info, error: rpcError } = await supabase.rpc('vcx_get_user_info', { p_user_id: user.id })
     if (rpcError) {
-      console.error('[middleware] vcx_get_user_info RPC failed (API):', rpcError.message)
-      return NextResponse.json({ error: '서버 오류가 발생했습니다' }, { status: 500 })
+      console.error('[미들웨어] vcx_get_user_info RPC 실패(API):', rpcError.message)
+      return serverError('서버 오류가 발생했습니다')
     }
     if (!info?.member && !info?.corporate) {
-      return NextResponse.json({ error: 'Not a VCX member' }, { status: 403 })
+      return forbidden('VCX 멤버가 아닙니다')
     }
 
     // 디렉토리 API 스크래핑 방지
@@ -66,17 +64,13 @@ export async function middleware(request: NextRequest) {
       const dirId = `dir:${ip}`
       const { success: dailyOk } = await rateLimit(directoryDailyLimiter, dirId)
       if (!dailyOk) {
-        return NextResponse.json(
-          { error: '일일 프로필 조회 한도를 초과했습니다. 내일 다시 시도해주세요.' },
-          { status: 429 }
-        )
+        return createApiError(429, '일일 프로필 조회 한도를 초과했습니다. 내일 다시 시도해주세요.', 'RATE_LIMITED')
       }
       const { success: burstOk } = await rateLimit(directoryBurstLimiter, dirId)
       if (!burstOk) {
-        return NextResponse.json(
-          { error: '프로필 조회가 너무 빠릅니다. 잠시 후 다시 시도해주세요.' },
-          { status: 429, headers: { 'x-vcx-scraping-warning': 'blocked' } }
-        )
+        const blocked = createApiError(429, '프로필 조회가 너무 빠릅니다. 잠시 후 다시 시도해주세요.', 'RATE_LIMITED')
+        blocked.headers.set('x-vcx-scraping-warning', 'blocked')
+        return blocked
       }
       const { success: limitOk } = await rateLimit(directoryLimiter, dirId)
       if (!limitOk) {
@@ -93,7 +87,7 @@ export async function middleware(request: NextRequest) {
     ) {
       const m = info.member as { name?: string | null; current_company?: string | null; title?: string | null; linkedin_url?: string | null }
       if (!m.name || !m.current_company || !m.title || !m.linkedin_url) {
-        return NextResponse.json({ error: '프로필을 먼저 완성해주세요' }, { status: 403 })
+        return forbidden('프로필을 먼저 완성해주세요')
       }
     }
 
@@ -114,7 +108,7 @@ export async function middleware(request: NextRequest) {
     // DB call 2: member + corporate 단일 RPC 호출
     const { data: info, error: rpcError } = await supabase.rpc('vcx_get_user_info', { p_user_id: user.id })
     if (rpcError) {
-      console.error('[middleware] vcx_get_user_info RPC failed (admin):', rpcError.message)
+      console.error('[미들웨어] vcx_get_user_info RPC 실패(admin):', rpcError.message)
       return NextResponse.redirect(new URL('/', request.url))
     }
     const isAdmin =
@@ -132,7 +126,7 @@ export async function middleware(request: NextRequest) {
     // DB call 2: member + corporate 단일 RPC 호출
     const { data: info, error: rpcError } = await supabase.rpc('vcx_get_user_info', { p_user_id: user.id })
     if (rpcError) {
-      console.error('[middleware] vcx_get_user_info RPC failed (protected):', rpcError.message)
+      console.error('[미들웨어] vcx_get_user_info RPC 실패(protected):', rpcError.message)
       response.headers.set('x-vcx-authenticated', 'false')
       return response
     }

@@ -6,7 +6,6 @@ export const mainNavItems: NavItem[] = [
     href: '/',
     children: [
       { label: '서비스 개요', href: '/' },
-      { label: '멤버 혜택', href: '/benefit' },
     ],
     requiresAuth: false,
   },

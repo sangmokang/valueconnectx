@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { z } from 'zod'
 import { Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { linkedinUrlSchema } from '@/lib/validation/linkedin'
 
 const PROFESSIONAL_FIELDS = [
   'Engineering', 'Product', 'Design', 'Data', 'Marketing',
@@ -16,11 +16,6 @@ const INDUSTRIES = [
   '의료/헬스케어', '교육', '제조/하드웨어', '스타트업',
   '미디어/콘텐츠', '법률/회계', '부동산', '기타',
 ]
-
-const linkedinSchema = z
-  .string()
-  .url('올바른 URL 형식이어야 합니다')
-  .regex(/linkedin\.com\/in\//i, 'LinkedIn 프로필 URL이어야 합니다 (linkedin.com/in/...)')
 
 interface ProfileData {
   name: string
@@ -132,7 +127,7 @@ export default function OnboardingPage() {
     if (!form.linkedin_url.trim()) {
       errors.linkedin_url = 'LinkedIn URL을 입력해주세요'
     } else {
-      const result = linkedinSchema.safeParse(form.linkedin_url.trim())
+      const result = linkedinUrlSchema.safeParse(form.linkedin_url.trim())
       if (!result.success) errors.linkedin_url = result.error.issues[0].message
     }
     setFieldErrors(errors)

@@ -47,12 +47,31 @@ export function LoginForm({ redirectTo }: { redirectTo?: string }) {
         </div>
       )}
       <div style={{ marginBottom: '16px' }}>
-        <label style={labelStyle}>이메일</label>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@company.com" required style={inputStyle} />
+        <label htmlFor="login-email" style={labelStyle}>이메일</label>
+        <input
+          id="login-email"
+          aria-label="이메일"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="name@company.com"
+          required
+          style={inputStyle}
+        />
       </div>
       <div style={{ marginBottom: '24px' }}>
-        <label style={labelStyle}>비밀번호</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required minLength={8} style={inputStyle} />
+        <label htmlFor="login-password" style={labelStyle}>비밀번호</label>
+        <input
+          id="login-password"
+          aria-label="비밀번호"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="••••••••"
+          required
+          minLength={8}
+          style={inputStyle}
+        />
       </div>
       <button type="submit" disabled={loading} style={{
         width: '100%', padding: '14px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', fontWeight: 600,

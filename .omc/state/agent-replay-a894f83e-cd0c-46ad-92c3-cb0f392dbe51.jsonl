@@ -1,0 +1,14 @@
+{"t":0,"agent":"system","event":"keyword_detected","keyword":"ralph"}
+{"t":0,"agent":"system","event":"mode_change","mode_from":"none","mode_to":"ralph"}
+{"t":0,"agent":"aa754cc","agent_type":"architect","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"ab788d0","agent_type":"executor","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a32d34f","agent_type":"executor","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"ab8fb52","agent_type":"executor","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"aa754cc","agent_type":"architect","event":"agent_stop","success":true,"duration_ms":127530}
+{"t":0,"agent":"ab788d0","agent_type":"executor","event":"agent_stop","success":true,"duration_ms":129239}
+{"t":0,"agent":"ab8fb52","agent_type":"executor","event":"agent_stop","success":true,"duration_ms":114996}
+{"t":0,"agent":"a122fa3","agent_type":"architect","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a32d34f","agent_type":"executor","event":"agent_stop","success":true,"duration_ms":262931}
+{"t":0,"agent":"a122fa3","agent_type":"architect","event":"agent_stop","success":true}
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"oh-my-claudecode:cancel"}
+{"t":0,"agent":"a4faa91","agent_type":"unknown","event":"agent_stop","success":true}

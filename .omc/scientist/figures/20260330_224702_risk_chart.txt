@@ -1,0 +1,12 @@
+Weighted Risk Index (gap_score x confidence x error_density)
+Scale: each block = 0.5 risk units
+
+  Tailwind CSS v4              7.82  ###############
+  @base-ui/react               6.02  ############
+  Next.js 14 App Router        5.72  ###########
+  @supabase/ssr                5.62  ###########
+  Zod v4                       4.78  #########
+  Vitest v4                    4.6  #########
+  Recharts v3                  2.6  #####
+  SWR v2                       0.7  #
+  D3 v7                        0.62  #
