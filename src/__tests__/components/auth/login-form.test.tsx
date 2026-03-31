@@ -76,7 +76,7 @@ describe('LoginForm', () => {
     expect(mockPush).toHaveBeenCalledWith('/dashboard')
   })
 
-  it("redirects to '/' when no redirectTo provided", async () => {
+  it("redirects to '/directory' when no redirectTo provided", async () => {
     mockSignIn.mockResolvedValueOnce({ error: null })
     const user = userEvent.setup()
     render(<LoginForm />)
