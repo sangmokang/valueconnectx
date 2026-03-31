@@ -8,7 +8,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   const { data: { user } } = await supabase.auth.getUser()
   if (user) {
     const { data: member } = await supabase.from('vcx_members').select('id').eq('id', user.id).single()
-    if (member) redirect(params.redirect || '/')
+    if (member) redirect(params.redirect || '/directory')
   }
 
   return (
