@@ -154,3 +154,48 @@ SDK/라이브러리/외부 API 사용 시 **공식 문서를 먼저 조회** 후
 
 - **병렬 실행**: 독립적 페이지/컴포넌트, 서로 다른 도메인 (예: coffeechat + positions + community)
 - **순차 실행**: 의존 관계 있는 작업 (예: 타입 정의 → API → 컴포넌트 → 페이지)
+
+## Deployment
+
+- **Platform**: Vercel
+- **환경**: Production (main branch), Preview (PR별 자동 배포)
+- **빌드 명령**: `npm run build` (Next.js)
+- **환경변수**: Vercel Dashboard에서 관리 (절대 코드에 하드코딩 금지)
+- **도메인**: Vercel 자동 배포, 커스텀 도메인은 Vercel DNS
+
+## State Management Patterns
+
+- **서버 상태**: SWR (`useSWR`) — 캐시 키 규칙: `'/api/' + resource`
+- **클라이언트 상태**: React `useState` / `useReducer` — 전역 상태 관리 라이브러리 없음
+- **폼 상태**: React `useState` + Zod 검증
+- **SWR 사용 규칙**:
+  - `mutate()` 후 revalidate로 서버 동기화
+  - 에러 처리는 `onError` 콜백
+  - 조건부 fetch: `useSWR(condition ? key : null, fetcher)`
+
+## Component Patterns
+
+- **페이지 구조**: `(protected)/` 하위 페이지는 Server Component 기본
+- **클라이언트 분리**: 인터랙션 필요한 부분만 별도 Client Component로 추출
+- **공통 UI**: `src/components/ui/` — Button, Badge, SectionHeader 등
+- **레이아웃**: `src/components/layout/` — GNB, ProtectedPageWrapper
+- **도메인별**: `src/components/{domain}/` — coffeechat, community, directory, positions
+- **Import 규칙**: `@/components/ui/button` 형태 (barrel export 사용하지 않음)
+
+## Anti-Patterns (Failure Modes)
+
+### 절대 하지 말 것
+- ❌ `tailwind.config.ts` 생성 (Tailwind v4는 CSS-first)
+- ❌ `createClientComponentClient` / `createServerComponentClient` 사용 (삭제된 API)
+- ❌ Supabase 쿠키 `{get, set, remove}` 형태 (→ `{getAll, setAll}`)
+- ❌ `cookies()` without `await` (Next.js 14에서 async)
+- ❌ `vi.importActual('lucide-react')` (무한 hang)
+- ❌ `rounded-*` Tailwind 클래스 (전역 border-radius: 0)
+- ❌ `ZodSchema` import (→ `ZodType`, Zod v4)
+- ❌ Supabase Dashboard에서 직접 테이블 수정
+- ❌ 마이그레이션 번호 중복 (현재 013, 014번 중복 존재 — 주의)
+- ❌ `@base-ui/react` 루트 import (→ 서브패스 `@base-ui/react/button`)
+- ❌ 영어 UI 텍스트 (한국어 필수)
+
+### Skills 참조
+- AI 에이전트용 상세 가이드: `AGENTS.md` → `skills/SKILL-*.md` 참조

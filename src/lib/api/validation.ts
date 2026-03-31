@@ -1,9 +1,9 @@
-import { ZodSchema, ZodError } from 'zod';
+import { ZodType, ZodError } from 'zod';
 import { badRequest } from './error';
 
 export async function parseBody<T>(
   request: Request,
-  schema: ZodSchema<T>
+  schema: ZodType<T>
 ): Promise<{ data: T; error: null } | { data: null; error: ReturnType<typeof badRequest> }> {
   try {
     const body = await request.json();
@@ -25,7 +25,7 @@ export async function parseBody<T>(
 
 export function parseSearchParams<T>(
   searchParams: URLSearchParams,
-  schema: ZodSchema<T>
+  schema: ZodType<T>
 ): { data: T; error: null } | { data: null; error: ReturnType<typeof badRequest> } {
   try {
     const params = Object.fromEntries(searchParams.entries());

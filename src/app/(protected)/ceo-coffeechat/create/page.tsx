@@ -7,7 +7,7 @@ export default async function CreateSessionPage() {
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
-    redirect('/auth/login')
+    redirect('/login')
   }
 
   // Only CEO/Founder can create sessions
