@@ -23,3 +23,9 @@ export function isAdminRoute(pathname: string): boolean {
 export function isAuthRoute(pathname: string): boolean {
   return authRoutes.some(r => pathname === r || pathname.startsWith(r + '/'))
 }
+
+/** 리다이렉트 URL을 검증하여 Open Redirect 공격 방지 */
+export function sanitizeRedirect(url?: string | null, fallback = '/directory'): string {
+  if (!url || !url.startsWith('/') || url.startsWith('//')) return fallback
+  return url
+}

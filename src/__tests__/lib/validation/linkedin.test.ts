@@ -36,11 +36,9 @@ describe('linkedinUrlSchema', () => {
       expect(result.success).toBe(false)
     })
 
-    it('ftp 프로토콜 LinkedIn URL은 url() 검증을 통과하지만 regex로 거부되지 않으므로 통과한다 (ftp는 유효한 URL 형식)', () => {
-      // Zod .url()은 ftp:// 를 유효한 URL로 허용한다
-      // ftp://linkedin.com/in/user 는 regex도 통과하므로 성공한다
+    it('ftp 프로토콜 LinkedIn URL은 https?:// 앵커링 regex에 의해 거부된다', () => {
       const result = linkedinUrlSchema.safeParse('ftp://linkedin.com/in/user')
-      expect(result.success).toBe(true)
+      expect(result.success).toBe(false)
     })
   })
 

@@ -5,6 +5,13 @@ import type { Database } from '@/types/supabase'
 import { rateLimit, apiLimiter, directoryLimiter, directoryBurstLimiter, directoryDailyLimiter } from '@/lib/rate-limit'
 import { createApiError, unauthorized, forbidden, serverError } from '@/lib/api/error'
 
+type MemberInfo = { name?: string | null; current_company?: string | null; title?: string | null; linkedin_url?: string | null }
+
+function isProfileIncomplete(member: unknown): boolean {
+  const m = member as MemberInfo
+  return !m.name || !m.current_company || !m.title || !m.linkedin_url
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
@@ -92,8 +99,7 @@ export async function middleware(request: NextRequest) {
       request.method !== 'GET' &&
       !pathname.startsWith('/api/directory/me')
     ) {
-      const m = info.member as { name?: string | null; current_company?: string | null; title?: string | null; linkedin_url?: string | null }
-      if (!m.name || !m.current_company || !m.title || !m.linkedin_url) {
+      if (isProfileIncomplete(info.member)) {
         return forbidden('프로필을 먼저 완성해주세요')
       }
     }
@@ -145,10 +151,7 @@ export async function middleware(request: NextRequest) {
       !info?.corporate &&
       !pathname.startsWith('/onboarding')
     ) {
-      const m = info.member as { name?: string | null; current_company?: string | null; title?: string | null; linkedin_url?: string | null }
-      const isProfileIncomplete =
-        !m.name || !m.current_company || !m.title || !m.linkedin_url
-      if (isProfileIncomplete) {
+      if (isProfileIncomplete(info.member)) {
         return NextResponse.redirect(new URL('/onboarding', request.url))
       }
     }
