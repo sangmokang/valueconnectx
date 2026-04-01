@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { Badge } from '@/components/ui/badge'
 
 export interface MemberCardData {
   id: string
@@ -11,6 +10,8 @@ export interface MemberCardData {
   industry: string | null
   is_open_to_chat: boolean
   avatar_url: string | null
+  bio?: string | null
+  join_date?: string | null
 }
 
 interface MemberCardProps {
@@ -18,91 +19,118 @@ interface MemberCardProps {
 }
 
 export function MemberCard({ member }: MemberCardProps) {
+  const initial = member.name.charAt(0)
+  const isCore = member.member_tier === 'core'
+  const joinLabel = member.join_date
+    ? `가입 ${member.join_date.slice(0, 7).replace('-', '.')}`
+    : null
+
   return (
     <Link
       href={`/directory/${member.id}`}
-      className="block bg-white border border-[#e0d9ce] hover:border-[#c9a84c] transition-colors duration-150"
-      style={{ borderRadius: 0 }}
+      className="block bg-white border border-black/[0.08] no-underline hover:border-[#c9a84c] transition-colors duration-150"
     >
-      <div className="p-5">
-        {/* Header: avatar + name + tier */}
-        <div className="flex items-start justify-between gap-3 mb-3">
-          <div className="flex items-center gap-3 min-w-0">
-            {member.avatar_url ? (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <img
-                src={member.avatar_url}
-                alt={member.name}
-                className="w-10 h-10 object-cover flex-shrink-0"
-                style={{ borderRadius: 0 }}
-              />
-            ) : (
-              <div
-                className="w-10 h-10 bg-[#e8e2d9] flex items-center justify-center flex-shrink-0"
-                style={{ borderRadius: 0 }}
-              >
-                <span className="text-[#888888] text-sm font-vcx-serif font-bold">
-                  {member.name.charAt(0)}
-                </span>
-              </div>
+      <div className="p-6 md:p-7 flex gap-5">
+        {/* Avatar */}
+        {member.avatar_url ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={member.avatar_url}
+            alt={member.name}
+            className="w-[52px] h-[52px] object-cover flex-shrink-0"
+            style={{ borderRadius: '50%' }}
+          />
+        ) : (
+          <div
+            className="w-[52px] h-[52px] bg-[#1a1a1a] flex items-center justify-center flex-shrink-0"
+            style={{ borderRadius: '50%' }}
+          >
+            <span
+              className="text-[#c9a84c] text-[18px] font-extrabold"
+              style={{ fontFamily: 'Georgia, serif' }}
+            >
+              {initial}
+            </span>
+          </div>
+        )}
+
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          {/* Name + badge + join date */}
+          <div className="flex items-center gap-2.5 mb-1 flex-wrap">
+            <span
+              className="text-[16px] font-extrabold text-[#1a1a1a]"
+              style={{ fontFamily: 'Georgia, serif' }}
+            >
+              {member.name}
+            </span>
+            <span
+              className="text-[11px] px-2 py-0.5 font-bold tracking-[0.05em]"
+              style={{
+                background: isCore ? '#1a1a1a' : '#f5f0e8',
+                color: isCore ? '#c9a84c' : '#777',
+              }}
+            >
+              {isCore ? 'Core' : 'Endorsed'}
+            </span>
+            {joinLabel && (
+              <span className="text-[12px] text-[#888] ml-auto">{joinLabel}</span>
             )}
-            <div className="min-w-0">
-              <p className="font-vcx-serif font-bold text-[#1a1a1a] text-base leading-tight truncate">
-                {member.name}
-              </p>
-              {member.industry && (
-                <p className="vcx-label text-[#888888] mt-0.5">{member.industry}</p>
+          </div>
+
+          {/* Company + Title */}
+          {(member.current_company || member.title) && (
+            <div className="mb-2">
+              {member.current_company && (
+                <div className="text-[13.5px] text-[#555] font-medium">{member.current_company}</div>
+              )}
+              {member.title && (
+                <div className="text-[13px] text-[#777]">{member.title}</div>
               )}
             </div>
-          </div>
-          <Badge variant={member.member_tier}>
-            {member.member_tier === 'core' ? 'Core' : 'Endorsed'}
-          </Badge>
+          )}
+
+          {/* Industry */}
+          {member.industry && (
+            <div className="text-[12px] text-[#888] mb-2">{member.industry}</div>
+          )}
+
+          {/* Bio */}
+          {member.bio && (
+            <p
+              className="text-[14px] text-[#555] leading-[1.8] mb-3 italic line-clamp-2"
+              style={{ fontFamily: 'Georgia, serif' }}
+            >
+              &ldquo;{member.bio}&rdquo;
+            </p>
+          )}
+
+          {/* Tags */}
+          {member.professional_fields.length > 0 && (
+            <div className="flex gap-1.5 flex-wrap">
+              {member.professional_fields.slice(0, 3).map((field) => (
+                <span
+                  key={field}
+                  className="text-[11.5px] px-2 py-0.5 bg-[#f5f0e8] border border-black/[0.08] text-[#777]"
+                >
+                  {field}
+                </span>
+              ))}
+              {member.professional_fields.length > 3 && (
+                <span className="text-[11.5px] text-[#999]">
+                  +{member.professional_fields.length - 3}
+                </span>
+              )}
+            </div>
+          )}
+          {/* Open to chat */}
+          {member.is_open_to_chat && (
+            <div className="flex items-center gap-1.5 mt-2 pt-2 border-t border-[#e8e2d9]">
+              <span className="w-1.5 h-1.5 bg-[#c9a84c] flex-shrink-0" style={{ borderRadius: 0 }} />
+              <span className="text-[11px] text-[#c9a84c] font-semibold tracking-[0.05em]">커피챗 가능</span>
+            </div>
+          )}
         </div>
-
-        {/* Company + Title */}
-        {(member.current_company || member.title) && (
-          <div className="mb-3">
-            {member.current_company && (
-              <p className="text-sm font-vcx-sans text-[#444444] font-medium truncate">
-                {member.current_company}
-              </p>
-            )}
-            {member.title && (
-              <p className="text-xs font-vcx-sans text-[#888888] truncate mt-0.5">
-                {member.title}
-              </p>
-            )}
-          </div>
-        )}
-
-        {/* Specialty tags */}
-        {member.professional_fields.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-3">
-            {member.professional_fields.slice(0, 3).map((field) => (
-              <span
-                key={field}
-                className="px-2 py-0.5 text-[10px] font-vcx-sans text-[#666666] bg-[#f0ebe2] border border-[#e0d9ce]"
-                style={{ borderRadius: 0 }}
-              >
-                {field}
-              </span>
-            ))}
-            {member.professional_fields.length > 3 && (
-              <span className="px-2 py-0.5 text-[10px] font-vcx-sans text-[#999999]">
-                +{member.professional_fields.length - 3}
-              </span>
-            )}
-          </div>
-        )}
-
-        {/* Open to chat */}
-        {member.is_open_to_chat && (
-          <div className="flex items-center gap-1.5 mt-2 pt-2 border-t border-[#e8e2d9]">
-            <span className="w-1.5 h-1.5 bg-[#c9a84c] flex-shrink-0" style={{ borderRadius: 0 }} />
-            <span className="vcx-label text-[#c9a84c]">커피챗 가능</span>
-          </div>
-        )}
       </div>
     </Link>
   )

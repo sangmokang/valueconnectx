@@ -32,6 +32,42 @@ export interface CoffeeChatPost {
   isNew: boolean;
 }
 
+export interface CeoSession {
+  id: string;
+  title: string;
+  description: string;
+  session_date: string;
+  max_participants: number;
+  status: 'open' | 'closed' | 'completed' | 'cancelled';
+  tags: string[];
+  application_count: number;
+  host: {
+    id: string;
+    name: string;
+    title: string | null;
+    company: string;
+    role: string;
+    company_desc?: string | null;
+  } | null;
+  // Derived / enriched fields
+  deadline_label?: string;
+  slots_remaining?: number;
+  looking_for?: string;
+  signal?: string;
+}
+
+export interface PeerSession {
+  id: string;
+  authorBadge: 'Core' | 'Endorsed';
+  role: string;
+  want: string;
+  topic: string;
+  tags: string[];
+  applicants: number;
+  posted: string;
+  status: 'open' | 'matched' | 'closed';
+}
+
 // Service Pillars (서비스 소개 페이지용)
 export interface ServicePillar {
   number: string;
@@ -48,6 +84,7 @@ export interface NavItem {
   children?: NavItem[];
   isActive?: boolean;
   requiresAuth?: boolean;
+  badge?: string;
 }
 
 // Position
@@ -55,13 +92,33 @@ export interface Position {
   id: string;
   title: string;
   company: string;
+  companyTag?: string;
   department: string;
   level: string;
   description: string;
   postedAt: string;
+  score?: number;
+  domain?: string;
+  tags?: string[];
+  exclusive?: boolean;
+  salaryBand?: string;
+  teamSize?: string;
+  location?: string;
+  summary?: string;
+  fullDesc?: string;
+  texture?: string[];
+  reqs?: string[];
 }
 
-// Community
+// Community / Lounge
+export type LoungeCategoryKey = 'all' | 'reading' | 'career' | 'company' | 'leadership' | 'productivity' | 'casual';
+
+export interface LoungeCategory {
+  key: LoungeCategoryKey;
+  icon: string;
+  label: string;
+}
+
 export type CommunityCategory =
   | '커리어 고민'
   | '조직 고민·리더쉽'
@@ -78,4 +135,21 @@ export interface CommunityPost {
   likes: number;
   comments: number;
   createdAt: string;
+}
+
+// Feed
+export interface FeedItem {
+  id: string;
+  company: string;
+  company_tag: string | null;
+  role: string;
+  level: string | null;
+  team_size: string | null;
+  salary_band: string | null;
+  location: string | null;
+  tags: string[];
+  summary: string | null;
+  exclusive: boolean;
+  published_at: string;
+  user_response: 'yes' | 'skip' | null;
 }

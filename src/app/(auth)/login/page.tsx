@@ -2,6 +2,8 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { LoginForm } from '@/components/auth/login-form'
 
+export const dynamic = 'force-dynamic'
+
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ redirect?: string; error?: string }> }) {
   const params = await searchParams
   const supabase = await createClient()

@@ -8,18 +8,22 @@ import { createApiError, unauthorized, forbidden, serverError } from '@/lib/api/
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
+  // x-pathname 헤더를 모든 응답에 전달 (GNB 활성 상태 판별용)
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set('x-pathname', pathname)
+
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api/invites/verify') ||
     pathname.includes('.')
   ) {
-    return NextResponse.next()
+    return NextResponse.next({ request: { headers: requestHeaders } })
   }
 
-  if (isAuthRoute(pathname)) return NextResponse.next()
-  if (isPublicRoute(pathname)) return NextResponse.next()
+  if (isAuthRoute(pathname)) return NextResponse.next({ request: { headers: requestHeaders } })
+  if (isPublicRoute(pathname)) return NextResponse.next({ request: { headers: requestHeaders } })
 
-  let response = NextResponse.next({ request })
+  let response = NextResponse.next({ request: { headers: requestHeaders } })
   const supabase = createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -28,7 +32,10 @@ export async function middleware(request: NextRequest) {
         getAll() { return request.cookies.getAll() },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-          response = NextResponse.next({ request })
+          // 쿠키 갱신 후 request.headers에서 최신 Cookie 헤더를 반영한 헤더 재생성
+          const updatedHeaders = new Headers(request.headers)
+          updatedHeaders.set('x-pathname', pathname)
+          response = NextResponse.next({ request: { headers: updatedHeaders } })
           cookiesToSet.forEach(({ name, value, options }) =>
             response.cookies.set(name, value, options)
           )
