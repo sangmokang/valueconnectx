@@ -44,6 +44,6 @@ export const servicePillars: ServicePillar[] = [
     description:
       '사연을 올리면 비밀 댓글로 신청받고, 작성자가 직접 선택하는 P2P 연결. 커리어 대화뿐 아니라 채용을 전제로 한 Coffee Chat도 가능합니다.',
     insight:
-      'Coffee Chat을 통해 채용으로 이어지는 경우, 해당 채용은 ValueConnect의 소개·알선 구조를 통해 진행됩니다. Self Introduction Reward 지급.',
+      '같은 고민을 가진 사람과 솔직하게 대화할 수 있을 때, 커리어의 선택지가 넓어진다.',
   },
 ];
