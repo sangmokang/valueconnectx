@@ -21,12 +21,12 @@ export default function ServicePage() {
             className="text-[clamp(36px,5vw,60px)] font-extrabold text-[#f5f0e8] leading-[1.2] mt-0 mb-7 tracking-[-1.5px]"
             style={{ fontFamily: 'Georgia, serif' }}
           >
-            시대의 인재를 모읍니다
+            탁월한 사람들이 스스로 모이는 곳
           </h1>
           <div className="border-l-2 border-[#b8902a] pl-6 max-w-[640px]">
             <p className="text-[16px] leading-[1.9] text-[#b0a898] m-0">
-              회사에 한 명 있을까 말까 한 사람들이 모이는 곳.<br />
-              채용정보 큐레이션으로 유입하고, 커뮤니티 라운지로 머물게 하고,<br />
+              각 분야에서 깊이 있는 경험을 가진 사람들이 모이는 곳.<br />
+              최적의 기회를 먼저 전달하고, 커뮤니티 라운지로 머물게 하고,<br />
               CEO Coffee Chat으로 연결한다.
             </p>
           </div>
@@ -74,7 +74,7 @@ export default function ServicePage() {
             className="text-[20px] font-bold text-[#f5f0e8] leading-[1.6] max-w-[680px] tracking-[-0.3px] mb-7"
             style={{ fontFamily: 'Georgia, serif' }}
           >
-            &ldquo;지금 가장 중요한 것은 30명을 모으는 것이 아니라,<br />30명이 머무는 이유를 설계하는 것이다.&rdquo;
+            &ldquo;지금 가장 중요한 것은 사람을 모으는 것이 아니라,<br />사람이 머무는 이유를 설계하는 것이다.&rdquo;
           </p>
           <div className="flex gap-3 flex-wrap">
             <Link

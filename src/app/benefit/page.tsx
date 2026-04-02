@@ -2,7 +2,7 @@ const TIERS = [
   {
     name: 'Core',
     dark: true,
-    desc: 'ValueConnect가 직접 검증한 핵심 멤버.',
+    desc: 'ValueConnect가 직접 검증한 멤버.',
     benefits: [
       '채용정보 큐레이션 피드 (주 1회)',
       '커뮤니티 라운지 전체 접근',
@@ -16,7 +16,7 @@ const TIERS = [
   {
     name: 'Endorsed',
     dark: false,
-    desc: 'Core 멤버의 보증으로 참여한 멤버. 단계적으로 Core로 전환됩니다.',
+    desc: '멤버의 추천으로 참여한 분. 활동에 따라 전환됩니다.',
     benefits: [
       '채용정보 큐레이션 피드 (주 1회)',
       '커뮤니티 라운지 읽기 + 댓글',

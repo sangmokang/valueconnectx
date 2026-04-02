@@ -28,7 +28,7 @@ export const mainNavItems: NavItem[] = [
     requiresAuth: true,
   },
   {
-    label: 'CEO Coffeechat',
+    label: 'CEO 커피챗',
     href: '/ceo-coffeechat',
     requiresAuth: true,
   },
