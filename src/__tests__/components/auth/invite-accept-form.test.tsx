@@ -65,15 +65,15 @@ describe('InviteAcceptForm', () => {
         json: async () => ({ success: true, redirectTo: '/' }),
       })
 
-    const user = userEvent.setup()
     render(<InviteAcceptForm initialToken="abc123" />)
-
     await screen.findByText('홍길동님이 초대했습니다')
 
+    const user = userEvent.setup()
     await user.type(screen.getByPlaceholderText('홍길동'), '김철수')
     const passwordInputs = screen.getAllByPlaceholderText('••••••••')
     await user.type(passwordInputs[0], 'password123')
     await user.type(passwordInputs[1], 'password123')
+    await user.type(screen.getByPlaceholderText('https://linkedin.com/in/your-profile'), 'https://linkedin.com/in/kimcheolsu')
     await user.click(screen.getByRole('button', { name: '계정 생성하기' }))
 
     await waitFor(() => {
@@ -99,10 +99,10 @@ describe('InviteAcceptForm', () => {
       json: async () => ({ valid: true, email: 'test@example.com', invitedByName: '홍길동', memberTier: 'core' }),
     })
 
-    const user = userEvent.setup()
     render(<InviteAcceptForm initialToken="abc123" />)
-
     await screen.findByText('홍길동님이 초대했습니다')
+
+    const user = userEvent.setup()
 
     await user.type(screen.getByPlaceholderText('홍길동'), '김철수')
     const passwordInputs = screen.getAllByPlaceholderText('••••••••')
@@ -118,10 +118,10 @@ describe('InviteAcceptForm', () => {
       json: async () => ({ valid: true, email: 'test@example.com', invitedByName: '홍길동', memberTier: 'core' }),
     })
 
-    const user = userEvent.setup()
     render(<InviteAcceptForm initialToken="abc123" />)
-
     await screen.findByText('홍길동님이 초대했습니다')
+
+    const user = userEvent.setup()
 
     await user.type(screen.getByPlaceholderText('홍길동'), '김철수')
     const passwordInputs = screen.getAllByPlaceholderText('••••••••')

@@ -402,7 +402,7 @@ export function LoungeFeed() {
                 >
                   이 카테고리의 첫 번째 글을 남겨보세요
                 </div>
-                <div style={{ fontSize: '13.5px' }}>이 카테고리의 첫 번째 글을 남겨보세요</div>
+                <div style={{ fontSize: '13.5px', color: '#888888' }}>익명으로 자유롭게 이야기를 시작해보세요</div>
               </div>
             ) : (
               filtered.map((post, idx) => (

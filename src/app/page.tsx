@@ -33,7 +33,7 @@ export default function ServicePage() {
           <div className="mt-10 flex gap-8 flex-wrap">
             {[
               { v: '초대 전용', l: 'Invite-Only Network' },
-              { v: '25%', l: '성사 수수료 구조' },
+              { v: '검증된', l: '커뮤니티 주도 네트워크' },
               { v: 'CEO Direct', l: 'HR 경유 없는 채용' },
             ].map((m) => (
               <div key={m.l} className="border-l border-[rgba(201,168,76,0.3)] pl-4">

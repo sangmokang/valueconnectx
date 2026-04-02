@@ -125,7 +125,7 @@ export default async function DirectoryPage({
         {/* Header */}
         <div className="mb-6">
           <p className="vcx-section-label mb-1">멤버 디렉토리</p>
-          <h1 className="font-vcx-serif font-bold text-[#1a1a1a] text-3xl">Member Directory</h1>
+          <h1 className="font-vcx-serif font-bold text-[#1a1a1a] text-3xl">멤버 디렉토리</h1>
         </div>
 
         {/* Filters (client component) */}

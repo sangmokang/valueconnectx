@@ -26,7 +26,7 @@ export const servicePillars: ServicePillar[] = [
     description:
       'CEO/Founder/C-Level이 직접 세션을 생성하고, 멤버가 신청하며, CEO가 선택하는 1:1 Coffee Chat. 세션 생성 시 약식 헤드헌팅 계약 조건에 동의해야 합니다.',
     insight:
-      '채용이 발생할 경우 ValueConnect 소개 수수료가 적용됩니다. VCX Network를 우회하는 행동을 방지하는 구조입니다.',
+      'HR을 거치지 않고 의사결정자와 직접 대화하는 것만으로도, 조직 문화와 결의 수준을 서로 가늠할 수 있다.',
   },
   {
     number: '04',

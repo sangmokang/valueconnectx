@@ -38,7 +38,7 @@ const PILLARS = [
     num: '04',
     label: 'PEER COFFEE CHAT',
     title: '같은 고도의 대화',
-    desc: "멤버가 사연을 올리고 신청자를 직접 선택하는 P2P 네트워킹. 채용으로 이어지면 VCX 소개 수수료가 적용됩니다.",
+    desc: "멤버가 사연을 올리고 신청자를 직접 선택하는 P2P 네트워킹.",
     insight:
       "Granovetter의 약한 연결 이론 — 정보 격차를 좁히는 것은 '아는 사람'이 아닌 '잘 모르지만 연결된 사람'에서 온다.",
     icon: '◉',

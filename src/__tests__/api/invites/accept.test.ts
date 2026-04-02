@@ -108,7 +108,7 @@ describe('POST /api/invites/accept', () => {
   it('returns 400 when password is less than 8 characters', async () => {
     mocks.mockRateLimit.mockReturnValue({ success: true, remaining: 4 })
 
-    const req = makeRequest({ token: 'tok', password: 'short', name: 'Bob' })
+    const req = makeRequest({ token: 'tok', password: 'short', name: 'Bob', linkedin_url: 'https://linkedin.com/in/bob' })
     const res = await POST(req)
 
     expect(res.status).toBe(400)
@@ -122,7 +122,7 @@ describe('POST /api/invites/accept', () => {
     // RPC returns empty rows = already consumed or doesn't exist
     mocks.mockRpc.mockResolvedValue({ data: [], error: null })
 
-    const req = makeRequest({ token: 'bad-token', password: 'password1', name: 'Bob' })
+    const req = makeRequest({ token: 'bad-token', password: 'password1', name: 'Bob', linkedin_url: 'https://linkedin.com/in/bob' })
     const res = await POST(req)
 
     expect(res.status).toBe(400)
@@ -148,7 +148,7 @@ describe('POST /api/invites/accept', () => {
       return {}
     })
 
-    const req = makeRequest({ token: 'expired-token', password: 'password1', name: 'Bob' })
+    const req = makeRequest({ token: 'expired-token', password: 'password1', name: 'Bob', linkedin_url: 'https://linkedin.com/in/bob' })
     const res = await POST(req)
 
     expect(res.status).toBe(400)
@@ -187,7 +187,7 @@ describe('POST /api/invites/accept', () => {
       error: null,
     })
 
-    const req = makeRequest({ token: 'valid-token', password: 'password1', name: 'Bob' })
+    const req = makeRequest({ token: 'valid-token', password: 'password1', name: 'Bob', linkedin_url: 'https://linkedin.com/in/bob' })
     const res = await POST(req)
 
     expect(mocks.mockAdminAuth.admin.createUser).toHaveBeenCalledWith({
@@ -226,7 +226,7 @@ describe('POST /api/invites/accept', () => {
       error: null,
     })
 
-    const req = makeRequest({ token: 'valid-token', password: 'newpassword1', name: 'Bob' })
+    const req = makeRequest({ token: 'valid-token', password: 'newpassword1', name: 'Bob', linkedin_url: 'https://linkedin.com/in/bob' })
     await POST(req)
 
     expect(mocks.mockAdminAuth.admin.updateUserById).toHaveBeenCalledWith(
@@ -266,7 +266,7 @@ describe('POST /api/invites/accept', () => {
       error: null,
     })
 
-    const req = makeRequest({ token: 'valid-token', password: 'password1', name: 'Bob' })
+    const req = makeRequest({ token: 'valid-token', password: 'password1', name: 'Bob', linkedin_url: 'https://linkedin.com/in/bob' })
     await POST(req)
 
     expect(mockMemberInsert).toHaveBeenCalledWith(
@@ -317,41 +317,26 @@ describe('POST /api/invites/accept', () => {
     )
   })
 
-  it('sets linkedin_url to null in vcx_members insert when not provided', async () => {
+  it('returns 400 when linkedin_url is not provided', async () => {
     mocks.mockRateLimit.mockReturnValue({ success: true, remaining: 4 })
-    mocks.mockRpc.mockResolvedValue({ data: [baseInvite], error: null })
-
-    const mockMemberInsert = vi.fn().mockResolvedValue({ data: null, error: null })
-
-    mocks.mockFrom.mockImplementation((table: string) => {
-      if (table === 'vcx_members') {
-        return { insert: mockMemberInsert }
-      }
-      return {
-        select: vi.fn().mockReturnValue({
-          eq: vi.fn().mockReturnValue({
-            single: vi.fn().mockResolvedValue({ data: null, error: null }),
-          }),
-        }),
-      }
-    })
-
-    mocks.mockAdminAuth.admin.listUsers.mockResolvedValue({ data: { users: [] } })
-    mocks.mockAdminAuth.admin.createUser.mockResolvedValue({
-      data: { user: { id: 'new-user-id' } },
-      error: null,
-    })
-    mocks.mockServerSignIn.mockResolvedValue({
-      data: { session: 'mock-session' },
-      error: null,
-    })
 
     const req = makeRequest({ token: 'valid-token', password: 'password1', name: 'Bob' })
-    await POST(req)
+    const res = await POST(req)
 
-    expect(mockMemberInsert).toHaveBeenCalledWith(
-      expect.objectContaining({ linkedin_url: null })
-    )
+    expect(res.status).toBe(400)
+    const body = await res.json()
+    expect(body.error).toBe('모든 필드를 입력해주세요')
+  })
+
+  it('returns 400 when linkedin_url format is invalid', async () => {
+    mocks.mockRateLimit.mockReturnValue({ success: true, remaining: 4 })
+
+    const req = makeRequest({ token: 'valid-token', password: 'password1', name: 'Bob', linkedin_url: 'https://example.com/not-linkedin' })
+    const res = await POST(req)
+
+    expect(res.status).toBe(400)
+    const body = await res.json()
+    expect(body.error).toBe('LinkedIn 프로필 URL이어야 합니다 (linkedin.com/in/...)')
   })
 
   it('returns success with redirectTo on valid accept', async () => {
@@ -384,7 +369,7 @@ describe('POST /api/invites/accept', () => {
       error: null,
     })
 
-    const req = makeRequest({ token: 'valid-token', password: 'password1', name: 'Bob' })
+    const req = makeRequest({ token: 'valid-token', password: 'password1', name: 'Bob', linkedin_url: 'https://linkedin.com/in/bob' })
     const res = await POST(req)
 
     expect(res.status).toBe(200)

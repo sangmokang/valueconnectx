@@ -111,7 +111,7 @@ export function PeerCoffeechatClient({ initialSessions, appliedIds: initialAppli
           <div className="py-24 text-center">
             <p className="font-vcx-serif text-[20px] text-[#888] mb-2">첫 번째 커피챗 사연을 올려보세요</p>
             <p className="text-[14px] text-[#aaa] font-vcx-sans">
-              첫 번째 사연을 올려보세요
+              사연을 올리면 나와 대화하고 싶은 멤버가 신청합니다
             </p>
           </div>
         ) : (

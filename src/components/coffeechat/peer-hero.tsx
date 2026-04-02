@@ -32,8 +32,7 @@ export function PeerHero({ onWriteClick }: PeerHeroProps) {
               같은 고도에서<br />나누는 대화
             </h1>
             <p className="text-[15px] text-[#b0a898] leading-[1.9] font-vcx-sans max-w-[480px]">
-              멤버가 사연을 올리고 신청자를 직접 선택합니다.<br />
-              채용으로 이어지면 VCX 소개 수수료가 적용됩니다.
+              멤버가 사연을 올리고 신청자를 직접 선택합니다.
             </p>
           </div>
 

@@ -1,6 +1,6 @@
 export const publicRoutes = ['/', '/service-overview']
 export const semiPublicRoutes = ['/positions']
-export const protectedRoutes = ['/coffeechat', '/ceo-coffeechat', '/community', '/directory', '/onboarding']
+export const protectedRoutes = ['/coffeechat', '/ceo-coffeechat', '/community', '/directory', '/onboarding', '/feed']
 export const adminRoutes = ['/admin']
 export const authRoutes = ['/login', '/invite', '/forgot-password', '/reset-password']
 

@@ -35,6 +35,8 @@ export function InviteAcceptForm({ initialToken }: { initialToken?: string }) {
     e.preventDefault(); setError(null)
     if (password !== confirmPassword) { setError('비밀번호가 일치하지 않습니다'); return }
     if (password.length < 8) { setError('비밀번호는 8자 이상이어야 합니다'); return }
+    if (!linkedinUrl) { setError('LinkedIn URL을 입력해주세요'); return }
+    if (!/^https?:\/\/(www\.)?linkedin\.com\/in\//i.test(linkedinUrl)) { setError('LinkedIn 프로필 URL이어야 합니다 (linkedin.com/in/...)'); return }
     setLoading(true)
     try {
       const res = await fetch('/api/invites/accept', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token, password, name, linkedin_url: linkedinUrl }) })
@@ -71,10 +73,10 @@ export function InviteAcceptForm({ initialToken }: { initialToken?: string }) {
         </div>
       )}
       {error && <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', padding: '12px 16px', marginBottom: '16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#EF4444', borderRadius: 0 }}>{error}</div>}
-      <div style={{ marginBottom: '16px' }}><label style={labelStyle}>이름 (실명)</label><input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="홍길동" required style={inputStyle} /></div>
-      <div style={{ marginBottom: '16px' }}><label style={labelStyle}>비밀번호 (8자 이상)</label><input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required minLength={8} style={inputStyle} /></div>
-      <div style={{ marginBottom: '16px' }}><label style={labelStyle}>비밀번호 확인</label><input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="••••••••" required minLength={8} style={inputStyle} /></div>
-      <div style={{ marginBottom: '24px' }}><label style={labelStyle}>LinkedIn URL (선택)</label><input type="url" value={linkedinUrl} onChange={(e) => setLinkedinUrl(e.target.value)} placeholder="https://linkedin.com/in/your-profile" style={inputStyle} /></div>
+      <div style={{ marginBottom: '16px' }}><label style={labelStyle}>이름 (실명)</label><input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="홍길동" style={inputStyle} /></div>
+      <div style={{ marginBottom: '16px' }}><label style={labelStyle}>비밀번호 (8자 이상)</label><input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" style={inputStyle} /></div>
+      <div style={{ marginBottom: '16px' }}><label style={labelStyle}>비밀번호 확인</label><input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="••••••••" style={inputStyle} /></div>
+      <div style={{ marginBottom: '24px' }}><label style={labelStyle}>LinkedIn URL</label><input type="url" value={linkedinUrl} onChange={(e) => setLinkedinUrl(e.target.value)} placeholder="https://linkedin.com/in/your-profile" style={inputStyle} /></div>
       <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', fontWeight: 600, color: '#f0ebe2', background: loading ? '#444' : '#1a1a1a', border: 'none', borderRadius: 0, cursor: loading ? 'not-allowed' : 'pointer' }}>
         {loading ? '계정 생성 중...' : '계정 생성하기'}
       </button>
