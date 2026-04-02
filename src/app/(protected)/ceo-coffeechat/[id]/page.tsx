@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { SessionDetail } from '@/components/coffeechat/session-detail'
 import { ApplicationList } from '@/components/coffeechat/application-list'
 import { ApplyButton } from '@/components/coffeechat/apply-button'
+import { PreBriefCard } from '@/components/coffeechat/pre-brief-card'
 import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
@@ -157,27 +158,35 @@ export default async function SessionDetailPage({ params }: PageProps) {
           <div className="lg:col-span-1">
             <div className="sticky top-6 space-y-4">
               {isHost ? (
-                <div className="border border-[#1a1a1a] bg-white p-5">
-                  <p className="vcx-section-label mb-3">호스트 관리</p>
-                  <p className="text-[13px] font-vcx-sans text-vcx-sub-3 mb-4">
-                    이 세션의 호스트입니다
-                  </p>
-                  <Link
-                    href={`/ceo-coffeechat/${id}/edit`}
-                    className="block w-full text-center py-3 border border-[#1a1a1a] text-[13px] font-vcx-sans text-vcx-dark hover:bg-[#f0ebe2] transition-colors"
-                  >
-                    세션 수정
-                  </Link>
-                </div>
+                <>
+                  <div className="border border-[#1a1a1a] bg-white p-5">
+                    <p className="vcx-section-label mb-3">호스트 관리</p>
+                    <p className="text-[13px] font-vcx-sans text-vcx-sub-3 mb-4">
+                      이 세션의 호스트입니다
+                    </p>
+                    <Link
+                      href={`/ceo-coffeechat/${id}/edit`}
+                      className="block w-full text-center py-3 border border-[#1a1a1a] text-[13px] font-vcx-sans text-vcx-dark hover:bg-[#f0ebe2] transition-colors"
+                    >
+                      세션 수정
+                    </Link>
+                  </div>
+                  <PreBriefCard sessionId={id} />
+                </>
               ) : (
-                <ApplyButton
-                  sessionId={id}
-                  sessionTitle={session.title}
-                  sessionStatus={session.status}
-                  hasApplied={hasApplied}
-                  applicationStatus={applicationStatus}
-                  hostContactEmail={hostContactEmail}
-                />
+                <>
+                  <ApplyButton
+                    sessionId={id}
+                    sessionTitle={session.title}
+                    sessionStatus={session.status}
+                    hasApplied={hasApplied}
+                    applicationStatus={applicationStatus}
+                    hostContactEmail={hostContactEmail}
+                  />
+                  {applicationStatus === 'accepted' && (
+                    <PreBriefCard sessionId={id} />
+                  )}
+                </>
               )}
             </div>
           </div>
