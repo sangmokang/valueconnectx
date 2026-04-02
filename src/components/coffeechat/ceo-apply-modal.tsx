@@ -118,7 +118,7 @@ export function CeoApplyModal({ session, onClose, onSubmit }: CeoApplyModalProps
               lineHeight: 1.6,
             }}
           >
-            신청 내용은 CEO에게만 공개됩니다. HR 팀 경유 없이 직접 전달됩니다.
+            신청 내용은 CEO에게만 전달됩니다. 현 직장에는 일체 공개되지 않습니다.
           </div>
 
           {/* Message textarea */}
@@ -134,13 +134,13 @@ export function CeoApplyModal({ session, onClose, onSubmit }: CeoApplyModalProps
                 letterSpacing: '0.05em',
               }}
             >
-              지원 동기 (선택)
+              어떤 이야기를 나누고 싶으신가요? (선택)
             </label>
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               rows={5}
-              placeholder={`${session.hostName} CEO가 찾는 분과 내가 어떻게 연결되는지 간략히 써주세요.`}
+              placeholder={`${session.hostName} CEO와 어떤 대화를 나누고 싶으신지 자유롭게 적어주세요.`}
               style={{
                 width: '100%',
                 padding: '12px 14px',
@@ -202,7 +202,7 @@ export function CeoApplyModal({ session, onClose, onSubmit }: CeoApplyModalProps
                 fontFamily: 'system-ui, sans-serif',
               }}
             >
-              {loading ? '신청 중...' : '비공개로 신청하기 →'}
+              {loading ? '신청 중...' : '대화 신청하기 →'}
             </button>
           </div>
         </div>

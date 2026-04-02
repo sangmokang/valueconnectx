@@ -48,7 +48,7 @@ export function CeoHero({ sessionCount, totalApplicants, totalSlots }: CeoHeroPr
               fontFamily: 'system-ui, sans-serif',
             }}
           >
-            CEO COFFEE CHAT · REVERSE RECRUITING
+            CEO COFFEE CHAT · CULTURE FIT
           </span>
         </div>
 
@@ -64,9 +64,9 @@ export function CeoHero({ sessionCount, totalApplicants, totalSlots }: CeoHeroPr
             fontFamily: 'Georgia, serif',
           }}
         >
-          CEO가 먼저
+          서로의 결을
           <br />
-          손을 내밀었습니다
+          확인하는 자리
         </h1>
 
         {/* Description */}
@@ -80,8 +80,8 @@ export function CeoHero({ sessionCount, totalApplicants, totalSlots }: CeoHeroPr
             fontFamily: 'system-ui, sans-serif',
           }}
         >
-          채용 공고가 아닙니다. 의사결정자가 직접 만나고 싶은 사람의 조건을 공개하고,
-          당신이 비공개로 신청하는 역방향 채용 구조입니다.
+          채용 면접이 아닙니다. 사업에 몰입하는 CEO와 분야 최고의 인재가 서로 잘 맞는지
+          대화로 확인하는 자리입니다.
         </p>
 
         {/* Stats */}

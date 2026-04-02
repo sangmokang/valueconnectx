@@ -267,7 +267,7 @@ export function CeoSessionCard({
                   fontFamily: 'system-ui, sans-serif',
                 }}
               >
-                CEO의 메시지
+                이런 분과 이야기하고 싶습니다
               </div>
               <p
                 style={{
@@ -333,7 +333,7 @@ export function CeoSessionCard({
                     fontFamily: 'system-ui, sans-serif',
                   }}
                 >
-                  비공개로 신청하기 →
+                  대화 신청하기 →
                 </button>
               )}
             </div>
