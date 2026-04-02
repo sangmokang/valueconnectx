@@ -173,9 +173,9 @@
 
   /* VCX Label Style */
   .vcx-label {
-    font-size: 9px;
+    font-size: 12px;
     text-transform: uppercase;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.12em;
     font-family: system-ui, -apple-system, sans-serif;
   }
 

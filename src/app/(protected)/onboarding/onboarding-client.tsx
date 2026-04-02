@@ -22,6 +22,7 @@ interface ProfileData {
   current_company: string
   title: string
   linkedin_url: string
+  nickname: string
   professional_fields: string[]
   years_of_experience: string
   bio: string
@@ -35,6 +36,7 @@ const FIELD_WEIGHTS: Record<keyof ProfileData, number> = {
   current_company: 15,
   title: 15,
   linkedin_url: 20,
+  nickname: 0,
   professional_fields: 15,
   years_of_experience: 10,
   bio: 15,
@@ -67,6 +69,7 @@ export default function OnboardingPage() {
     current_company: '',
     title: '',
     linkedin_url: '',
+    nickname: '',
     professional_fields: [],
     years_of_experience: '',
     bio: '',
@@ -94,6 +97,7 @@ export default function OnboardingPage() {
             current_company: data?.current_company ?? '',
             title: data?.title ?? '',
             linkedin_url: data?.linkedin_url ?? '',
+            nickname: data?.nickname ?? '',
             professional_fields: data?.professional_fields ?? [],
             years_of_experience: data?.years_of_experience ? String(data.years_of_experience) : '',
             bio: data?.bio ?? '',
@@ -130,6 +134,7 @@ export default function OnboardingPage() {
       const result = linkedinUrlSchema.safeParse(form.linkedin_url.trim())
       if (!result.success) errors.linkedin_url = result.error.issues[0].message
     }
+    if (!form.nickname.trim()) errors.nickname = '닉네임을 입력해주세요'
     setFieldErrors(errors)
     return Object.keys(errors).length === 0
   }
@@ -159,6 +164,7 @@ export default function OnboardingPage() {
         current_company: form.current_company.trim(),
         title: form.title.trim(),
         linkedin_url: form.linkedin_url.trim(),
+        nickname: form.nickname.trim(),
         bio: form.bio || null,
         industry: form.industry || null,
         location: form.location || null,
@@ -294,8 +300,10 @@ export default function OnboardingPage() {
                     value={form.name}
                     onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
                     placeholder="홍길동"
-                    className={`w-full px-3.5 py-3 font-vcx-sans text-[14px] text-vcx-dark bg-[#f7f3ed] border outline-none ${fieldErrors.name ? 'border-red-500' : 'border-black/[0.08]'} focus:border-[#c9a84c]`}
+                    disabled={!!form.name}
+                    className={`w-full px-3.5 py-3 font-vcx-sans text-[14px] border outline-none ${form.name ? 'bg-[#ebe5da] text-vcx-sub-3 cursor-not-allowed' : 'bg-[#f7f3ed] text-vcx-dark focus:border-[#c9a84c]'} ${fieldErrors.name ? 'border-red-500' : 'border-black/[0.08]'}`}
                   />
+                  {form.name && <p className="font-vcx-sans text-[11px] text-vcx-sub-4 mt-1">초대 시 입력됨</p>}
                   {fieldErrors.name && <p className="font-vcx-sans text-[12px] text-red-500 mt-1">{fieldErrors.name}</p>}
                 </div>
 
@@ -326,16 +334,32 @@ export default function OnboardingPage() {
                 </div>
 
                 {/* LinkedIn URL */}
-                <div className="mb-7">
+                <div className="mb-4">
                   <label className="vcx-label text-vcx-sub-4 block mb-1.5">LinkedIn URL *</label>
                   <input
                     type="url"
                     value={form.linkedin_url}
                     onChange={(e) => setForm((p) => ({ ...p, linkedin_url: e.target.value }))}
                     placeholder="https://linkedin.com/in/your-profile"
-                    className={`w-full px-3.5 py-3 font-vcx-sans text-[14px] text-vcx-dark bg-[#f7f3ed] border outline-none ${fieldErrors.linkedin_url ? 'border-red-500' : 'border-black/[0.08]'} focus:border-[#c9a84c]`}
+                    disabled={!!form.linkedin_url}
+                    className={`w-full px-3.5 py-3 font-vcx-sans text-[14px] border outline-none ${form.linkedin_url ? 'bg-[#ebe5da] text-vcx-sub-3 cursor-not-allowed' : 'bg-[#f7f3ed] text-vcx-dark focus:border-[#c9a84c]'} ${fieldErrors.linkedin_url ? 'border-red-500' : 'border-black/[0.08]'}`}
                   />
+                  {form.linkedin_url && <p className="font-vcx-sans text-[11px] text-vcx-sub-4 mt-1">초대 시 입력됨</p>}
                   {fieldErrors.linkedin_url && <p className="font-vcx-sans text-[12px] text-red-500 mt-1">{fieldErrors.linkedin_url}</p>}
+                </div>
+
+                {/* Nickname */}
+                <div className="mb-7">
+                  <label className="vcx-label text-vcx-sub-4 block mb-1.5">닉네임 (커뮤니티 표시명) *</label>
+                  <input
+                    type="text"
+                    value={form.nickname}
+                    onChange={(e) => setForm((p) => ({ ...p, nickname: e.target.value }))}
+                    placeholder="커뮤니티에서 사용할 닉네임"
+                    className={`w-full px-3.5 py-3 font-vcx-sans text-[14px] text-vcx-dark bg-[#f7f3ed] border outline-none ${fieldErrors.nickname ? 'border-red-500' : 'border-black/[0.08]'} focus:border-[#c9a84c]`}
+                  />
+                  <p className="font-vcx-sans text-[11px] text-[#888] mt-1">커뮤니티 라운지에서 이 이름으로 표시됩니다</p>
+                  {fieldErrors.nickname && <p className="font-vcx-sans text-[12px] text-red-500 mt-1">{fieldErrors.nickname}</p>}
                 </div>
 
                 {/* Next button */}

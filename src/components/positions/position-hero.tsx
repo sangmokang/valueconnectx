@@ -36,7 +36,7 @@ export function PositionHero() {
             marginBottom: 20,
           }}
         >
-          ValueConnect이<br />직접 등록한 포지션
+          ValueConnect가<br />직접 선별한 포지션
         </h1>
 
         {/* Sub-copy */}

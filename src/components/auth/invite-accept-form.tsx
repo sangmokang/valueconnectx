@@ -47,7 +47,7 @@ export function InviteAcceptForm({ initialToken }: { initialToken?: string }) {
   }
 
   const inputStyle = { width: '100%', padding: '14px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: '#1a1a1a', background: '#f7f3ed', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 0, outline: 'none', boxSizing: 'border-box' as const }
-  const labelStyle = { display: 'block' as const, fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase' as const, color: '#888', marginBottom: '8px' }
+  const labelStyle = { display: 'block' as const, fontFamily: 'system-ui, sans-serif', fontSize: '13px', letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#888', marginBottom: '8px' }
 
   if (step === 'token' && !initialToken) {
     return (
