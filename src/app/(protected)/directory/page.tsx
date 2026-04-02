@@ -62,7 +62,7 @@ async function DirectoryContent({ searchParams }: { searchParams: SearchParams }
         </div>
       ) : (
         <div className="py-16 text-center">
-          <p className="text-sm font-vcx-sans text-[#999999]">검색 결과가 없습니다</p>
+          <p className="text-sm font-vcx-sans text-[#999999]">해당 조건의 멤버를 찾지 못했습니다. 다른 키워드로 검색해보세요.</p>
         </div>
       )}
 

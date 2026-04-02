@@ -130,7 +130,7 @@ export function CeoCoffeechatClient() {
                 margin: '0 0 8px',
               }}
             >
-              현재 열린 세션이 없습니다
+              다음 CEO 커피챗 세션을 준비하고 있습니다. 곧 새로운 세션이 열립니다
             </p>
             <p
               style={{

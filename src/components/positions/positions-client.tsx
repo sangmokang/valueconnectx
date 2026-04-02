@@ -75,7 +75,7 @@ export function PositionsClient() {
 
         {!isLoading && !error && filtered.length === 0 && (
           <div className="py-16 text-center">
-            <p style={{ color: '#888', fontSize: 14 }}>해당 도메인의 포지션이 없습니다.</p>
+            <p style={{ color: '#888', fontSize: 14 }}>새로운 포지션이 준비 중입니다. 관심 분야를 등록하면 가장 먼저 알려드립니다.</p>
           </div>
         )}
 

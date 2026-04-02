@@ -400,7 +400,7 @@ export function LoungeFeed() {
                     marginBottom: '6px',
                   }}
                 >
-                  아직 글이 없습니다
+                  이 카테고리의 첫 번째 글을 남겨보세요
                 </div>
                 <div style={{ fontSize: '13.5px' }}>이 카테고리의 첫 번째 글을 남겨보세요</div>
               </div>

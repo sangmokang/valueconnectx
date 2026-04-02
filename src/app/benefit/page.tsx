@@ -2,7 +2,7 @@ const TIERS = [
   {
     name: 'Core',
     dark: true,
-    desc: '최상위 검증 멤버. ValueConnect가 직접 인증한 핵심인재.',
+    desc: 'ValueConnect가 직접 검증한 핵심 멤버.',
     benefits: [
       '채용정보 큐레이션 피드 (주 1회)',
       '커뮤니티 라운지 전체 접근',
@@ -10,42 +10,39 @@ const TIERS = [
       'Peer Coffee Chat 생성 & 신청',
       '멤버 디렉터리 전체 열람',
       'AI Match Engine 우선 매칭',
-      '성사 시 Self Referral 보상',
+      '채용 연결 시 보상 지급',
     ],
   },
   {
     name: 'Endorsed',
     dark: false,
-    desc: 'Core 멤버가 보증한 준회원. 단계적으로 Core로 전환됩니다.',
+    desc: 'Core 멤버의 보증으로 참여한 멤버. 단계적으로 Core로 전환됩니다.',
     benefits: [
       '채용정보 큐레이션 피드 (주 1회)',
       '커뮤니티 라운지 읽기 + 댓글',
-      'CEO Coffee Chat 읽기',
+      'CEO Coffee Chat 열람',
       'Peer Coffee Chat 신청',
       '멤버 디렉터리 부분 열람',
-      'Core 추천 시 등급 전환 검토',
+      'Core 전환 검토 (추천 시)',
     ],
   },
 ]
 
-const REWARDS = [
+const MEMBER_VALUES = [
   {
-    type: '성사 수수료',
-    who: '기업 → VCX',
-    val: '연봉의 25%',
-    desc: '채용 성사 시 기업이 지불',
+    icon: '🔗',
+    title: '채용 연결 보상',
+    desc: '관심 표시한 포지션에 채용이 성사되면, ValueConnect가 멤버에게 직접 보상을 지급합니다.',
   },
   {
-    type: 'Self Referral',
-    who: 'VCX → 멤버',
-    val: '고정 보상',
-    desc: '본인 직접 추천 성사 시',
+    icon: '🤝',
+    title: '동료 추천 보상',
+    desc: '네트워크 내 동료를 추천하여 채용이 성사되면, 소싱과 보증 노력에 대한 보상이 지급됩니다.',
   },
   {
-    type: 'Peer Referral',
-    who: 'VCX → 추천 멤버',
-    val: '높은 보상',
-    desc: '동료 추천 성사 시 (소싱·보증 노력 반영)',
+    icon: '🔒',
+    title: '완전한 비밀 보장',
+    desc: '모든 이직 관련 활동은 현 직장에 노출되지 않습니다. 관심 표시, 커피챗 신청 모두 비공개로 처리됩니다.',
   },
 ]
 
@@ -63,7 +60,7 @@ export default function BenefitPage() {
             멤버십 혜택
           </h1>
           <p className="text-[15.5px] text-[#b0a898] leading-[1.9] max-w-[500px] m-0">
-            네트워크의 질은 구성원의 질을 초과할 수 없다.<br />
+            네트워크의 깊이는 구성원의 수준에서 결정됩니다.<br />
             두 개의 등급, 하나의 기준 — 탁월함.
           </p>
         </div>
@@ -124,16 +121,15 @@ export default function BenefitPage() {
           ))}
         </div>
 
-        {/* Reward structure */}
+        {/* Member value — replaces explicit fee structure */}
         <div className="mt-10 p-9 bg-white border border-black/[0.08]">
-          <div className="text-[11px] text-[#888] tracking-[0.15em] font-semibold mb-5">REWARD STRUCTURE</div>
+          <div className="text-[11px] text-[#888] tracking-[0.15em] font-semibold mb-5">MEMBER VALUE</div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-            {REWARDS.map((r) => (
-              <div key={r.type} className="p-5 bg-[#f5f0e8]">
-                <div className="text-[11px] text-[#888] font-semibold mb-1.5">{r.type}</div>
-                <div className="text-[11px] text-[#888] mb-2">{r.who}</div>
-                <div className="text-[20px] font-extrabold text-[#c9a84c] font-[Georgia,serif] mb-1.5">{r.val}</div>
-                <div className="text-[12px] text-[#888] leading-[1.5]">{r.desc}</div>
+            {MEMBER_VALUES.map((v) => (
+              <div key={v.title} className="p-5 bg-[#f5f0e8]">
+                <div className="text-[24px] mb-3">{v.icon}</div>
+                <div className="text-[15px] font-bold text-[#1a1a1a] font-[Georgia,serif] mb-2">{v.title}</div>
+                <div className="text-[13px] text-[#555] leading-[1.7]">{v.desc}</div>
               </div>
             ))}
           </div>

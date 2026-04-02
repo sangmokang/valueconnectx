@@ -109,7 +109,7 @@ export function PeerCoffeechatClient({ initialSessions, appliedIds: initialAppli
       <div className="max-w-[1000px] mx-auto px-6 sm:px-12 pt-10 pb-20">
         {sessions.length === 0 ? (
           <div className="py-24 text-center">
-            <p className="font-vcx-serif text-[20px] text-[#888] mb-2">아직 사연이 없습니다</p>
+            <p className="font-vcx-serif text-[20px] text-[#888] mb-2">첫 번째 커피챗 사연을 올려보세요</p>
             <p className="text-[14px] text-[#aaa] font-vcx-sans">
               첫 번째 사연을 올려보세요
             </p>

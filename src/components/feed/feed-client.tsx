@@ -187,7 +187,7 @@ export function FeedClient() {
               {data === undefined
                 ? '피드를 불러오는 중입니다...'
                 : items.length === 0
-                  ? '현재 등록된 포지션이 없습니다'
+                  ? '이번 주 큐레이션이 준비 중입니다. 매주 월요일에 새로운 포지션이 도착합니다'
                   : '이번 주 피드를 모두 확인했습니다'}
             </div>
             <div
