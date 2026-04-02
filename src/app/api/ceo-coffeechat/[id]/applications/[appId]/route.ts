@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { z } from 'zod'
 import { unauthorized, forbidden, notFound, badRequest, serverError } from '@/lib/api/error'
 import { sendNotification } from '@/lib/notification'
+import { generateCoffeechatBrief } from '@/lib/ai/brief'
 
 const updateStatusSchema = z.object({
   status: z.enum(['accepted', 'rejected']),
@@ -84,6 +85,13 @@ export async function PUT(
         .eq('id', application.applicant_id)
         .single()
       contactEmail = applicantMember?.email ?? null
+
+      // AI Pre-Brief 비동기 생성 (fire-and-forget, 응답 지연 방지)
+      generateCoffeechatBriefAsync(
+        sessionId,
+        appId,
+        application.applicant_id
+      ).catch((err) => console.error('Brief generation failed:', err))
     }
 
     return NextResponse.json({ data: { ...application, contact_email: contactEmail } })
@@ -91,4 +99,55 @@ export async function PUT(
     console.error('PUT /applications/[appId] error:', error)
     return serverError('서버 오류가 발생했습니다')
   }
+}
+
+async function generateCoffeechatBriefAsync(
+  sessionId: string,
+  appId: string,
+  applicantId: string
+) {
+  const supabase = await createClient()
+
+  const { data: session } = await supabase
+    .from('vcx_ceo_coffee_sessions')
+    .select('title, description, tags, host:vcx_corporate_users(name, title, company, company_desc)')
+    .eq('id', sessionId)
+    .single()
+
+  if (!session) return
+
+  const { data: member } = await supabase
+    .from('vcx_members')
+    .select('name, role, company, specialties, member_tier')
+    .eq('id', applicantId)
+    .single()
+
+  if (!member) return
+
+  const host = Array.isArray(session.host) ? session.host[0] : session.host
+  if (!host) return
+
+  const { hostBrief, applicantBrief } = await generateCoffeechatBrief({
+    sessionTitle: session.title,
+    sessionDescription: session.description ?? '',
+    sessionTags: (session.tags as string[]) ?? [],
+    hostName: host.name,
+    hostTitle: host.title ?? '',
+    hostCompany: host.company,
+    hostCompanyDesc: host.company_desc,
+    applicantName: member.name,
+    applicantRole: member.role ?? '',
+    applicantCompany: member.company ?? '',
+    applicantSpecialties: (member.specialties as string[]) ?? [],
+    applicantMemberTier: member.member_tier as 'core' | 'endorsed',
+  })
+
+  await supabase
+    .from('vcx_coffee_applications')
+    .update({
+      host_brief: hostBrief,
+      applicant_brief: applicantBrief,
+      brief_generated_at: new Date().toISOString(),
+    })
+    .eq('id', appId)
 }
