@@ -5,6 +5,7 @@ import { SessionDetail } from '@/components/coffeechat/session-detail'
 import { ApplicationList } from '@/components/coffeechat/application-list'
 import { ApplyButton } from '@/components/coffeechat/apply-button'
 import { PreBriefCard } from '@/components/coffeechat/pre-brief-card'
+import { FeedbackForm } from '@/components/coffeechat/feedback-form'
 import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
@@ -59,6 +60,7 @@ export default async function SessionDetailPage({ params }: PageProps) {
   // Check if current user already applied
   let hasApplied = false
   let applicationStatus: 'pending' | 'accepted' | 'rejected' | null = null
+  let applicationId: string | null = null
   let hostContactEmail: string | null = null
   if (!isHost) {
     const { data: existing } = await supabase
@@ -68,6 +70,7 @@ export default async function SessionDetailPage({ params }: PageProps) {
       .eq('applicant_id', user.id)
       .single()
     hasApplied = !!existing
+    applicationId = existing?.id ?? null
     applicationStatus = (existing?.status as 'pending' | 'accepted' | 'rejected') ?? null
 
     // Fetch host email for applicant when accepted
@@ -185,6 +188,9 @@ export default async function SessionDetailPage({ params }: PageProps) {
                   />
                   {applicationStatus === 'accepted' && (
                     <PreBriefCard sessionId={id} />
+                  )}
+                  {applicationStatus === 'accepted' && session.status === 'completed' && applicationId && (
+                    <FeedbackForm sessionId={id} applicationId={applicationId} />
                   )}
                 </>
               )}

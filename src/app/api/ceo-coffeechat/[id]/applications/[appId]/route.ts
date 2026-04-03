@@ -118,7 +118,7 @@ async function generateCoffeechatBriefAsync(
 
   const { data: member } = await supabase
     .from('vcx_members')
-    .select('name, role, company, specialties, member_tier')
+    .select('name, title, current_company, professional_fields, member_tier')
     .eq('id', applicantId)
     .single()
 
@@ -136,14 +136,14 @@ async function generateCoffeechatBriefAsync(
     hostCompany: host.company,
     hostCompanyDesc: host.company_desc,
     applicantName: member.name,
-    applicantRole: member.role ?? '',
-    applicantCompany: member.company ?? '',
-    applicantSpecialties: (member.specialties as string[]) ?? [],
+    applicantRole: member.title ?? '',
+    applicantCompany: member.current_company ?? '',
+    applicantSpecialties: (member.professional_fields as string[]) ?? [],
     applicantMemberTier: member.member_tier as 'core' | 'endorsed',
   })
 
-  await supabase
-    .from('vcx_coffee_applications')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  await (supabase.from('vcx_coffee_applications') as any)
     .update({
       host_brief: hostBrief,
       applicant_brief: applicantBrief,

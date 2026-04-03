@@ -25,13 +25,14 @@ export async function GET(
     const isHost = session.host_id === user.id
 
     // 수락된 신청 중 현재 사용자 관련 brief 조회
-    const { data: application, error } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: application, error } = await (supabase as any)
       .from('vcx_coffee_applications')
       .select('id, applicant_id, host_brief, applicant_brief, brief_generated_at, status')
       .eq('session_id', sessionId)
       .eq('status', 'accepted')
       .eq(isHost ? 'session_id' : 'applicant_id', isHost ? sessionId : user.id)
-      .maybeSingle()
+      .maybeSingle() as { data: { id: string; applicant_id: string; host_brief: string | null; applicant_brief: string | null; brief_generated_at: string | null; status: string } | null; error: unknown }
 
     if (error) return serverError('브리프 조회에 실패했습니다')
 
