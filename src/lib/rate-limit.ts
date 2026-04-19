@@ -1,17 +1,7 @@
 import { Ratelimit } from '@upstash/ratelimit'
-import { Redis } from '@upstash/redis/cloudflare'
+import { getRedis } from '@/lib/redis'
 
-function createRedis(): Redis | null {
-  if (!process.env.UPSTASH_REDIS_REST_URL) {
-    return null
-  }
-  return new Redis({
-    url: process.env.UPSTASH_REDIS_REST_URL,
-    token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-  })
-}
-
-const redis = createRedis()
+const redis = getRedis()
 
 export const apiLimiter = redis
   ? new Ratelimit({

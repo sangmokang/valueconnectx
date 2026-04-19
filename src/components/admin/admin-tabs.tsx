@@ -11,6 +11,7 @@ const tabs = [
   { href: '/admin/reports', label: '신고 관리' },
   { href: '/admin/analytics', label: '분석' },
   { href: '/admin/hiring', label: '수수료' },
+  { href: '/admin/ops', label: '운영' },
 ]
 
 export function AdminTabs() {

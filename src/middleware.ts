@@ -22,6 +22,7 @@ export async function middleware(request: NextRequest) {
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api/invites/verify') ||
+    pathname.startsWith('/api/ops/health') ||
     pathname.includes('.')
   ) {
     return NextResponse.next({ request: { headers: requestHeaders } })
