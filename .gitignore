@@ -45,3 +45,6 @@ next-env.d.ts
 
 # worktrees
 .worktrees/
+
+# orchestrator reports (auto-generated)
+wiki/orchestrator/reports/
