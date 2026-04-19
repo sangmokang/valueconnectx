@@ -1,0 +1,13 @@
+{"t":0,"agent":"system","event":"keyword_detected","keyword":"ralph"}
+{"t":0.2,"agent":"system","event":"mode_change","mode_from":"none","mode_to":"ralph"}
+{"t":0,"agent":"system","event":"keyword_detected","keyword":"ralph"}
+{"t":0,"agent":"system","event":"mode_change","mode_from":"none","mode_to":"ralph"}
+{"t":0,"agent":"a2c399b","agent_type":"Explore","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a2c399b","agent_type":"Explore","event":"agent_stop","success":true,"duration_ms":55456}
+{"t":0,"agent":"a17f8dc","agent_type":"executor","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a17f8dc","agent_type":"executor","event":"agent_stop","success":true,"duration_ms":87835}
+{"t":0,"agent":"a1d2e87","agent_type":"executor","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a1d2e87","agent_type":"executor","event":"agent_stop","success":true,"duration_ms":105579}
+{"t":0,"agent":"a6ed420","agent_type":"architect","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a6ed420","agent_type":"architect","event":"agent_stop","success":true,"duration_ms":61514}
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"oh-my-claudecode:cancel"}

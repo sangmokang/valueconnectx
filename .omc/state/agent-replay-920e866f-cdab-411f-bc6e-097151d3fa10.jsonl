@@ -1,0 +1,15 @@
+{"t":0,"agent":"system","event":"keyword_detected","keyword":"ralph"}
+{"t":0,"agent":"system","event":"mode_change","mode_from":"none","mode_to":"ralph"}
+{"t":0,"agent":"a00b977","agent_type":"Explore","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a00b977","agent_type":"Explore","event":"agent_stop","success":true,"duration_ms":117779}
+{"t":0,"agent":"a1ea8e6","agent_type":"executor","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a06b950","agent_type":"executor","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"afe88db","agent_type":"executor","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a47701b","agent_type":"executor","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a06b950","agent_type":"executor","event":"agent_stop","success":true,"duration_ms":178818}
+{"t":0,"agent":"afe88db","agent_type":"executor","event":"agent_stop","success":true,"duration_ms":169774}
+{"t":0,"agent":"a1ea8e6","agent_type":"executor","event":"agent_stop","success":true,"duration_ms":211438}
+{"t":0,"agent":"a47701b","agent_type":"executor","event":"agent_stop","success":true,"duration_ms":266319}
+{"t":0,"agent":"a165779","agent_type":"verifier","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a07f142","agent_type":"executor","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a165779","agent_type":"verifier","event":"agent_stop","success":true,"duration_ms":145714}

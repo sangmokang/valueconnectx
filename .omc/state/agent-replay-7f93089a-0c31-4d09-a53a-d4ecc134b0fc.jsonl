@@ -1,0 +1,17 @@
+{"t":0,"agent":"system","event":"keyword_detected","keyword":"ralplan"}
+{"t":0,"agent":"a231ba2","agent_type":"planner","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a231ba2","agent_type":"planner","event":"agent_stop","success":true,"duration_ms":65590}
+{"t":0,"agent":"a11f470","agent_type":"planner","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a11f470","agent_type":"planner","event":"agent_stop","success":true,"duration_ms":195106}
+{"t":0,"agent":"a2dff4f","agent_type":"architect","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"ae9b814","agent_type":"critic","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"ae9b814","agent_type":"critic","event":"agent_stop","success":true,"duration_ms":111816}
+{"t":0,"agent":"a2dff4f","agent_type":"architect","event":"agent_stop","success":true,"duration_ms":129054}
+{"t":0,"agent":"aa50b7d","agent_type":"planner","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"aa50b7d","agent_type":"planner","event":"agent_stop","success":true,"duration_ms":381581}
+{"t":0,"agent":"a2c47a5","agent_type":"critic","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a2c47a5","agent_type":"critic","event":"agent_stop","success":true,"duration_ms":66031}
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"oh-my-claudecode:ralph"}
+{"t":0,"agent":"ad0cb49","agent_type":"executor","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a2a4ec9","agent_type":"executor","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a47a8d5","agent_type":"executor","event":"agent_start","parent_mode":"none"}

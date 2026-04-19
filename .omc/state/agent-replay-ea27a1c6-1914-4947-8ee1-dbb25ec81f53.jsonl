@@ -1,0 +1,4 @@
+{"t":0,"agent":"ab11b13","agent_type":"product-manager","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"a43fbf4","agent_type":"ux-researcher","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"ab11b13","agent_type":"product-manager","event":"agent_stop","success":true,"duration_ms":134348}
+{"t":0,"agent":"a43fbf4","agent_type":"ux-researcher","event":"agent_stop","success":true,"duration_ms":162169}
