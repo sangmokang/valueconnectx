@@ -48,3 +48,6 @@ next-env.d.ts
 
 # orchestrator reports (auto-generated)
 wiki/orchestrator/reports/
+
+# claude worktrees (embedded git repos)
+.claude/worktrees/
