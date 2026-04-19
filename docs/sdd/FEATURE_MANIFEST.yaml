@@ -1,0 +1,192 @@
+---
+# ValueConnect X — Phase 1 Feature Manifest
+#
+# 본 파일은 Phase 1 (2026-04-17 ~ 2026-05-15) 스코프의 유일한 원천.
+# PRD v6.0 에 선언되었어도 이 manifest에 없으면 "Phase 1 밖".
+# 이 파일 변경은 PROCESS §1.4 (48h 쿨다운) 적용.
+
+version: 1.0
+phase: 1
+phase_deadline: 2026-05-15
+signed_first: null   # 1차 서명 일자 (ISO)
+signed_second: null  # 2차 서명 일자 (+48h)
+reviewed_by: ['CTO=CPO=Sangmo Kang']
+
+# Phase 1 slice mapping — docs/plans/VERTICAL_SLICE_PHASE1.md 와 1:1
+slice_steps:
+  S1: onboarding_and_auth
+  S2: curation_feed
+  S3: directory_browse
+  S4: coffeechat_with_ai_brief
+  S5: post_session_feedback
+
+features:
+
+  - id: F-AUTH
+    name: 초대 기반 인증 + 온보딩
+    slice: S1
+    status: live
+    maturity: needs_polish
+    owners: [self]
+    prd_refs: ['prd6.0 §0.3', 'prd6.0 §2 Core Feature 3']
+    pages:
+      - src/app/(auth)/login/page.tsx
+      - src/app/(auth)/invite/accept/page.tsx
+      - src/app/(auth)/forgot-password/page.tsx
+      - src/app/(auth)/reset-password/page.tsx
+      - src/app/(protected)/onboarding/page.tsx
+    acceptance:
+      - 초대 이메일 → accept → 로그인 → 온보딩 → 디렉토리 리다이렉트 녹색
+      - GNB 노출 버그 수정 (onboarding 경로 포함)
+      - 이름/LinkedIn 중복 수집 제거
+      - 전문 분야 한/영 혼재 해소 (자유 태그)
+      - Progress bar 기입력 반영
+    e2e: tests/e2e/slice/s1-invite-onboarding.spec.ts
+
+  - id: F-FEED
+    name: 큐레이션 피드 (Hook)
+    slice: S2
+    status: stub
+    maturity: mvp_required
+    owners: [self]
+    prd_refs: ['prd6.0 §1.4', 'prd6.0 §2 Core Feature 1']
+    pages:
+      - src/app/(protected)/feed/page.tsx
+    apis:
+      - GET /api/feed?limit=&tags=
+      - POST /api/admin/feed/items
+    migrations:
+      - supabase/migrations/020_vcx_curation_feed.sql  # 기존 (확인 후 재활용)
+      - supabase/migrations/022_vcx_feed_items.sql     # Sprint 2 신규 (or 020 확장) — ADR-0006 후보
+    adr_followup:
+      - ADR-0006: 020 재활용 vs 022 신규 중 택일 (Sprint 2 kickoff)
+    acceptance:
+      - 관심 태그 기반 필터링된 10건 이상 표시
+      - 어드민이 수동으로 피드 아이템 생성 가능
+      - 비인증 사용자에게는 제한 뷰
+      - Stibee 수동 뉴스레터 1회 발송 + 오픈율 측정
+    e2e: tests/e2e/slice/s2-feed-browse.spec.ts
+
+  - id: F-DIRECTORY
+    name: 멤버 디렉토리 (Sticky)
+    slice: S3
+    status: live
+    maturity: validate_only
+    owners: [self]
+    prd_refs: ['prd6.0 §2 Core Feature']
+    pages:
+      - src/app/(protected)/directory/page.tsx
+      - src/app/(protected)/directory/[id]/page.tsx
+      - src/app/(protected)/directory/me/page.tsx
+    migrations:
+      - supabase/migrations/005_vcx_member_directory.sql
+      - supabase/migrations/014_vcx_profile_visibility.sql
+      - supabase/migrations/015_vcx_privacy_model.sql
+    acceptance:
+      - 로그인 사용자가 멤버 리스트 + 프로필 열람
+      - 비로그인 사용자 x-vcx-authenticated=false 처리
+      - rate limiter (dir 5-limiter) 정책 준수
+    e2e: tests/e2e/slice/s3-directory.spec.ts
+
+  - id: F-PEER-COFFEECHAT
+    name: Peer Coffee Chat + AI Brief (Revenue + Sticky)
+    slice: S4
+    status: live
+    maturity: quality_check
+    owners: [self]
+    prd_refs: ['prd6.0 §2 Core Feature']
+    pages:
+      - src/app/(protected)/coffeechat/page.tsx
+      - src/app/(protected)/coffeechat/create/page.tsx
+      - src/app/(protected)/coffeechat/[id]/page.tsx
+      - src/app/(protected)/coffeechat/[id]/edit/page.tsx
+    apis:
+      - POST /api/coffeechat
+      - POST /api/coffeechat/[id]/accept       # AI Brief 트리거 (f807e4f)
+      - GET  /api/coffeechat/[id]/brief        # Brief 조회 (9788e7a)
+      - POST /api/coffeechat/[id]/feedback     # 세션 후 피드백 (f904d70)
+    migrations:
+      - supabase/migrations/008_vcx_peer_coffeechat.sql
+      - supabase/migrations/016_vcx_fee_tracking.sql
+      - supabase/migrations/021_vcx_ai_brief_feedback.sql
+    acceptance:
+      - 수수료 문구 0건 (ADR-0001, scripts/check-fee-hidden.sh 통과)
+      - 수락 시 AI Brief 자동 생성 + PreBriefCard 표시
+      - Brief 생성 실패 fallback (ANTHROPIC_API_KEY 누락 처리, eab4597)
+      - 모바일 Galaxy 360px 녹색
+    e2e: tests/e2e/slice/s4-coffeechat-brief.spec.ts
+
+  - id: F-SESSION-FEEDBACK
+    name: 세션 후 피드백 (Measurement)
+    slice: S5
+    status: live
+    maturity: instrumentation_needed
+    owners: [self]
+    prd_refs: ['prd6.0 §2', 'prd6.0 §1.4 (피드백 루프)']
+    pages:
+      - src/app/(protected)/coffeechat/[id]/page.tsx (피드백 섹션)
+      - src/app/(protected)/admin/ops/page.tsx (집계)
+    apis:
+      - POST /api/coffeechat/[id]/feedback
+    migrations:
+      - supabase/migrations/021_vcx_ai_brief_feedback.sql
+    acceptance:
+      - 완료된 커피챗에서 피드백 제출 가능
+      - session_feedback_submit 이벤트 발화 (Sprint 2 PostHog 통합)
+      - /admin/ops 집계 대시보드 (최근 10건 + row count)
+    e2e: tests/e2e/slice/s5-session-feedback.spec.ts
+
+  - id: F-CEO-COFFEECHAT
+    name: CEO Coffee Chat ("컬쳐핏" 컨셉)
+    slice: out_of_slice_but_live
+    status: live
+    maturity: copy_realign_needed
+    owners: [self]
+    prd_refs: ['prd6.0 §2']
+    pages:
+      - src/app/(protected)/ceo-coffeechat/page.tsx
+      - src/app/(protected)/ceo-coffeechat/create/page.tsx
+      - src/app/(protected)/ceo-coffeechat/[id]/page.tsx
+      - src/app/(protected)/ceo-coffeechat/[id]/edit/page.tsx
+    migrations:
+      - supabase/migrations/006_vcx_ceo_coffeechat.sql
+      - supabase/migrations/013_vcx_head_hunting_agreement.sql
+    acceptance:
+      - "컬쳐핏 확인" 프레이밍 UI 전면 재적용 (ADR-0002)
+      - 기본 플로우 live 유지 (Phase 1 신규 기능 없음)
+    e2e: null   # Slice 밖
+
+# Phase 1 스코프 밖 (명시) —
+#   기존 구현 유지하되 개선 금지 (bug fix 및 보안 패치 예외)
+out_of_scope:
+  - id: F-COMMUNITY
+    reason: 기존 구현 유지, Phase 1 신규 작업 없음
+  - id: F-POSITIONS
+    reason: 기존 구현 유지
+  - id: F-ADMIN-EXTENDED
+    reason: /admin/ops 피드백 대시보드 외 신규 기능 없음
+  - id: F-AI-RESUME
+    reason: Phase 2 후보, _archive/ai-resume-intelligence.md
+  - id: F-MULTI-VERTICAL
+    reason: Phase 3+ 백로그
+  - id: F-DOMAIN-EXPERT-ROUTING
+    reason: VCX 제품 아님 (ADR-0005)
+
+# Infra 최소 스코프 (F-AUTH ~ F-SESSION-FEEDBACK 공통 기반)
+infra_minimum:
+  - healthcheck: GET /api/health (Vercel Cron 5분)
+  - telemetry: PostHog free tier + 6 events
+  - debt_closure: [D-0001, D-0002, D-0003, D-0004]
+  - scripts:
+      - scripts/prd-freeze-check.sh
+      - scripts/weekly-metrics.sh
+      - scripts/check-fee-hidden.sh
+      - scripts/verify-rpc-applied.sh
+
+# Phase 1 DoD (docs/plans/VERTICAL_SLICE_PHASE1.md §3)
+definition_of_done:
+  M1_slice_pages_green: 5      # S1~S5 Playwright 녹색
+  M2_adr_closed: 5             # ADR-0001 ~ ADR-0005
+  M3_plan_active_count_max: 3  # docs/plans/**/*.md + .omc/plans/**/*.md
+  debt_closed: [D-0001, D-0002, D-0003, D-0004]
+  build_lint_test: green
