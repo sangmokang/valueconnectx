@@ -1,0 +1,23 @@
+{
+  "env": {
+    "OMC_PSM_TMUX_DEFAULT": "1",
+    "OMC_PSM_BRANCH_PREFIX": "feat,fix,chore,refactor,docs",
+    "OMC_PSM_WORKTREE_SIBLING": "1"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          { "type": "command", "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/worktree-session-start.sh\"" }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          { "type": "command", "command": "bash \"${CLAUDE_PROJECT_DIR}/.claude/hooks/log-user-prompt.sh\"" }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,2 @@
+89664b1852f74fc43a91b49f5915b19b8bcbee8798fa94205ef63aae0ce11b15  .claude/settings.local.json
+aff1c5f65b6a8610490e20bd8b34cf10b392ac6480006153d97427fe67bd4e5b  .claude/scripts/log-history.py
