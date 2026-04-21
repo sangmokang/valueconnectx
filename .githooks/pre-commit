@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# VCX pre-commit hook — PROCESS.md §1.3 enforcement
+# Blocks commits that touch protected authoritative files without an ADR.
+#
+# Wired via `core.hooksPath = .githooks` (set by package.json "prepare").
+# Bypass (discouraged — audit trail required): `git commit --no-verify`
+#
+# Fail-fast: any guard failure aborts commit.
+
+set -e
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+
+# Guard 1: PRD / PROCESS / MANIFEST freeze (PROCESS.md §1.3, ADR-0004)
+bash "$REPO_ROOT/scripts/prd-freeze-check.sh"
+
+# Guard 2 (migration number duplicate) — wire after D-0001 cleanup
+# bash "$REPO_ROOT/scripts/migration-number-check.sh"
+
+# Guard 3 (role harness) — host-specific, manual/CI only
+# bash "$REPO_ROOT/scripts/role-harness-check.sh"
+
+exit 0

@@ -14,7 +14,8 @@
     "seed:clean": "tsx scripts/seed-dummy-data.ts --cleanup",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
-    "demo": "npm run seed:demo && playwright test --headed"
+    "demo": "npm run seed:demo && playwright test --headed",
+    "prepare": "git config core.hooksPath .githooks 2>/dev/null || true"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.82.0",
