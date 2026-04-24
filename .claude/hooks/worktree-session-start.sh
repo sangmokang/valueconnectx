@@ -17,10 +17,11 @@ if [ "$CURR_TOP" = "$MAIN_WT" ]; then
     cat <<EOF
 [워크트리 상태] 메인 워크트리 ($MAIN_WT) · 브랜치 [$BRANCH]
 
+근거: CLAUDE.md §11 Agent Harness + §7.1 Delegation-First (VCX 1인 레포 — HARD STOP 대신 opt-in 채택, ADR-0008 참조).
 메인 워크트리에서 src/** 편집은 권장 사항으로 opt-in 입니다.
    개발 작업 요청 시 vcx-orchestrator (권장 — opt-in) 를 통해 전용 브랜치 + 워크트리를 생성할 수 있습니다.
    워크트리 슬러그 형식: valueconnectx-{slug}
-   문서·하네스(.claude/**)·CLAUDE.md 편집은 언제든 허용.
+   문서·하네스(.claude/**)·CLAUDE.md 편집은 언제든 허용 (§7.1 직접 편집 허용 경로).
 
 현재 활성 워크트리 목록:
 $(git worktree list 2>/dev/null | sed 's/^/  /')

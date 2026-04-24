@@ -93,8 +93,15 @@ VCX는 지난 30일간 **PRD 3회 개정**과 **5개 대형 방향 피봇 제안
 
 ## 현재 ADR 목록
 
-| # | Title | Status | Date |
-|---|---|---|---|
-| — | (Sprint 1 내 작성 예정) | — | — |
+| # | Title | Status | Date (1st) | Date (2nd) |
+|---|---|---|---|---|
+| ADR-0001 | Fee structure — member-invisible | Accepted | 2026-04-20 | 2026-04-22 |
+| ADR-0002 | CEO coffeechat — culture-fit framing | Accepted | 2026-04-20 | 2026-04-22 |
+| ADR-0003 | AI Brief as Peer Coffeechat subfeature | Accepted | 2026-04-20 | 2026-04-22 |
+| ADR-0004 | PRD v6.0 as single source | Accepted | 2026-04-20 | 2026-04-22 |
+| ADR-0005 | Domain Expert Routing — not VCX | Accepted | 2026-04-20 | 2026-04-22 |
+| ADR-0006 | Archive PRD v6.1 | Accepted | 2026-04-19 | — |
+| ADR-0007 | CDO rev4 Phase 2 quarantine | Accepted | 2026-04-19 | — |
+| **ADR-0008** | **Sprint Evidence Ledger + Harness L4/L5** | **Proposed (Cooldown)** | **2026-04-24** | **2026-04-26 예정** |
 
-(ADR 추가 시 위 표 자동 갱신 — `scripts/adr-index.sh` Sprint 2 작성 예정.)
+(ADR 추가 시 위 표 수동 갱신. `scripts/adr-index.sh` Sprint 2 작성 예정으로 자동화 대체.)

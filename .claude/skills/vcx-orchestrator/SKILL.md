@@ -60,6 +60,29 @@ VCX 1인 레포 가드: `"gh 미가용 또는 0-hit — git log + @docs/sdd/DEBT
 
 **§8 Remaining Work 5 소스 병렬 조회**: Task tool (TaskList) · `gh issue list --state all` · `gh pr list --state all` · `@docs/plans/_backlog/ideas.md` + `@docs/sdd/DEBT_LEDGER.md` · `git log -n 20 --oneline --grep -iE 'TODO|follow-up|SHOULD-FIX|FIXME'`.
 
+#### Phase 0 영수증 (필수)
+
+Phase 0 실행 후 반드시 다음 블록을 출력하고 slug 디렉토리에 `00-scope-slice.md` 로 적재 (Sprint Evidence Ledger — `@docs/sprints/README.md`, ADR-0008 merge 후 의무). 누락 시 하네스 위반.
+
+```
+[Phase 0 영수증]
+- 위치:         {CURR_TOP}
+- 브랜치:       {BRANCH}
+- 분류:         {CODE | DOCS | RO}
+- slug:         {kebab-case | n/a for RO}
+- 메인 워크트리: {OK (작업 워크트리) | OPT-IN (메인, CLAUDE.md §11 warn only) | EXEMPT(DOCS) | EXEMPT(RO)}
+- Pre-Work Sync: {OK (in-sync with origin/main) | REBASED | DIVERGED-아직 미해결}
+- Prior Work:   {0-hit | {commit SHAs / PR numbers}}
+- Remaining Work: {0 open TODOs | {요약}}
+- scope-gate:   {PASS | L-Std-필요 | L-High-48h-쿨다운 필요 | SKIPPED(RO)}
+- slice-check:  {PASS (S1~S5 매핑) | OUT (백로그 리다이렉트) | SKIPPED(RO)}
+- 다음 Phase:   {1 | 3-A | 단독 스킬명 (예: vcx-dod-gate)}
+```
+
+VCX 특이점 (포팅 가이드 대비):
+- "메인 워크트리" 에 `OPT-IN` 상태 허용 (HARD STOP 미채택 — ADR-0008 근거).
+- Prior Work 에서 `gh` 미가용이면 반드시 `"gh 미가용 — git log + DEBT_LEDGER 전용 판정, 한계 명시"` 라인 덧붙일 것 (CLAUDE.md §4.5).
+
 ### Phase 1 · 계획 + E2E AC 도출 (vcx-cpo)
 
 1. **요구사항 명확화** — 2개 이상 해석 가능하면 `/oh-my-claudecode:plan` 선행. PRD 변경 포함 시 `/oh-my-claudecode:ralplan --consensus` 로 ADR 초안 (L-High, 48h 쿨다운 트리거 — `docs/PROCESS.md` §1.4).
