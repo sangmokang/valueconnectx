@@ -162,7 +162,14 @@ Haiku (단순 lookup) / Sonnet (표준) / Opus (복잡 reasoning · 보안). VCX
 
 - **런타임 진입점**: `~/.claude/CLAUDE.md` (oh-my-claudecode — 30+ agents, skills, autopilot/ralph/ultrawork/plan 등). VCX 세션 시작 시 자동 로드.
 - **1 인 6-role 매트릭스**: `@docs/roles/HARNESS.md` (CEO/CPO/CTO/CDO/SRE/DESIGNER × agent · skill · tool · quality gate).
-- 본 문서는 위 두 SoT 를 **재선언하지 않는다**. 변경이 필요하면 해당 파일을 고치고 여기는 링크만 유지.
+- **도메인 단일 진입점**: `.claude/skills/vcx-orchestrator/SKILL.md` — Phase 0~6 파이프라인, 6-role 프록시 + 도메인 게이트 (vcx-scope-gate · vcx-tdd-gate · vcx-dod-gate · vcx-history-digest) 조율.
+- **L4 런타임 3중 방어** (ADR-0008):
+  1. **SessionStart hook** — `.claude/hooks/worktree-session-start.sh` (워크트리 상태 고지, 메인 워크트리에 opt-in 정책 경고)
+  2. **PreToolUse — opt-in** (HARD STOP 미채택, ADR-0008 §D-2 근거; 2인체제 전환 시 재검토)
+  3. **pre-commit hook** — `.githooks/pre-commit` → `scripts/prd-freeze-check.sh` + `scripts/secret-scan.sh` (PRD freeze + Secret/PII fail-closed)
+- **L5 Sprint Evidence Ledger**: `docs/sprints/{slug}/NN-type.ext` 단일 SoT — Phase 0 영수증 · 01-plan · 01-e2e-ac · 02-arch · 03a-red.log · 03b-green.log · 03c-refactor.md · 04-gate-*.md · 05-verify.md. 운영 가이드 = `@docs/sprints/README.md`. 정책 근거 = ADR-0008 (§D-1).
+- **Phase 5 외부 advisor 프로토콜**: self-review echo 차단 — `/oh-my-claudecode:code-review` + `/oh-my-claudecode:security-review` 병렬 호출 + Verdict 포맷 강제. 상세 = `@docs/PROCESS.md §5.5`.
+- 본 문서는 위 SoT 들을 **재선언하지 않는다**. 변경이 필요하면 해당 파일을 고치고 여기는 링크만 유지.
 
 ---
 
