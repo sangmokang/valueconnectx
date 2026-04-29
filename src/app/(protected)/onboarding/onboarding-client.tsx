@@ -2,84 +2,64 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { linkedinUrlSchema } from '@/lib/validation/linkedin'
+import { PROFESSIONAL_FIELDS } from '@/constants/profile'
 
-const PROFESSIONAL_FIELDS = [
-  'Engineering', 'Product', 'Design', 'Data', 'Marketing',
-  'Sales', 'Operations', 'Finance', 'HR', 'Legal', 'Other',
-]
-
-const INDUSTRIES = [
-  'IT/소프트웨어', '금융/핀테크', '컨설팅', '마케팅/광고',
-  '의료/헬스케어', '교육', '제조/하드웨어', '스타트업',
-  '미디어/콘텐츠', '법률/회계', '부동산', '기타',
-]
-
-interface ProfileData {
+interface ProfileSnapshot {
   name: string
   current_company: string
   title: string
   linkedin_url: string
-  nickname: string
-  professional_fields: string[]
-  years_of_experience: string
   bio: string
-  industry: string
-  location: string
+  professional_fields: string[]
 }
 
-// Weights must sum to 100
-const FIELD_WEIGHTS: Record<keyof ProfileData, number> = {
+// 완성도 가중치 (합계 100)
+const WEIGHTS = {
   name: 10,
   current_company: 15,
   title: 15,
   linkedin_url: 20,
-  nickname: 0,
+  bio: 25,
   professional_fields: 15,
-  years_of_experience: 10,
-  bio: 15,
-  industry: 0,
-  location: 0,
 }
 
-function calcCompletion(form: ProfileData): number {
+function calcCompletion(data: ProfileSnapshot): number {
   let total = 0
-  if (form.name.trim()) total += FIELD_WEIGHTS.name
-  if (form.current_company.trim()) total += FIELD_WEIGHTS.current_company
-  if (form.title.trim()) total += FIELD_WEIGHTS.title
-  if (form.linkedin_url.trim()) total += FIELD_WEIGHTS.linkedin_url
-  if (form.professional_fields.length > 0) total += FIELD_WEIGHTS.professional_fields
-  if (form.years_of_experience !== '') total += FIELD_WEIGHTS.years_of_experience
-  if (form.bio.trim()) total += FIELD_WEIGHTS.bio
+  if (data.name.trim()) total += WEIGHTS.name
+  if (data.current_company.trim()) total += WEIGHTS.current_company
+  if (data.title.trim()) total += WEIGHTS.title
+  if (data.linkedin_url.trim()) total += WEIGHTS.linkedin_url
+  if (data.bio.trim()) total += WEIGHTS.bio
+  if (data.professional_fields.length > 0) total += WEIGHTS.professional_fields
   return total
 }
 
 export default function OnboardingPage() {
   const router = useRouter()
-  const [step, setStep] = useState<1 | 2>(1)
+
   const [loading, setLoading] = useState(false)
   const [checkingProfile, setCheckingProfile] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof ProfileData, string>>>({})
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof ProfileSnapshot, string>>>({})
 
-  const [form, setForm] = useState<ProfileData>({
+  // 읽기 전용 — 초대 시 입력된 값
+  const [readOnlyName, setReadOnlyName] = useState('')
+  const [readOnlyLinkedin, setReadOnlyLinkedin] = useState('')
+
+  const [form, setForm] = useState<ProfileSnapshot>({
     name: '',
     current_company: '',
     title: '',
     linkedin_url: '',
-    nickname: '',
-    professional_fields: [],
-    years_of_experience: '',
     bio: '',
-    industry: '',
-    location: '',
+    professional_fields: [],
   })
 
-  const completion = calcCompletion(form)
+  // 완성도는 로딩 중에는 숨김 — 깜빡임 방지
+  const completion = checkingProfile ? null : calcCompletion(form)
 
-  // Check if profile is already complete — redirect to /directory if so
   useEffect(() => {
     async function checkProfile() {
       try {
@@ -90,23 +70,21 @@ export default function OnboardingPage() {
             router.replace('/directory')
             return
           }
-          // Pre-fill whatever is already there
-          setForm((prev) => ({
-            ...prev,
-            name: data?.name ?? '',
+          const name = data?.name ?? ''
+          const linkedin_url = data?.linkedin_url ?? ''
+          setReadOnlyName(name)
+          setReadOnlyLinkedin(linkedin_url)
+          setForm({
+            name,
             current_company: data?.current_company ?? '',
             title: data?.title ?? '',
-            linkedin_url: data?.linkedin_url ?? '',
-            nickname: data?.nickname ?? '',
-            professional_fields: data?.professional_fields ?? [],
-            years_of_experience: data?.years_of_experience ? String(data.years_of_experience) : '',
+            linkedin_url,
             bio: data?.bio ?? '',
-            industry: data?.industry ?? '',
-            location: data?.location ?? '',
-          }))
+            professional_fields: data?.professional_fields ?? [],
+          })
         }
       } catch {
-        // ignore — unauthenticated users are handled by ProtectedPageWrapper
+        // unauthenticated — ProtectedPageWrapper handles redirect
       } finally {
         setCheckingProfile(false)
       }
@@ -123,59 +101,34 @@ export default function OnboardingPage() {
     }))
   }
 
-  function validateStep1(): boolean {
-    const errors: Partial<Record<keyof ProfileData, string>> = {}
-    if (!form.name.trim()) errors.name = '이름을 입력해주세요'
+  function validate(): boolean {
+    const errors: Partial<Record<keyof ProfileSnapshot, string>> = {}
     if (!form.current_company.trim()) errors.current_company = '현재 회사를 입력해주세요'
     if (!form.title.trim()) errors.title = '직함을 입력해주세요'
-    if (!form.linkedin_url.trim()) {
-      errors.linkedin_url = 'LinkedIn URL을 입력해주세요'
-    } else {
-      const result = linkedinUrlSchema.safeParse(form.linkedin_url.trim())
-      if (!result.success) errors.linkedin_url = result.error.issues[0].message
-    }
-    if (!form.nickname.trim()) errors.nickname = '닉네임을 입력해주세요'
+    if (!form.bio.trim()) errors.bio = '자기소개를 입력해주세요'
     setFieldErrors(errors)
     return Object.keys(errors).length === 0
   }
 
-  function handleNextStep() {
-    if (validateStep1()) {
-      setStep(2)
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
-  }
-
-  function handlePrevStep() {
-    setStep(1)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!validateStep1()) { setStep(1); return }
+    if (!validate()) return
 
     setLoading(true)
     setError(null)
 
     try {
-      const body: Record<string, unknown> = {
-        name: form.name.trim(),
-        current_company: form.current_company.trim(),
-        title: form.title.trim(),
-        linkedin_url: form.linkedin_url.trim(),
-        nickname: form.nickname.trim(),
-        bio: form.bio || null,
-        industry: form.industry || null,
-        location: form.location || null,
-        professional_fields: form.professional_fields,
-        years_of_experience: form.years_of_experience ? parseInt(form.years_of_experience, 10) : null,
-      }
-
       const res = await fetch('/api/directory/me', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
+        body: JSON.stringify({
+          name: form.name.trim() || null,
+          current_company: form.current_company.trim(),
+          title: form.title.trim(),
+          linkedin_url: form.linkedin_url.trim() || null,
+          bio: form.bio.trim() || null,
+          professional_fields: form.professional_fields,
+        }),
       })
 
       if (!res.ok) {
@@ -203,299 +156,199 @@ export default function OnboardingPage() {
   return (
     <div className="min-h-screen bg-[#f0ebe2] px-4 pt-12 pb-20">
       <div className="max-w-[560px] mx-auto">
+
         {/* Header */}
-        <div className="mb-8 text-center">
-          <p className="vcx-label text-[#c9a84c] tracking-[0.2em] mb-2.5">
-            Welcome
+        <div className="mb-10 text-center">
+          <p className="vcx-label text-[#c9a84c] tracking-[0.2em] mb-3">
+            WELCOME
           </p>
-          <h1 className="font-vcx-serif text-[26px] font-extrabold text-vcx-dark mb-2.5">
-            프로필 완성하기
+          <h1 className="font-vcx-serif text-[28px] font-extrabold text-vcx-dark mb-3 leading-tight">
+            당신의 이야기를 들려주세요
           </h1>
           <p className="font-vcx-sans text-[14px] text-vcx-sub-4 leading-relaxed">
-            네트워크에 참여하기 전에 프로필을 완성해주세요
+            ValueConnect X는 검증된 핵심 인재들의 커뮤니티입니다.<br />
+            프로필을 완성하고 네트워크에 참여하세요.
           </p>
         </div>
 
-        {/* Step Indicator */}
-        <div className="mb-5 flex items-center justify-center gap-0">
-          {/* Step 1 */}
-          <button
-            type="button"
-            onClick={() => step === 2 && setStep(1)}
-            className="flex items-center gap-2 cursor-pointer bg-transparent border-none p-0"
-          >
-            <div
-              className={`w-7 h-7 flex items-center justify-center text-[12px] font-semibold font-vcx-sans border transition-all ${
-                step === 1
-                  ? 'bg-[#c9a84c] border-[#c9a84c] text-white'
-                  : 'bg-[#c9a84c]/10 border-[#c9a84c] text-[#c9a84c]'
-              }`}
-            >
-              {step === 2 ? <Check size={14} strokeWidth={2.5} /> : '1'}
+        {/* Progress bar — only shown after load */}
+        {completion !== null && (
+          <div className="mb-8">
+            <div className="flex justify-between items-center mb-1.5">
+              <span className="font-vcx-sans text-[11px] text-vcx-sub-4">프로필 완성도</span>
+              <span className="font-vcx-sans text-[11px] font-semibold text-[#c9a84c]">{completion}%</span>
             </div>
-            <span
-              className={`font-vcx-sans text-[12px] tracking-wide ${
-                step === 1 ? 'text-[#c9a84c] font-semibold' : 'text-vcx-sub-4'
-              }`}
-            >
-              필수 정보
-            </span>
-          </button>
-
-          {/* Connector */}
-          <div className="w-10 h-px bg-[#e0d9ce] mx-3" />
-
-          {/* Step 2 */}
-          <div className="flex items-center gap-2">
-            <div
-              className={`w-7 h-7 flex items-center justify-center text-[12px] font-semibold font-vcx-sans border transition-all ${
-                step === 2
-                  ? 'bg-[#c9a84c] border-[#c9a84c] text-white'
-                  : 'bg-white border-[#e0d9ce] text-vcx-sub-4'
-              }`}
-            >
-              2
+            <div className="w-full h-1.5 bg-[#e0d9ce]">
+              <div
+                className="h-full bg-[#c9a84c] transition-all duration-300"
+                style={{ width: `${completion}%` }}
+              />
             </div>
-            <span
-              className={`font-vcx-sans text-[12px] tracking-wide ${
-                step === 2 ? 'text-[#c9a84c] font-semibold' : 'text-vcx-sub-4'
-              }`}
-            >
-              선택 정보
-            </span>
           </div>
-        </div>
+        )}
 
-        {/* Progress Bar */}
-        <div className="mb-6">
-          <div className="flex justify-between items-center mb-1.5">
-            <span className="font-vcx-sans text-[11px] text-vcx-sub-4">프로필 완성도</span>
-            <span className="font-vcx-sans text-[11px] font-semibold text-[#c9a84c]">{completion}%</span>
-          </div>
-          <div className="w-full h-1.5 bg-[#e0d9ce]">
-            <div
-              className="h-full bg-[#c9a84c] transition-all duration-300"
-              style={{ width: `${completion}%` }}
-            />
-          </div>
-        </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
 
-        {/* Card */}
-        <div className="bg-white border border-[#e0d9ce] px-6 py-7">
-          <form onSubmit={handleSubmit}>
-            {step === 1 && (
-              <>
-                {/* Required section label */}
-                <div className="mb-5">
-                  <p className="vcx-label tracking-[0.12em] text-[#c9a84c] border-b border-[#e0d9ce] pb-2">
-                    필수 정보
-                  </p>
+          {/* ── 섹션 1: 당신의 이야기 (필수) ── */}
+          <div className="bg-white border border-[#e0d9ce] px-6 py-7">
+            <div className="mb-5">
+              <p className="vcx-label tracking-[0.12em] text-[#c9a84c] border-b border-[#e0d9ce] pb-2">
+                당신의 이야기
+              </p>
+            </div>
+
+            {/* 읽기 전용 카드 — 초대 시 입력됨 */}
+            {(readOnlyName || readOnlyLinkedin) && (
+              <div className="mb-5 bg-[#f7f3ed] border border-[#e0d9ce] px-4 py-3 flex items-start gap-3">
+                <div className="flex-1 min-w-0">
+                  {readOnlyName && (
+                    <p className="font-vcx-serif text-[16px] font-bold text-vcx-dark leading-tight">
+                      {readOnlyName}
+                    </p>
+                  )}
+                  {readOnlyLinkedin && (
+                    <a
+                      href={readOnlyLinkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-vcx-sans text-[12px] text-[#c9a84c] hover:underline truncate block mt-0.5"
+                    >
+                      {readOnlyLinkedin}
+                    </a>
+                  )}
                 </div>
-
-                {/* Name */}
-                <div className="mb-4">
-                  <label className="vcx-label text-vcx-sub-4 block mb-1.5">이름 (실명) *</label>
-                  <input
-                    type="text"
-                    value={form.name}
-                    onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
-                    placeholder="홍길동"
-                    disabled={!!form.name}
-                    className={`w-full px-3.5 py-3 font-vcx-sans text-[14px] border outline-none ${form.name ? 'bg-[#ebe5da] text-vcx-sub-3 cursor-not-allowed' : 'bg-[#f7f3ed] text-vcx-dark focus:border-[#c9a84c]'} ${fieldErrors.name ? 'border-red-500' : 'border-black/[0.08]'}`}
-                  />
-                  {form.name && <p className="font-vcx-sans text-[11px] text-vcx-sub-4 mt-1">초대 시 입력됨</p>}
-                  {fieldErrors.name && <p className="font-vcx-sans text-[12px] text-red-500 mt-1">{fieldErrors.name}</p>}
-                </div>
-
-                {/* Current company */}
-                <div className="mb-4">
-                  <label className="vcx-label text-vcx-sub-4 block mb-1.5">현재 회사 *</label>
-                  <input
-                    type="text"
-                    value={form.current_company}
-                    onChange={(e) => setForm((p) => ({ ...p, current_company: e.target.value }))}
-                    placeholder="회사명"
-                    className={`w-full px-3.5 py-3 font-vcx-sans text-[14px] text-vcx-dark bg-[#f7f3ed] border outline-none ${fieldErrors.current_company ? 'border-red-500' : 'border-black/[0.08]'} focus:border-[#c9a84c]`}
-                  />
-                  {fieldErrors.current_company && <p className="font-vcx-sans text-[12px] text-red-500 mt-1">{fieldErrors.current_company}</p>}
-                </div>
-
-                {/* Title */}
-                <div className="mb-4">
-                  <label className="vcx-label text-vcx-sub-4 block mb-1.5">직함 *</label>
-                  <input
-                    type="text"
-                    value={form.title}
-                    onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))}
-                    placeholder="예: Senior Software Engineer"
-                    className={`w-full px-3.5 py-3 font-vcx-sans text-[14px] text-vcx-dark bg-[#f7f3ed] border outline-none ${fieldErrors.title ? 'border-red-500' : 'border-black/[0.08]'} focus:border-[#c9a84c]`}
-                  />
-                  {fieldErrors.title && <p className="font-vcx-sans text-[12px] text-red-500 mt-1">{fieldErrors.title}</p>}
-                </div>
-
-                {/* LinkedIn URL */}
-                <div className="mb-4">
-                  <label className="vcx-label text-vcx-sub-4 block mb-1.5">LinkedIn URL *</label>
-                  <input
-                    type="url"
-                    value={form.linkedin_url}
-                    onChange={(e) => setForm((p) => ({ ...p, linkedin_url: e.target.value }))}
-                    placeholder="https://linkedin.com/in/your-profile"
-                    disabled={!!form.linkedin_url}
-                    className={`w-full px-3.5 py-3 font-vcx-sans text-[14px] border outline-none ${form.linkedin_url ? 'bg-[#ebe5da] text-vcx-sub-3 cursor-not-allowed' : 'bg-[#f7f3ed] text-vcx-dark focus:border-[#c9a84c]'} ${fieldErrors.linkedin_url ? 'border-red-500' : 'border-black/[0.08]'}`}
-                  />
-                  {form.linkedin_url && <p className="font-vcx-sans text-[11px] text-vcx-sub-4 mt-1">초대 시 입력됨</p>}
-                  {fieldErrors.linkedin_url && <p className="font-vcx-sans text-[12px] text-red-500 mt-1">{fieldErrors.linkedin_url}</p>}
-                </div>
-
-                {/* Nickname */}
-                <div className="mb-7">
-                  <label className="vcx-label text-vcx-sub-4 block mb-1.5">닉네임 (커뮤니티 표시명) *</label>
-                  <input
-                    type="text"
-                    value={form.nickname}
-                    onChange={(e) => setForm((p) => ({ ...p, nickname: e.target.value }))}
-                    placeholder="커뮤니티에서 사용할 닉네임"
-                    className={`w-full px-3.5 py-3 font-vcx-sans text-[14px] text-vcx-dark bg-[#f7f3ed] border outline-none ${fieldErrors.nickname ? 'border-red-500' : 'border-black/[0.08]'} focus:border-[#c9a84c]`}
-                  />
-                  <p className="font-vcx-sans text-[11px] text-[#888] mt-1">커뮤니티 라운지에서 이 이름으로 표시됩니다</p>
-                  {fieldErrors.nickname && <p className="font-vcx-sans text-[12px] text-red-500 mt-1">{fieldErrors.nickname}</p>}
-                </div>
-
-                {/* Next button */}
-                <Button
-                  type="button"
-                  variant="gold"
-                  onClick={handleNextStep}
-                  className="w-full py-3.5 text-[14px] font-semibold"
+                <a
+                  href="/directory/me"
+                  className="flex-none font-vcx-sans text-[11px] text-vcx-sub-4 underline whitespace-nowrap mt-0.5 hover:text-vcx-dark"
                 >
-                  다음 — 선택 정보 입력
-                </Button>
-              </>
+                  수정
+                </a>
+              </div>
             )}
 
-            {step === 2 && (
-              <>
-                {/* Optional section label */}
-                <div className="mb-5">
-                  <p className="vcx-label tracking-[0.12em] text-vcx-sub-4 border-b border-[#e0d9ce] pb-2">
-                    선택 정보
-                  </p>
-                </div>
+            {/* Bio — 한 문장 자기소개 */}
+            <div>
+              <label className="vcx-label text-vcx-sub-4 block mb-1.5">
+                당신을 한 문장으로 소개해주세요 *
+              </label>
+              <textarea
+                value={form.bio}
+                onChange={(e) => {
+                  if (e.target.value.length <= 150) {
+                    setForm((p) => ({ ...p, bio: e.target.value }))
+                  }
+                }}
+                placeholder="예: 10년차 백엔드 엔지니어. 대규모 시스템 설계에 관심이 많습니다."
+                rows={3}
+                className={`w-full px-3.5 py-3 font-vcx-serif text-[15px] text-vcx-dark bg-[#f7f3ed] border outline-none focus:border-[#c9a84c] resize-none leading-relaxed ${
+                  fieldErrors.bio ? 'border-red-500' : 'border-black/[0.08]'
+                }`}
+              />
+              <div className="flex justify-between items-center mt-1">
+                {fieldErrors.bio
+                  ? <p className="font-vcx-sans text-[12px] text-red-500">{fieldErrors.bio}</p>
+                  : <span />
+                }
+                <p className="font-vcx-sans text-[11px] text-vcx-sub-5 text-right">
+                  {form.bio.length} / 150
+                </p>
+              </div>
+            </div>
+          </div>
 
-                {/* Professional fields */}
-                <div className="mb-4">
-                  <label className="vcx-label text-vcx-sub-4 block mb-1.5">전문 분야</label>
-                  <div className="flex flex-wrap gap-2">
-                    {PROFESSIONAL_FIELDS.map((field) => {
-                      const selected = form.professional_fields.includes(field)
-                      return (
-                        <button
-                          key={field}
-                          type="button"
-                          onClick={() => toggleField(field)}
-                          className={`px-3 py-1.5 font-vcx-sans text-[12px] border cursor-pointer transition-all ${
-                            selected
-                              ? 'border-[#c9a84c] bg-[#fdf9f2] text-[#c9a84c]'
-                              : 'border-[#e0d9ce] bg-white text-[#666]'
-                          }`}
-                        >
-                          {field}
-                        </button>
-                      )
-                    })}
-                  </div>
-                </div>
+          {/* ── 섹션 2: 현재 (필수) ── */}
+          <div className="bg-white border border-[#e0d9ce] px-6 py-7">
+            <div className="mb-5">
+              <p className="vcx-label tracking-[0.12em] text-[#c9a84c] border-b border-[#e0d9ce] pb-2">
+                현재
+              </p>
+            </div>
 
-                {/* Years of experience */}
-                <div className="mb-4">
-                  <label className="vcx-label text-vcx-sub-4 block mb-1.5">경력 (년)</label>
-                  <input
-                    type="number"
-                    min={0}
-                    max={50}
-                    value={form.years_of_experience}
-                    onChange={(e) => setForm((p) => ({ ...p, years_of_experience: e.target.value }))}
-                    placeholder="예: 8"
-                    className="w-full px-3.5 py-3 font-vcx-sans text-[14px] text-vcx-dark bg-[#f7f3ed] border border-black/[0.08] outline-none focus:border-[#c9a84c]"
-                  />
-                </div>
+            {/* Current company */}
+            <div className="mb-4">
+              <label className="vcx-label text-vcx-sub-4 block mb-1.5">현재 회사 *</label>
+              <input
+                type="text"
+                value={form.current_company}
+                onChange={(e) => setForm((p) => ({ ...p, current_company: e.target.value }))}
+                placeholder="회사명"
+                className={`w-full px-3.5 py-3 font-vcx-sans text-[14px] text-vcx-dark bg-[#f7f3ed] border outline-none focus:border-[#c9a84c] ${
+                  fieldErrors.current_company ? 'border-red-500' : 'border-black/[0.08]'
+                }`}
+              />
+              {fieldErrors.current_company && (
+                <p className="font-vcx-sans text-[12px] text-red-500 mt-1">{fieldErrors.current_company}</p>
+              )}
+            </div>
 
-                {/* Industry */}
-                <div className="mb-4">
-                  <label className="vcx-label text-vcx-sub-4 block mb-1.5">산업</label>
-                  <select
-                    value={form.industry}
-                    onChange={(e) => setForm((p) => ({ ...p, industry: e.target.value }))}
-                    className="w-full px-3.5 py-3 font-vcx-sans text-[14px] text-vcx-dark bg-[#f7f3ed] border border-black/[0.08] outline-none focus:border-[#c9a84c]"
-                  >
-                    <option value="">선택 안 함</option>
-                    {INDUSTRIES.map((ind) => (
-                      <option key={ind} value={ind}>{ind}</option>
-                    ))}
-                  </select>
-                </div>
+            {/* Title */}
+            <div>
+              <label className="vcx-label text-vcx-sub-4 block mb-1.5">직함 *</label>
+              <input
+                type="text"
+                value={form.title}
+                onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))}
+                placeholder="예: Senior Software Engineer"
+                className={`w-full px-3.5 py-3 font-vcx-sans text-[14px] text-vcx-dark bg-[#f7f3ed] border outline-none focus:border-[#c9a84c] ${
+                  fieldErrors.title ? 'border-red-500' : 'border-black/[0.08]'
+                }`}
+              />
+              {fieldErrors.title && (
+                <p className="font-vcx-sans text-[12px] text-red-500 mt-1">{fieldErrors.title}</p>
+              )}
+            </div>
+          </div>
 
-                {/* Location */}
-                <div className="mb-4">
-                  <label className="vcx-label text-vcx-sub-4 block mb-1.5">위치</label>
-                  <input
-                    type="text"
-                    value={form.location}
-                    onChange={(e) => setForm((p) => ({ ...p, location: e.target.value }))}
-                    placeholder="예: 서울, 성남"
-                    maxLength={100}
-                    className="w-full px-3.5 py-3 font-vcx-sans text-[14px] text-vcx-dark bg-[#f7f3ed] border border-black/[0.08] outline-none focus:border-[#c9a84c]"
-                  />
-                </div>
+          {/* ── 섹션 3: 관심 분야 (선택) ── */}
+          <div className="bg-white border border-[#e0d9ce] px-6 py-7">
+            <div className="mb-5">
+              <p className="vcx-label tracking-[0.12em] text-vcx-sub-4 border-b border-[#e0d9ce] pb-2">
+                관심 분야 <span className="text-[10px] font-normal normal-case tracking-normal ml-1">(선택)</span>
+              </p>
+            </div>
 
-                {/* Bio */}
-                <div className="mb-7">
-                  <label className="vcx-label text-vcx-sub-4 block mb-1.5">자기소개</label>
-                  <textarea
-                    value={form.bio}
-                    onChange={(e) => setForm((p) => ({ ...p, bio: e.target.value }))}
-                    placeholder="자신을 소개해 주세요 (최대 1000자)"
-                    maxLength={1000}
-                    rows={4}
-                    className="w-full px-3.5 py-3 font-vcx-sans text-[14px] text-vcx-dark bg-[#f7f3ed] border border-black/[0.08] outline-none focus:border-[#c9a84c] resize-vertical"
-                  />
-                  <p className="font-vcx-sans text-[11px] text-vcx-sub-5 mt-1 text-right">
-                    {form.bio.length} / 1000
-                  </p>
-                </div>
+            <p className="font-vcx-sans text-[13px] text-vcx-sub-4 mb-3">
+              어떤 분야의 기회를 보고 싶으신가요?
+            </p>
 
-                {/* Error */}
-                {error && (
-                  <div className="bg-red-500/[0.08] border border-red-500/20 px-4 py-3 mb-4 font-vcx-sans text-[13px] text-red-500">
-                    {error}
-                  </div>
-                )}
-
-                {/* Buttons */}
-                <div className="flex gap-3">
+            <div className="flex flex-wrap gap-2">
+              {PROFESSIONAL_FIELDS.map((field) => {
+                const selected = form.professional_fields.includes(field)
+                return (
                   <button
+                    key={field}
                     type="button"
-                    onClick={handlePrevStep}
-                    className="flex-none px-5 py-3.5 font-vcx-sans text-[13px] text-vcx-sub-4 bg-transparent border border-[#e0d9ce] cursor-pointer hover:border-[#c9a84c] hover:text-[#c9a84c] transition-all"
+                    onClick={() => toggleField(field)}
+                    className={`px-3 py-1.5 font-vcx-sans text-[12px] border cursor-pointer transition-all ${
+                      selected
+                        ? 'border-[#c9a84c] bg-[#fdf9f2] text-[#c9a84c]'
+                        : 'border-[#e0d9ce] bg-white text-[#666]'
+                    }`}
                   >
-                    이전
+                    {field}
                   </button>
-                  <Button
-                    type="submit"
-                    variant="gold"
-                    disabled={loading}
-                    className="flex-1 py-3.5 text-[14px] font-semibold"
-                  >
-                    {loading ? '저장 중...' : '프로필 완성하고 입장하기'}
-                  </Button>
-                </div>
-              </>
-            )}
-          </form>
-        </div>
+                )
+              })}
+            </div>
+          </div>
 
-        {/* 강제 온보딩 — 스킵 불가 (미들웨어에서 미완성 프로필 리다이렉트) */}
+          {/* Error */}
+          {error && (
+            <div className="bg-red-500/[0.08] border border-red-500/20 px-4 py-3 font-vcx-sans text-[13px] text-red-500">
+              {error}
+            </div>
+          )}
+
+          {/* Submit */}
+          <Button
+            type="submit"
+            variant="gold"
+            disabled={loading}
+            className="w-full py-4 text-[14px] font-semibold"
+          >
+            {loading ? '저장 중...' : '네트워크 입장하기'}
+          </Button>
+        </form>
       </div>
     </div>
   )

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { linkedinUrlSchema } from '@/lib/validation/linkedin'
 
 interface InviteInfo { email: string; invitedByName: string; memberTier: 'core' | 'endorsed' }
 
@@ -36,7 +37,8 @@ export function InviteAcceptForm({ initialToken }: { initialToken?: string }) {
     if (password !== confirmPassword) { setError('비밀번호가 일치하지 않습니다'); return }
     if (password.length < 8) { setError('비밀번호는 8자 이상이어야 합니다'); return }
     if (!linkedinUrl) { setError('LinkedIn URL을 입력해주세요'); return }
-    if (!/^https?:\/\/(www\.)?linkedin\.com\/in\//i.test(linkedinUrl)) { setError('LinkedIn 프로필 URL이어야 합니다 (linkedin.com/in/...)'); return }
+    const linkedinResult = linkedinUrlSchema.safeParse(linkedinUrl)
+    if (!linkedinResult.success) { setError(linkedinResult.error.issues[0]?.message ?? 'LinkedIn 프로필 URL이어야 합니다 (linkedin.com/in/...)'); return }
     setLoading(true)
     try {
       const res = await fetch('/api/invites/accept', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token, password, name, linkedin_url: linkedinUrl }) })

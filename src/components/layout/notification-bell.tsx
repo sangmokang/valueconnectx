@@ -99,14 +99,14 @@ export function NotificationBell() {
       >
         <Bell size={20} color="#555" className="hover:text-[#1a1a1a] transition-colors" />
         {unreadCount > 0 && (
-          <span className="absolute top-0 right-0 min-w-[16px] h-[16px] bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center px-[3px] leading-none">
+          <span className="absolute top-0 right-0 min-w-[16px] h-[16px] bg-red-500 text-white text-[10px] font-bold flex items-center justify-center px-[3px] leading-none">
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-lg z-[300] overflow-hidden">
+        <div className="absolute right-0 top-full mt-2 w-80 bg-white shadow-lg z-[300] overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
             <span className="text-[13px] font-semibold text-[#1a1a1a] font-[system-ui,sans-serif]">

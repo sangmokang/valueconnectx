@@ -12,11 +12,43 @@
 
 ---
 
+## 2026-04-30
+
+- [docs] 컨퍼런스 부스 대화 플레이북 작성 — 손님 응대 스크립트·FAQ·꼬리 질문 포함 (source:chat) → `docs/marketing/booth-conversation-playbook.md` 생성 (미커밋)
+- [docs] 대외 공표용 PRD + 제품 브리프 작성 — 보안 사항 제거한 공개 버전 `docs/prd.md` + `docs/marketing/public-product-brief-1.0.md` 생성 요청 (/ralph 모드) (source:chat) (미커밋)
+- [decision] 티셔츠 마케팅 캐치프레이즈 탐색 — 컨퍼런스 부스 기업 홍보 문구 방향 논의 (아이디어 수준, 별도 파일 미생성) (source:chat)
+
+## 2026-04-24
+
+- [chore] L4 secret-scan 배선 + Phase 0 영수증 + 워크트리 훅 근거 명시 (L-Std) (commit:2cefd09)
+
+## 2026-04-22
+
+- [feat] valuehire_v2 하네스 → valueconnectx 도메인 이식 (commit:d92b921)
+- [docs] PRD v6.0 단일 SoT 확정 + ADR-0001~0007 서명 (L-High, S1 scheduled) (commit:7a590d4)
+- [chore] PRD freeze pre-commit guard 배선 — ADR-0004 Enforcement (L-Std) (commit:8166eaa)
+- [docs] 문서 트리 재분류 + 구 PRD·booth·brand 자료 archive (L-Std) (commit:fee94e7)
+
+## 2026-04-21
+
+- [docs] CLAUDE.md를 VH v2 구조 규율로 재작성 (L-High, 48h 쿨다운 waive) (commit:0711e3a)
+
+## 2026-04-20
+
+- [fix] border-radius 글로벌 !important 제거 — 원형 아바타/배지/알약 복구 (commit:c08c32c)
+- [feat] public /api/health 엔드포인트 추가 — uptime 프로브용 (commit:a544e3d)
+
 ## 2026-04-19 (현재)
 
 - [docs] history.md 생성 — 요구사항·기능·프롬프팅 변경 통합 추적 시작 (manual:setup)
 
 ---
+- [feat] 관리자 운영 대시보드 추가 — 헬스체크 API + 어드민 탭 (commit:3068dd6)
+- [feat] CLI 스크립트 + wiki 문서 구조 추가 (commit:394ee84)
+- [docs] PRD 6.0/6.1, 부스 데모 스크립트, 프로세스/운영 문서 추가 (commit:e85fa3c)
+- [chore] QA 스크립트 + UI 스크린샷 + 히스토리 기록 추가 (commit:5fc0ded)
+- [chore] 세션 상태 + 플랜 업데이트 (commit:b352dac)
+- [chore] .claude/worktrees를 gitignore에 추가하고 임베드 저장소 추적 해제 (commit:c601a03)
 
 ## 2026-04-03
 

@@ -8,6 +8,7 @@ const tabs = [
   { href: '/admin/invites', label: '초대 관리' },
   { href: '/admin/corporate-users', label: '기업 사용자' },
   { href: '/admin/positions', label: '포지션 관리' },
+  { href: '/admin/curation', label: '큐레이션 피드' },
   { href: '/admin/reports', label: '신고 관리' },
   { href: '/admin/analytics', label: '분석' },
   { href: '/admin/hiring', label: '수수료' },

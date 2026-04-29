@@ -3,21 +3,7 @@
 import { useState } from 'react'
 import { trackEvent } from '@/lib/analytics'
 import { linkedinUrlSchema } from '@/lib/validation/linkedin'
-
-const INDUSTRIES = [
-  'IT/소프트웨어',
-  '금융/핀테크',
-  '컨설팅',
-  '마케팅/광고',
-  '의료/헬스케어',
-  '교육',
-  '제조/하드웨어',
-  '스타트업',
-  '미디어/콘텐츠',
-  '법률/회계',
-  '부동산',
-  '기타',
-]
+import { INDUSTRIES } from '@/constants/profile'
 
 interface ProfileEditFormProps {
   initialData: {

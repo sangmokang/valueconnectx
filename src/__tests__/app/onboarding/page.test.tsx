@@ -1,4 +1,4 @@
-import { render, screen, waitFor, fireEvent } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 
 const { mockPush, mockReplace } = vi.hoisted(() => ({
@@ -10,19 +10,21 @@ vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: mockPush, replace: mockReplace }),
 }))
 
-vi.mock('lucide-react', () => ({
-  Check: () => React.createElement('svg'),
-}))
-
-Object.defineProperty(window, 'scrollTo', { value: vi.fn(), writable: true })
-
 import OnboardingPage from '@/app/(protected)/onboarding/page'
 
 function mockGet(overrides: Record<string, unknown> = {}) {
   return {
     ok: true,
     json: async () => ({
-      data: { name: '', current_company: '', title: '', linkedin_url: '', professional_fields: [], years_of_experience: null, bio: '', industry: '', location: '', ...overrides },
+      data: {
+        name: '',
+        current_company: '',
+        title: '',
+        linkedin_url: '',
+        professional_fields: [],
+        bio: '',
+        ...overrides,
+      },
     }),
   }
 }
@@ -34,27 +36,31 @@ describe('OnboardingPage', () => {
   })
   afterEach(() => { vi.unstubAllGlobals() })
 
-  it('renders heading after profile check', async () => {
-    render(<OnboardingPage />)
-    expect(await screen.findByRole('heading', { name: '프로필 완성하기' })).toBeInTheDocument()
-  })
-
-  it('shows loading indicator', () => {
+  it('shows loading indicator before profile check completes', () => {
     vi.stubGlobal('fetch', vi.fn().mockReturnValue(new Promise(() => {})))
     render(<OnboardingPage />)
     expect(screen.getByText('로딩 중...')).toBeInTheDocument()
   })
 
-  it('renders step 1 fields, buttons, and step indicator', async () => {
+  it('renders story-centric heading after profile check', async () => {
     render(<OnboardingPage />)
-    await screen.findByRole('heading', { name: '프로필 완성하기' })
-    expect(screen.getByPlaceholderText('홍길동')).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: '당신의 이야기를 들려주세요' })).toBeInTheDocument()
+  })
+
+  it('renders all three sections with correct fields', async () => {
+    render(<OnboardingPage />)
+    await screen.findByRole('heading', { name: '당신의 이야기를 들려주세요' })
+    // 섹션 1: 자기소개
+    expect(screen.getByText('당신의 이야기')).toBeInTheDocument()
+    expect(screen.getByPlaceholderText(/10년차 백엔드 엔지니어/)).toBeInTheDocument()
+    // 섹션 2: 현재
+    expect(screen.getByText('현재')).toBeInTheDocument()
     expect(screen.getByPlaceholderText('회사명')).toBeInTheDocument()
     expect(screen.getByPlaceholderText('예: Senior Software Engineer')).toBeInTheDocument()
-    expect(screen.getByPlaceholderText('https://linkedin.com/in/your-profile')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: '다음 — 선택 정보 입력' })).toBeInTheDocument()
-    expect(screen.getAllByText('필수 정보').length).toBeGreaterThan(0)
-    expect(screen.getByText('선택 정보')).toBeInTheDocument()
+    // 섹션 3: 관심 분야
+    expect(screen.getByText('관심 분야')).toBeInTheDocument()
+    // 제출 버튼
+    expect(screen.getByRole('button', { name: '네트워크 입장하기' })).toBeInTheDocument()
   })
 
   it('redirects to /directory when profile is already complete', async () => {
@@ -66,16 +72,27 @@ describe('OnboardingPage', () => {
   })
 
   it('pre-fills form with existing partial profile data', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(mockGet({ name: '김철수', current_company: '스타트업' })))
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
+      mockGet({ current_company: '스타트업', title: 'CTO', bio: '10년차 엔지니어입니다' }),
+    ))
     render(<OnboardingPage />)
-    await screen.findByRole('heading', { name: '프로필 완성하기' })
-    expect(screen.getByPlaceholderText('홍길동')).toHaveValue('김철수')
+    await screen.findByRole('heading', { name: '당신의 이야기를 들려주세요' })
     expect(screen.getByPlaceholderText('회사명')).toHaveValue('스타트업')
+    expect(screen.getByPlaceholderText('예: Senior Software Engineer')).toHaveValue('CTO')
   })
 
   it('does not have skip button (강제 온보딩)', async () => {
     render(<OnboardingPage />)
-    await screen.findByRole('heading', { name: '프로필 완성하기' })
+    await screen.findByRole('heading', { name: '당신의 이야기를 들려주세요' })
     expect(screen.queryByText('나중에 작성하기')).not.toBeInTheDocument()
+  })
+
+  it('progress bar hidden during load, shown after', async () => {
+    render(<OnboardingPage />)
+    // 로딩 중에는 완성도 % 텍스트 없음
+    expect(screen.queryByText(/프로필 완성도/)).not.toBeInTheDocument()
+    // 로딩 완료 후 표시
+    await screen.findByRole('heading', { name: '당신의 이야기를 들려주세요' })
+    expect(screen.getByText('프로필 완성도')).toBeInTheDocument()
   })
 })

@@ -205,7 +205,7 @@ export default async function PeerChatDetailPage({ params }: PageProps) {
           <div className="lg:col-span-1">
             <div className="sticky top-6 space-y-4">
               {isAuthor ? (
-                <div className="border border-[#1a1a1a] bg-white p-5">
+                <div className="border border-[#1a1a1a] bg-[#f7f3ed] p-5">
                   <p className="vcx-section-label mb-3">작성자 관리</p>
                   <p className="text-[13px] font-vcx-sans text-vcx-sub-3 mb-4">
                     내가 작성한 글입니다

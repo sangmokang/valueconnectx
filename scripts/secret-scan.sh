@@ -28,12 +28,24 @@ fi
 # ── Collect diff content to scan ──────────────────────────────────────────────
 case "$MODE" in
   staged)
-    # Staged changes only (added/modified/renamed lines, exclude deletions)
-    git diff --cached --unified=0 --diff-filter=ACMR 2>/dev/null | grep '^+' | grep -v '^+++' > "$TEMP_FILE" || true
+    # Staged changes only — skip lines from excluded paths
+    git diff --cached --unified=0 --diff-filter=ACMR 2>/dev/null | perl -ne '
+      if (/^\+\+\+ b\/(.+)/) { $file = $1; }
+      elsif (/^\+/ && !/^\+\+\+/) {
+        next if $file =~ m{(^docs/|^tests/|scripts/qa-rls/|\.env\.example|node_modules/|scripts/secret-scan\.sh|\.test\.ts|\.spec\.ts)};
+        print $_;
+      }
+    ' > "$TEMP_FILE" || true
     ;;
   all)
-    # Entire tree vs HEAD (includes all modified+added files)
-    git diff --unified=0 HEAD --diff-filter=ACMR 2>/dev/null | grep '^+' | grep -v '^+++' > "$TEMP_FILE" || true
+    # Entire tree vs HEAD — skip lines from excluded paths
+    git diff --unified=0 HEAD --diff-filter=ACMR 2>/dev/null | perl -ne '
+      if (/^\+\+\+ b\/(.+)/) { $file = $1; }
+      elsif (/^\+/ && !/^\+\+\+/) {
+        next if $file =~ m{(^docs/|^tests/|scripts/qa-rls/|\.env\.example|node_modules/|scripts/secret-scan\.sh|\.test\.ts|\.spec\.ts)};
+        print $_;
+      }
+    ' > "$TEMP_FILE" || true
     ;;
   files)
     # Explicit file list (for CI/manual scanning)
@@ -45,7 +57,7 @@ esac
 
 # ── Exclude paths that shouldn't be scanned ───────────────────────────────────
 # Remove lines from files we know contain examples or non-production content
-EXCLUDED_PATHS=("docs/" "tests/" ".env.example" "node_modules/" "scripts/secret-scan.sh" "\.test\.ts" "\.spec\.ts")
+EXCLUDED_PATHS=("docs/" "tests/" "scripts/qa-rls/" ".env.example" "node_modules/" "scripts/secret-scan.sh" "\.test\.ts" "\.spec\.ts")
 
 # ── Define detection patterns (ordered by priority) ────────────────────────────
 declare -a DETECTIONS

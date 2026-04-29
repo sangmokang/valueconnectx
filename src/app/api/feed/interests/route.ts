@@ -4,6 +4,31 @@ import { createClient } from '@/lib/supabase/server'
 import { unauthorized, serverError } from '@/lib/api/error'
 import { parseBody } from '@/lib/api/validation'
 
+export async function GET() {
+  try {
+    const supabase = await createClient()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) return unauthorized()
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data, error } = await (supabase as any)
+      .from('vcx_feed_interests')
+      .select('chips')
+      .eq('user_id', user.id)
+      .maybeSingle()
+
+    if (error) {
+      console.error('Feed interests GET error:', error)
+      return serverError()
+    }
+
+    return NextResponse.json({ chips: data?.chips ?? [] })
+  } catch (error) {
+    console.error('Feed interests GET error:', error)
+    return serverError()
+  }
+}
+
 const schema = z.object({
   chips: z.array(z.string()),
 })

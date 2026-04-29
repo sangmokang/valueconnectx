@@ -162,7 +162,7 @@ export default async function SessionDetailPage({ params }: PageProps) {
             <div className="sticky top-6 space-y-4">
               {isHost ? (
                 <>
-                  <div className="border border-[#1a1a1a] bg-white p-5">
+                  <div className="border border-[#1a1a1a] bg-[#f7f3ed] p-5">
                     <p className="vcx-section-label mb-3">호스트 관리</p>
                     <p className="text-[13px] font-vcx-sans text-vcx-sub-3 mb-4">
                       이 세션의 호스트입니다

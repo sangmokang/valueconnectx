@@ -530,6 +530,10 @@ export type Database = {
             system_role: 'super_admin' | 'admin' | 'member'
             member_tier: 'core' | 'endorsed'
             is_active: boolean
+            name: string | null
+            current_company: string | null
+            title: string | null
+            linkedin_url: string | null
           } | null
           corporate: {
             role: 'ceo' | 'founder' | 'c_level' | 'hr_leader'

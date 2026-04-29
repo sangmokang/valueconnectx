@@ -60,7 +60,7 @@ export function PeerSessionCard({ session, isApplied, onApply }: PeerSessionCard
             {session.tags.map((tag) => (
               <span
                 key={tag}
-                className="text-[11.5px] px-2.5 py-0.5 bg-[#f5f0e8] border border-black/8 text-[#777] font-vcx-sans rounded-full"
+                className="text-[11.5px] px-2.5 py-0.5 bg-[#f5f0e8] border border-black/8 text-[#777] font-vcx-sans"
               >
                 {tag}
               </span>

@@ -63,6 +63,7 @@ export default async function PositionDetailPage({
   }
 
   return (
+    <div className="min-h-screen bg-vcx-beige">
     <div className="max-w-3xl mx-auto px-4 py-8">
       {/* Breadcrumb */}
       <div className="mb-6">
@@ -70,7 +71,7 @@ export default async function PositionDetailPage({
           href="/positions"
           className="text-xs font-vcx-sans text-[#888888] hover:text-[#c9a84c] transition-colors"
         >
-          ← Position Board
+          ← 포지션 목록
         </Link>
       </div>
 
@@ -132,6 +133,7 @@ export default async function PositionDetailPage({
       <p className="text-xs font-vcx-sans text-[#999999] mt-4 text-right">
         등록일: {new Date(pos.created_at).toLocaleDateString('ko-KR')}
       </p>
+    </div>
     </div>
   )
 }

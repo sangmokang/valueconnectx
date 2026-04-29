@@ -6,6 +6,36 @@ import { createClient } from '@/lib/supabase/server'
 import { unauthorized, serverError } from '@/lib/api/error'
 import { parseBody } from '@/lib/api/validation'
 
+export async function DELETE(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const supabase = await createClient()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) return unauthorized()
+
+    const { id } = await params
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error } = await (supabase as any)
+      .from('vcx_feed_responses')
+      .delete()
+      .eq('user_id', user.id)
+      .eq('feed_item_id', id)
+
+    if (error) {
+      console.error('Feed response DELETE error:', error)
+      return serverError()
+    }
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error('Feed response DELETE error:', error)
+    return serverError()
+  }
+}
+
 const schema = z.object({
   response: z.enum(['yes', 'skip']),
 })

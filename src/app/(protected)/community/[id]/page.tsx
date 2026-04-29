@@ -67,89 +67,68 @@ export default async function CommunityPostPage({
 
   return (
     <ProtectedPageWrapper currentPath={`/community/${id}`}>
-      <div style={{ maxWidth: '720px', margin: '0 auto', padding: '80px 40px 60px' }}>
-        {/* Back */}
-        <Link
-          href="/community"
-          style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#888888', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px', marginBottom: '24px' }}
-        >
-          ← 커뮤니티
-        </Link>
-
-        {/* Post */}
-        <div style={{ background: '#ffffff', border: '1px solid #e0d9ce', padding: '32px', marginBottom: '32px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-            <span
-              style={{
-                fontSize: '11px',
-                fontFamily: 'system-ui, sans-serif',
-                padding: '2px 8px',
-                background: isCompanyReview ? '#fff8e6' : '#f5f0eb',
-                color: isCompanyReview ? '#c9a84c' : '#888888',
-                border: `1px solid ${isCompanyReview ? '#c9a84c' : '#e0d9ce'}`,
-              }}
-            >
-              {categoryLabel}
-            </span>
-            {maskedPost.is_anonymous || (isCompanyReview && isCorporateUser) ? (
-              <span style={{ fontSize: '11px', fontFamily: 'system-ui, sans-serif', color: '#aaaaaa' }}>익명</span>
-            ) : null}
-          </div>
-
-          <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '22px', fontWeight: 800, color: '#1a1a1a', marginBottom: '12px', lineHeight: '1.4' }}>
-            {maskedPost.title}
-          </h1>
-
-          <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#aaaaaa', marginBottom: '24px' }}>
-            {formatDate(maskedPost.created_at)}
-          </p>
-
-          {isCompanyReview && (
-            <div
-              style={{
-                padding: '10px 14px',
-                background: '#fff8e6',
-                border: '1px solid #c9a84c',
-                fontFamily: 'system-ui, sans-serif',
-                fontSize: '12px',
-                color: '#7a6020',
-                marginBottom: '20px',
-                lineHeight: '1.5',
-              }}
-            >
-              이 게시글은 사실 기반 정보만 허용됩니다. 허위 정보나 감정적 비방이 포함된 경우 신고해 주세요.
-            </div>
-          )}
-
-          <div
-            style={{
-              fontFamily: 'system-ui, sans-serif',
-              fontSize: '15px',
-              color: '#333333',
-              lineHeight: '1.8',
-              whiteSpace: 'pre-wrap',
-              wordBreak: 'break-word',
-            }}
+      <div className="min-h-screen bg-vcx-beige">
+        <div className="max-w-[720px] mx-auto px-4 sm:px-10 py-20">
+          {/* Back */}
+          <Link
+            href="/community"
+            className="font-vcx-sans text-[13px] text-[#888888] no-underline inline-flex items-center gap-1 mb-6 hover:text-[#1a1a1a] transition-colors"
           >
-            {maskedPost.content}
+            ← 커뮤니티
+          </Link>
+
+          {/* Post */}
+          <div className="bg-vcx-beige border border-[#e0d9ce] p-8 mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <span
+                className={`text-[11px] font-vcx-sans px-2 py-0.5 border ${
+                  isCompanyReview
+                    ? 'bg-[#fff8e6] text-[#c9a84c] border-[#c9a84c]'
+                    : 'bg-[#f5f0eb] text-[#888888] border-[#e0d9ce]'
+                }`}
+              >
+                {categoryLabel}
+              </span>
+              {maskedPost.is_anonymous || (isCompanyReview && isCorporateUser) ? (
+                <span className="text-[11px] font-vcx-sans text-[#aaaaaa]">익명</span>
+              ) : null}
+            </div>
+
+            <h1 className="font-vcx-serif text-[22px] font-bold text-[#1a1a1a] mb-3 leading-[1.4]">
+              {maskedPost.title}
+            </h1>
+
+            <p className="font-vcx-sans text-[12px] text-[#aaaaaa] mb-6">
+              {formatDate(maskedPost.created_at)}
+            </p>
+
+            {isCompanyReview && (
+              <div className="px-3.5 py-2.5 bg-[#fff8e6] border border-[#c9a84c] font-vcx-sans text-[12px] text-[#7a6020] mb-5 leading-[1.5]">
+                이 게시글은 사실 기반 정보만 허용됩니다. 허위 정보나 감정적 비방이 포함된 경우 신고해 주세요.
+              </div>
+            )}
+
+            <div className="font-vcx-sans text-[15px] text-[#333333] leading-[1.8] whitespace-pre-wrap break-words">
+              {maskedPost.content}
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-[#f0ebe2] flex justify-between items-center">
+              <LikeButton postId={maskedPost.id} />
+              <ReportButton postId={maskedPost.id} />
+            </div>
           </div>
 
-          <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid #f0ebe2', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <LikeButton postId={maskedPost.id} />
-            <ReportButton postId={maskedPost.id} />
-          </div>
-        </div>
+          {/* Comments */}
+          <div>
+            <h2 className="font-vcx-serif text-[16px] font-bold text-[#1a1a1a] mb-4">
+              댓글 {comments.length > 0 && `(${comments.length})`}
+            </h2>
 
-        {/* Comments */}
-        <div>
-          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '16px', fontWeight: 700, color: '#1a1a1a', marginBottom: '16px' }}>
-            댓글 {comments.length > 0 && `(${comments.length})`}
-          </h2>
+            <CommentList comments={comments} postId={id} />
 
-          <CommentList comments={comments} postId={id} />
-
-          <div style={{ marginTop: '24px', paddingTop: '24px', borderTop: '1px solid #e0d9ce' }}>
-            <CommentForm postId={id} />
+            <div className="mt-6 pt-6 border-t border-[#e0d9ce]">
+              <CommentForm postId={id} />
+            </div>
           </div>
         </div>
       </div>

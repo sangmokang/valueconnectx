@@ -62,7 +62,7 @@ export function SessionDetail({
     <div className="space-y-8">
       {/* Host profile */}
       <div className="bg-[#f7f3ed] border border-[#e8e2d9] p-4 sm:p-6">
-        <p className="vcx-section-label mb-3">Host</p>
+        <p className="vcx-section-label mb-3">호스트</p>
         <div className="flex items-start gap-3 sm:gap-4">
           <div className="w-12 h-12 bg-[#1a1a1a] flex items-center justify-center flex-shrink-0">
             <span className="font-vcx-serif text-[#f0ebe2] text-[18px]">

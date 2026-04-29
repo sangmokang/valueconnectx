@@ -202,7 +202,6 @@ export function PositionCard({ position: pos, isOpen, onToggle }: PositionCardPr
             {pos.tags?.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full"
                 style={{
                   fontSize: 11.5,
                   padding: '2px 9px',
@@ -290,7 +289,6 @@ export function PositionCard({ position: pos, isOpen, onToggle }: PositionCardPr
                       style={{ display: 'flex', gap: 10, marginBottom: 8, alignItems: 'flex-start' }}
                     >
                       <div
-                        className="rounded-full"
                         style={{ width: 4, height: 4, background: '#c9a84c', flexShrink: 0, marginTop: 8 }}
                       />
                       <span style={{ fontSize: 13.5, color: '#555', lineHeight: 1.65 }}>{req}</span>
