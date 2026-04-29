@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { Check, Plus, X } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 const DEFAULT_CHIPS = [
   '딥테크',
@@ -40,81 +42,40 @@ export function InterestSelector({ selectedChips, onChange }: InterestSelectorPr
   }
 
   return (
-    <div
-      style={{
-        background: '#ffffff',
-        borderBottom: '1px solid rgba(0,0,0,0.08)',
-      }}
-    >
-      <div
-        style={{
-          maxWidth: 1000,
-          margin: '0 auto',
-          padding: '32px 48px',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            gap: 32,
-            flexWrap: 'wrap',
-          }}
-        >
-          {/* 칩 선택 */}
-          <div style={{ flex: 1, minWidth: 280 }}>
-            <div
-              style={{
-                fontSize: 11,
-                color: '#888',
-                letterSpacing: '0.12em',
-                fontWeight: 600,
-                marginBottom: 14,
-                fontFamily: 'system-ui, sans-serif',
-              }}
-            >
+    <section className="border-b border-vcx-dark/10 bg-white">
+      <div className="mx-auto max-w-[1000px] px-5 py-7 sm:px-8 lg:px-12">
+        <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-start">
+          <div>
+            <div className="mb-4 font-vcx-sans text-[11px] font-semibold tracking-[0.12em] text-vcx-sub-4">
               관심 분야 선택 (최대 5개)
             </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            <div className="flex flex-wrap gap-2">
               {DEFAULT_CHIPS.map((chip) => {
                 const active = selectedChips.includes(chip)
                 return (
                   <button
                     key={chip}
                     onClick={() => toggleChip(chip)}
-                    style={{
-                      padding: '7px 14px',
-                      fontSize: 13,
-                      border: `1.5px solid ${active ? '#c9a84c' : 'rgba(0,0,0,0.12)'}`,
-                      background: active ? 'rgba(201,168,76,0.1)' : 'transparent',
-                      color: active ? '#a8892e' : '#666',
-                      cursor: 'pointer',
-                      fontWeight: active ? 700 : 400,
-                      fontFamily: 'system-ui, sans-serif',
-                    }}
+                    className={cn(
+                      'inline-flex min-h-9 items-center gap-1.5 border px-3.5 py-1.5 font-vcx-sans text-[13px] transition-colors',
+                      active
+                        ? 'border-vcx-gold bg-vcx-gold/10 font-bold text-vcx-dark'
+                        : 'border-vcx-dark/15 bg-transparent text-vcx-sub-3 hover:border-vcx-dark/30 hover:text-vcx-dark'
+                    )}
                   >
-                    {active ? `✓ ${chip}` : chip}
+                    {active && <Check className="h-3.5 w-3.5" aria-hidden="true" />}
+                    {chip}
                   </button>
                 )
               })}
             </div>
           </div>
 
-          {/* 직접 입력 */}
-          <div style={{ minWidth: 240 }}>
-            <div
-              style={{
-                fontSize: 11,
-                color: '#888',
-                letterSpacing: '0.12em',
-                fontWeight: 600,
-                marginBottom: 14,
-                fontFamily: 'system-ui, sans-serif',
-              }}
-            >
+          <div>
+            <div className="mb-4 font-vcx-sans text-[11px] font-semibold tracking-[0.12em] text-vcx-sub-4">
               또는 직접 입력
             </div>
-            <div style={{ display: 'flex', gap: 8 }}>
+            <div className="flex gap-2">
               <input
                 value={customInput}
                 onChange={(e) => setCustomInput(e.target.value)}
@@ -122,92 +83,46 @@ export function InterestSelector({ selectedChips, onChange }: InterestSelectorPr
                   if (e.key === 'Enter') addCustom()
                 }}
                 placeholder="예: 'B2B SaaS 세일즈'"
-                style={{
-                  flex: 1,
-                  padding: '9px 14px',
-                  border: '1px solid rgba(0,0,0,0.12)',
-                  background: '#faf8f4',
-                  fontSize: 13.5,
-                  outline: 'none',
-                  fontFamily: 'system-ui, sans-serif',
-                }}
+                className="min-h-10 min-w-0 flex-1 border border-vcx-dark/15 bg-vcx-beige-light px-3.5 py-2 font-vcx-sans text-[13.5px] text-vcx-dark outline-none placeholder:text-vcx-sub-4 focus:border-vcx-gold"
               />
               <button
                 onClick={addCustom}
-                style={{
-                  padding: '9px 16px',
-                  background: '#1a1a1a',
-                  color: '#f5f0e8',
-                  border: 'none',
-                  fontSize: 13,
-                  cursor: 'pointer',
-                  fontFamily: 'system-ui, sans-serif',
-                }}
+                disabled={selectedChips.length >= 5}
+                className="inline-flex min-h-10 items-center gap-1.5 bg-vcx-dark px-3.5 py-2 font-vcx-sans text-[13px] font-semibold text-vcx-beige disabled:cursor-not-allowed disabled:opacity-50"
               >
+                <Plus className="h-3.5 w-3.5" aria-hidden="true" />
                 추가
               </button>
             </div>
-            <div
-              style={{
-                marginTop: 8,
-                fontSize: 12,
-                color: '#aaa',
-                fontFamily: 'system-ui, sans-serif',
-              }}
-            >
+            <div className="mt-2 font-vcx-sans text-[12px] text-vcx-sub-4">
               Enter 또는 추가 버튼으로 등록 · {5 - selectedChips.length}개 남음
             </div>
           </div>
         </div>
 
-        {/* 선택된 태그 */}
         {selectedChips.length > 0 && (
-          <div
-            style={{
-              marginTop: 20,
-              paddingTop: 20,
-              borderTop: '1px solid rgba(0,0,0,0.08)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 10,
-              flexWrap: 'wrap',
-            }}
-          >
-            <span
-              style={{
-                fontSize: 12,
-                color: '#888',
-                fontFamily: 'system-ui, sans-serif',
-              }}
-            >
+          <div className="mt-5 flex flex-wrap items-center gap-2.5 border-t border-vcx-dark/10 pt-5">
+            <span className="font-vcx-sans text-[12px] text-vcx-sub-4">
               구독 중:
             </span>
             {selectedChips.map((chip) => (
               <span
                 key={chip}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 5,
-                  padding: '4px 10px',
-                  background: '#f5f0e8',
-                  border: '1px solid rgba(0,0,0,0.1)',
-                  fontSize: 12.5,
-                  fontFamily: 'system-ui, sans-serif',
-                }}
+                className="inline-flex min-h-7 items-center gap-1.5 border border-vcx-dark/10 bg-vcx-beige-light px-2.5 py-1 font-vcx-sans text-[12.5px] text-vcx-dark"
               >
                 {chip}
-                <span
+                <button
                   onClick={() => toggleChip(chip)}
-                  style={{ cursor: 'pointer', color: '#bbb', fontSize: 14, lineHeight: 1 }}
+                  className="text-vcx-sub-4 hover:text-vcx-dark"
+                  aria-label={`${chip} 관심 분야 제거`}
                 >
-                  ×
-                </span>
+                  <X className="h-3.5 w-3.5" aria-hidden="true" />
+                </button>
               </span>
             ))}
           </div>
         )}
       </div>
-    </div>
+    </section>
   )
 }

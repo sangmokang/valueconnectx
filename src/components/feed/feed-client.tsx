@@ -1,7 +1,9 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import useSWR from 'swr'
+import { CheckCircle2, Info, Loader2 } from 'lucide-react'
+import { trackEvent } from '@/lib/analytics'
 import { InterestSelector } from './interest-selector'
 import { FeedCard, type FeedItem } from './feed-card'
 import { FeedDetailModal } from './feed-detail-modal'
@@ -10,24 +12,40 @@ import { NewsletterBar } from './newsletter-bar'
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 export function FeedClient() {
-  const [selectedChips, setSelectedChips] = useState<string[]>([])
+  const [selectedChipsOverride, setSelectedChipsOverride] = useState<string[] | null>(null)
   const [showDetail, setShowDetail] = useState<FeedItem | null>(null)
 
-  const { data, mutate } = useSWR<{ data: FeedItem[]; total: number }>(
+  const { data, error, mutate } = useSWR<{ data: FeedItem[]; total: number }>(
     '/api/feed',
+    fetcher
+  )
+  const { data: interestsData, mutate: mutateInterests } = useSWR<{ chips: string[] }>(
+    '/api/feed/interests',
     fetcher
   )
 
   const items: FeedItem[] = data?.data ?? []
   const visibleItems = items.filter((i) => i.user_response !== 'skip')
   const interestedCount = items.filter((i) => i.user_response === 'yes').length
+  const selectedChips = selectedChipsOverride ?? interestsData?.chips ?? []
+
+  useEffect(() => {
+    if (data !== undefined) {
+      trackEvent('feed_viewed', { item_count: items.length })
+    }
+  // 최초 데이터 로드 1회만 발화
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data !== undefined])
 
   const handleChipsChange = useCallback(
     async (chips: string[]) => {
-      setSelectedChips(chips)
+      setSelectedChipsOverride(chips)
+      mutateInterests({ chips }, { revalidate: false })
+      trackEvent('interests_saved', { chips, count: chips.length })
+
       try {
         await fetch('/api/feed/interests', {
-          method: 'PUT',
+          method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ chips }),
         })
@@ -35,11 +53,20 @@ export function FeedClient() {
         console.error('관심 분야 저장 오류:', err)
       }
     },
-    []
+    [mutateInterests]
   )
 
   const handleResponse = useCallback(
     async (itemId: string, response: 'yes' | 'skip' | null) => {
+      const item = data?.data.find((i) => i.id === itemId)
+      if (item) {
+        if (response === 'yes') {
+          trackEvent('feed_interested', { item_id: itemId, role: item.role, company: item.company })
+        } else if (response === 'skip') {
+          trackEvent('feed_skipped', { item_id: itemId, role: item.role, company: item.company })
+        }
+      }
+
       // 낙관적 업데이트
       mutate(
         (prev) => {
@@ -60,7 +87,12 @@ export function FeedClient() {
       )
 
       if (response === null) {
-        // 반응 제거는 별도 엔드포인트 없으므로 로컬 상태만 처리
+        try {
+          await fetch(`/api/feed/${itemId}/response`, { method: 'DELETE' })
+        } catch (err) {
+          console.error('피드 반응 삭제 오류:', err)
+          mutate()
+        }
         return
       }
 
@@ -75,7 +107,7 @@ export function FeedClient() {
         mutate()
       }
     },
-    [mutate]
+    [mutate, data]
   )
 
   const today = new Date().toLocaleDateString('ko-KR', {
@@ -90,164 +122,80 @@ export function FeedClient() {
         onChange={handleChipsChange}
       />
 
-      <div
-        style={{
-          maxWidth: 1000,
-          margin: '0 auto',
-          padding: '48px 48px 80px',
-        }}
-      >
-        {/* 피드 헤더 */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: 28,
-            flexWrap: 'wrap',
-            gap: 12,
-          }}
-        >
+      <section className="mx-auto max-w-[1000px] px-5 py-10 sm:px-8 sm:py-12 lg:px-12 lg:pb-20">
+        <div className="mb-7 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <div
-              style={{
-                fontSize: 11,
-                color: '#888',
-                letterSpacing: '0.15em',
-                fontWeight: 600,
-                marginBottom: 6,
-                fontFamily: 'system-ui, sans-serif',
-              }}
-            >
+            <div className="mb-1.5 font-vcx-sans text-[11px] font-semibold tracking-[0.15em] text-vcx-sub-4">
               THIS WEEK&#39;S FEED · {today} 기준
             </div>
-            <h2
-              style={{
-                fontSize: 20,
-                fontWeight: 800,
-                color: '#1a1a1a',
-                margin: 0,
-                fontFamily: 'Georgia, serif',
-              }}
-            >
+            <h2 className="font-vcx-serif text-[22px] font-bold text-vcx-dark">
               이번 주 큐레이션 {visibleItems.length}건
             </h2>
           </div>
           {interestedCount > 0 && (
-            <div
-              style={{
-                padding: '8px 16px',
-                background: 'rgba(201,168,76,0.12)',
-                border: '1px solid rgba(201,168,76,0.25)',
-                fontSize: 13,
-                color: '#a8892e',
-                fontWeight: 600,
-                fontFamily: 'system-ui, sans-serif',
-              }}
-            >
+            <div className="border border-vcx-gold/30 bg-vcx-gold/10 px-4 py-2 font-vcx-sans text-[13px] font-semibold text-vcx-dark">
               관심 포지션 {interestedCount}건
             </div>
           )}
         </div>
 
-        {/* 뉴스레터 바 */}
         <NewsletterBar />
 
-        {/* 피드 카드 목록 */}
-        {visibleItems.length > 0 ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        {error ? (
+          <EmptyState
+            title="피드를 불러오지 못했습니다"
+            description="잠시 후 다시 시도해주세요."
+          />
+        ) : data === undefined ? (
+          <EmptyState
+            icon="loading"
+            title="피드를 불러오는 중입니다"
+            description="이번 주 큐레이션을 확인하고 있습니다."
+          />
+        ) : visibleItems.length > 0 ? (
+          <div className="grid gap-4">
             {visibleItems.map((item) => (
               <FeedCard
                 key={item.id}
                 item={item}
                 onInterest={(value) => handleResponse(item.id, value)}
                 onSkip={() => handleResponse(item.id, 'skip')}
-                onDetail={() => setShowDetail(item)}
+                onDetail={() => {
+                  trackEvent('feed_detail_opened', { item_id: item.id, role: item.role, company: item.company })
+                  setShowDetail(item)
+                }}
               />
             ))}
           </div>
         ) : (
-          <div
-            style={{
-              textAlign: 'center',
-              padding: '80px 0',
-              color: '#888',
-            }}
-          >
-            <div style={{ fontSize: 32, marginBottom: 16 }}>✓</div>
-            <div
-              style={{
-                fontSize: 16,
-                fontWeight: 700,
-                color: '#1a1a1a',
-                marginBottom: 8,
-                fontFamily: 'Georgia, serif',
-              }}
-            >
-              {data === undefined
-                ? '피드를 불러오는 중입니다...'
-                : items.length === 0
-                  ? '이번 주 큐레이션이 준비 중입니다. 매주 월요일에 새로운 포지션이 도착합니다'
-                  : '이번 주 피드를 모두 확인했습니다'}
-            </div>
-            <div
-              style={{
-                fontSize: 14,
-                color: '#888',
-                fontFamily: 'system-ui, sans-serif',
-              }}
-            >
-              {data !== undefined && items.length > 0
-                ? '다음 주 월요일에 새로운 포지션이 도착합니다'
-                : ''}
-            </div>
-          </div>
+          <EmptyState
+            title={
+              items.length === 0
+                ? '이번 주 큐레이션이 준비 중입니다'
+                : '이번 주 피드를 모두 확인했습니다'
+            }
+            description={
+              items.length === 0
+                ? '매주 월요일에 새로운 포지션이 도착합니다.'
+                : '다음 주 월요일에 새로운 포지션이 도착합니다.'
+            }
+          />
         )}
 
-        {/* 피드 안내 */}
-        <div
-          style={{
-            marginTop: 40,
-            padding: '20px 24px',
-            background: 'rgba(0,0,0,0.03)',
-            display: 'flex',
-            gap: 24,
-            alignItems: 'center',
-            flexWrap: 'wrap',
-          }}
-        >
-          <span
-            style={{
-              fontSize: 12,
-              color: '#888',
-              fontWeight: 600,
-              fontFamily: 'system-ui, sans-serif',
-            }}
-          >
+        <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 bg-vcx-beige-dark px-5 py-4">
+          <span className="inline-flex items-center gap-1.5 font-vcx-sans text-[12px] font-semibold text-vcx-sub-3">
+            <Info className="h-3.5 w-3.5" aria-hidden="true" />
             피드 안내
           </span>
-          <span
-            style={{
-              fontSize: 12,
-              color: '#888',
-              fontFamily: 'system-ui, sans-serif',
-            }}
-          >
+          <span className="font-vcx-sans text-[12px] text-vcx-sub-4">
             관심 있음 — AI Match Engine의 학습 신호로 활용됩니다
           </span>
-          <span
-            style={{
-              fontSize: 12,
-              color: '#888',
-              fontFamily: 'system-ui, sans-serif',
-            }}
-          >
+          <span className="font-vcx-sans text-[12px] text-vcx-sub-4">
             관심 없음 — 이 유형의 포지션 비중이 줄어듭니다
           </span>
         </div>
-      </div>
+      </section>
 
-      {/* 상세 모달 */}
       {showDetail && (
         <FeedDetailModal
           item={showDetail}
@@ -257,5 +205,33 @@ export function FeedClient() {
         />
       )}
     </>
+  )
+}
+
+function EmptyState({
+  title,
+  description,
+  icon = 'check',
+}: {
+  title: string
+  description: string
+  icon?: 'check' | 'loading'
+}) {
+  return (
+    <div className="border border-vcx-dark/10 bg-white px-5 py-16 text-center">
+      <div className="mb-4 inline-flex h-10 w-10 items-center justify-center border border-vcx-dark/10 bg-vcx-beige-light text-vcx-gold">
+        {icon === 'loading' ? (
+          <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
+        ) : (
+          <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
+        )}
+      </div>
+      <div className="mb-2 font-vcx-serif text-[17px] font-bold text-vcx-dark">
+        {title}
+      </div>
+      <div className="font-vcx-sans text-[14px] text-vcx-sub-4">
+        {description}
+      </div>
+    </div>
   )
 }

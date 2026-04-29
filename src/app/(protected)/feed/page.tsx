@@ -1,111 +1,40 @@
 import { ProtectedPageWrapper } from '@/components/layout/protected-page-wrapper'
 import { FeedClient } from '@/components/feed/feed-client'
+import { MailCheck } from 'lucide-react'
 
 export default function FeedPage() {
   return (
     <ProtectedPageWrapper currentPath="/feed">
-      {/* HERO — 서버 렌더 */}
-      <div
-        style={{
-          background: '#1a1a1a',
-          padding: '64px 0 72px',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage:
-              'radial-gradient(ellipse 80% 50% at 80% 50%, rgba(201,168,76,0.06) 0%, transparent 100%)',
-            pointerEvents: 'none',
-          }}
-        />
-        <div
-          style={{
-            maxWidth: 1000,
-            margin: '0 auto',
-            padding: '0 48px',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 10,
-              marginBottom: 24,
-            }}
-          >
-            <div style={{ width: 28, height: 1, background: '#c9a84c' }} />
-            <span
-              style={{
-                color: '#c9a84c',
-                fontSize: 11,
-                letterSpacing: '0.2em',
-                fontWeight: 600,
-                fontFamily: 'system-ui, sans-serif',
-              }}
-            >
+      <section className="bg-vcx-dark text-vcx-beige">
+        <div className="mx-auto flex max-w-[1000px] flex-col gap-8 px-5 py-12 sm:px-8 sm:py-14 lg:px-12 lg:py-16">
+          <div className="flex items-center gap-3">
+            <div className="h-px w-7 bg-vcx-gold" />
+            <span className="vcx-section-label">
               CURATION FEED · WEEKLY
             </span>
           </div>
 
-          <h1
-            style={{
-              fontSize: 'clamp(28px, 4vw, 46px)',
-              fontWeight: 800,
-              color: '#f5f0e8',
-              lineHeight: 1.25,
-              margin: '0 0 20px',
-              letterSpacing: '-1px',
-              fontFamily: 'Georgia, serif',
-            }}
-          >
-            어떤 시장이
-            <br />
-            궁금하신가요?
-          </h1>
+          <div className="max-w-[560px]">
+            <h1 className="font-vcx-serif text-[34px] font-bold leading-tight text-vcx-beige sm:text-[42px]">
+              어떤 시장이
+              <br />
+              궁금하신가요?
+            </h1>
 
-          <p
-            style={{
-              fontSize: 15.5,
-              color: '#b0a898',
-              lineHeight: 1.9,
-              maxWidth: 540,
-              margin: '0 0 36px',
-              fontFamily: 'system-ui, sans-serif',
-            }}
-          >
-            관심 분야를 선택하면 — 해당 시장의 핵심 포지션을
-            <br />
-            매주 직접 받아보실 수 있습니다.
-          </p>
+            <p className="mt-5 font-vcx-sans text-[15px] leading-8 text-vcx-sub-5 sm:text-[16px]">
+              관심 분야를 선택하면 해당 시장의 핵심 포지션을
+              <br />
+              매주 직접 받아보실 수 있습니다.
+            </p>
+          </div>
 
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 10,
-              padding: '10px 18px',
-              background: 'rgba(201,168,76,0.12)',
-              border: '1px solid rgba(201,168,76,0.3)',
-            }}
-          >
-            <span
-              style={{
-                fontSize: 13,
-                color: '#d4b56a',
-                fontFamily: 'system-ui, sans-serif',
-              }}
-            >
-              이 내용이 매주 이메일로 전송됩니다
-            </span>
+          <div className="inline-flex w-fit items-center gap-3 border border-vcx-gold/40 bg-vcx-gold/10 px-4 py-3 font-vcx-sans text-[13px] text-vcx-gold">
+            <MailCheck className="h-4 w-4" aria-hidden="true" />
+            <span>이 내용이 매주 이메일로 전송됩니다</span>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* 클라이언트 컴포넌트 (관심 분야 선택 + 피드) */}
       <FeedClient />
     </ProtectedPageWrapper>
   )

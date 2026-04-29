@@ -12,6 +12,12 @@ export type AnalyticsEventName =
   | 'profile_updated'
   | 'user_login'
   | 'user_signup'
+  | 'feed_viewed'
+  | 'feed_interested'
+  | 'feed_skipped'
+  | 'feed_detail_opened'
+  | 'interests_saved'
+  | 'newsletter_subscribed'
 
 export type AnalyticsEventProperties = {
   page_view: { path: string; title?: string }
@@ -22,6 +28,12 @@ export type AnalyticsEventProperties = {
   profile_updated: { fields_updated: string[] }
   user_login: { method?: string }
   user_signup: { method?: string }
+  feed_viewed: { item_count: number }
+  feed_interested: { item_id: string; role: string; company: string }
+  feed_skipped: { item_id: string; role: string; company: string }
+  feed_detail_opened: { item_id: string; role: string; company: string }
+  interests_saved: { chips: string[]; count: number }
+  newsletter_subscribed: Record<string, never>
 }
 
 type Mixpanel = {
