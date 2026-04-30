@@ -14,6 +14,7 @@
 | **D-0002** | Migration 019 실적용 검증 미완 | 2026-03-31 | 2026-04-24 | OPEN | `.omc/plans/open-questions.md` 'P0 Critical Bugs' 섹션, `019_vcx_fix_get_user_info.sql` | `scripts/verify-rpc-applied.sh` 작성 + Sentry 에러 0건 확인 |
 | **D-0003** | Branding 일관성 5주 미해결 | 2026-03-13 | 2026-04-24 | OPEN | `.omc/plans/vcx-design-review.md`, `open-questions.md` 'vcx-design-review' 섹션 | Branding.md를 archive로 이동 + `src/constants/site.ts` + `src/app/globals.css` 를 single source로 ADR-0006 (선택적) 작성 |
 | **D-0004** | 프로필 완성도 기준 미결 (linkedin_url 필수?) | 2026-03-31 | 2026-04-24 | OPEN | `open-questions.md` P0 섹션 | Sprint 1 내 결정: linkedin_url optional + 미입력 시 온보딩 스킵 허용 (제안) → ADR 선택 |
+| **D-0005** | Newsletter API 10건 `no-explicit-any` (Supabase RPC 타입) | 2026-05-01 | 2026-05-08 | ACCEPTED | commit `ffc99d7`, `src/app/api/newsletter/{track/click,track/open,unsubscribe}/route.ts`, `supabase/migrations/023_vcx_newsletter.sql` 신규 RPC `vcx_get_recipient_by_token` | Sprint 3 진입 시 `npx supabase gen types typescript --local > src/types/supabase.ts` 재생성 후 `any` → 자동 추론 타입으로 교체. 시도 1: build-fixer-low → `as Promise<...>` 캐스팅 실패. 시도 2: executor sonnet → `unknown` 캐스팅, lint PASS but build FAIL ("vcx_get_recipient_by_token" 미정의). 결론: 타입 regen 선행 필수. |
 
 ---
 
