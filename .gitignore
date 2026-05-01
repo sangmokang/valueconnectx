@@ -26,6 +26,10 @@ playwright-report/
 .DS_Store
 *.pem
 .playwright-mcp/
+.local/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
 
 # debug
 npm-debug.log*

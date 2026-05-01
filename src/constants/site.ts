@@ -4,17 +4,17 @@ export const SITE_DESCRIPTION =
 
 export const DESIGN_TOKENS = {
   colors: {
-    primary: '#0A0A0A',
-    secondary: '#1A1A1A',
-    accent: '#c9a84c',
-    background: '#FFFFFF',
-    backgroundDark: '#0A0A0A',
-    deepNavy: '#0F172A',
-    textPrimary: '#0A0A0A',
-    textSecondary: '#6B6B6B',
-    textMuted: '#9B9B9B',
-    border: '#E5E5E5',
-    borderDark: '#2A2A2A',
+    primary: '#050507',
+    secondary: '#101010',
+    accent: '#00d992',
+    background: '#050507',
+    backgroundDark: '#050507',
+    deepNavy: '#050507',
+    textPrimary: '#f2f2f2',
+    textSecondary: '#b8b3b0',
+    textMuted: '#8b949e',
+    border: '#3d3a39',
+    borderDark: '#3d3a39',
   },
   fonts: {
     sans: 'var(--font-geist-sans)',

@@ -231,7 +231,7 @@ export default async function PeerChatDetailPage({ params }: PageProps) {
               <div className="border border-[#e8e2d9] bg-[#f7f3ed] p-4">
                 <p className="vcx-section-label mb-2">ValueConnect X</p>
                 <p className="text-[12px] font-vcx-sans text-vcx-sub-3 leading-relaxed">
-                  커피챗을 통해 채용이 연결될 경우 ValueConnect 소개 수수료가 적용됩니다.
+                  커피챗을 통한 성사 연결은 ValueConnect X의 비공개 운영 원칙에 따라 관리됩니다.
                 </p>
               </div>
             </div>

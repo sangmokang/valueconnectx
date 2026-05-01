@@ -22,13 +22,13 @@ export function GNBActiveNav({
       className={[
         "no-underline flex items-center gap-[6px] pb-[2px] border-b-[1.5px] transition-colors",
         isActive
-          ? "text-vcx-dark font-semibold border-vcx-gold"
-          : "text-vcx-sub-3 font-normal border-transparent hover:text-vcx-dark",
+          ? "text-vcx-gold font-semibold border-vcx-gold"
+          : "text-vcx-sub-3 font-normal border-transparent hover:text-vcx-gold",
       ].join(" ")}
     >
       {children}
       {badge && (
-        <span className="text-[9px] bg-vcx-gold text-vcx-dark px-[5px] py-[2px] font-extrabold tracking-[0.05em]">
+        <span className="text-[12px] bg-vcx-gold text-[#050507] px-[5px] py-[2px] font-extrabold tracking-[0.05em]">
           {badge}
         </span>
       )}

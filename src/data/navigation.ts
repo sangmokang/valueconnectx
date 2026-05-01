@@ -13,5 +13,4 @@ export const navigationItems: NavItem[] = [
   { label: 'Coffee Chat', href: '/coffeechat' },
   { label: 'CEO Coffee Chat', href: '/ceo-coffeechat' },
   { label: 'Community Board', href: '/community' },
-  { label: 'Position Board', href: '/positions' },
 ];

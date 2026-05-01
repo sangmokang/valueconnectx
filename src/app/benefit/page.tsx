@@ -121,7 +121,7 @@ export default function BenefitPage() {
           ))}
         </div>
 
-        {/* Member value — replaces explicit fee structure */}
+        {/* Member value */}
         <div className="mt-10 p-9 bg-white border border-black/[0.08]">
           <div className="text-[11px] text-[#888] tracking-[0.15em] font-semibold mb-5">MEMBER VALUE</div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">

@@ -50,15 +50,15 @@ export function InviteAcceptForm({ initialToken }: { initialToken?: string }) {
     } catch { setError('계정 생성 중 오류가 발생했습니다'); setLoading(false) }
   }
 
-  const inputStyle = { width: '100%', padding: '14px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: '#1a1a1a', background: '#f7f3ed', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 0, outline: 'none', boxSizing: 'border-box' as const }
-  const labelStyle = { display: 'block' as const, fontFamily: 'system-ui, sans-serif', fontSize: '13px', letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#888', marginBottom: '8px' }
+  const inputStyle = { width: '100%', padding: '15px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '16px', color: '#f2f2f2', background: '#050507', border: '1px solid #3d3a39', borderRadius: 0, outline: 'none', boxSizing: 'border-box' as const }
+  const labelStyle = { display: 'block' as const, fontFamily: 'system-ui, sans-serif', fontSize: '14px', letterSpacing: '0.04em', textTransform: 'uppercase' as const, color: '#b8b3b0', marginBottom: '8px' }
 
   if (step === 'token' && !initialToken) {
     return (
       <div>
-        {error && <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', padding: '12px 16px', marginBottom: '16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#EF4444', borderRadius: 0 }}>{error}</div>}
+        {error && <div style={{ background: 'rgba(251,86,91,0.12)', border: '1px solid rgba(251,86,91,0.45)', padding: '12px 16px', marginBottom: '16px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: '#fd9c9f', borderRadius: 0 }}>{error}</div>}
         <div style={{ marginBottom: '24px' }}><label style={labelStyle}>초대 코드</label><input type="text" value={token} onChange={(e) => setToken(e.target.value)} placeholder="초대 이메일의 링크를 붙여넣어 주세요" style={inputStyle} /></div>
-        <button onClick={() => verifyToken(token)} disabled={verifying || !token} style={{ width: '100%', padding: '14px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', fontWeight: 600, color: '#f0ebe2', background: verifying ? '#444' : '#1a1a1a', border: 'none', borderRadius: 0, cursor: verifying ? 'not-allowed' : 'pointer' }}>
+        <button onClick={() => verifyToken(token)} disabled={verifying || !token} style={{ width: '100%', padding: '15px', fontFamily: 'system-ui, sans-serif', fontSize: '16px', fontWeight: 700, color: verifying ? '#8b949e' : '#2fd6a1', background: '#101010', border: '1px solid #3d3a39', borderRadius: 0, cursor: verifying ? 'not-allowed' : 'pointer' }}>
           {verifying ? '확인 중...' : '초대 확인하기'}
         </button>
       </div>
@@ -68,18 +68,18 @@ export function InviteAcceptForm({ initialToken }: { initialToken?: string }) {
   return (
     <form onSubmit={handleSubmit}>
       {inviteInfo && (
-        <div style={{ background: '#e8e2d9', padding: '16px 20px', marginBottom: '24px', borderLeft: '2px solid #c9a84c', borderRadius: 0 }}>
-          <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#c9a84c', marginBottom: '6px' }}>INVITED BY</div>
-          <div style={{ fontFamily: 'Georgia, serif', fontSize: '16px', fontWeight: 700, color: '#1a1a1a', marginBottom: '4px' }}>{inviteInfo.invitedByName}님이 초대했습니다</div>
-          <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#888' }}>{inviteInfo.email} · {inviteInfo.memberTier === 'core' ? 'Core Member' : 'Endorsed Member'}</div>
+        <div style={{ background: '#171717', padding: '16px 20px', marginBottom: '24px', borderLeft: '2px solid #00d992', borderRadius: 0 }}>
+          <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#00d992', marginBottom: '6px', fontWeight: 700 }}>INVITED BY</div>
+          <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '16px', fontWeight: 700, color: '#f2f2f2', marginBottom: '4px' }}>{inviteInfo.invitedByName}님이 초대했습니다</div>
+          <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: '#b8b3b0' }}>{inviteInfo.email} · {inviteInfo.memberTier === 'core' ? 'Core Member' : 'Endorsed Member'}</div>
         </div>
       )}
-      {error && <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', padding: '12px 16px', marginBottom: '16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#EF4444', borderRadius: 0 }}>{error}</div>}
+      {error && <div style={{ background: 'rgba(251,86,91,0.12)', border: '1px solid rgba(251,86,91,0.45)', padding: '12px 16px', marginBottom: '16px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: '#fd9c9f', borderRadius: 0 }}>{error}</div>}
       <div style={{ marginBottom: '16px' }}><label style={labelStyle}>이름 (실명)</label><input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="홍길동" style={inputStyle} /></div>
       <div style={{ marginBottom: '16px' }}><label style={labelStyle}>비밀번호 (8자 이상)</label><input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" style={inputStyle} /></div>
       <div style={{ marginBottom: '16px' }}><label style={labelStyle}>비밀번호 확인</label><input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="••••••••" style={inputStyle} /></div>
       <div style={{ marginBottom: '24px' }}><label style={labelStyle}>LinkedIn URL</label><input type="url" value={linkedinUrl} onChange={(e) => setLinkedinUrl(e.target.value)} placeholder="https://linkedin.com/in/your-profile" style={inputStyle} /></div>
-      <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', fontWeight: 600, color: '#f0ebe2', background: loading ? '#444' : '#1a1a1a', border: 'none', borderRadius: 0, cursor: loading ? 'not-allowed' : 'pointer' }}>
+      <button type="submit" disabled={loading} style={{ width: '100%', padding: '15px', fontFamily: 'system-ui, sans-serif', fontSize: '16px', fontWeight: 700, color: loading ? '#8b949e' : '#2fd6a1', background: '#101010', border: '1px solid #3d3a39', borderRadius: 0, cursor: loading ? 'not-allowed' : 'pointer' }}>
         {loading ? '계정 생성 중...' : '계정 생성하기'}
       </button>
     </form>

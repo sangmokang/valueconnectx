@@ -13,7 +13,7 @@ const createSessionSchema = z.object({
   location_detail: z.string().optional(),
   target_tier: z.enum(['core', 'endorsed', 'all']).optional(),
   tags: z.array(z.string()).default([]),
-  agreement_accepted: z.boolean().refine((v) => v === true, '헤드헌팅 수수료 원칙에 동의해야 합니다'),
+  agreement_accepted: z.boolean().refine((v) => v === true, '성사 연결 운영 원칙에 동의해야 합니다'),
 })
 
 export async function GET(request: NextRequest) {

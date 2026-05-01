@@ -12,13 +12,13 @@ export default async function GNB() {
   const currentPath = headersList.get("x-pathname") ?? "/";
 
   return (
-    <nav className="sticky top-0 z-[200] h-[60px] bg-[#f5f0e8] border-b border-black/[0.08] flex items-center justify-between px-4 md:px-12">
+    <nav className="sticky top-0 z-[200] h-[64px] bg-[#050507]/95 border-b border-[#3d3a39] flex items-center justify-between px-4 backdrop-blur md:px-12">
       {/* Logo */}
       <Link
         href="/"
-        className="no-underline font-[Georgia,serif] font-extrabold text-base tracking-tight text-[#1a1a1a]"
+        className="no-underline font-vcx-sans font-extrabold text-[15px] tracking-normal text-[#f2f2f2] sm:text-base"
       >
-        ValueConnect <span className="text-[#c9a84c]">X</span>
+        ValueConnect <span className="text-[#00d992] drop-shadow-[0_0_6px_rgba(0,217,146,0.45)]">X</span>
       </Link>
 
       {/* Desktop Center Nav */}
@@ -32,15 +32,15 @@ export default async function GNB() {
           <>
             <Link
               href="/login"
-              className="text-[13.5px] text-[#666] no-underline"
+              className="text-[14px] font-medium text-[#b8b3b0] no-underline transition-colors hover:text-[#2fd6a1]"
             >
               로그인
             </Link>
             <Link
-              href="/invite/accept"
-              className="text-[13px] bg-[#1a1a1a] text-[#f5f0e8] px-[18px] py-[8px] no-underline inline-block"
+              href="/signup"
+              className="inline-block border border-[#3d3a39] bg-[#101010] px-[18px] py-[10px] text-[14px] font-semibold text-[#2fd6a1] no-underline transition-colors hover:border-[#00d992]"
             >
-              회원가입 →
+              회원가입
             </Link>
           </>
         )}

@@ -32,9 +32,4 @@ export const mainNavItems: NavItem[] = [
     href: '/ceo-coffeechat',
     requiresAuth: true,
   },
-  {
-    label: '채용 포지션',
-    href: '/positions',
-    requiresAuth: false,
-  },
 ]

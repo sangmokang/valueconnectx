@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import GNB from "@/components/layout/gnb";
+import { GNBVisibility } from "@/components/layout/gnb-visibility";
 import Providers from "@/app/providers";
 import "./globals.css";
 
@@ -19,11 +19,11 @@ export default function RootLayout({
         style={{
           margin: 0,
           padding: 0,
-          background: "#f0ebe2",
-          fontFamily: "Georgia, serif",
+          background: "#050507",
+          fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
         }}
       >
-        <GNB />
+        <GNBVisibility />
         <Providers>{children}</Providers>
       </body>
     </html>

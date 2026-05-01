@@ -1,97 +1,68 @@
 import Link from 'next/link'
-import { ServicePillars } from '@/components/service-pillars'
+import { ArrowRight, BriefcaseBusiness, FileText } from 'lucide-react'
 
-export default function ServicePage() {
+export default function ValueHireHomePage() {
   return (
-    <div className="bg-[#f5f0e8] min-h-screen font-[system-ui]">
-      {/* HERO */}
-      <div className="bg-[#1a1a1a] py-20 relative overflow-hidden">
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 70% 50%, rgba(201,168,76,0.05) 0%, transparent 100%)' }}
-        />
-        <div className="max-w-[1100px] mx-auto px-6 md:px-12">
-          <div className="flex items-center gap-2.5 mb-7">
-            <div className="w-7 h-px bg-[#c9a84c]" />
-            <span className="text-[#c9a84c] text-[11px] tracking-[0.2em] font-semibold">
-              VALUECONNECT X · PRIVATE NETWORK
-            </span>
-          </div>
-          <h1
-            className="text-[clamp(36px,5vw,60px)] font-extrabold text-[#f5f0e8] leading-[1.2] mt-0 mb-7 tracking-[-1.5px]"
-            style={{ fontFamily: 'Georgia, serif' }}
-          >
-            탁월한 사람들이 스스로 모이는 곳
+    <main className="min-h-screen bg-vcx-abyss text-vcx-text">
+      <section className="mx-auto grid min-h-screen max-w-[1180px] gap-12 px-5 py-14 sm:px-8 lg:grid-cols-[1fr_0.9fr] lg:items-center lg:px-10">
+        <div>
+          <p className="vcx-section-label">ValueHire · Sprint 0 Preview</p>
+          <h1 className="mt-5 max-w-[760px] text-[42px] font-semibold leading-[1.08] tracking-normal text-vcx-text sm:text-[64px]">
+            당신의 이력서는,
+            <br />
+            지금 이 시장의 언어로 쓰여 있나요?
           </h1>
-          <div className="border-l-2 border-[#b8902a] pl-6 max-w-[640px]">
-            <p className="text-[16px] leading-[1.9] text-[#b0a898] m-0">
-              각 분야에서 깊이 있는 경험을 가진 사람들이 모이는 곳.<br />
-              최적의 기회를 먼저 전달하고, 커뮤니티 라운지로 머물게 하고,<br />
-              CEO Coffee Chat으로 연결한다.
-            </p>
-          </div>
-          <div className="mt-10 flex gap-8 flex-wrap">
-            {[
-              { v: '초대 전용', l: 'Invite-Only Network' },
-              { v: '검증된', l: '커뮤니티 주도 네트워크' },
-              { v: 'CEO Direct', l: 'HR 경유 없는 채용' },
-            ].map((m) => (
-              <div key={m.l} className="border-l border-[rgba(201,168,76,0.3)] pl-4">
-                <div
-                  className="text-[22px] font-extrabold text-[#c9a84c] leading-none"
-                  style={{ fontFamily: 'Georgia, serif' }}
-                >
-                  {m.v}
-                </div>
-                <div className="text-[12px] text-[#888] mt-1">{m.l}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* FIVE PILLARS */}
-      <div className="max-w-[1100px] mx-auto px-6 md:px-12 py-[72px] pb-[100px]">
-        <div className="flex items-center gap-2.5 mb-14">
-          <div className="flex-1 h-px bg-black/[0.08]" />
-          <span className="text-[10px] tracking-[0.2em] text-[#aaa]">FIVE PILLARS</span>
-          <div className="flex-1 h-px bg-black/[0.08]" />
-        </div>
-
-        <ServicePillars />
-
-        {/* CTA */}
-        <div className="mt-20 p-12 bg-[#1a1a1a] relative overflow-hidden">
-          <div
-            className="absolute top-0 right-0 w-[300px] h-full pointer-events-none"
-            style={{ background: 'linear-gradient(135deg, transparent 40%, rgba(201,168,76,0.05) 100%)' }}
-          />
-          <div className="flex items-center gap-2.5 mb-5">
-            <div className="w-5 h-px bg-[#c9a84c]" />
-            <span className="text-[10px] text-[#c9a84c] tracking-[0.18em]">OUR THESIS</span>
-          </div>
-          <p
-            className="text-[20px] font-bold text-[#f5f0e8] leading-[1.6] max-w-[680px] tracking-[-0.3px] mb-7"
-            style={{ fontFamily: 'Georgia, serif' }}
-          >
-            &ldquo;지금 가장 중요한 것은 사람을 모으는 것이 아니라,<br />사람이 머무는 이유를 설계하는 것이다.&rdquo;
+          <p className="mt-6 max-w-[680px] text-[17px] leading-8 text-vcx-soft">
+            한국 채용 시장의 6만+ 공고 데이터를 기준으로 이력서를 다시 쓰고,
+            지금 이 순간 매칭되는 공고를 함께 보여드립니다.
           </p>
-          <div className="flex gap-3 flex-wrap">
+          <div className="mt-9 flex flex-wrap items-center gap-3">
             <Link
-              href="/positions"
-              className="px-7 py-3.5 bg-[#c9a84c] text-[#1a1a1a] text-[13.5px] font-bold no-underline"
+              href="/valuehire/career"
+              className="inline-flex items-center gap-2 bg-vcx-emerald px-6 py-3.5 text-[15px] font-bold text-vcx-abyss no-underline"
             >
-              큐레이션 피드 보기 →
+              내 이력서 진단받기
+              <ArrowRight className="size-4" aria-hidden="true" />
             </Link>
-            <Link
-              href="/directory"
-              className="px-7 py-3.5 bg-transparent text-[#c9a84c] text-[13.5px] border border-[rgba(201,168,76,0.4)] no-underline"
-            >
-              멤버 소개 보기
-            </Link>
+            <p className="text-sm text-vcx-muted">무료 · 회원가입 없이 바로 시작</p>
           </div>
+          <p className="mt-10 text-sm text-vcx-muted">ValueConnect · Sprint 0 prototype</p>
         </div>
-      </div>
-    </div>
+
+        <div className="grid gap-4">
+          <Link
+            href="/valuehire/career"
+            className="group border border-vcx-border bg-vcx-surface p-6 text-vcx-text no-underline transition-colors hover:border-vcx-emerald"
+          >
+            <FileText className="size-6 text-vcx-emerald" aria-hidden="true" />
+            <p className="mt-10 text-sm text-vcx-muted">Candidate Entry</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-normal">ValueHire로 이직하기</h2>
+            <p className="mt-4 text-[15px] leading-7 text-vcx-soft">
+              이력서 진단, 시장 언어 재작성, 지금 맞는 공고 추천으로 후보자 경험을 시작합니다.
+            </p>
+            <div className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-vcx-emerald">
+              후보자 Preview
+              <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+            </div>
+          </Link>
+
+          <Link
+            href="/valuehire/hire"
+            className="group border border-vcx-emerald bg-vcx-surface p-6 text-vcx-text no-underline transition-colors hover:bg-vcx-surface-raised"
+          >
+            <BriefcaseBusiness className="size-6 text-vcx-emerald" aria-hidden="true" />
+            <p className="mt-10 text-sm text-vcx-muted">Recruiter Entry</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-normal">ValueHire로 채용하기</h2>
+            <p className="mt-4 text-[15px] leading-7 text-vcx-soft">
+              자사 JD와 후보자 리스트를 시장 채용공고 기준으로 비교하고, JD 적합도와 시장가치를 100점 기준으로 점수화합니다.
+            </p>
+            <div className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-vcx-emerald">
+              B2B Recruiter Preview
+              <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+            </div>
+          </Link>
+        </div>
+      </section>
+    </main>
   )
 }

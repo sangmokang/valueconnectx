@@ -11,11 +11,11 @@ export function SectionHeader({ title, subtitle, filters, className }: SectionHe
   return (
     <div className={cn("flex items-end justify-between", className)}>
       <div className="flex flex-col gap-1">
-        <h2 className="text-[22px] font-bold text-[#1a1a1a] leading-tight" style={{ fontFamily: "Georgia, serif" }}>
+        <h2 className="text-[22px] font-bold text-[#f2f2f2] leading-tight sm:text-[24px]">
           {title}
         </h2>
         {subtitle && (
-          <p className="text-[13px] text-[#888888] font-sans leading-snug">
+          <p className="text-[15px] text-[#b8b3b0] font-sans leading-relaxed">
             {subtitle}
           </p>
         )}

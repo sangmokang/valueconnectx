@@ -48,6 +48,14 @@ describe('isAuthRoute', () => {
     expect(isAuthRoute('/login')).toBe(true)
   })
 
+  it('returns true for "/signup"', () => {
+    expect(isAuthRoute('/signup')).toBe(true)
+  })
+
+  it('returns true for "/auth/callback"', () => {
+    expect(isAuthRoute('/auth/callback')).toBe(true)
+  })
+
   it('returns true for "/invite/accept" (sub-path)', () => {
     expect(isAuthRoute('/invite/accept')).toBe(true)
   })

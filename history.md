@@ -12,11 +12,28 @@
 
 ---
 
+## 2026-05-01
+
+- [chore] DEBT-0005 등재 — newsletter API explicit-any 10건 (Sprint 3 타입 regen 후 정리) (commit:4ed30fc)
+
 ## 2026-04-30
 
+- [feat] **Feed UI 1차 구현** — VCX 디자인 토큰 기반 피드 레이아웃 전면 정리 (미커밋, S2)
+  - 히어로 섹션 VCX 토큰 재구성 (`feed/page.tsx`)
+  - 관심사 초기 로드/저장 연동 + empty/loading/error 상태 (`feed-client.tsx`)
+  - 반응형 Feed 카드 + `data-testid="feed-card"` (`feed-card.tsx`)
+  - 관심사 칩/직접 입력 UI 정리 (`interest-selector.tsx`)
+  - 상세 모달 + 구독 바 UI 정리 (`feed-detail-modal.tsx`, `newsletter-bar.tsx`)
+  - 검증: ESLint pass · `npm run build` pass · `/feed` 200 OK
+  - **영향 파일**: `src/app/(protected)/feed/page.tsx` · `src/components/feed/feed-{card,client,detail-modal}.tsx` · `src/components/feed/{interest-selector,newsletter-bar}.tsx`
 - [docs] 컨퍼런스 부스 대화 플레이북 작성 — 손님 응대 스크립트·FAQ·꼬리 질문 포함 (source:chat) → `docs/marketing/booth-conversation-playbook.md` 생성 (미커밋)
 - [docs] 대외 공표용 PRD + 제품 브리프 작성 — 보안 사항 제거한 공개 버전 `docs/prd.md` + `docs/marketing/public-product-brief-1.0.md` 생성 요청 (/ralph 모드) (source:chat) (미커밋)
 - [decision] 티셔츠 마케팅 캐치프레이즈 탐색 — 컨퍼런스 부스 기업 홍보 문구 방향 논의 (아이디어 수준, 별도 파일 미생성) (source:chat)
+- [feat] Feed MVP API + 온보딩 V2 + 어드민 큐레이션 + E2E 슬라이스 + 마케팅 문서 (L-Std) (commit:6a9c109)
+- [feat] Feed UI 1차 + 버그 수정 3건 + analytics 이벤트 6건 연동 (L-Std) (commit:9f0b5ee)
+- [chore] Stibee 뉴스레터 1차 발송 준비물 — HTML 템플릿 + 구독자 추출 SQL (L-Std) (commit:20b14dd)
+- [docs] ADR-0009 뉴스레터 자체 구현 — Resend 채택, Stibee 대체 (L-High, 48h 쿨다운 시작) (commit:7d4eb76)
+- [feat] newsletter 자체 호스팅 인프라 — 023 migration + track/unsubscribe API (L-Std, ADR-0009 의존) (commit:ffc99d7)
 
 ## 2026-04-24
 

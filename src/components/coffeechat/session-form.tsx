@@ -15,7 +15,7 @@ const sessionSchema = z.object({
   location_detail: z.string().optional(),
   target_tier: z.enum(['core', 'endorsed', 'all']).optional(),
   tags: z.array(z.string()),
-  agreement_accepted: z.boolean().refine((v) => v === true, '헤드헌팅 수수료 원칙에 동의해야 합니다'),
+  agreement_accepted: z.boolean().refine((v) => v === true, '성사 연결 운영 원칙에 동의해야 합니다'),
 })
 
 type SessionFormData = z.infer<typeof sessionSchema>
@@ -293,7 +293,7 @@ export function SessionForm({ initialData, sessionId }: SessionFormProps) {
             className="mt-0.5 flex-shrink-0 w-4 h-4 accent-[#c9a84c]"
           />
           <span className="text-[13px] font-vcx-sans text-[#1a1a1a] leading-relaxed">
-            헤드헌팅 수수료 원칙에 동의합니다. ValueConnect X를 통한 채용 성사 시 수수료 정책이 적용됩니다.
+            성사 연결 운영 원칙에 동의합니다. ValueConnect X를 통한 채용 성사는 비공개 운영 기준에 따라 관리됩니다.
           </span>
         </label>
         {errors.agreement_accepted && (
