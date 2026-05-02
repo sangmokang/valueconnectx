@@ -3,6 +3,11 @@
 import { useState, useEffect, type KeyboardEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
+import {
+  CURATION_INTEREST_TAGS,
+  INTEREST_TAG_LIMIT,
+  normalizeInterestTag,
+} from '@/constants/profile'
 
 interface ProfileSnapshot {
   name: string
@@ -23,8 +28,6 @@ const WEIGHTS = {
   professional_fields: 15,
 }
 
-const SUGGESTED_FIELDS = ['제품', '엔지니어링', '데이터', '전략', '재무', '인사', '마케팅', '세일즈']
-
 function calcCompletion(data: ProfileSnapshot): number {
   let total = 0
   if (data.name.trim()) total += WEIGHTS.name
@@ -34,10 +37,6 @@ function calcCompletion(data: ProfileSnapshot): number {
   if (data.bio.trim()) total += WEIGHTS.bio
   if (data.professional_fields.length > 0) total += WEIGHTS.professional_fields
   return total
-}
-
-function normalizeTag(tag: string) {
-  return tag.trim().replace(/\s+/g, ' ')
 }
 
 export default function OnboardingPage() {
@@ -98,11 +97,11 @@ export default function OnboardingPage() {
   }, [router])
 
   function addField(rawField: string) {
-    const field = normalizeTag(rawField)
+    const field = normalizeInterestTag(rawField)
     if (!field) return
     setForm((prev) => ({
       ...prev,
-      professional_fields: prev.professional_fields.includes(field) || prev.professional_fields.length >= 10
+      professional_fields: prev.professional_fields.includes(field) || prev.professional_fields.length >= INTEREST_TAG_LIMIT
         ? prev.professional_fields
         : [...prev.professional_fields, field],
     }))
@@ -383,7 +382,7 @@ export default function OnboardingPage() {
                 value={fieldInput}
                 onChange={(e) => setFieldInput(e.target.value)}
                 onKeyDown={handleFieldKeyDown}
-                placeholder="예: B2B SaaS, 조직문화, 글로벌 채용"
+                placeholder="예: B2B 소프트웨어, 조직문화, 글로벌 채용"
                 className="min-w-0 flex-1 px-3.5 py-3 font-vcx-sans text-[14px] text-vcx-dark bg-vcx-beige-light border border-black/[0.08] outline-none focus:border-vcx-gold"
               />
               <button
@@ -396,11 +395,11 @@ export default function OnboardingPage() {
               </button>
             </div>
             <p className="font-vcx-sans text-[11px] text-vcx-sub-5 mt-1">
-              Enter 또는 쉼표로 추가할 수 있습니다. 최대 10개까지 저장됩니다.
+              Enter 또는 쉼표로 추가할 수 있습니다. 최대 {INTEREST_TAG_LIMIT}개까지 저장됩니다.
             </p>
 
             <div className="flex flex-wrap gap-2 mt-3">
-              {SUGGESTED_FIELDS.filter((field) => !form.professional_fields.includes(field)).map((field) => (
+              {CURATION_INTEREST_TAGS.filter((field) => !form.professional_fields.includes(field)).map((field) => (
                 <button
                   key={field}
                   type="button"

@@ -5,6 +5,10 @@ import { getVcxUser } from '@/lib/auth/get-vcx-user'
 import { unauthorized, serverError } from '@/lib/api/error'
 import { parseBody } from '@/lib/api/validation'
 import { isMissingSchemaError } from '@/lib/api/supabase-errors'
+import {
+  INTEREST_TAG_LIMIT,
+  normalizeInterestTags,
+} from '@/constants/profile'
 
 export async function GET() {
   try {
@@ -51,8 +55,8 @@ export async function GET() {
 const schema = z.object({
   chips: z
     .array(z.string().trim().min(1, '관심 분야를 입력해주세요'))
-    .max(10, '관심 분야는 최대 10개까지 선택할 수 있습니다')
-    .transform((chips) => Array.from(new Set(chips))),
+    .max(INTEREST_TAG_LIMIT, `관심 분야는 최대 ${INTEREST_TAG_LIMIT}개까지 선택할 수 있습니다`)
+    .transform(normalizeInterestTags),
 }).strict()
 
 export async function POST(request: NextRequest) {

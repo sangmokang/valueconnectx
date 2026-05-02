@@ -1,20 +1,17 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { NextRequest } from 'next/server'
 
-const { mockServerClient, mockAdminFrom } = vi.hoisted(() => {
-  const mockServerClient = {
-    auth: {
-      getUser: vi.fn(),
-    },
-    from: vi.fn(),
-  }
+const { mockGetVcxUser, mockAdminFrom } = vi.hoisted(() => {
+  const mockGetVcxUser = vi.fn()
   const mockAdminFrom = vi.fn()
 
-  return { mockServerClient, mockAdminFrom }
+  return { mockGetVcxUser, mockAdminFrom }
 })
 
-vi.mock('@/lib/supabase/server', () => ({
-  createClient: vi.fn().mockResolvedValue(mockServerClient),
+vi.mock('@/lib/auth/get-vcx-user', () => ({
+  getVcxUser: mockGetVcxUser,
+  isAdmin: (user: { systemRole?: string } | null) =>
+    user !== null && (user.systemRole === 'admin' || user.systemRole === 'super_admin'),
 }))
 
 vi.mock('@/lib/supabase/admin', () => ({
@@ -23,8 +20,8 @@ vi.mock('@/lib/supabase/admin', () => ({
 
 import { PATCH, DELETE } from '@/app/api/admin/feed/[id]/route'
 
-const ADMIN_USER = { id: 'admin-uid-1' }
-const ADMIN_MEMBER = { system_role: 'admin' }
+const ADMIN_USER = { id: 'admin-uid-1', systemRole: 'admin' }
+const MEMBER_USER = { id: 'member-uid-1', systemRole: 'member' }
 
 function makePatchRequest(body: object) {
   return new NextRequest('http://localhost/api/admin/feed/feed-1', {
@@ -38,33 +35,14 @@ function params(id = 'feed-1') {
   return { params: Promise.resolve({ id }) }
 }
 
-function makeAdminFromBuilder() {
-  return {
-    select: vi.fn().mockReturnThis(),
-    eq: vi.fn().mockReturnThis(),
-    in: vi.fn().mockReturnThis(),
-    single: vi.fn().mockResolvedValue({ data: ADMIN_MEMBER, error: null }),
-  }
-}
-
-function makeNonAdminFromBuilder() {
-  return {
-    select: vi.fn().mockReturnThis(),
-    eq: vi.fn().mockReturnThis(),
-    in: vi.fn().mockReturnThis(),
-    single: vi.fn().mockResolvedValue({ data: null, error: { code: 'PGRST116' } }),
-  }
-}
-
 describe('PATCH /api/admin/feed/[id]', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    mockServerClient.auth.getUser.mockResolvedValue({ data: { user: ADMIN_USER }, error: null })
-    mockServerClient.from.mockReturnValue(makeAdminFromBuilder())
+    mockGetVcxUser.mockResolvedValue(ADMIN_USER)
   })
 
   it('returns 401 when not authenticated', async () => {
-    mockServerClient.auth.getUser.mockResolvedValue({ data: { user: null }, error: null })
+    mockGetVcxUser.mockResolvedValue(null)
 
     const res = await PATCH(makePatchRequest({ company: '토스' }), params())
 
@@ -72,7 +50,7 @@ describe('PATCH /api/admin/feed/[id]', () => {
   })
 
   it('returns 403 when user is not admin', async () => {
-    mockServerClient.from.mockReturnValue(makeNonAdminFromBuilder())
+    mockGetVcxUser.mockResolvedValue(MEMBER_USER)
 
     const res = await PATCH(makePatchRequest({ company: '토스' }), params())
 
@@ -144,8 +122,7 @@ describe('PATCH /api/admin/feed/[id]', () => {
 describe('DELETE /api/admin/feed/[id]', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    mockServerClient.auth.getUser.mockResolvedValue({ data: { user: ADMIN_USER }, error: null })
-    mockServerClient.from.mockReturnValue(makeAdminFromBuilder())
+    mockGetVcxUser.mockResolvedValue(ADMIN_USER)
   })
 
   it('deletes a feed item for admin users', async () => {

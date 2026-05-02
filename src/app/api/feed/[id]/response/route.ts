@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
+import { getVcxUser } from '@/lib/auth/get-vcx-user'
 import { unauthorized, serverError } from '@/lib/api/error'
 import { parseBody } from '@/lib/api/validation'
 
@@ -11,9 +12,10 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const user = await getVcxUser()
+    if (!user) return unauthorized()
+
     const supabase = await createClient()
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) return unauthorized()
 
     const { id } = await params
 
@@ -45,9 +47,10 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const user = await getVcxUser()
+    if (!user) return unauthorized()
+
     const supabase = await createClient()
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) return unauthorized()
 
     const { id } = await params
 

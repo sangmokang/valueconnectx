@@ -172,8 +172,9 @@ export function CurationForm({ item, onSuccess, onCancel }: CurationFormProps) {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 20px' }}>
         {/* 회사명 */}
         <div style={fieldStyle}>
-          <label style={labelStyle}>회사명 *</label>
+          <label htmlFor="feed-company" style={labelStyle}>회사명 *</label>
           <input
+            id="feed-company"
             style={inputStyle}
             value={form.company}
             onChange={(e) => handleChange('company', e.target.value)}
@@ -195,12 +196,13 @@ export function CurationForm({ item, onSuccess, onCancel }: CurationFormProps) {
 
         {/* 역할 */}
         <div style={fieldStyle}>
-          <label style={labelStyle}>역할 *</label>
+          <label htmlFor="feed-role" style={labelStyle}>역할 *</label>
           <input
+            id="feed-role"
             style={inputStyle}
             value={form.role}
             onChange={(e) => handleChange('role', e.target.value)}
-            placeholder="예: Head of Product"
+            placeholder="예: 제품 총괄"
           />
           {errors.role && <p style={errorStyle}>{errors.role}</p>}
         </div>
@@ -212,7 +214,7 @@ export function CurationForm({ item, onSuccess, onCancel }: CurationFormProps) {
             style={inputStyle}
             value={form.level ?? ''}
             onChange={(e) => handleChange('level', e.target.value)}
-            placeholder="예: C-Level, Director"
+            placeholder="예: C레벨, 디렉터"
           />
         </div>
 

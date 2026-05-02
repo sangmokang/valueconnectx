@@ -82,6 +82,8 @@ async function mockFeedApis(
 }
 
 test.describe('Phase 1 Slice — S2: 큐레이션 피드 열람 및 관심사 설정', () => {
+  test.describe.configure({ mode: 'serial' })
+
   test('golden path: 로그인 후 /feed 접근 → 피드 카드 렌더링 확인', async ({ page }) => {
     await mockFeedApis(page, { chips: ['AI / ML'] })
     await loginAs(page, TEST_USER)

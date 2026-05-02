@@ -1,25 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { getVcxUser, isAdmin } from '@/lib/auth/get-vcx-user'
 import { unauthorized, forbidden, serverError } from '@/lib/api/error'
 import { parseBody } from '@/lib/api/validation'
 
 export const dynamic = 'force-dynamic'
 
-async function authorizeAdmin(supabase: Awaited<ReturnType<typeof createClient>>) {
-  const { data: { user }, error } = await supabase.auth.getUser()
-  if (error || !user) return { user: null, error: unauthorized() }
-
-  const { data: member, error: memberError } = await supabase
-    .from('vcx_members')
-    .select('system_role')
-    .eq('id', user.id)
-    .in('system_role', ['super_admin', 'admin'])
-    .single()
-
-  if (memberError && memberError.code !== 'PGRST116') return { user: null, error: serverError() }
-  if (!member) return { user: null, error: forbidden('관리자만 접근할 수 있습니다') }
+async function authorizeAdmin() {
+  const user = await getVcxUser()
+  if (!user) return { user: null, error: unauthorized() }
+  if (!isAdmin(user)) return { user: null, error: forbidden('관리자만 접근할 수 있습니다') }
 
   return { user, error: null }
 }
@@ -51,8 +42,7 @@ const createFeedItemSchema = z.object({
 
 export async function GET() {
   try {
-    const supabase = await createClient()
-    const admin = await authorizeAdmin(supabase)
+    const admin = await authorizeAdmin()
     if (admin.error) return admin.error
 
     const adminClient = createAdminClient()
@@ -76,8 +66,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient()
-    const admin = await authorizeAdmin(supabase)
+    const admin = await authorizeAdmin()
     if (admin.error) return admin.error
 
     const parsed = await parseBody(request, createFeedItemSchema)

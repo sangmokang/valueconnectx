@@ -1,25 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { getVcxUser, isAdmin } from '@/lib/auth/get-vcx-user'
 import { unauthorized, forbidden, notFound, serverError } from '@/lib/api/error'
 import { parseBody } from '@/lib/api/validation'
 
 export const dynamic = 'force-dynamic'
 
-async function authorizeAdmin(supabase: Awaited<ReturnType<typeof createClient>>) {
-  const { data: { user }, error } = await supabase.auth.getUser()
-  if (error || !user) return { error: unauthorized() }
-
-  const { data: member, error: memberError } = await supabase
-    .from('vcx_members')
-    .select('system_role')
-    .eq('id', user.id)
-    .in('system_role', ['super_admin', 'admin'])
-    .single()
-
-  if (memberError && memberError.code !== 'PGRST116') return { error: serverError() }
-  if (!member) return { error: forbidden('관리자만 접근할 수 있습니다') }
+async function authorizeAdmin() {
+  const user = await getVcxUser()
+  if (!user) return { error: unauthorized() }
+  if (!isAdmin(user)) return { error: forbidden('관리자만 접근할 수 있습니다') }
 
   return { error: null }
 }
@@ -49,8 +40,7 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const supabase = await createClient()
-    const adminAuth = await authorizeAdmin(supabase)
+    const adminAuth = await authorizeAdmin()
     if (adminAuth.error) return adminAuth.error
 
     const { id } = await params
@@ -84,8 +74,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const supabase = await createClient()
-    const adminAuth = await authorizeAdmin(supabase)
+    const adminAuth = await authorizeAdmin()
     if (adminAuth.error) return adminAuth.error
 
     const { id } = await params

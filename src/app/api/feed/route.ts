@@ -7,6 +7,10 @@ import { getVcxUser } from '@/lib/auth/get-vcx-user'
 import { unauthorized, serverError } from '@/lib/api/error'
 import { parseSearchParams } from '@/lib/api/validation'
 import { isMissingSchemaError } from '@/lib/api/supabase-errors'
+import {
+  INTEREST_TAG_LIMIT,
+  normalizeInterestTag,
+} from '@/constants/profile'
 
 const querySchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
@@ -16,11 +20,11 @@ const querySchema = z.object({
       if (typeof value !== 'string') return undefined
       const tags = value
         .split(',')
-        .map((tag) => tag.trim())
+        .map(normalizeInterestTag)
         .filter(Boolean)
       return tags.length > 0 ? tags : undefined
     },
-    z.array(z.string().min(1, '태그를 입력해주세요')).max(10, '태그는 최대 10개까지 선택할 수 있습니다').optional()
+    z.array(z.string().min(1, '태그를 입력해주세요')).max(INTEREST_TAG_LIMIT, `태그는 최대 ${INTEREST_TAG_LIMIT}개까지 선택할 수 있습니다`).optional()
   ),
 })
 

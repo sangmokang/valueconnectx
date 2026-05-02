@@ -3,7 +3,11 @@
 import { useState } from 'react'
 import { trackEvent } from '@/lib/analytics'
 import { linkedinUrlSchema } from '@/lib/validation/linkedin'
-import { INDUSTRIES } from '@/constants/profile'
+import {
+  INDUSTRIES,
+  INTEREST_TAG_LIMIT,
+  normalizeInterestTags,
+} from '@/constants/profile'
 
 interface ProfileEditFormProps {
   initialData: {
@@ -54,10 +58,7 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
       return
     }
 
-    const professional_fields = fieldsInput
-      .split(',')
-      .map((f) => f.trim())
-      .filter(Boolean)
+    const professional_fields = normalizeInterestTags(fieldsInput.split(','))
 
     try {
       const res = await fetch('/api/directory/me', {
@@ -133,16 +134,18 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
 
       {/* Professional fields */}
       <div>
-        <label className={labelClass}>전문 분야</label>
+        <label className={labelClass}>관심 분야</label>
         <input
           type="text"
           value={fieldsInput}
           onChange={(e) => setFieldsInput(e.target.value)}
-          placeholder="예: 제품 전략, 엔지니어링, B2B SaaS (쉼표로 구분)"
+          placeholder="예: 제품 전략, 엔지니어링, B2B 소프트웨어 (쉼표로 구분)"
           className={inputClass}
           style={{ borderRadius: 0 }}
         />
-        <p className="text-xs font-vcx-sans text-[#999999] mt-1">쉼표(,)로 구분하여 입력하세요</p>
+        <p className="text-xs font-vcx-sans text-[#999999] mt-1">
+          쉼표(,)로 구분하여 최대 {INTEREST_TAG_LIMIT}개까지 입력하세요. 저장하면 피드 필터와 함께 동기화됩니다.
+        </p>
       </div>
 
       {/* Industry */}

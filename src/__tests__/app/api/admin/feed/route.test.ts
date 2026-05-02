@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { NextRequest } from 'next/server'
 
 // ---- Hoisted mock variables ----
-const { mockServerClient, mockAdminFrom } = vi.hoisted(() => {
+const { mockGetVcxUser, mockAdminFrom } = vi.hoisted(() => {
   const mockAdminQueryBuilder = {
     select: vi.fn(),
     insert: vi.fn(),
@@ -18,18 +18,15 @@ const { mockServerClient, mockAdminFrom } = vi.hoisted(() => {
 
   const mockAdminFrom = vi.fn().mockReturnValue(mockAdminQueryBuilder)
 
-  const mockServerClient = {
-    auth: {
-      getUser: vi.fn(),
-    },
-    from: vi.fn(),
-  }
+  const mockGetVcxUser = vi.fn()
 
-  return { mockServerClient, mockAdminFrom }
+  return { mockGetVcxUser, mockAdminFrom }
 })
 
-vi.mock('@/lib/supabase/server', () => ({
-  createClient: vi.fn().mockResolvedValue(mockServerClient),
+vi.mock('@/lib/auth/get-vcx-user', () => ({
+  getVcxUser: mockGetVcxUser,
+  isAdmin: (user: { systemRole?: string } | null) =>
+    user !== null && (user.systemRole === 'admin' || user.systemRole === 'super_admin'),
 }))
 
 vi.mock('@/lib/supabase/admin', () => ({
@@ -39,8 +36,8 @@ vi.mock('@/lib/supabase/admin', () => ({
 // ---- Import route after mocks ----
 import { GET, POST } from '@/app/api/admin/feed/route'
 
-const ADMIN_USER = { id: 'admin-uid-1' }
-const ADMIN_MEMBER = { system_role: 'admin' }
+const ADMIN_USER = { id: 'admin-uid-1', systemRole: 'admin' }
+const MEMBER_USER = { id: 'member-uid-1', systemRole: 'member' }
 
 function makePostRequest(body: object, url = 'http://localhost/api/admin/feed') {
   return new NextRequest(url, {
@@ -50,65 +47,27 @@ function makePostRequest(body: object, url = 'http://localhost/api/admin/feed') 
   })
 }
 
-function makeAdminFromBuilder() {
-  return {
-    select: vi.fn().mockReturnThis(),
-    eq: vi.fn().mockReturnThis(),
-    in: vi.fn().mockReturnThis(),
-    single: vi.fn().mockResolvedValue({ data: ADMIN_MEMBER, error: null }),
-  }
-}
-
-function makeNonAdminFromBuilder() {
-  return {
-    select: vi.fn().mockReturnThis(),
-    eq: vi.fn().mockReturnThis(),
-    in: vi.fn().mockReturnThis(),
-    single: vi.fn().mockResolvedValue({ data: null, error: { code: 'PGRST116' } }),
-  }
-}
-
-function makeAdminCheckErrorBuilder() {
-  return {
-    select: vi.fn().mockReturnThis(),
-    eq: vi.fn().mockReturnThis(),
-    in: vi.fn().mockReturnThis(),
-    single: vi.fn().mockResolvedValue({ data: null, error: { code: 'XX000' } }),
-  }
-}
-
 describe('GET /api/admin/feed', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockGetVcxUser.mockResolvedValue(ADMIN_USER)
   })
 
   it('returns 401 when not authenticated', async () => {
-    mockServerClient.auth.getUser.mockResolvedValue({ data: { user: null }, error: null })
+    mockGetVcxUser.mockResolvedValue(null)
 
     const res = await GET()
     expect(res.status).toBe(401)
   })
 
   it('returns 403 when user is not admin', async () => {
-    mockServerClient.auth.getUser.mockResolvedValue({ data: { user: ADMIN_USER }, error: null })
-    mockServerClient.from.mockReturnValue(makeNonAdminFromBuilder())
+    mockGetVcxUser.mockResolvedValue(MEMBER_USER)
 
     const res = await GET()
     expect(res.status).toBe(403)
   })
 
-  it('returns 500 when admin lookup fails unexpectedly', async () => {
-    mockServerClient.auth.getUser.mockResolvedValue({ data: { user: ADMIN_USER }, error: null })
-    mockServerClient.from.mockReturnValue(makeAdminCheckErrorBuilder())
-
-    const res = await GET()
-    expect(res.status).toBe(500)
-  })
-
   it('returns 200 with items for admin user', async () => {
-    mockServerClient.auth.getUser.mockResolvedValue({ data: { user: ADMIN_USER }, error: null })
-    mockServerClient.from.mockReturnValue(makeAdminFromBuilder())
-
     const feedItems = [
       { id: 'feed-1', company: '토스', role: 'Head of Product' },
       { id: 'feed-2', company: '카카오', role: 'Engineering Manager' },
@@ -130,29 +89,24 @@ describe('GET /api/admin/feed', () => {
 describe('POST /api/admin/feed', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockGetVcxUser.mockResolvedValue(ADMIN_USER)
   })
 
   it('returns 401 when not authenticated', async () => {
-    mockServerClient.auth.getUser.mockResolvedValue({ data: { user: null }, error: null })
+    mockGetVcxUser.mockResolvedValue(null)
 
     const res = await POST(makePostRequest({ company: '토스', role: '개발자' }))
     expect(res.status).toBe(401)
   })
 
   it('returns 403 when user is not admin', async () => {
-    mockServerClient.auth.getUser.mockResolvedValue({ data: { user: ADMIN_USER }, error: null })
-    mockServerClient.from.mockReturnValue(makeNonAdminFromBuilder())
+    mockGetVcxUser.mockResolvedValue(MEMBER_USER)
 
     const res = await POST(makePostRequest({ company: '토스', role: '개발자' }))
     expect(res.status).toBe(403)
   })
 
   it('returns 400 for invalid input (missing required role)', async () => {
-    // First getAdminUser call succeeds
-    mockServerClient.auth.getUser.mockResolvedValue({ data: { user: ADMIN_USER }, error: null })
-    mockServerClient.from.mockReturnValue(makeAdminFromBuilder())
-
-    // Missing required 'role' field
     const res = await POST(makePostRequest({ company: '토스' }))
     expect(res.status).toBe(400)
     const json = await res.json()
@@ -160,9 +114,6 @@ describe('POST /api/admin/feed', () => {
   })
 
   it('returns 400 for fields outside the feed item model', async () => {
-    mockServerClient.auth.getUser.mockResolvedValue({ data: { user: ADMIN_USER }, error: null })
-    mockServerClient.from.mockReturnValue(makeAdminFromBuilder())
-
     const res = await POST(makePostRequest({
       company: '토스',
       role: 'Head of Product',
@@ -173,9 +124,6 @@ describe('POST /api/admin/feed', () => {
   })
 
   it('returns 201 with created item for valid admin POST', async () => {
-    mockServerClient.auth.getUser.mockResolvedValue({ data: { user: ADMIN_USER }, error: null })
-    mockServerClient.from.mockReturnValue(makeAdminFromBuilder())
-
     const createdItem = {
       id: 'new-feed-1',
       company: '토스',

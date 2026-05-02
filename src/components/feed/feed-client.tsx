@@ -150,7 +150,7 @@ export function FeedClient() {
 
         <div className="mb-7 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <div className="mb-1.5 font-vcx-sans text-[11px] font-semibold tracking-[0.15em] text-vcx-sub-4">
+            <div className="mb-1.5 font-vcx-sans text-[12px] font-semibold text-vcx-sub-4">
               이번 주 큐레이션 · {today} 기준
             </div>
             <h2 className="font-vcx-serif text-[22px] font-bold text-vcx-dark">
