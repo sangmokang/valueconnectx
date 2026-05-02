@@ -1,28 +1,47 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
+import { getVcxUser } from '@/lib/auth/get-vcx-user'
 import { unauthorized, serverError } from '@/lib/api/error'
 import { parseBody } from '@/lib/api/validation'
+import { isMissingSchemaError } from '@/lib/api/supabase-errors'
 
 export async function GET() {
   try {
-    const supabase = await createClient()
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) return unauthorized()
+    const user = await getVcxUser()
+    if (!user) return unauthorized()
 
+    const supabase = await createClient()
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error } = await (supabase as any)
+    const supa = supabase as any
+    const { data, error } = await supa
       .from('vcx_feed_interests')
       .select('chips')
       .eq('user_id', user.id)
       .maybeSingle()
 
-    if (error) {
+    if (error && !isMissingSchemaError(error)) {
       console.error('Feed interests GET error:', error)
       return serverError()
     }
 
-    return NextResponse.json({ chips: data?.chips ?? [] })
+    if (!error && data) {
+      return NextResponse.json({ chips: data.chips ?? [] })
+    }
+
+    const { data: member, error: memberError } = await supa
+      .from('vcx_members')
+      .select('professional_fields')
+      .eq('id', user.id)
+      .eq('is_active', true)
+      .single()
+
+    if (memberError && memberError.code !== 'PGRST116') {
+      console.error('Feed interests member fallback error:', memberError)
+      return serverError()
+    }
+
+    return NextResponse.json({ chips: member?.professional_fields ?? [] })
   } catch (error) {
     console.error('Feed interests GET error:', error)
     return serverError()
@@ -30,22 +49,26 @@ export async function GET() {
 }
 
 const schema = z.object({
-  chips: z.array(z.string()),
-})
+  chips: z
+    .array(z.string().trim().min(1, '관심 분야를 입력해주세요'))
+    .max(10, '관심 분야는 최대 10개까지 선택할 수 있습니다')
+    .transform((chips) => Array.from(new Set(chips))),
+}).strict()
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient()
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) return unauthorized()
+    const user = await getVcxUser()
+    if (!user) return unauthorized()
 
+    const supabase = await createClient()
     const parsed = await parseBody(request, schema)
     if (parsed.error) return parsed.error
 
     const { chips } = parsed.data
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error } = await (supabase as any)
+    const supa = supabase as any
+    const { data, error } = await supa
       .from('vcx_feed_interests')
       .upsert(
         { user_id: user.id, chips, updated_at: new Date().toISOString() },
@@ -54,12 +77,23 @@ export async function POST(request: NextRequest) {
       .select()
       .single()
 
-    if (error) {
+    if (error && !isMissingSchemaError(error)) {
       console.error('Feed interests upsert error:', error)
       return serverError()
     }
 
-    return NextResponse.json({ data })
+    const { error: memberError } = await supa
+      .from('vcx_members')
+      .update({ professional_fields: chips, updated_at: new Date().toISOString() })
+      .eq('id', user.id)
+      .eq('is_active', true)
+
+    if (memberError) {
+      console.error('Feed interests member sync error:', memberError)
+      return serverError()
+    }
+
+    return NextResponse.json({ chips: data?.chips ?? chips })
   } catch (error) {
     console.error('Feed interests POST error:', error)
     return serverError()

@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { Check, Plus, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
+const MAX_INTERESTS = 10
+
 const DEFAULT_CHIPS = [
   '딥테크',
   '핀테크 B2B',
@@ -28,14 +30,14 @@ export function InterestSelector({ selectedChips, onChange }: InterestSelectorPr
   const toggleChip = (chip: string) => {
     if (selectedChips.includes(chip)) {
       onChange(selectedChips.filter((c) => c !== chip))
-    } else if (selectedChips.length < 5) {
+    } else if (selectedChips.length < MAX_INTERESTS) {
       onChange([...selectedChips, chip])
     }
   }
 
   const addCustom = () => {
     const trimmed = customInput.trim()
-    if (trimmed && selectedChips.length < 5 && !selectedChips.includes(trimmed)) {
+    if (trimmed && selectedChips.length < MAX_INTERESTS && !selectedChips.includes(trimmed)) {
       onChange([...selectedChips, trimmed])
       setCustomInput('')
     }
@@ -47,13 +49,14 @@ export function InterestSelector({ selectedChips, onChange }: InterestSelectorPr
         <div className="grid gap-7 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-start">
           <div>
             <div className="mb-4 font-vcx-sans text-[11px] font-semibold tracking-[0.12em] text-vcx-sub-4">
-              관심 분야 선택 (최대 5개)
+              관심 분야 선택 (최대 10개)
             </div>
             <div className="flex flex-wrap gap-2">
               {DEFAULT_CHIPS.map((chip) => {
                 const active = selectedChips.includes(chip)
                 return (
                   <button
+                    type="button"
                     key={chip}
                     onClick={() => toggleChip(chip)}
                     className={cn(
@@ -86,8 +89,9 @@ export function InterestSelector({ selectedChips, onChange }: InterestSelectorPr
                 className="min-h-10 min-w-0 flex-1 border border-vcx-dark/15 bg-vcx-beige-light px-3.5 py-2 font-vcx-sans text-[13.5px] text-vcx-dark outline-none placeholder:text-vcx-sub-4 focus:border-vcx-gold"
               />
               <button
+                type="button"
                 onClick={addCustom}
-                disabled={selectedChips.length >= 5}
+                disabled={selectedChips.length >= MAX_INTERESTS}
                 className="inline-flex min-h-10 items-center gap-1.5 bg-vcx-dark px-3.5 py-2 font-vcx-sans text-[13px] font-semibold text-vcx-beige disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <Plus className="h-3.5 w-3.5" aria-hidden="true" />
@@ -95,7 +99,7 @@ export function InterestSelector({ selectedChips, onChange }: InterestSelectorPr
               </button>
             </div>
             <div className="mt-2 font-vcx-sans text-[12px] text-vcx-sub-4">
-              Enter 또는 추가 버튼으로 등록 · {5 - selectedChips.length}개 남음
+              Enter 또는 추가 버튼으로 등록 · {MAX_INTERESTS - selectedChips.length}개 남음
             </div>
           </div>
         </div>
@@ -112,6 +116,7 @@ export function InterestSelector({ selectedChips, onChange }: InterestSelectorPr
               >
                 {chip}
                 <button
+                  type="button"
                   onClick={() => toggleChip(chip)}
                   className="text-vcx-sub-4 hover:text-vcx-dark"
                   aria-label={`${chip} 관심 분야 제거`}

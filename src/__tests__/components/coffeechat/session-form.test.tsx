@@ -180,7 +180,7 @@ describe('SessionForm', () => {
     await user.click(screen.getByRole('button', { name: '온라인' }))
     await user.click(screen.getByRole('button', { name: '세션 만들기' }))
     await waitFor(() => {
-      expect(screen.getByText('헤드헌팅 수수료 원칙에 동의해야 합니다')).toBeInTheDocument()
+      expect(screen.getByText('컬쳐핏 확인 운영 원칙에 동의해야 합니다')).toBeInTheDocument()
     })
   })
 

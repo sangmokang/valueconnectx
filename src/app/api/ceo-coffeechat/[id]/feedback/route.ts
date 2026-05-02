@@ -28,7 +28,7 @@ export async function POST(
     try { body = await request.json() } catch { return badRequest('유효하지 않은 요청 형식입니다') }
 
     const parsed = feedbackSchema.safeParse(body)
-    if (!parsed.success) return badRequest(parsed.error.issues[0]?.message ?? '검증 오류')
+    if (!parsed.success) return badRequest('피드백 입력값을 확인해주세요', parsed.error.issues)
 
     const { applicationId, overallRating, cultureFitScore, wouldConnectAgain, feedbackTags, comment, briefHelpful } = parsed.data
 

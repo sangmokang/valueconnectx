@@ -66,24 +66,6 @@ export function CeoCoffeechatClient() {
     [mutate]
   )
 
-  if (error) {
-    return (
-      <div
-        style={{
-          minHeight: '100vh',
-          background: '#f5f0e8',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontFamily: 'system-ui, sans-serif',
-          color: '#555',
-        }}
-      >
-        세션 목록을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.
-      </div>
-    )
-  }
-
   return (
     <div style={{ background: '#f5f0e8', minHeight: '100vh', fontFamily: 'system-ui, sans-serif' }}>
       <CeoHero
@@ -100,7 +82,37 @@ export function CeoCoffeechatClient() {
           padding: '48px 24px 80px',
         }}
       >
-        {!data ? (
+        {error ? (
+          <div
+            style={{
+              border: '1px solid rgba(0,0,0,0.08)',
+              background: '#fff',
+              padding: '32px 24px',
+              textAlign: 'center',
+            }}
+          >
+            <p
+              style={{
+                fontFamily: 'Georgia, serif',
+                fontSize: 20,
+                color: '#333',
+                margin: '0 0 8px',
+              }}
+            >
+              세션 목록을 잠시 불러오지 못했습니다
+            </p>
+            <p
+              style={{
+                fontFamily: 'system-ui, sans-serif',
+                fontSize: 14,
+                color: '#888',
+                margin: 0,
+              }}
+            >
+              화면을 새로고침하면 다시 확인할 수 있습니다.
+            </p>
+          </div>
+        ) : !data ? (
           // Loading skeleton
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             {[1, 2, 3].map((i) => (

@@ -56,7 +56,7 @@ describe('OnboardingPage', () => {
     // 섹션 2: 현재
     expect(screen.getByText('현재')).toBeInTheDocument()
     expect(screen.getByPlaceholderText('회사명')).toBeInTheDocument()
-    expect(screen.getByPlaceholderText('예: Senior Software Engineer')).toBeInTheDocument()
+    expect(screen.getByPlaceholderText('예: 시니어 백엔드 엔지니어')).toBeInTheDocument()
     // 섹션 3: 관심 분야
     expect(screen.getByText('관심 분야')).toBeInTheDocument()
     // 제출 버튼
@@ -65,20 +65,36 @@ describe('OnboardingPage', () => {
 
   it('redirects to /directory when profile is already complete', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
-      mockGet({ name: '홍', current_company: 'A', title: 'B', linkedin_url: 'https://linkedin.com/in/h' }),
+      mockGet({
+        name: '홍',
+        current_company: 'A',
+        title: 'B',
+        linkedin_url: 'https://linkedin.com/in/h',
+        bio: '이미 완성된 프로필입니다',
+      }),
     ))
     render(<OnboardingPage />)
     await waitFor(() => { expect(mockReplace).toHaveBeenCalledWith('/directory') })
   })
 
-  it('pre-fills form with existing partial profile data', async () => {
+  it('pre-fills form with existing partial profile data and removes duplicate invite fields', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
-      mockGet({ current_company: '스타트업', title: 'CTO', bio: '10년차 엔지니어입니다' }),
+      mockGet({
+        name: '홍길동',
+        linkedin_url: 'https://linkedin.com/in/gildong',
+        current_company: '스타트업',
+        title: 'CTO',
+      }),
     ))
     render(<OnboardingPage />)
     await screen.findByRole('heading', { name: '당신의 이야기를 들려주세요' })
+    expect(screen.getByText('홍길동')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'https://linkedin.com/in/gildong' })).toBeInTheDocument()
+    expect(screen.queryByLabelText('이름 *')).not.toBeInTheDocument()
+    expect(screen.queryByLabelText('LinkedIn URL *')).not.toBeInTheDocument()
     expect(screen.getByPlaceholderText('회사명')).toHaveValue('스타트업')
-    expect(screen.getByPlaceholderText('예: Senior Software Engineer')).toHaveValue('CTO')
+    expect(screen.getByPlaceholderText('예: 시니어 백엔드 엔지니어')).toHaveValue('CTO')
+    expect(screen.getByText('60%')).toBeInTheDocument()
   })
 
   it('does not have skip button (강제 온보딩)', async () => {

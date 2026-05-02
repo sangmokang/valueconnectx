@@ -38,11 +38,11 @@ test.describe('커피챗 플로우', () => {
 
     // Expect form elements to be visible
     await expect(
-      page.locator('input[name="topic"], input[placeholder*="주제"], input[placeholder*="topic"]').first()
+      page.locator('input[name="title"], input[placeholder*="제목"]').first()
     ).toBeVisible({ timeout: 8000 })
 
     await expect(
-      page.locator('textarea[name="description"], textarea[placeholder*="내용"], textarea[placeholder*="description"]').first()
+      page.locator('textarea[name="content"], textarea[placeholder*="어떤 분과 커피챗"]').first()
     ).toBeVisible()
 
     await expect(

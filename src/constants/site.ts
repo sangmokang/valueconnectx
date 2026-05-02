@@ -4,17 +4,17 @@ export const SITE_DESCRIPTION =
 
 export const DESIGN_TOKENS = {
   colors: {
-    primary: '#050507',
-    secondary: '#101010',
-    accent: '#00d992',
-    background: '#050507',
-    backgroundDark: '#050507',
-    deepNavy: '#050507',
-    textPrimary: '#f2f2f2',
-    textSecondary: '#b8b3b0',
-    textMuted: '#8b949e',
-    border: '#3d3a39',
-    borderDark: '#3d3a39',
+    primary: '#0A0A0A',
+    secondary: '#1A1A1A',
+    accent: '#c9a84c',
+    background: '#FFFFFF',
+    backgroundDark: '#0A0A0A',
+    deepNavy: '#0F172A',
+    textPrimary: '#0A0A0A',
+    textSecondary: '#6B6B6B',
+    textMuted: '#9B9B9B',
+    border: '#E5E5E5',
+    borderDark: '#2A2A2A',
   },
   fonts: {
     sans: 'var(--font-geist-sans)',
@@ -28,22 +28,22 @@ export const DESIGN_TOKENS = {
 } as const;
 
 export const HERO_COPY = {
-  h1: 'Selective Hiring\n× Selective Talent',
+  h1: 'Invite-only\nPrivate Talent Network',
   paragraphs: [
-    '기업은 더 적은 인원으로 높은 성과를 요구하고 있으며,\n핵심 인재 역시 아무 기업과도 매칭되지 않습니다.',
+    '검증된 핵심 인재는 아무 네트워크에나 머물지 않습니다.',
     'ValueConnect X는 검증된 핵심 인재와 의사결정자가\n신뢰 기반으로 연결되는 Private Network입니다.',
   ],
   cta: {
-    primary: '멤버십 신청하기',
+    primary: '초대 수락하기',
     secondary: '서비스 소개 보기',
   },
 } as const;
 
 export const CLOSING_COPY = {
   quote:
-    '경영자, 회사, 채용 채널에 존재하는 부정적 요소를 사전에 필터링하여,\n후보자가 최선의 선택을 할 수 있도록 지속적으로 개선하고 있습니다.',
+    '초대, 검증, 큐레이션, 커피챗이 하나의 흐름으로 이어질 때,\n핵심 인재는 더 조용하고 신뢰할 수 있는 방식으로 다음 선택지를 발견합니다.',
   cta: {
-    primary: '멤버십 신청하기',
+    primary: '초대 수락하기',
     secondary: '더 알아보기',
   },
 } as const;

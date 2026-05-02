@@ -23,7 +23,6 @@ VCX_SQLITE_PATH=/tmp/vcx-dev.sqlite npm run sqlite:reset
 - 커피챗: `vcx_ceo_coffee_sessions`, `vcx_coffee_applications`, `peer_coffee_chats`, `peer_coffee_applications`
 - 피드: `vcx_feed_items`, `vcx_feed_interests`, `vcx_feed_responses`, `vcx_feed_subscriptions`
 - 뉴스레터: `vcx_newsletter_campaigns`, `vcx_newsletter_recipients`, `vcx_newsletter_events`
-- B2B Intelligence: `vcx_company_jds`, `vcx_candidate_resumes`, `vcx_b2b_market_job_signals`, `vcx_b2b_match_runs`
 
 ## 한계
 

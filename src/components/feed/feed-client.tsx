@@ -9,25 +9,40 @@ import { FeedCard, type FeedItem } from './feed-card'
 import { FeedDetailModal } from './feed-detail-modal'
 import { NewsletterBar } from './newsletter-bar'
 
-const fetcher = (url: string) => fetch(url).then((r) => r.json())
+const fetcher = async (url: string) => {
+  const response = await fetch(url)
+  const json = await response.json().catch(() => ({}))
+  if (!response.ok) {
+    throw new Error(json.error ?? '요청에 실패했습니다')
+  }
+  return json
+}
 
 export function FeedClient() {
   const [selectedChipsOverride, setSelectedChipsOverride] = useState<string[] | null>(null)
   const [showDetail, setShowDetail] = useState<FeedItem | null>(null)
+  const [interestError, setInterestError] = useState('')
 
-  const { data, error, mutate } = useSWR<{ data: FeedItem[]; total: number }>(
-    '/api/feed',
-    fetcher
-  )
   const { data: interestsData, mutate: mutateInterests } = useSWR<{ chips: string[] }>(
     '/api/feed/interests',
+    fetcher
+  )
+  const selectedChips = selectedChipsOverride ?? interestsData?.chips ?? []
+  const feedReady = selectedChipsOverride !== null || interestsData !== undefined
+  const feedKey = feedReady
+    ? selectedChips.length > 0
+      ? `/api/feed?limit=10&tags=${encodeURIComponent(selectedChips.join(','))}`
+      : '/api/feed?limit=10'
+    : null
+
+  const { data, error, mutate } = useSWR<{ data: FeedItem[]; total: number }>(
+    feedKey,
     fetcher
   )
 
   const items: FeedItem[] = data?.data ?? []
   const visibleItems = items.filter((i) => i.user_response !== 'skip')
   const interestedCount = items.filter((i) => i.user_response === 'yes').length
-  const selectedChips = selectedChipsOverride ?? interestsData?.chips ?? []
 
   useEffect(() => {
     if (data !== undefined) {
@@ -39,21 +54,25 @@ export function FeedClient() {
 
   const handleChipsChange = useCallback(
     async (chips: string[]) => {
+      setInterestError('')
       setSelectedChipsOverride(chips)
       mutateInterests({ chips }, { revalidate: false })
       trackEvent('interests_saved', { chips, count: chips.length })
 
       try {
-        await fetch('/api/feed/interests', {
+        const response = await fetch('/api/feed/interests', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ chips }),
         })
+        if (!response.ok) throw new Error('관심 분야 저장 실패')
+        await mutate()
       } catch (err) {
         console.error('관심 분야 저장 오류:', err)
+        setInterestError('관심 분야를 저장하지 못했습니다. 잠시 후 다시 시도해주세요.')
       }
     },
-    [mutateInterests]
+    [mutate, mutateInterests]
   )
 
   const handleResponse = useCallback(
@@ -123,10 +142,16 @@ export function FeedClient() {
       />
 
       <section className="mx-auto max-w-[1000px] px-5 py-10 sm:px-8 sm:py-12 lg:px-12 lg:pb-20">
+        {interestError && (
+          <div className="mb-5 border border-red-200 bg-red-50 px-4 py-3 font-vcx-sans text-[13px] text-red-700">
+            {interestError}
+          </div>
+        )}
+
         <div className="mb-7 flex flex-wrap items-center justify-between gap-3">
           <div>
             <div className="mb-1.5 font-vcx-sans text-[11px] font-semibold tracking-[0.15em] text-vcx-sub-4">
-              THIS WEEK&#39;S FEED · {today} 기준
+              이번 주 큐레이션 · {today} 기준
             </div>
             <h2 className="font-vcx-serif text-[22px] font-bold text-vcx-dark">
               이번 주 큐레이션 {visibleItems.length}건
@@ -161,6 +186,12 @@ export function FeedClient() {
                 onInterest={(value) => handleResponse(item.id, value)}
                 onSkip={() => handleResponse(item.id, 'skip')}
                 onDetail={() => {
+                  trackEvent('feed_item_click', {
+                    item_id: item.id,
+                    role: item.role,
+                    company: item.company,
+                    surface: 'card_detail',
+                  })
                   trackEvent('feed_detail_opened', { item_id: item.id, role: item.role, company: item.company })
                   setShowDetail(item)
                 }}
@@ -188,7 +219,7 @@ export function FeedClient() {
             피드 안내
           </span>
           <span className="font-vcx-sans text-[12px] text-vcx-sub-4">
-            관심 있음 — AI Match Engine의 학습 신호로 활용됩니다
+            관심 있음 — 다음 추천을 더 정교하게 만드는 신호로 활용됩니다
           </span>
           <span className="font-vcx-sans text-[12px] text-vcx-sub-4">
             관심 없음 — 이 유형의 포지션 비중이 줄어듭니다

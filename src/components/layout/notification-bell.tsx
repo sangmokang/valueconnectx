@@ -94,28 +94,31 @@ export function NotificationBell() {
     <div ref={containerRef} className="relative">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="relative flex items-center justify-center w-10 h-10 bg-transparent border border-[#3d3a39] cursor-pointer"
+        className="relative flex items-center justify-center w-8 h-8 bg-transparent border-0 cursor-pointer"
         aria-label="알림"
       >
-        <Bell size={20} color="#b8b3b0" className="transition-colors" />
+        <Bell size={20} color="#555" className="hover:text-[#1a1a1a] transition-colors" />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-[#fb565b] text-white text-[12px] font-bold flex items-center justify-center px-[3px] leading-none">
+          <span className="absolute top-0 right-0 min-w-[16px] h-[16px] bg-red-500 text-white text-[10px] font-bold flex items-center justify-center px-[3px] leading-none">
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-2 w-80 max-w-[calc(100vw-2rem)] bg-[#101010] border border-[#3d3a39] shadow-[0_20px_60px_rgba(0,0,0,0.7)] z-[300] overflow-hidden">
+        <div
+          data-testid="notification-dropdown"
+          className="absolute right-0 top-full mt-2 w-80 bg-white shadow-lg z-[300] overflow-hidden"
+        >
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[#3d3a39]">
-            <span className="text-[15px] font-semibold text-[#f2f2f2] font-[system-ui,sans-serif]">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+            <span className="text-[13px] font-semibold text-[#1a1a1a] font-[system-ui,sans-serif]">
               알림
             </span>
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllRead}
-                className="text-[14px] text-[#2fd6a1] font-medium bg-transparent border-0 cursor-pointer font-[system-ui,sans-serif] hover:underline"
+                className="text-[12px] text-[#c9a84c] font-medium bg-transparent border-0 cursor-pointer font-[system-ui,sans-serif] hover:underline"
               >
                 모두 읽음
               </button>
@@ -125,31 +128,32 @@ export function NotificationBell() {
           {/* Notification list */}
           <div className="max-h-80 overflow-y-auto">
             {notifications.length === 0 ? (
-              <div className="px-4 py-8 text-center text-[15px] text-[#8b949e] font-[system-ui,sans-serif]">
+              <div className="px-4 py-8 text-center text-[13px] text-[#888] font-[system-ui,sans-serif]">
                 새로운 알림이 없습니다
               </div>
             ) : (
               notifications.map((n) => (
                 <button
                   key={n.id}
+                  data-testid="notification-item"
                   onClick={() => handleNotificationClick(n)}
-                  className={`w-full text-left px-4 py-3 border-b border-[#3d3a39] last:border-b-0 hover:bg-[#171717] transition-colors cursor-pointer bg-transparent ${
-                    !n.is_read ? 'border-l-2 border-l-[#00d992]' : ''
+                  className={`w-full text-left px-4 py-3 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors cursor-pointer bg-transparent ${
+                    !n.is_read ? 'border-l-2 border-l-[#c9a84c]' : ''
                   }`}
                 >
                   <p
-                    className={`text-[15px] font-[system-ui,sans-serif] text-[#f2f2f2] leading-snug ${
+                    className={`text-[13px] font-[system-ui,sans-serif] text-[#1a1a1a] leading-snug ${
                       !n.is_read ? 'font-semibold' : 'font-normal'
                     }`}
                   >
                     {n.title}
                   </p>
                   {n.body && (
-                    <p className="text-[14px] text-[#b8b3b0] font-[system-ui,sans-serif] mt-1 line-clamp-2 leading-snug">
+                    <p className="text-[12px] text-[#555] font-[system-ui,sans-serif] mt-0.5 line-clamp-2 leading-snug">
                       {n.body}
                     </p>
                   )}
-                  <p className="text-[13px] text-[#8b949e] font-[system-ui,sans-serif] mt-1">
+                  <p className="text-[11px] text-[#aaa] font-[system-ui,sans-serif] mt-1">
                     {timeAgo(n.created_at)}
                   </p>
                 </button>

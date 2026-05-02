@@ -123,7 +123,6 @@ describe('POST /api/peer-coffeechat/[id]/apply', () => {
     const res = await POST(makePostRequest(CHAT_ID, {}), makeParams())
 
     expect(res.status).toBe(400)
-    const body = await res.json()
     expect(res.status).toBe(400) // Zod returns type error for missing field
   })
 

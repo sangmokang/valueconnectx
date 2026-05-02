@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
 import { unauthorized, forbidden, badRequest, serverError } from '@/lib/api/error'
+import { isMissingSchemaError } from '@/lib/api/supabase-errors'
 
 const createSessionSchema = z.object({
   title: z.string().min(1, '제목을 입력해주세요'),
@@ -45,6 +46,10 @@ export async function GET(request: NextRequest) {
 
     const { data: sessions, error, count } = await query
     if (error) {
+      if (isMissingSchemaError(error)) {
+        return NextResponse.json({ data: [], total: 0, page, limit })
+      }
+
       console.error('Sessions fetch error:', error)
       return serverError('세션 목록 조회에 실패했습니다')
     }

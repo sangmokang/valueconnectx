@@ -1,62 +1,164 @@
-import { test, expect } from "@playwright/test";
-import { loginAs, TEST_USER } from "../helpers/auth";
+import { test, expect, type Browser } from '@playwright/test'
+import { createClient } from '@supabase/supabase-js'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
+import { loginAs } from '../helpers/auth'
 
-test.describe("Phase 1 Slice — S5: 세션 완료 후 피드백 제출", () => {
-  // ── Golden Path ──────────────────────────────────────────────────────────
+const PASSWORD = 'VcxSeed2026!'
+const AUTHOR = { email: 'jihoon.park@vcx-seed.com', password: PASSWORD }
+const APPLICANT = { email: 'hyuna.lee@vcx-seed.com', password: PASSWORD }
 
-  test.skip("golden path: 완료된 커피챗 세션 → 피드백 폼 접근", async ({ page }) => {
-    // TODO(Sprint 4): loginAs(TEST_USER) → 완료 상태 커피챗 세션 상세 페이지 이동 →
-    //   "피드백 남기기" 버튼 또는 피드백 폼 노출 확인
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §5.1
-    await loginAs(page, TEST_USER);
-    await page.goto("/coffeechat");
-    await expect(page.locator("body")).toBeVisible();
-  });
+function loadEnv() {
+  const envPath = resolve(process.cwd(), '.env.local')
+  try {
+    for (const line of readFileSync(envPath, 'utf-8').split('\n')) {
+      const trimmed = line.trim()
+      if (!trimmed || trimmed.startsWith('#')) continue
+      const index = trimmed.indexOf('=')
+      if (index === -1) continue
+      const key = trimmed.slice(0, index)
+      const value = trimmed.slice(index + 1)
+      process.env[key] ||= value
+    }
+  } catch {
+    // CI can provide environment variables directly.
+  }
+}
 
-  test.skip("golden path: 피드백 폼 작성 → 제출 성공 → 완료 메시지 표시", async ({ page }) => {
-    // TODO(Sprint 4): 피드백 폼 → 별점·코멘트 입력 → 제출 →
-    //   "피드백이 제출되었습니다" 성공 메시지 또는 완료 UI 확인
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §5.2
-    await loginAs(page, TEST_USER);
-    await page.goto("/coffeechat");
-    await expect(page).toHaveURL(/\/coffeechat/);
-  });
+function getAdminClient() {
+  loadEnv()
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!url || !key) throw new Error('E2E Supabase admin credentials are missing')
+  return createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } })
+}
 
-  test.skip("golden path: 피드백 제출 후 해당 세션이 '완료' 상태로 업데이트", async ({ page }) => {
-    // TODO(Sprint 4): 피드백 제출 완료 → 세션 목록 복귀 →
-    //   해당 세션 카드에 "완료" 상태 배지 표시 확인
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §5.3
-    await loginAs(page, TEST_USER);
-    await page.goto("/coffeechat");
-    await expect(page.locator("body")).toBeVisible();
-  });
+async function ensureMember(email: string, name: string) {
+  const admin = getAdminClient()
+  const { data: member } = await admin
+    .from('vcx_members')
+    .select('id')
+    .eq('email', email)
+    .single()
+  const userId = member?.id
+  if (!userId) throw new Error(`E2E user not found: ${email}`)
 
-  // ── Error Cases ───────────────────────────────────────────────────────────
+  await admin.from('vcx_members').upsert({
+    id: userId,
+    email,
+    name,
+    current_company: 'ValueConnect X',
+    title: name.includes('작성자') ? 'CTO' : 'Product Lead',
+    professional_fields: ['Engineering', 'Product'],
+    member_tier: 'core',
+    system_role: 'member',
+    is_active: true,
+  })
 
-  test.skip("error: 필수 항목 미입력 피드백 제출 → 유효성 검사 오류", async ({ page }) => {
-    // TODO(Sprint 4): 피드백 폼 → 별점 없이 제출 버튼 클릭 →
-    //   "평점을 선택해주세요" 등 필드 에러 메시지 확인
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §5.E1
-    await loginAs(page, TEST_USER);
-    await page.goto("/coffeechat");
-    await expect(page.locator("body")).toBeVisible();
-  });
+  return userId
+}
 
-  test.skip("error: 이미 피드백 제출된 세션 중복 제출 방지", async ({ page }) => {
-    // TODO(Sprint 4): 피드백 이미 제출된 세션 상세 →
-    //   "이미 피드백을 제출하셨습니다" 메시지 또는 폼 비활성화 상태 확인
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §5.E2
-    await loginAs(page, TEST_USER);
-    await page.goto("/coffeechat");
-    await expect(page.locator("body")).toBeVisible();
-  });
+async function createPeerCoffeechat() {
+  const admin = getAdminClient()
+  const authorId = await ensureMember(AUTHOR.email, 'E2E S5 작성자')
+  await ensureMember(APPLICANT.email, 'E2E S5 신청자')
+  const title = `E2E 피드백 커피챗 ${Date.now()}`
+  const { data, error } = await admin
+    .from('peer_coffee_chats')
+    .insert({
+      author_id: authorId,
+      title,
+      content: 'Phase 1 S5 검증을 위한 완료 커피챗입니다. 세션 후 피드백 제출과 운영 집계 진입점을 확인합니다.',
+      category: 'career',
+      status: 'open',
+    })
+    .select('id')
+    .single()
+  if (error || !data) throw new Error(`E2E peer coffeechat seed failed: ${error?.message}`)
+  return { chatUrl: `/coffeechat/${data.id}`, chatId: data.id }
+}
 
-  test.skip("error: 완료되지 않은 세션에서 피드백 폼 접근 불가", async ({ page }) => {
-    // TODO(Sprint 4): 진행 중(pending/scheduled) 상태 세션 →
-    //   피드백 버튼 비노출 또는 비활성화 상태 확인
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §5.E3
-    await loginAs(page, TEST_USER);
-    await page.goto("/coffeechat");
-    await expect(page.locator("body")).toBeVisible();
-  });
-});
+async function hasPeerCoffeechatSchema() {
+  const { error } = await getAdminClient()
+    .from('peer_coffee_chats')
+    .select('id')
+    .limit(1)
+  return !error
+}
+
+async function deletePeerCoffeechat(id: string) {
+  await getAdminClient().from('peer_coffee_chats').delete().eq('id', id)
+}
+
+async function createAcceptedPeerCoffeechat(browser: Browser) {
+  const authorContext = await browser.newContext()
+  const applicantContext = await browser.newContext()
+  const authorPage = await authorContext.newPage()
+  const applicantPage = await applicantContext.newPage()
+  const { chatUrl, chatId } = await createPeerCoffeechat()
+
+  await loginAs(authorPage, AUTHOR)
+  await loginAs(applicantPage, APPLICANT)
+  await applicantPage.goto(chatUrl)
+  await applicantPage.getByRole('button', { name: '비밀 신청하기' }).click()
+  await applicantPage.getByPlaceholder('간단한 자기소개나 신청 이유를 적어주세요').fill(
+    '세션 이후 피드백 제출 흐름을 검증하기 위해 신청합니다.'
+  )
+  await applicantPage.getByRole('button', { name: '신청하기' }).click()
+  await expect(applicantPage.getByText('신청 완료')).toBeVisible()
+
+  await authorPage.goto(chatUrl)
+  await authorPage.getByRole('button', { name: '수락' }).first().click()
+  await expect(authorPage.getByText('수락됨')).toBeVisible()
+
+  const closeResponse = await authorPage.request.put(`/api/peer-coffeechat/${chatId}`, {
+    data: { status: 'closed' },
+  })
+  expect(closeResponse.ok()).toBe(true)
+
+  return { authorContext, applicantContext, authorPage, applicantPage, chatUrl, chatId }
+}
+
+test.describe('Phase 1 Slice - S5: 세션 완료 후 피드백 제출', () => {
+  test('완료된 Peer 커피챗에서 피드백을 제출하고 완료 메시지를 본다', async ({ browser }) => {
+    test.skip(
+      !(await hasPeerCoffeechatSchema()),
+      'E2E Supabase DB에 peer_coffee_chats 스키마가 없어 전체 피드백 경로를 건너뜁니다.'
+    )
+
+    const flow = await createAcceptedPeerCoffeechat(browser)
+
+    try {
+      await flow.applicantPage.goto(flow.chatUrl)
+      await expect(flow.applicantPage.getByTestId('ai-brief-card')).toBeVisible()
+      await expect(flow.applicantPage.getByText('커피챗 피드백')).toBeVisible()
+
+      await flow.applicantPage.getByRole('button', { name: '5점' }).click()
+      await flow.applicantPage.getByRole('button', { name: '도움됨' }).click()
+      await flow.applicantPage.getByPlaceholder('자유롭게 남겨주세요').fill(
+        'AI Brief 덕분에 대화 전에 핵심 질문을 정리할 수 있었습니다.'
+      )
+      await flow.applicantPage.getByRole('button', { name: '피드백 제출' }).click()
+
+      await expect(flow.applicantPage.getByText('피드백이 제출되었습니다. 감사합니다.')).toBeVisible()
+    } finally {
+      await deletePeerCoffeechat(flow.chatId).catch(() => undefined)
+      await flow.authorContext.close()
+      await flow.applicantContext.close()
+    }
+  })
+
+  test('비인증 사용자는 커피챗 피드백 영역에 접근하기 전에 로그인 월을 만난다', async ({ page }) => {
+    await page.goto('/coffeechat')
+
+    await expect(page.getByText('멤버 전용 콘텐츠입니다')).toBeVisible()
+    await expect(page.locator('a[href="/login?redirect=%2Fcoffeechat"]', { hasText: '로그인' })).toBeVisible()
+  })
+
+  test('운영 대시보드는 비인증 상태에서 로그인 화면으로 보호된다', async ({ page }) => {
+    await page.goto('/admin/ops')
+
+    await expect(page).toHaveURL(/\/login/)
+    await expect(page.getByRole('heading', { name: '당신은 이미 검증되었습니다' })).toBeVisible()
+  })
+})

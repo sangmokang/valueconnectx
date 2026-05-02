@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { unauthorized, forbidden, serverError } from '@/lib/api/error'
 import { parseSearchParams, parseBody } from '@/lib/api/validation'
+import { isMissingSchemaError } from '@/lib/api/supabase-errors'
 
 const VALID_CATEGORIES = ['career', 'leadership', 'salary', 'burnout', 'productivity', 'company_review'] as const
 
@@ -54,6 +55,10 @@ export async function GET(request: NextRequest) {
 
     const { data, error, count } = await query
     if (error) {
+      if (isMissingSchemaError(error)) {
+        return NextResponse.json({ data: [], total: 0, page, limit })
+      }
+
       console.error('Community posts query error:', error)
       return serverError()
     }

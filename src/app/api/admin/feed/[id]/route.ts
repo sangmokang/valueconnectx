@@ -2,38 +2,47 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { unauthorized, notFound, serverError } from '@/lib/api/error'
+import { unauthorized, forbidden, notFound, serverError } from '@/lib/api/error'
 import { parseBody } from '@/lib/api/validation'
 
 export const dynamic = 'force-dynamic'
 
-async function getAdminUser(supabase: Awaited<ReturnType<typeof createClient>>) {
+async function authorizeAdmin(supabase: Awaited<ReturnType<typeof createClient>>) {
   const { data: { user }, error } = await supabase.auth.getUser()
-  if (error || !user) return null
+  if (error || !user) return { error: unauthorized() }
 
-  const { data: member } = await supabase
+  const { data: member, error: memberError } = await supabase
     .from('vcx_members')
     .select('system_role')
     .eq('id', user.id)
     .in('system_role', ['super_admin', 'admin'])
     .single()
 
-  return member ? user : null
+  if (memberError && memberError.code !== 'PGRST116') return { error: serverError() }
+  if (!member) return { error: forbidden('관리자만 접근할 수 있습니다') }
+
+  return { error: null }
 }
 
+const nullableText = z
+  .string()
+  .trim()
+  .transform((value) => (value.length > 0 ? value : null))
+  .nullish()
+
 const updateFeedItemSchema = z.object({
-  company: z.string().min(1, '회사명을 입력해주세요').optional(),
-  company_tag: z.string().optional().nullable(),
-  role: z.string().min(1, '역할을 입력해주세요').optional(),
-  level: z.string().optional().nullable(),
-  team_size: z.string().optional().nullable(),
-  salary_band: z.string().optional().nullable(),
-  location: z.string().optional().nullable(),
-  tags: z.array(z.string()).optional(),
-  summary: z.string().optional().nullable(),
+  company: z.string().trim().min(1, '회사명을 입력해주세요').optional(),
+  company_tag: nullableText,
+  role: z.string().trim().min(1, '역할을 입력해주세요').optional(),
+  level: nullableText,
+  team_size: nullableText,
+  salary_band: nullableText,
+  location: nullableText,
+  tags: z.array(z.string().trim().min(1, '빈 태그는 추가할 수 없습니다')).max(10, '태그는 최대 10개까지 입력할 수 있습니다').optional(),
+  summary: nullableText,
   exclusive: z.boolean().optional(),
   published_at: z.string().datetime().optional().nullable(),
-})
+}).strict()
 
 export async function PATCH(
   request: NextRequest,
@@ -41,8 +50,8 @@ export async function PATCH(
 ) {
   try {
     const supabase = await createClient()
-    const adminUser = await getAdminUser(supabase)
-    if (!adminUser) return unauthorized()
+    const adminAuth = await authorizeAdmin(supabase)
+    if (adminAuth.error) return adminAuth.error
 
     const { id } = await params
     const parsed = await parseBody(request, updateFeedItemSchema)
@@ -76,8 +85,8 @@ export async function DELETE(
 ) {
   try {
     const supabase = await createClient()
-    const adminUser = await getAdminUser(supabase)
-    if (!adminUser) return unauthorized()
+    const adminAuth = await authorizeAdmin(supabase)
+    if (adminAuth.error) return adminAuth.error
 
     const { id } = await params
     const admin = createAdminClient()

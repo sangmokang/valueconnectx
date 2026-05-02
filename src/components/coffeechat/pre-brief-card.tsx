@@ -5,6 +5,7 @@ import { Sparkles, RefreshCw } from 'lucide-react'
 
 interface PreBriefCardProps {
   sessionId: string
+  apiBasePath?: 'ceo-coffeechat' | 'peer-coffeechat'
 }
 
 interface BriefData {
@@ -13,24 +14,24 @@ interface BriefData {
   applicationId: string
 }
 
-export function PreBriefCard({ sessionId }: PreBriefCardProps) {
+export function PreBriefCard({ sessionId, apiBasePath = 'ceo-coffeechat' }: PreBriefCardProps) {
   const [data, setData] = useState<BriefData | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch(`/api/ceo-coffeechat/${sessionId}/brief`)
+    fetch(`/api/${apiBasePath}/${sessionId}/brief`)
       .then((r) => r.json())
       .then((d) => {
         setData(d)
         setLoading(false)
       })
       .catch(() => setLoading(false))
-  }, [sessionId])
+  }, [apiBasePath, sessionId])
 
   if (loading) {
     return (
-      <div className="border border-[#c9a84c]/30 bg-[#c9a84c]/5 p-4">
-        <div className="flex items-center gap-2 text-[#c9a84c] text-sm">
+      <div className="border border-vcx-gold bg-vcx-beige-light p-4">
+        <div className="flex min-w-0 items-center gap-2 text-vcx-gold text-sm">
           <RefreshCw size={14} className="animate-spin" />
           <span>AI 브리프 생성 중...</span>
         </div>
@@ -50,20 +51,23 @@ export function PreBriefCard({ sessionId }: PreBriefCardProps) {
     : null
 
   return (
-    <div className="border border-[#c9a84c]/40 bg-[#c9a84c]/5 p-5 space-y-3">
-      <div className="flex items-center gap-2">
-        <Sparkles size={15} className="text-[#c9a84c]" />
-        <span className="text-xs font-semibold text-[#c9a84c] uppercase tracking-wider">
+    <div
+      data-testid="ai-brief-card"
+      className="border border-vcx-gold bg-vcx-beige-light p-4 sm:p-5 space-y-3 overflow-hidden"
+    >
+      <div className="flex min-w-0 flex-wrap items-center gap-2">
+        <Sparkles size={15} className="text-vcx-gold flex-shrink-0" />
+        <span className="text-xs font-semibold text-vcx-gold uppercase tracking-wider">
           AI Pre-Brief
         </span>
         {generatedAt && (
-          <span className="text-xs text-neutral-500 ml-auto">{generatedAt} 생성</span>
+          <span className="text-xs text-vcx-sub-4 sm:ml-auto">{generatedAt} 생성</span>
         )}
       </div>
-      <p className="text-sm text-neutral-300 leading-relaxed whitespace-pre-line">
+      <p className="text-sm font-vcx-sans text-vcx-dark leading-relaxed whitespace-pre-line break-words">
         {data.brief}
       </p>
-      <p className="text-xs text-neutral-600">
+      <p className="text-xs font-vcx-sans text-vcx-sub-4 leading-relaxed">
         이 브리프는 Claude AI가 세션 정보와 프로필을 분석해 자동 생성했습니다.
       </p>
     </div>

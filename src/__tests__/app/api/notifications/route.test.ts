@@ -66,6 +66,17 @@ describe('GET /api/notifications', () => {
     const res = await GET()
     expect(res.status).toBe(500)
   })
+
+  it('returns empty notifications when the optional notifications table is missing', async () => {
+    mockGetUser.mockResolvedValue({ data: { user: { id: 'user-1' } }, error: null })
+
+    const builder = makeQueryBuilder({ data: null, error: { code: 'PGRST205' } })
+    mockFrom.mockReturnValue(builder)
+
+    const res = await GET()
+    expect(res.status).toBe(200)
+    await expect(res.json()).resolves.toEqual({ data: [], unreadCount: 0 })
+  })
 })
 
 describe('PATCH /api/notifications', () => {
@@ -104,6 +115,21 @@ describe('PATCH /api/notifications', () => {
     expect(res.status).toBe(200)
     const json = await res.json()
     expect(json.success).toBe(true)
+  })
+
+  it('treats markAllRead as a no-op when the optional notifications table is missing', async () => {
+    mockGetUser.mockResolvedValue({ data: { user: { id: 'user-1' } }, error: null })
+
+    const innerB: Record<string, unknown> = {}
+    innerB.eq = vi.fn().mockResolvedValue({ error: { code: 'PGRST205' } })
+    const outerB: Record<string, unknown> = {}
+    outerB.update = vi.fn().mockReturnValue(outerB)
+    outerB.eq = vi.fn().mockReturnValue(innerB)
+    mockFrom.mockReturnValue(outerB)
+
+    const res = await PATCH(makePatchRequest({ markAllRead: true }))
+    expect(res.status).toBe(200)
+    await expect(res.json()).resolves.toEqual({ success: true })
   })
 
   it('returns 400 when body is missing required fields', async () => {

@@ -3,6 +3,8 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { notFound } from 'next/navigation'
 import { PeerApplyButton } from '@/components/coffeechat/peer-apply-button'
 import { PeerApplicationList } from '@/components/coffeechat/peer-application-list'
+import { PreBriefCard } from '@/components/coffeechat/pre-brief-card'
+import { FeedbackForm } from '@/components/coffeechat/feedback-form'
 import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
@@ -21,7 +23,7 @@ const categoryLabel: Record<string, string> = {
 const statusLabel: Record<string, string> = {
   open: '신청 받는 중',
   matched: '매칭 완료',
-  closed: '마감',
+  closed: '완료',
 }
 
 type ChatRow = {
@@ -85,6 +87,7 @@ export default async function PeerChatDetailPage({ params }: PageProps) {
 
   // Check if current user already applied
   let hasApplied = false
+  let applicationId: string | null = null
   let applicationStatus: 'pending' | 'accepted' | 'rejected' | null = null
   let authorContactEmail: string | null = null
   if (!isAuthor) {
@@ -95,6 +98,7 @@ export default async function PeerChatDetailPage({ params }: PageProps) {
       .eq('applicant_id', user.id)
       .single()
     hasApplied = !!existing
+    applicationId = existing?.id ?? null
     applicationStatus = (existing?.status as 'pending' | 'accepted' | 'rejected') ?? null
 
     // Fetch author email for applicant when accepted
@@ -128,6 +132,12 @@ export default async function PeerChatDetailPage({ params }: PageProps) {
       .order('created_at', { ascending: true })
     applications = (apps ?? []) as unknown as PeerApplication[]
   }
+
+  const feedbackApplicationId = isAuthor
+    ? applications.find((app) => app.status === 'accepted')?.id ?? null
+    : applicationStatus === 'accepted'
+      ? applicationId
+      : null
 
   const dateStr = new Date(chat.created_at).toLocaleDateString('ko-KR', {
     year: 'numeric',
@@ -199,6 +209,19 @@ export default async function PeerChatDetailPage({ params }: PageProps) {
                 {applicationCount ?? 0}명이 신청했습니다
               </p>
             </div>
+
+            {feedbackApplicationId && (
+              <div className="mt-8 space-y-4">
+                <PreBriefCard sessionId={id} apiBasePath="peer-coffeechat" />
+                {chat.status === 'closed' && (
+                  <FeedbackForm
+                    sessionId={id}
+                    applicationId={feedbackApplicationId}
+                    apiBasePath="peer-coffeechat"
+                  />
+                )}
+              </div>
+            )}
           </div>
 
           {/* Sidebar */}

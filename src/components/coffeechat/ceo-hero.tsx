@@ -48,7 +48,7 @@ export function CeoHero({ sessionCount, totalApplicants, totalSlots }: CeoHeroPr
               fontFamily: 'system-ui, sans-serif',
             }}
           >
-            CEO COFFEE CHAT · CULTURE FIT
+            CEO 커피챗 · 결이 맞는 대화
           </span>
         </div>
 
@@ -80,7 +80,7 @@ export function CeoHero({ sessionCount, totalApplicants, totalSlots }: CeoHeroPr
             fontFamily: 'system-ui, sans-serif',
           }}
         >
-          채용 면접이 아닙니다. 사업에 몰입하는 CEO와 분야 최고의 인재가 서로 잘 맞는지
+          평가 면접이 아닙니다. 사업에 몰입하는 CEO와 분야 최고의 인재가 서로의 컬쳐핏을
           대화로 확인하는 자리입니다.
         </p>
 

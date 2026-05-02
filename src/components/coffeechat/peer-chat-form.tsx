@@ -87,6 +87,7 @@ export function PeerChatForm({ initialData, chatId }: PeerChatFormProps) {
           제목 <span className="text-red-500">*</span>
         </label>
         <input
+          name="title"
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -105,6 +106,7 @@ export function PeerChatForm({ initialData, chatId }: PeerChatFormProps) {
           내용 <span className="text-red-500">*</span>
         </label>
         <textarea
+          name="content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="어떤 분과 커피챗을 하고 싶으신지, 어떤 주제로 이야기 나누고 싶은지 자유롭게 적어주세요"

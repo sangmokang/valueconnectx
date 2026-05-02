@@ -12,7 +12,14 @@ interface ApiResponse {
   limit: number
 }
 
-const fetcher = (url: string) => fetch(url).then((r) => r.json())
+const fetcher = async (url: string) => {
+  const response = await fetch(url)
+  const json = await response.json().catch(() => ({}))
+  if (!response.ok) {
+    throw new Error(json.error ?? '포지션을 불러오지 못했습니다')
+  }
+  return json
+}
 
 const DOMAIN_KEYWORDS: Record<Exclude<DomainFilter, '전체'>, string[]> = {
   Business: ['business', 'bd', '사업', '파트너십', '전략'],
@@ -69,13 +76,15 @@ export function PositionsClient() {
 
         {error && (
           <div className="py-16 text-center">
-            <p style={{ color: '#888', fontSize: 14 }}>포지션을 불러오지 못했습니다.</p>
+            <p style={{ color: '#333', fontSize: 17, fontWeight: 700 }}>포지션 목록을 잠시 불러오지 못했습니다.</p>
+            <p style={{ color: '#888', fontSize: 14, marginTop: 8 }}>화면을 새로고침하면 다시 확인할 수 있습니다.</p>
           </div>
         )}
 
         {!isLoading && !error && filtered.length === 0 && (
           <div className="py-16 text-center">
-            <p style={{ color: '#888', fontSize: 14 }}>새로운 포지션이 준비 중입니다. 관심 분야를 등록하면 가장 먼저 알려드립니다.</p>
+            <p style={{ color: '#333', fontSize: 17, fontWeight: 700 }}>검증된 포지션을 준비하고 있습니다.</p>
+            <p style={{ color: '#888', fontSize: 14, marginTop: 8 }}>관심 분야를 등록하면 운영팀이 선별한 기회를 가장 먼저 알려드립니다.</p>
           </div>
         )}
 

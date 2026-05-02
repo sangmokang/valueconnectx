@@ -10,6 +10,19 @@ interface Snapshot {
   database: {
     tables: Record<string, number>
   }
+  feedback?: {
+    total: number
+    recent: Array<{
+      id: string
+      session_id: string
+      source?: 'ceo' | 'peer'
+      reviewer_role: string
+      overall_rating: number
+      feedback_tags: string[] | null
+      comment: string | null
+      created_at: string
+    }>
+  }
   security: {
     envVarsPresent: Record<string, boolean>
   }
@@ -24,6 +37,8 @@ const TABLE_LABELS: Record<string, string> = {
   vcx_community_posts: '커뮤니티 게시글',
   vcx_ceo_coffeechat_sessions: 'CEO 커피챗',
   vcx_peer_coffeechat_stories: '피어 커피챗',
+  vcx_coffeechat_feedback: '커피챗 피드백',
+  peer_coffeechat_feedback: '피어 커피챗 피드백',
   vcx_notifications: '알림',
 }
 
@@ -64,6 +79,42 @@ export function SnapshotView({ snapshot }: { snapshot: Snapshot }) {
             ))}
           </div>
         </div>
+
+        {/* 피드백 집계 */}
+        {snapshot.feedback && (
+          <div style={{ marginBottom: '20px' }}>
+            <h4 style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', fontWeight: 600, color: '#888', marginBottom: '8px', letterSpacing: '0.05em' }}>
+              세션 후 피드백
+            </h4>
+            <div style={{ padding: '12px', background: '#f5f0e8', border: '1px solid rgba(0,0,0,0.08)', marginBottom: '8px', fontFamily: 'system-ui, sans-serif' }}>
+              <span style={{ color: '#555', fontSize: '13px' }}>전체 피드백 수</span>
+              <strong style={{ marginLeft: '8px', color: '#1a1a1a', fontSize: '15px' }}>
+                {snapshot.feedback.total === -1 ? '오류' : snapshot.feedback.total.toLocaleString()}
+              </strong>
+            </div>
+            <div style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
+              {snapshot.feedback.recent.length === 0 ? (
+                <p style={{ padding: '12px', margin: 0, color: '#888', fontFamily: 'system-ui, sans-serif', fontSize: '13px' }}>
+                  최근 피드백이 없습니다.
+                </p>
+              ) : (
+                snapshot.feedback.recent.map((item) => (
+                  <div key={item.id} style={{ padding: '10px 12px', borderBottom: '1px solid rgba(0,0,0,0.06)', fontFamily: 'system-ui, sans-serif' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', fontSize: '13px' }}>
+                      <span style={{ color: '#1a1a1a', fontWeight: 600 }}>
+                        {item.source === 'peer' ? 'Peer' : 'CEO'} · {item.reviewer_role === 'host' ? '호스트' : '참여자'} · {item.overall_rating}/5
+                      </span>
+                      <span style={{ color: '#888' }}>{new Date(item.created_at).toLocaleString('ko-KR')}</span>
+                    </div>
+                    <p style={{ margin: '4px 0 0', color: '#555', fontSize: '12px' }}>
+                      {item.comment || (item.feedback_tags ?? []).join(', ') || '코멘트 없음'}
+                    </p>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        )}
 
         {/* 환경변수 상태 */}
         <div>

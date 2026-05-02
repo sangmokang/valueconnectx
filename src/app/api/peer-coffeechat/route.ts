@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
 import { unauthorized, forbidden, badRequest, serverError } from '@/lib/api/error'
+import { isMissingSchemaError } from '@/lib/api/supabase-errors'
 
 const createChatSchema = z.object({
   title: z.string().min(1, '제목을 입력해주세요'),
@@ -51,6 +52,10 @@ export async function GET(request: NextRequest) {
 
     const { data: chats, error, count } = await query
     if (error) {
+      if (isMissingSchemaError(error)) {
+        return NextResponse.json({ data: [], total: 0, page, limit })
+      }
+
       console.error('Peer chats fetch error:', error)
       return serverError('목록 조회에 실패했습니다')
     }

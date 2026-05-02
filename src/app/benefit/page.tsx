@@ -9,7 +9,7 @@ const TIERS = [
       'CEO Coffee Chat 신청 권한',
       'Peer Coffee Chat 생성 & 신청',
       '멤버 디렉터리 전체 열람',
-      'AI Match Engine 우선 매칭',
+      '맞춤 추천 우선 매칭',
       '채용 연결 시 보상 지급',
     ],
   },

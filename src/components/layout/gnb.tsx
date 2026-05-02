@@ -2,6 +2,7 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { getVcxUser, isAdmin } from "@/lib/auth/get-vcx-user";
 import { UserMenu } from "@/components/auth/user-menu";
+import { NotificationBell } from "@/components/layout/notification-bell";
 import { DesktopNav, MobileMenu } from "./gnb-dropdown";
 
 export default async function GNB() {
@@ -12,13 +13,13 @@ export default async function GNB() {
   const currentPath = headersList.get("x-pathname") ?? "/";
 
   return (
-    <nav className="sticky top-0 z-[200] h-[64px] bg-[#050507]/95 border-b border-[#3d3a39] flex items-center justify-between px-4 backdrop-blur md:px-12">
+    <nav className="sticky top-0 z-[200] h-[60px] bg-[#f5f0e8] border-b border-black/[0.08] flex items-center justify-between px-4 md:px-12">
       {/* Logo */}
       <Link
         href="/"
-        className="no-underline font-vcx-sans font-extrabold text-[15px] tracking-normal text-[#f2f2f2] sm:text-base"
+        className="no-underline font-[Georgia,serif] font-extrabold text-base tracking-tight text-[#1a1a1a]"
       >
-        ValueConnect <span className="text-[#00d992] drop-shadow-[0_0_6px_rgba(0,217,146,0.45)]">X</span>
+        ValueConnect <span className="text-[#c9a84c]">X</span>
       </Link>
 
       {/* Desktop Center Nav */}
@@ -27,20 +28,23 @@ export default async function GNB() {
       {/* Desktop Right */}
       <div className="hidden md:flex items-center gap-4">
         {user ? (
-          <UserMenu userName={user.name} isAdmin={admin} />
+          <>
+            <NotificationBell />
+            <UserMenu userName={user.name} isAdmin={admin} />
+          </>
         ) : (
           <>
             <Link
               href="/login"
-              className="text-[14px] font-medium text-[#b8b3b0] no-underline transition-colors hover:text-[#2fd6a1]"
+              className="text-[13.5px] text-[#666] no-underline"
             >
               로그인
             </Link>
             <Link
-              href="/signup"
-              className="inline-block border border-[#3d3a39] bg-[#101010] px-[18px] py-[10px] text-[14px] font-semibold text-[#2fd6a1] no-underline transition-colors hover:border-[#00d992]"
+              href="/invite/accept"
+              className="text-[13px] bg-[#1a1a1a] text-[#f5f0e8] px-[18px] py-[8px] no-underline inline-block"
             >
-              회원가입
+              초대 확인하기 →
             </Link>
           </>
         )}

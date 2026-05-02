@@ -1,97 +1,104 @@
-'use client'
-
-import { useState } from 'react'
 import Link from 'next/link'
+import { BriefcaseBusiness, Coffee, MessageSquareText, Radio, UsersRound } from 'lucide-react'
 
 const PILLARS = [
   {
     num: '01',
-    label: 'CURATION FEED',
-    title: '시장을 먼저 읽는 큐레이션 피드',
-    desc: '관심 분야에서 지금 주목해야 할 채용 소식, 산업 뉴스, 커뮤니티 논의를 선별해 전달합니다. 정보 과부하 속에서 중요한 신호만 빠르게 읽을 수 있습니다.',
+    label: '큐레이션 피드',
+    title: '채용시장 큐레이션 피드',
+    desc: '관심 분야를 등록하면 해당 시장의 동향과 핵심 기회가 매주 요약되어 도착합니다. 시장을 읽는 가장 빠른 방법.',
     insight:
-      '네트워크에 오래 머물기 전에도 개인에게 즉시 가치가 생겨야 합니다. 좋은 커뮤니티의 첫 경험은 막연한 소속감이 아니라, 혼자서는 놓쳤을 신호를 먼저 발견하는 일입니다.',
-    icon: '◈',
+      '네트워크가 아직 작아도 개인적 가치가 즉시 발생하는 서비스를 먼저 만듭니다. 인재를 끌어오는 첫 번째 이유는 커뮤니티가 아니라, 혼자서도 가치를 느끼는 정보입니다.',
+    Icon: Radio,
+    progressClass: 'w-[18%]',
     href: '/feed',
   },
   {
     num: '02',
-    label: 'COMMUNITY LOUNGE',
-    title: '서로의 기준을 높이는 커뮤니티 라운지',
-    desc: '최고 수준의 인재들이 익명 기반으로 배우고 성장하며 고충을 나누는 공간입니다. 커리어 전환, 리더십, 보상, 조직 문화처럼 실명으로는 꺼내기 어려운 주제를 깊이 있게 다룹니다.',
+    label: '커뮤니티 라운지',
+    title: '커뮤니티 라운지',
+    desc: '초대 전용 익명 커뮤니티. 익명이 솔직함을 만들고, 솔직함이 신뢰를 만든다. 이직 이야기, 리더십 고민, 연봉 협상 — 실명으로는 꺼내기 어려운 것들.',
     insight:
-      '철이 철을 날카롭게 하듯, 각자의 자리에서 높은 기준으로 일하는 사람들과 대화할 때 관점도 정교해집니다. 솔직함은 보호받는 환경에서 시작되고, 신뢰는 반복되는 좋은 대화에서 만들어집니다.',
-    icon: '◐',
+      '커뮤니티 없이는 최고 수준의 인재가 머물지 않는다. VCX의 커뮤니티는 채용의 수단이 아닌 목적 그 자체다.',
+    Icon: MessageSquareText,
+    progressClass: 'w-[36%]',
     href: '/community',
   },
   {
     num: '03',
-    label: 'DECISION MAKER COFFEE CHAT',
-    title: '의사결정권자와의 Coffee Chat',
-    desc: '외부에 드러나지 않은 채용의 배경, 조직의 고민, 리더십의 결, 경영진의 성향을 직접 확인합니다. 공고보다 깊고, 면접보다 빠르게 서로의 컬처핏을 검토하는 자리입니다.',
+    label: 'CEO 커피챗',
+    title: '서로의 결을 확인하는 자리',
+    desc: '공개 정보로는 알 수 없는 것들 — 조직의 언어, 리더십의 결, 일하는 방식. CEO와 직접 대화하며 서로의 컬쳐핏을 확인합니다.',
     insight:
-      '다음 조직을 선택할 때는 신중에 신중을 더해야 합니다. Coffee Chat은 시간과 에너지를 줄이면서도 의사결정권자와 밀도 높은 대화를 나눌 수 있는 가장 효율적인 탐색 방식입니다.',
-    icon: '◎',
+      '최고의 인재는 연봉이 아니라 함께 일할 사람을 보고 결정한다. CEO 커피챗은 그 판단의 밀도를 높이는 구조다.',
+    Icon: Coffee,
+    progressClass: 'w-[54%]',
     href: '/ceo-coffeechat',
   },
   {
     num: '04',
-    label: 'PEER COFFEE CHAT',
-    title: '성과를 만든 사람들과의 Peer Coffee Chat',
-    desc: '어떤 업계에서든 큰 성과를 만든 사람의 관점은 쉽게 대체되지 않습니다. 멤버가 직접 사연을 올리고, 대화하고 싶은 신청자를 선택해 깊이 있는 네트워크를 만듭니다.',
+    label: '멤버 커피챗',
+    title: '같은 고도의 대화',
+    desc: "멤버가 사연을 올리고 신청자를 직접 선택하는 P2P 네트워킹.",
     insight:
-      '서로에게는 서로가 가장 흥미로운 대화 상대일 수 있습니다. 바쁜 일상에서 잠시 시야를 넓히고, 경험과 지혜를 나누며 다음 선택의 단서를 얻는 기회입니다.',
-    icon: '◉',
+      '정보 격차를 좁히는 단서는 가까운 지인보다 서로 다른 맥락을 가진 멤버와의 느슨한 연결에서 올 때가 많습니다.',
+    Icon: UsersRound,
+    progressClass: 'w-[72%]',
     href: '/coffeechat',
+  },
+  {
+    num: '05',
+    label: '포지션 보드',
+    title: '큐레이션 피드',
+    desc: "검증된 시장 신호와 핵심 기회를 관심 분야 기준으로 선별합니다. 공개 채널을 훑지 않아도 이번 주 확인할 흐름을 먼저 볼 수 있습니다.",
+    insight:
+      "정보 과부하의 시대에 진짜 희소 자원은 '좋은 필터'다. 스펙이 아닌 결(texture)로 선별되는 포지션은 의사결정의 질을 바꾼다.",
+    Icon: BriefcaseBusiness,
+    progressClass: 'w-[90%]',
+    href: '/feed',
   },
 ]
 
 function PillarBlock({ pillar }: { pillar: (typeof PILLARS)[0] }) {
-  const [hovered, setHovered] = useState(false)
+  const Icon = pillar.Icon
 
   return (
     <Link
       href={pillar.href}
-      className="no-underline block"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      className="group block no-underline"
     >
       <div
-        className="grid grid-cols-1 md:grid-cols-2 border border-[#3d3a39] border-b-0 cursor-pointer transition-colors duration-200 last:border-b"
-        style={{ background: hovered ? '#101010' : 'transparent' }}
+        className="grid cursor-pointer grid-cols-1 border-b border-vcx-surface bg-vcx-night transition-colors duration-200 hover:bg-vcx-surface md:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]"
       >
-        {/* Left: description */}
-        <div className="p-5 sm:p-8 md:p-10 md:border-r border-[#3d3a39]">
-          <div className="text-[13px] text-[#00d992] tracking-[0.08em] mb-3 font-semibold">
-            {pillar.num} · {pillar.label}
+        <div className="p-5 sm:p-7 md:border-r md:border-vcx-surface">
+          <div className="mb-4 flex items-center justify-between gap-4">
+            <div className="vcx-label text-vcx-gold">
+              {pillar.num} · {pillar.label}
+            </div>
+            <div className="flex size-10 shrink-0 items-center justify-center bg-vcx-surface-soft text-vcx-gold">
+              <Icon className="size-5" aria-hidden="true" />
+            </div>
           </div>
-          <h3
-            className="text-[22px] font-bold tracking-normal leading-[1.3] mt-0 mb-4 text-[#f2f2f2] sm:text-[24px]"
-          >
+          <h3 className="font-vcx-serif text-[22px] font-bold leading-[1.22] text-vcx-white sm:text-[26px]">
             {pillar.title}
           </h3>
-          <p className="text-[15px] text-[#b8b3b0] leading-[1.75] mb-5">{pillar.desc}</p>
-          <span className="text-[15px] text-[#2fd6a1] font-semibold">자세히 보기</span>
+          <p className="mt-4 text-[14px] leading-7 text-vcx-silver">{pillar.desc}</p>
+          <span className="mt-5 inline-flex items-center text-[13px] font-bold text-vcx-gold">
+            자세히 보기
+            <span className="ml-2" aria-hidden="true">→</span>
+          </span>
         </div>
 
-        {/* Right: insight */}
-        <div className="p-5 sm:p-8 md:p-10 flex items-center">
-          <div className="border-l-2 border-[rgba(0,217,146,0.45)] pl-5 sm:pl-6">
-            <div className="text-[13px] text-[#8b949e] tracking-[0.08em] mb-2.5 font-semibold">
-              INSIGHT
-            </div>
-            <p
-              className="text-[15px] text-[#b8b3b0] leading-[1.75] m-0"
-            >
+        <div className="flex items-center p-5 pt-0 sm:p-7 sm:pt-0 md:pt-7">
+          <div className="border-l-2 border-vcx-gold/40 pl-5">
+            <div className="vcx-label mb-3 text-vcx-silver">설계 의도</div>
+            <p className="font-vcx-serif text-[14px] italic leading-7 text-vcx-silver sm:text-[15px]">
               {pillar.insight}
             </p>
-            <div className="mt-4">
-              <span
-                className="font-vcx-mono text-[22px] transition-colors duration-200"
-                style={{ color: hovered ? '#00d992' : '#8b949e' }}
-              >
-                {pillar.icon}
-              </span>
+            <div className="mt-5 h-1 w-full bg-vcx-surface-soft">
+              <div
+                className={`h-full bg-vcx-gold transition-all duration-300 group-hover:w-full ${pillar.progressClass}`}
+              />
             </div>
           </div>
         </div>

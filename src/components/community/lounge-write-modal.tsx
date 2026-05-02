@@ -116,7 +116,7 @@ export function LoungeWriteModal({ onClose, onSubmit }: LoungeWriteModalProps) {
                 width: '40px',
                 height: '22px',
                 background: form.anon ? '#1a1a1a' : '#ddd',
-                borderRadius: '11px',
+                borderRadius: 0,
                 border: 'none',
                 cursor: 'pointer',
                 position: 'relative',
@@ -128,7 +128,7 @@ export function LoungeWriteModal({ onClose, onSubmit }: LoungeWriteModalProps) {
                   width: '16px',
                   height: '16px',
                   background: '#ffffff',
-                  borderRadius: '50%',
+                  borderRadius: 0,
                   position: 'absolute',
                   top: '3px',
                   left: form.anon ? '20px' : '4px',
@@ -186,7 +186,7 @@ export function LoungeWriteModal({ onClose, onSubmit }: LoungeWriteModalProps) {
                       background: isActive ? 'rgba(201,168,76,0.1)' : 'transparent',
                       color: isActive ? '#a07c2a' : '#666',
                       cursor: 'pointer',
-                      borderRadius: '100px',
+                      borderRadius: 0,
                       fontFamily: 'system-ui, sans-serif',
                     }}
                   >

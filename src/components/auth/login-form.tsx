@@ -5,193 +5,82 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { trackEvent } from '@/lib/analytics'
 import { sanitizeRedirect } from '@/lib/auth/routes'
-import { DEV_QA_COOKIE, DEV_QA_EMAIL, isDevQaEmail } from '@/lib/auth/dev-qa'
 
-type MagicLinkMode = 'login' | 'signup'
-
-type MagicLinkFormProps = {
-  mode: MagicLinkMode
-  redirectTo?: string
-}
-
-const copy = {
-  login: {
-    label: '이메일',
-    button: '로그인 링크 받기',
-    loading: '링크 전송 중...',
-    successTitle: '로그인 링크를 보냈습니다',
-    successBody: '이메일의 링크를 열면 바로 로그인됩니다. 링크는 같은 브라우저에서 여는 것이 가장 안정적입니다.',
-    error: '로그인 링크를 보내지 못했습니다. 이메일 주소를 확인하고 다시 시도해주세요.',
-    method: 'magic_link',
-    fallback: '/directory',
-  },
-  signup: {
-    label: '초대받은 이메일',
-    button: '가입 링크 받기',
-    loading: '가입 링크 전송 중...',
-    successTitle: '가입 링크를 보냈습니다',
-    successBody: '이메일의 링크를 열면 계정 확인이 완료됩니다. 이후 프로필을 완성하면 멤버 네트워크에 참여할 수 있습니다.',
-    error: '가입 링크를 보내지 못했습니다. 초대받은 이메일 주소인지 확인해주세요.',
-    method: 'magic_link',
-    fallback: '/onboarding',
-  },
-} as const
-
-function buildCallbackUrl(mode: MagicLinkMode, redirectTo?: string) {
-  const next = sanitizeRedirect(redirectTo, copy[mode].fallback)
-  const callbackUrl = new URL('/auth/callback', window.location.origin)
-  callbackUrl.searchParams.set('next', next)
-  callbackUrl.searchParams.set('type', mode)
-  return callbackUrl.toString()
-}
-
-function MagicLinkForm({ mode, redirectTo }: MagicLinkFormProps) {
-  const [name, setName] = useState('')
+export function LoginForm({ redirectTo }: { redirectTo?: string }) {
   const [email, setEmail] = useState('')
-  const [sentEmail, setSentEmail] = useState<string | null>(null)
+  const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
-  const text = copy[mode]
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError(null)
-    const normalizedEmail = email.trim().toLowerCase()
-    const normalizedName = name.trim()
-
-    if (mode === 'signup' && !normalizedName) {
-      setError('이름을 입력해주세요.')
-      setLoading(false)
-      return
-    }
-
     try {
-      if (mode === 'login' && process.env.NODE_ENV !== 'production' && isDevQaEmail(normalizedEmail)) {
-        document.cookie = `${DEV_QA_COOKIE}=${DEV_QA_EMAIL}; path=/; max-age=86400; samesite=lax`
-        trackEvent('user_login', { method: 'dev_qa' })
-        router.push(sanitizeRedirect(redirectTo))
-        router.refresh()
-        return
-      }
-
       const supabase = createClient()
-      const options = mode === 'signup'
-        ? {
-            emailRedirectTo: buildCallbackUrl(mode, redirectTo),
-            shouldCreateUser: true,
-            data: { name: normalizedName },
-          }
-        : {
-            emailRedirectTo: buildCallbackUrl(mode, redirectTo),
-            shouldCreateUser: false,
-          }
-
-      const { error: signInError } = await supabase.auth.signInWithOtp({
-        email: normalizedEmail,
-        options,
-      })
-
-      if (signInError) {
-        setError(text.error)
-        setLoading(false)
-        return
-      }
-
-      trackEvent(mode === 'signup' ? 'user_signup' : 'user_login', { method: text.method })
-      setSentEmail(normalizedEmail)
+      const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
+      if (signInError) { setError('이메일 또는 비밀번호가 올바르지 않습니다'); setLoading(false); return }
+      trackEvent('user_login', { method: 'email' })
+      router.push(sanitizeRedirect(redirectTo))
+      router.refresh()
     } catch {
-      setError('요청 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.')
+      setError('로그인 중 오류가 발생했습니다')
       setLoading(false)
     }
   }
 
-  if (sentEmail) {
-    return (
-      <div className="text-center" aria-live="polite">
-        <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center border border-vcx-emerald text-vcx-emerald">
-          @
-        </div>
-        <h2 className="mb-2 font-vcx-sans text-[20px] font-bold leading-tight text-vcx-text">
-          {text.successTitle}
-        </h2>
-        <p className="mb-2 break-words font-vcx-sans text-[15px] font-semibold text-vcx-emerald">
-          {sentEmail}
-        </p>
-        <p className="mb-7 font-vcx-sans text-[14px] leading-[1.7] text-vcx-soft">
-          {text.successBody}
-        </p>
-        <button
-          type="button"
-          onClick={() => {
-            setSentEmail(null)
-            setLoading(false)
-          }}
-          className="w-full border border-vcx-border bg-vcx-surface px-4 py-[14px] font-vcx-sans text-[15px] font-semibold text-vcx-emerald transition-colors hover:border-vcx-emerald"
-        >
-          다른 이메일로 받기
-        </button>
-      </div>
-    )
+  const inputStyle = {
+    width: '100%', padding: '14px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '14px',
+    color: '#1a1a1a', background: '#f7f3ed', border: '1px solid rgba(0,0,0,0.08)',
+    borderRadius: 0, outline: 'none', boxSizing: 'border-box' as const,
+  }
+  const labelStyle = {
+    display: 'block' as const, fontFamily: 'system-ui, sans-serif', fontSize: '11px',
+    letterSpacing: '0.1em', textTransform: 'uppercase' as const, color: '#888', marginBottom: '8px',
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form onSubmit={handleSubmit}>
       {error && (
-        <div className="border border-vcx-danger/45 bg-vcx-danger/10 px-4 py-3 font-vcx-sans text-[14px] text-[#fd9c9f]">
+        <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', padding: '12px 16px', marginBottom: '16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#EF4444', borderRadius: 0 }}>
           {error}
         </div>
       )}
-      {mode === 'signup' && (
-        <div>
-          <label htmlFor="signup-name" className="vcx-label mb-2 block text-vcx-soft">
-            이름
-          </label>
-          <input
-            id="signup-name"
-            aria-label="이름"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="홍길동"
-            required
-            autoComplete="name"
-            className="w-full border border-vcx-border bg-vcx-abyss px-4 py-[15px] font-vcx-sans text-[16px] text-vcx-text outline-none transition-colors placeholder:text-vcx-muted focus:border-vcx-emerald"
-          />
-        </div>
-      )}
-      <div>
-        <label htmlFor={`${mode}-email`} className="vcx-label mb-2 block text-vcx-soft">
-          {text.label}
-        </label>
+      <div style={{ marginBottom: '16px' }}>
+        <label htmlFor="login-email" style={labelStyle}>이메일</label>
         <input
-          id={`${mode}-email`}
+          id="login-email"
           aria-label="이메일"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="name@company.com"
           required
-          autoComplete="email"
-          className="w-full border border-vcx-border bg-vcx-abyss px-4 py-[15px] font-vcx-sans text-[16px] text-vcx-text outline-none transition-colors placeholder:text-vcx-muted focus:border-vcx-emerald"
+          style={inputStyle}
         />
       </div>
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full border border-vcx-border bg-vcx-surface px-4 py-[15px] font-vcx-sans text-[16px] font-bold text-vcx-emerald transition-colors hover:border-vcx-emerald disabled:cursor-not-allowed disabled:text-vcx-muted"
-      >
-        {loading ? text.loading : text.button}
+      <div style={{ marginBottom: '24px' }}>
+        <label htmlFor="login-password" style={labelStyle}>비밀번호</label>
+        <input
+          id="login-password"
+          aria-label="비밀번호"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="••••••••"
+          required
+          minLength={8}
+          style={inputStyle}
+        />
+      </div>
+      <button type="submit" disabled={loading} style={{
+        width: '100%', padding: '14px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', fontWeight: 600,
+        color: '#f0ebe2', background: loading ? '#444' : '#1a1a1a', border: 'none', borderRadius: 0,
+        cursor: loading ? 'not-allowed' : 'pointer',
+      }}>
+        {loading ? '로그인 중...' : '로그인'}
       </button>
     </form>
   )
-}
-
-export function LoginForm({ redirectTo }: { redirectTo?: string }) {
-  return <MagicLinkForm mode="login" redirectTo={redirectTo} />
-}
-
-export function SignupForm({ redirectTo }: { redirectTo?: string }) {
-  return <MagicLinkForm mode="signup" redirectTo={redirectTo} />
 }

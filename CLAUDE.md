@@ -1,197 +1,185 @@
 # ValueConnect X — CLAUDE.md
 
-> 작성일: 2026-04-21 · Phase 1 납기: **2026-05-15** (D-24) · 솔로팀 (Sangmo Kang: CEO = CPO = CTO)
-> 권위: `@docs/plans/VERTICAL_SLICE_PHASE1.md` > `@docs/prd-6.0.md` > `@docs/PROCESS.md` > `@docs/sdd/FEATURE_MANIFEST.yaml` > `@docs/prd/ADR/` > `@docs/roles/HARNESS.md` > 본 문서 > `@docs/sdd/DEBT_LEDGER.md`
-> 활성 ADR: `docs/prd/ADR/ADR-0001` ~ `ADR-0007` (7건)
+AI 코딩 에이전트가 ValueConnect X 프로젝트에서 작업을 시작할 때 가장 먼저 따르는 원칙 문서입니다.
+
+이 문서는 세부 계획서가 아닙니다. 제품 범위, 프로세스, 스택, ADR, 부채 장부의 내용을 재선언하지 않고 시작 원칙과 프로젝트 하드 룰만 유지합니다.
+
+권위 순서: `docs/plans/VERTICAL_SLICE_PHASE1.md` > `docs/prd-6.0.md` > `docs/PROCESS.md` > `docs/sdd/FEATURE_MANIFEST.yaml` > `docs/prd/ADR/` > `docs/roles/HARNESS.md` > 본 문서 > `docs/sdd/DEBT_LEDGER.md`.
 
 ---
 
-## §1. 제품 한 줄 정의
+## 1. Product North Star
 
-검증된 핵심 인재와 기업 리더를 연결하는 **초대 전용(invite-only) Private Talent Network**. 3 레이어 = ① 채용시장 큐레이션 피드(Hook) ② 커뮤니티 라운지(Sticky) ③ 커피챗 기반 채용 연결(Revenue). 수익원 = **성사 수수료 연봉 25%** (멤버 UI 노출 금지 — ADR-0001).
+ValueConnect X는 검증된 핵심 인재와 기업 리더를 연결하는 **초대 전용 Private Talent Network**입니다.
 
----
-
-## §2. Phase 1 DoD
-
-- **2.1 기능**: F-AUTH · F-DIRECTORY · F-PEER-COFFEECHAT · F-SESSION-FEEDBACK AC 충족 (`@docs/sdd/FEATURE_MANIFEST.yaml`) · F-FEED MVP (`022_vcx_feed_items.sql` + `/api/feed` + `/feed`) · F-CEO-COFFEECHAT 카피 재적용 (copy only, out-of-slice, E2E 제외 — ADR-0002)
-- **2.2 기술 게이트**: `npm run build`/`lint`/`test` green · Playwright 5건 (`tests/e2e/slice/s{1,2,3,4,5}-*.spec.ts`) · a11y axe critical = 0 · Lighthouse mobile ≥ 70 (360px) · Anthropic API 월 예산 준수 (§7.3)
-- **2.3 법률·컴플라이언스**: PIPA 개인정보 처리방침 최신 (015 migration) · UI "수수료"/"25%"/"fee" grep 0 (`scripts/check-fee-hidden.sh`, ADR-0001) · UI 한국어 100%
-- **2.4 운영**: `/api/health` (Vercel Cron 5분) + Supabase/Vercel/Anthropic/Resend runbook · `@docs/sdd/DEBT_LEDGER.md` D-0001~0004 CLOSED
-- **2.5 제품 자기검증**: S1~S5 AC 전량 (`@docs/plans/VERTICAL_SLICE_PHASE1.md`) · 초대→수락→로그인→온보딩→디렉토리 E2E 3건 수동 · 360px 스크린샷 5페이지
-
-**상세 지표 정의 = `@docs/PROCESS.md` §5 단일 원천. 재선언 금지.**
+- 서비스 언어: 한국어
+- 핵심 흐름: 추천 -> 초대 -> 수락 -> 온보딩 -> 디렉토리/커피챗
+- 수익 모델: 성사 수수료 연봉 25%. 단, 멤버 UI에는 수수료/25%/fee 관련 문구를 노출하지 않습니다.
+- 신규 기능은 Phase 1 slice 또는 사용자가 명시한 범위에 직접 연결되어야 합니다.
 
 ---
 
-## §3. Scope — IN / OUT
+## 2. First Principles
 
-### 3.1 IN (Phase 1 Slice — `@docs/sdd/FEATURE_MANIFEST.yaml` 원천)
-| Feature | Slice | Status | Maturity |
-|---|---|---|---|
-| F-AUTH | S1 | live | needs_polish |
-| F-FEED | S2 | stub | mvp_required |
-| F-DIRECTORY | S3 | live | validate_only |
-| F-PEER-COFFEECHAT (+ AI Brief) | S4 | live | quality_check |
-| F-SESSION-FEEDBACK | S5 | live | instrumentation_needed |
+### 2.1 Think Before Coding
 
-### 3.2 Live-but-out-of-slice
-- F-CEO-COFFEECHAT — 기본 플로우 live 유지, ADR-0002 "컬쳐핏" 카피 재적용만 (copy only, E2E 제외)
+추측하지 말고, 혼란을 숨기지 말고, 트레이드오프를 드러냅니다.
 
-### 3.3 OUT (Phase 1 수정·개선 금지, bug fix/보안 패치 예외)
-- F-COMMUNITY · F-POSITIONS · F-ADMIN-EXTENDED (신규 기능 없음)
-- F-AI-RESUME (Phase 2 후보) · F-MULTI-VERTICAL (Phase 3+) · F-DOMAIN-EXPERT-ROUTING (ADR-0005 — VCX 제품 아님)
+구현 전에 반드시 확인합니다:
 
----
+- 목표가 무엇인지.
+- 성공 기준이 무엇인지.
+- 가장 작게 바꿔도 되는 범위가 어디인지.
+- 어떤 가정을 하고 있는지.
+- 어떤 모호함이 결과를 바꿀 수 있는지.
 
-## §4. 작업 규율 (Hard Rules)
+운영 규칙:
 
-### 4.1 Vertical Slice First
-모든 변경은 `@docs/plans/VERTICAL_SLICE_PHASE1.md` S1~S5 중 하나에 기여해야 머지 가능. 매일 작업 시작 시 `@docs/PROCESS.md` §3.3 **Slice Daily Check 3 질문** 통과. Slice 밖 작업은 왜인지 PR description 에 명시.
+- 불확실하면 명시하고 질문합니다.
+- 해석이 여러 개면 조용히 하나를 고르지 말고 후보를 제시합니다.
+- 더 단순한 접근이 있으면 말합니다.
+- 요청이 불명확하면 멈추고, 무엇이 혼란스러운지 말한 뒤 질문합니다.
+- 타당하지 않거나 위험한 방향이면 근거를 들어 제동을 겁니다.
 
-### 4.2 PRD 변경 = ADR + 48h 쿨다운 재서명
-1인 팀 변형 (2-hand 불가). L-High (PRD/PROCESS/MANIFEST/ADR/본 문서) 변경은 **PR 생성 → 최소 48h merge 보류 → 재서명 후 merge**. 쿨다운 중 자기번복 시 abort. `scripts/prd-freeze-check.sh` pre-commit hook 이 `docs/prd-6.0.md` 수정 시 ADR 동반 없으면 block. 긴급 트랙 3 종 (Legal Blocker / User Harm / Cost Explosion — API 월 예산 150% 초과) 만 쿨다운 면제. → `@docs/PROCESS.md` §1.
+### 2.2 Simplicity First
 
-### 4.3 Authorization Matrix
-| Level | 승인자 | 대상 |
-|---|---|---|
-| L-Lite | 본인 | 테스트, 스타일, 리팩터, 오탈자, deps patch |
-| L-Std | 본인 + CI | 신규 파일, migration, API, UI 신규 페이지, deps minor |
-| L-High | 본인 + 48h 쿨다운 | PRD/PROCESS/MANIFEST/ADR/본 문서, 법률·PII·결제, deps major, 외부 API 계약 |
+요청을 해결하는 최소 코드만 작성합니다. 추측성 구조를 만들지 않습니다.
 
-상세 = `@docs/PROCESS.md` §4. "침묵의 승인" 금지 — L-Std/L-High 자동 approve 불가.
+금지:
 
-### 4.4 Evidence Before Assertion
-"완료" · "테스트 통과" · "빌드 green" 주장 시 **fresh 증거 필수** — 같은 세션의 최신 `npm run build` 출력, Playwright artifact, `git log --oneline` 커밋 SHA, CI 링크. 증거 없는 주장은 거짓 보고 간주. Red flag: "should" · "probably" · "seems to" 없이 fresh 실행 결과 없음. **architect / architect-medium 검증 없이 L-Std 이상 merge 금지**.
+- 요청하지 않은 기능 추가.
+- 1회성 코드를 위한 추상화.
+- 요구되지 않은 유연성, 설정 가능성, 확장성.
+- 실제로 발생할 수 없는 시나리오를 위한 방어 코드.
+- 새 의존성 추가. 단, 사용자가 명시했거나 기존 의존성 재사용으로 충분히 정당한 경우는 예외입니다.
 
-### 4.5 Prior Work Verification (다른 세션 중복 방지)
-작업 시작 전 3 소스 **병렬** 조회:
-```bash
-git log --all --oneline --grep="<topic>"     # 로컬 커밋
-gh pr list --state all --search "<topic>"    # 모든 PR (열림·닫힘·머지)
-gh pr list --state open                       # 열린 PR 전량
-```
-날짜 필터 사용 금지 (다른 세션 커밋을 놓침). **VCX 1인 레포 가드**: `"gh 미가용 또는 0-hit — git log + @docs/sdd/DEBT_LEDGER.md 전용 판정, 한계 명시 의무"`. 워크트리 존재만으로 "미머지" 판정 금지 — 같은 커밋이 main 에 이미 있을 수 있음.
+200줄로 쓴 코드가 50줄로 가능하면 다시 줄입니다. 시니어 엔지니어가 "과하다"고 볼 만한 구현이면 단순화합니다.
 
-### 4.6 Pre-Work Sync (diverged 방지)
-작업 시작 전 `git fetch origin main` → `git status -sb` (ahead/behind 확인) → diverged 시 `git rebase origin/main` (merge 금지). force push 금지, 개인 feature 브랜치만 `--force-with-lease` 허용 (공유 브랜치도 금지).
+### 2.3 Surgical Changes
 
----
+반드시 필요한 줄만 수정합니다. 정리는 내가 만든 어질러짐에 한정합니다.
 
-## §5. Weekly Metrics
+기존 코드를 수정할 때:
 
-M1 · M2 · M3 정의·측정은 **`@docs/PROCESS.md` §5 단일 원천**. 매주 금 18:00 KST Weekly Finish Ritual (§5.4) 준수 — 미제출 주간 = "Progress zero" 기록. 본 문서에서 숫자 재선언 금지.
+- 인접 코드, 주석, 포맷을 덤으로 개선하지 않습니다.
+- 고장 나지 않은 코드를 리팩터링하지 않습니다.
+- 기존 스타일을 따릅니다.
+- 공개 API나 외부 동작은 요청이 없으면 바꾸지 않습니다.
+- 무관한 죽은 코드는 삭제하지 말고 언급만 합니다.
 
----
+내 변경 때문에 생긴 unused import, 변수, 함수, 테스트 fixture, 주석은 제거합니다. 변경된 모든 줄은 사용자 요청과 직접 연결되어야 합니다.
 
-## §6. Sprint Timeline (Phase 1, 2026-04-17 ~ 2026-05-15)
+### 2.4 Goal-Driven Execution
 
-| Sprint | 기간 | 테마 | 핵심 산출물 |
-|---|---|---|---|
-| **S1** | 04-18 ~ 04-24 | Close Decisions & Fix Debt | ADR-0001~0005 **소급** 서명 (ADR-0006/0007 은 Phase 1 중 append) · D-0001·D-0002 closed · 온보딩 UX 3 종 · plan 아카이브 · `check-fee-hidden.sh` · `/api/health` |
-| **S2** | 04-25 ~ 05-01 | Cold Start Feed MVP | `022_vcx_feed_items.sql` · `/api/feed` · `/feed` · PostHog 6 이벤트 · Stibee 1 회 발송 |
-| **S3** | 05-02 ~ 05-08 | Coffee Chat Loop + AI Brief Quality | Peer 커피챗 E2E · AI Brief 품질 샘플 10 건 · fallback 검증 · `/admin/ops` 피드백 대시보드 · CEO 커피챗 카피 재적용 |
-| **S4** | 05-09 ~ 05-15 | Onboarding V2 + Landing + Phase 1 DoD | `/` v6.0 카피 · 온보딩 V2 · E2E 5 건 CI green · a11y axe 0 critical · Lighthouse mobile ≥ 70 · DoD Go/No-Go |
+작업을 검증 가능한 목표로 바꾸고, 검증할 때까지 완료로 보지 않습니다.
 
-**Velocity Override**: 타임라인은 **FLOOR** (하한). 조기 완료 시 Phase 2 선행 착수 가능하되 §2 품질 게이트 희생은 금지. 상세 작업 분해 = `@docs/plans/VERTICAL_SLICE_PHASE1.md` §5.
+- "검증 추가" -> 유효/무효 입력을 확인하고 통과시킵니다.
+- "버그 수정" -> 실패를 재현하거나 원인을 특정하고, 가장 작은 수정 뒤 검증합니다.
+- "리팩터링" -> 동작 보존을 검증합니다.
+- "디자인 개선" -> 구체적인 디자인 문제를 먼저 정의하고 가장 작은 구조 개선만 합니다.
+
+여러 단계 작업은 짧은 계획을 먼저 세웁니다. 완료, 테스트 통과, 빌드 성공을 말할 때는 같은 세션의 최신 실행 증거를 기준으로 합니다.
 
 ---
 
-## §7. 에이전트 실행 규칙
+## 3. Project Hard Rules
 
-### 7.1 Delegation-First
-Orchestrator 는 **코드를 직접 쓰지 않는다**. `src/**` · `supabase/migrations/**` · `tests/**` · `scripts/**` 변경은 `executor` / `executor-high` / `build-fixer` 에 위임. **직접 수정 허용 경로**: `.claude/**`, `.omc/**`, `CLAUDE.md`, `AGENTS.md`, `docs/**/*.md`. 외부 SDK/API 사용 전 **Context7 MCP (`resolve-library-id` → `query-docs`) 필수** — `@base-ui/react`, `@supabase/ssr`, `recharts`, `zod@4`, `next@14` 등 추측 금지. 상세 = `~/.claude/CLAUDE.md` PART 1.
-
-### 7.2 검증 티어
-| 티어 | 조건 | Agent |
-|---|---|---|
-| LIGHT | <5 파일, <100 라인, full tests pass | architect-low (haiku) |
-| STANDARD | 기본 | architect-medium (sonnet) |
-| THOROUGH | >20 파일, 보안 / 스키마 / RLS / 결제 | architect (opus) |
-
-상세 = `~/.claude/CLAUDE.md` §"Tiered Architect Verification".
-
-### 7.3 비용 규율
-Haiku (단순 lookup) / Sonnet (표준) / Opus (복잡 reasoning · 보안). VCX 추가: **사용자 노출 Anthropic API 호출은 F-PEER-COFFEECHAT AI Brief 한 피처만**. **Anthropic 월 예산 상한 = USD 100 잠정 (ADR-0008 로 Sprint 1 말 서명 예정 — PROCESS Annex A.2 배치 타이머 편입 검토)**. 초과 시 §4.2 긴급 트랙 "Cost Explosion" (월 예산 150% 초과) 발동, ADR 작성 후 48h 쿨다운 면제로 조치.
+- 모든 UI 텍스트와 사용자 노출 에러 메시지는 한국어로 작성합니다.
+- `rounded-*` Tailwind 클래스 사용 금지. 전역 `border-radius: 0` 정책을 유지합니다.
+- Tailwind v4 CSS-first 구조를 유지하며 `tailwind.config.ts`를 만들지 않습니다.
+- TypeScript strict 기준을 지킵니다.
+- DB 스키마 변경은 `supabase/migrations/NNN_vcx_*.sql` 파일로만 수행합니다.
+- Supabase Dashboard Table Editor로 직접 스키마를 바꾸지 않습니다.
+- secret/API key는 코드에 하드코딩하지 않고 배포 환경에서 관리합니다.
+- Base UI는 서브패스 import를 사용합니다. 예: `@base-ui/react/button`
+- Supabase SSR은 `@supabase/ssr`와 `{ getAll, setAll }` 쿠키 핸들러를 사용합니다.
+- Next.js App Router에서 `cookies()`는 async API로 다룹니다.
+- Zod v4에서는 `ZodSchema` 대신 `ZodType`을 사용합니다.
+- `lucide-react` 테스트 mock에서 `vi.importActual('lucide-react')`를 사용하지 않습니다.
 
 ---
 
-## §8. Remaining Work + Backlog Investigation
+## 4. Start-Work Checklist
 
-작업 시작 전 **5 소스 병렬** 조회 필수 — 어느 하나 생략 시 누락 리스크:
+작업 전에 필요한 만큼만 확인합니다. 넓게 뒤지기보다 변경 지점과 검증 방법을 먼저 좁힙니다.
 
-1. Task tool (TaskList)
-2. `gh issue list --state all`
-3. `gh pr list --state all`
-4. `@docs/plans/_backlog/ideas.md` + `@docs/sdd/DEBT_LEDGER.md`
-5. `git log -n 20 --oneline --grep -iE 'TODO|follow-up|SHOULD-FIX|FIXME'`
+1. `git status -sb`로 현재 작업 중인 변경을 확인합니다.
+2. 작업 유형에 맞는 skill 문서를 읽습니다.
+3. 관련 파일, 테스트, 문서만 inspect합니다.
+4. 성공 기준과 가장 작은 변경 범위를 정합니다.
+5. 필요한 경우에만 중복 작업이나 이전 시도를 확인합니다.
 
-**VCX 1인 레포 가드**: `"gh 미가용 또는 0-hit — git log + @docs/sdd/DEBT_LEDGER.md 전용 판정, 한계 명시 의무"`. 조용한 생략 금지. 날짜 필터 사용 금지.
+작업 유형별 skill:
 
----
-
-## §9. Authority Chain (참조 문서 권위순)
-
-1. `@docs/plans/VERTICAL_SLICE_PHASE1.md` — Phase 1 스코프 SoT
-2. `@docs/prd-6.0.md` — PRD
-3. `@docs/PROCESS.md` — 게이트 · 권한 · 측정
-4. `@docs/sdd/FEATURE_MANIFEST.yaml` — feature 스코프 원천
-5. `@docs/prd/ADR/*.md` — 결정 기록 (ADR-0001 ~ ADR-0007)
-6. `@docs/roles/HARNESS.md` — 1 인 6-role 매트릭스
-7. 본 CLAUDE.md
-8. `@docs/sdd/DEBT_LEDGER.md` — 부채 장부
-
-상충 시 낮은 번호가 이긴다.
-
----
-
-## §10. Phase 1 완료 선언 체크리스트
-
-전부 녹색이 되기 전까지 Phase 2 착수 금지:
-
-- [ ] §2.1~2.5 전량 충족 (F-CEO 카피는 copy only — out-of-slice, E2E 제외)
-- [ ] §5 Weekly Metrics 목표치 달성 (`@docs/PROCESS.md` §5 정의 기준)
-- [ ] Sprint 4 Go/No-Go 회의 기록 + Phase 2 Kick-off 결정 ADR
-- [ ] 본 CLAUDE.md 변경 포함 L-High 항목 **48h 쿨다운 재서명 완료**
-
-하나라도 미달 = **Phase 1 미완**. Phase 2 논의 동결.
-
----
-
-## §11. Agent Harness
-
-- **런타임 진입점**: `~/.claude/CLAUDE.md` (oh-my-claudecode — 30+ agents, skills, autopilot/ralph/ultrawork/plan 등). VCX 세션 시작 시 자동 로드.
-- **1 인 6-role 매트릭스**: `@docs/roles/HARNESS.md` (CEO/CPO/CTO/CDO/SRE/DESIGNER × agent · skill · tool · quality gate).
-- 본 문서는 위 두 SoT 를 **재선언하지 않는다**. 변경이 필요하면 해당 파일을 고치고 여기는 링크만 유지.
-
----
-
-## §12. 환경 & 기술 규칙 (Summary)
-
-| 항목 | 값 |
+| 작업 유형 | 참조 문서 |
 |---|---|
-| Tech stack | Next.js 14 App Router · TS strict · Tailwind v4 · `@base-ui/react` (서브패스) · `@supabase/ssr` · Vitest · Playwright · SWR · Zod v4 · Anthropic (AI Brief 전용) |
-| Commands | `npm run dev` / `build` / `lint` / `test` / `test:e2e` |
-| Env vars | `NEXT_PUBLIC_SUPABASE_URL` · `NEXT_PUBLIC_SUPABASE_ANON_KEY` · `SUPABASE_SERVICE_ROLE_KEY` · `RESEND_API_KEY` · `ANTHROPIC_API_KEY` (미설정 시 AI Brief fallback — F-PEER-COFFEECHAT AC 참조) |
-| Member types | `vcx_members` (tier: core/endorsed) · `vcx_corporate_users` (CEO/Founder/C-level/HR Leader) |
-| Routing 분류 | Public / Semi-public / Protected (x-vcx-authenticated 헤더) / Admin (`/login` 리다이렉트) / Auth |
-| DDL 보호 | App roles (`anon`/`authenticated`/`service_role`) DDL 금지, Event Trigger `vcx_prevent_ddl` 차단, migration only (`NNN_vcx_*.sql` 순번 증가), Dashboard Table Editor 절대 금지 |
-| 하드코딩 금지 | secret/API key 는 Vercel Dashboard 관리 |
+| UI/스타일링 | `skills/SKILL-vcx-design-system.md` |
+| 테스트 작성/수정 | `skills/SKILL-testing-vitest.md` |
+| Supabase 클라이언트, DB 쿼리, 인증 | `skills/SKILL-supabase-ssr.md` |
+| API route | `skills/SKILL-api-route-convention.md`, `skills/SKILL-supabase-ssr.md` |
+| Zod/API/폼 검증 | `skills/SKILL-zod-validation.md` |
+| DB schema/migration | `skills/SKILL-supabase-migration.md` |
 
-**상세 (프로젝트 구조 tree · API convention 헬퍼 리스트 · 스타일 토큰 · 테스트 환경 상세)** = `@docs/engineering/VCX_STACK.md`. 본 문서에서 재선언 금지.
+중복 작업 확인이 필요할 때:
+
+```bash
+git log --all --oneline --grep="<topic>"
+gh pr list --state all --search "<topic>"
+gh issue list --state all --search "<topic>"
+```
+
+`gh`가 없거나 결과가 없으면 그 한계를 명시하고 로컬 문서와 git 기록 기준으로 판단합니다.
 
 ---
 
-## §13. Anti-Patterns (절대 하지 말 것)
+## 5. Verification
 
-- ❌ `tailwind.config.ts` 생성 (Tailwind v4 는 CSS-first)
-- ❌ `createClientComponentClient` / `createServerComponentClient` (삭제된 API)
-- ❌ Supabase 쿠키 `{get, set, remove}` 형태 → `{getAll, setAll}`
-- ❌ `cookies()` without `await` (Next.js 14 async)
-- ❌ `vi.importActual('lucide-react')` (무한 hang)
-- ❌ `rounded-*` Tailwind 클래스 (전역 `border-radius: 0` 정책 — `src/app/globals.css` 전역 정책)
-- ❌ `ZodSchema` import → `ZodType` (Zod v4)
-- ❌ Supabase Dashboard Table Editor 직접 수정
-- ❌ 마이그레이션 번호 중복 (현재 013 · 014 중복 잔존 — D-0001, Sprint 1 정리)
-- ❌ `@base-ui/react` 루트 import → 서브패스 `@base-ui/react/button`
-- ❌ 영어 UI 텍스트 (한국어 필수)
+변경 전에 가장 관련 있는 검증 방법을 정합니다.
+
+우선순위:
+
+1. 변경 영역의 기존 focused test.
+2. 동작 변경이 있으면 새 focused test 또는 기존 테스트 보강.
+3. 관련 lint/typecheck/build.
+4. 최소 수동 검증 경로.
+
+변경 유형별 기본 검증:
+
+| 변경 유형 | 권장 검증 |
+|---|---|
+| 문서만 변경 | 문맥, 링크, 중복 원천 확인 |
+| 단일 유틸/검증 로직 | 관련 Vitest |
+| API route | route 테스트 또는 호출 테스트, 관련 Vitest |
+| UI 변경 | lint/build, 필요한 경우 Playwright 또는 수동 스크린샷 |
+| Supabase/migration | migration 순번, SQL 정합성, RLS 영향 확인 |
+
+검증을 실행하지 못하면 이유와 사용자가 실행할 정확한 명령을 남깁니다.
+
+---
+
+## 6. Final Report Format
+
+작업 후 응답은 짧고 증거 중심으로 작성합니다.
+
+1. Summary
+   - 무엇이 바뀌었는지.
+2. Files Changed
+   - 실제 변경된 파일만.
+3. Verification
+   - 실행한 명령과 결과. 실행하지 못했다면 이유.
+4. Assumptions / Risks
+   - 의미 있는 불확실성, 트레이드오프, 후속 우려만.
+
+성공을 검증 없이 주장하지 않습니다.
+
+---
+
+## 7. Reference Documents
+
+- 제품/스코프: `docs/prd-6.0.md`, `docs/sdd/FEATURE_MANIFEST.yaml`
+- Phase 1 계획: `docs/plans/VERTICAL_SLICE_PHASE1.md`
+- 운영 프로세스: `docs/PROCESS.md`
+- 기술 스택 상세: `docs/engineering/VCX_STACK.md`
+- 결정 기록: `docs/prd/ADR/`
+- 역할/하네스: `docs/roles/HARNESS.md`
+- 부채 장부: `docs/sdd/DEBT_LEDGER.md`

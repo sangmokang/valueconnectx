@@ -43,6 +43,13 @@ vi.mock('@/lib/notification', () => ({
   sendNotification: mocks.mockSendNotification,
 }))
 
+vi.mock('@/lib/ai/brief', () => ({
+  generateCoffeechatBrief: vi.fn().mockResolvedValue({
+    hostBrief: '호스트 브리프',
+    applicantBrief: '신청자 브리프',
+  }),
+}))
+
 import { PUT } from '@/app/api/ceo-coffeechat/[id]/applications/[appId]/route'
 
 const SESSION_ID = 'sess-abc-123'

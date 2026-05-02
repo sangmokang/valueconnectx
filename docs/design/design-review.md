@@ -143,7 +143,7 @@ PRD 5.4: "Coffee Chat을 통해 채용으로 이어지는 경우 ValueConnect �
 
 변경된 네비게이션 (비로그인):
 ```
-ValueConnect X | 서비스 소개 ▾ | 채용 포지션 | 커피챗 🔒 | CEO Coffeechat 🔒 | 익명 게시판 🔒 | [로그인] [회원가입 →]
+ValueConnect X | 서비스 소개 ▾ | 채용 포지션 | 커피챗 🔒 | CEO Coffeechat 🔒 | 익명 게시판 🔒 | [로그인] [초대 확인하기 →]
 ```
 
 로그인 후에는 여기에 **멤버 디렉토리**도 추가되어야 합니다 (PRD 5.2 핵심 기능). 그러나 figma-design-prompt.md Section 4.1의 로그인 후 네비게이션에 "멤버 디렉토리"가 빠져 있습니다.

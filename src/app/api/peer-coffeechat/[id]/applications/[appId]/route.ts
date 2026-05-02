@@ -4,6 +4,13 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { z } from 'zod'
 import { unauthorized, forbidden, notFound, badRequest, serverError } from '@/lib/api/error'
 import { sendNotification } from '@/lib/notification'
+import { generateCoffeechatBrief } from '@/lib/ai/brief'
+
+type PeerApplicationUpdateTable = {
+  update: (values: Record<string, unknown>) => {
+    eq: (column: string, value: string) => Promise<unknown>
+  }
+}
 
 const updateApplicationSchema = z.object({
   status: z.enum(['accepted', 'rejected']),
@@ -33,7 +40,7 @@ export async function PUT(
 
     const { data: chat } = await supabase
       .from('peer_coffee_chats')
-      .select('author_id, title')
+      .select('author_id, title, content, category')
       .eq('id', id)
       .single()
 
@@ -65,6 +72,17 @@ export async function PUT(
       return serverError('신청 처리에 실패했습니다')
     }
 
+    if (parsed.data.status === 'accepted') {
+      try {
+        await supabase
+          .from('peer_coffee_chats')
+          .update({ status: 'matched' })
+          .eq('id', id)
+      } catch (error) {
+        console.error('Peer chat status update failed:', error)
+      }
+    }
+
     // Send notification via service layer
     sendNotification(
       updated.applicant_id,
@@ -86,6 +104,10 @@ export async function PUT(
         .eq('id', updated.applicant_id)
         .single()
       contactEmail = applicantMember?.email ?? null
+
+      generatePeerBriefAsync(id, appId, updated.applicant_id).catch((err) => {
+        console.error('Peer brief generation failed:', err)
+      })
     }
 
     return NextResponse.json({ data: { ...updated, contact_email: contactEmail } })
@@ -93,4 +115,55 @@ export async function PUT(
     console.error('PUT /api/peer-coffeechat/[id]/applications/[appId] error:', error)
     return serverError('서버 오류가 발생했습니다')
   }
+}
+
+async function generatePeerBriefAsync(
+  chatId: string,
+  appId: string,
+  applicantId: string
+) {
+  const supabase = await createClient()
+
+  const { data: chat } = await supabase
+    .from('peer_coffee_chats')
+    .select('title, content, category, author:vcx_members(name, title, current_company, professional_fields, member_tier)')
+    .eq('id', chatId)
+    .single()
+
+  if (!chat) return
+
+  const { data: applicant } = await supabase
+    .from('vcx_members')
+    .select('name, title, current_company, professional_fields, member_tier')
+    .eq('id', applicantId)
+    .single()
+
+  if (!applicant) return
+
+  const author = Array.isArray(chat.author) ? chat.author[0] : chat.author
+  if (!author) return
+
+  const { hostBrief, applicantBrief } = await generateCoffeechatBrief({
+    sessionTitle: chat.title,
+    sessionDescription: chat.content ?? '',
+    sessionTags: [chat.category].filter(Boolean),
+    hostName: author.name,
+    hostTitle: author.title ?? '',
+    hostCompany: author.current_company ?? '',
+    hostCompanyDesc: null,
+    applicantName: applicant.name,
+    applicantRole: applicant.title ?? '',
+    applicantCompany: applicant.current_company ?? '',
+    applicantSpecialties: (applicant.professional_fields as string[]) ?? [],
+    applicantMemberTier: applicant.member_tier as 'core' | 'endorsed',
+  })
+
+  await (supabase.from('peer_coffee_applications') as unknown as PeerApplicationUpdateTable)
+    .update({
+      host_brief: hostBrief,
+      applicant_brief: applicantBrief,
+      brief_generated_at: new Date().toISOString(),
+      brief_error: null,
+    })
+    .eq('id', appId)
 }

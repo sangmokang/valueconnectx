@@ -4,14 +4,17 @@ import { useState } from 'react'
 import { z } from 'zod'
 
 export const feedItemSchema = z.object({
-  company: z.string().min(1, '회사명을 입력해주세요'),
-  company_tag: z.string().optional().nullable(),
-  role: z.string().min(1, '역할을 입력해주세요'),
+  company: z.string().trim().min(1, '회사명을 입력해주세요'),
+  company_tag: z.string().trim().optional().nullable(),
+  role: z.string().trim().min(1, '역할을 입력해주세요'),
   level: z.string().optional().nullable(),
   team_size: z.string().optional().nullable(),
   salary_band: z.string().optional().nullable(),
   location: z.string().optional().nullable(),
-  tags: z.array(z.string()).default([]),
+  tags: z
+    .array(z.string().trim().min(1, '빈 태그는 추가할 수 없습니다'))
+    .max(10, '태그는 최대 10개까지 입력할 수 있습니다')
+    .default([]),
   summary: z.string().optional().nullable(),
   exclusive: z.boolean().default(false),
   published_at: z.string().optional().nullable(),
@@ -78,7 +81,7 @@ export function CurationForm({ item, onSuccess, onCancel }: CurationFormProps) {
 
   function addTag() {
     const tag = tagInput.trim()
-    if (!tag || form.tags.includes(tag)) return
+    if (!tag || form.tags.includes(tag) || form.tags.length >= 10) return
     handleChange('tags', [...form.tags, tag])
     setTagInput('')
   }
@@ -291,13 +294,15 @@ export function CurationForm({ item, onSuccess, onCancel }: CurationFormProps) {
           <button
             type="button"
             onClick={addTag}
+            disabled={form.tags.length >= 10}
             style={{
-              padding: '10px 16px', background: '#1a1a1a', color: '#fff',
-              border: 'none', cursor: 'pointer', fontSize: '13px', fontFamily: 'system-ui, sans-serif',
+              padding: '10px 16px', background: form.tags.length >= 10 ? '#999' : '#1a1a1a', color: '#fff',
+              border: 'none', cursor: form.tags.length >= 10 ? 'not-allowed' : 'pointer', fontSize: '13px', fontFamily: 'system-ui, sans-serif',
               whiteSpace: 'nowrap',
             }}
           >추가</button>
         </div>
+        {errors.tags && <p style={errorStyle}>{errors.tags}</p>}
       </div>
 
       {/* 요약 */}

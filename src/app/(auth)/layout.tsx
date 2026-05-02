@@ -1,6 +1,10 @@
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-vcx-abyss px-5 py-10">
+    <div style={{
+      minHeight: '100vh', background: '#0F172A',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: '40px 20px',
+    }}>
       {children}
     </div>
   )

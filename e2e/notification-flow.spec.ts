@@ -1,5 +1,31 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, type Page } from '@playwright/test'
 import { loginAs, TEST_USER } from './helpers/auth'
+
+async function fetchNotifications(page: Page) {
+  return page.evaluate(async () => {
+    const response = await fetch('/api/notifications')
+    return {
+      ok: response.ok,
+      status: response.status,
+      body: await response.json(),
+    }
+  })
+}
+
+async function markAllNotificationsRead(page: Page) {
+  return page.evaluate(async () => {
+    const response = await fetch('/api/notifications', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ markAllRead: true }),
+    })
+    return {
+      ok: response.ok,
+      status: response.status,
+      body: await response.json(),
+    }
+  })
+}
 
 test.describe('알림 플로우', () => {
   test('알림 벨 표시', async ({ page }) => {
@@ -58,10 +84,10 @@ test.describe('알림 플로우', () => {
     await loginAs(page, TEST_USER)
 
     // GET notifications
-    const getResponse = await page.request.get('/api/notifications')
-    expect(getResponse.ok()).toBeTruthy()
+    const getResponse = await fetchNotifications(page)
+    expect(getResponse.ok, JSON.stringify(getResponse)).toBeTruthy()
 
-    const body = await getResponse.json()
+    const body = getResponse.body
     expect(body).toHaveProperty('data')
     expect(body).toHaveProperty('unreadCount')
 
@@ -70,15 +96,13 @@ test.describe('알림 플로우', () => {
 
     if (unreadCount > 0) {
       // Mark all as read
-      const patchResponse = await page.request.patch('/api/notifications', {
-        data: { markAllRead: true },
-      })
-      expect(patchResponse.ok()).toBeTruthy()
+      const patchResponse = await markAllNotificationsRead(page)
+      expect(patchResponse.ok).toBeTruthy()
 
       // Verify unread count is now 0
-      const afterResponse = await page.request.get('/api/notifications')
-      expect(afterResponse.ok()).toBeTruthy()
-      const afterBody = await afterResponse.json()
+      const afterResponse = await fetchNotifications(page)
+      expect(afterResponse.ok).toBeTruthy()
+      const afterBody = afterResponse.body
       expect(afterBody.unreadCount).toBe(0)
     } else {
       // No unread notifications — just verify the API shape is correct

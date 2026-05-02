@@ -14,6 +14,12 @@
 | Phase 1 slice | [plans/VERTICAL_SLICE_PHASE1.md](./plans/VERTICAL_SLICE_PHASE1.md) |
 | Role harness | [roles/README.md](./roles/README.md) |
 
+## Active Engineering Briefs
+
+| Scope | File |
+|-------|------|
+| CTO parallel Shell prompts | [engineering/cto-parallel-shell-prompts-2026-05-01.md](./engineering/cto-parallel-shell-prompts-2026-05-01.md) |
+
 ## Active Folders
 
 - **[prd/](./prd/)** — Current PRD + [ADR/](./prd/ADR/) + [_archive/](./prd/_archive/)

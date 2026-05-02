@@ -34,7 +34,7 @@ describe('ProfileEditForm', () => {
 
   it('renders professional fields input', () => {
     render(<ProfileEditForm initialData={defaultInitialData} />)
-    expect(screen.getByPlaceholderText('예: Product, Engineering, Finance (쉼표로 구분)')).toBeInTheDocument()
+    expect(screen.getByPlaceholderText('예: 제품 전략, 엔지니어링, B2B SaaS (쉼표로 구분)')).toBeInTheDocument()
   })
 
   it('renders industry dropdown', () => {

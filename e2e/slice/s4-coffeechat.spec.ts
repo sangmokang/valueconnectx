@@ -1,68 +1,167 @@
-import { test, expect } from "@playwright/test";
-import { loginAs, TEST_USER } from "../helpers/auth";
+import { test, expect } from '@playwright/test'
+import { createClient } from '@supabase/supabase-js'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
+import { loginAs } from '../helpers/auth'
 
-test.describe("Phase 1 Slice — S4: 커피챗 신청 및 AI Brief 생성", () => {
-  // ── Golden Path ──────────────────────────────────────────────────────────
+const PASSWORD = 'VcxSeed2026!'
+const AUTHOR = { email: 'jihoon.park@vcx-seed.com', password: PASSWORD }
+const APPLICANT = { email: 'hyuna.lee@vcx-seed.com', password: PASSWORD }
 
-  test.skip("golden path: 커피챗 신청 폼 작성 → 제출 성공", async ({ page }) => {
-    // TODO(Sprint 3): loginAs(TEST_USER) → /coffeechat/create 이동 →
-    //   주제·설명·희망 일정 입력 → 제출 버튼 클릭 →
-    //   성공 메시지("커피챗 신청이 완료되었습니다") 또는 상세 페이지 이동 확인
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §4.1
-    await loginAs(page, TEST_USER);
-    await page.goto("/coffeechat/create");
-    await expect(page.locator("body")).toBeVisible();
-  });
-
-  test.skip("golden path: AI Brief 자동 생성 → Brief 카드 표시 확인", async ({ page }) => {
-    // TODO(Sprint 3): 커피챗 신청 제출 후 →
-    //   AI Brief 생성 중 로딩 인디케이터 노출 →
-    //   Brief 카드(data-testid="ai-brief-card" 또는 유사) 렌더링 확인
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §4.2
-    await loginAs(page, TEST_USER);
-    await page.goto("/coffeechat");
-    await expect(page.locator("body")).toBeVisible();
-  });
-
-  test.skip("golden path: CEO 커피챗 신청 → AI Brief 포함 상세 페이지", async ({ page }) => {
-    // TODO(Sprint 4): loginAs(TEST_USER) → /ceo-coffeechat →
-    //   CEO 커피챗 신청 → AI Brief 자동 생성 → Brief 내용 확인
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §4.3
-    await loginAs(page, TEST_USER);
-    await page.goto("/ceo-coffeechat");
-    await expect(page).toHaveURL(/\/ceo-coffeechat/);
-  });
-
-  test.skip("golden path: 기존 Brief 카드에서 상세 내용 열람", async ({ page }) => {
-    // TODO(Sprint 4): /coffeechat → 내 커피챗 세션 목록 →
-    //   AI Brief 카드 클릭 → Brief 상세(요약·배경·예상 질문) 확인
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §4.4
-    await loginAs(page, TEST_USER);
-    await page.goto("/coffeechat");
-    await expect(page.locator("body")).toBeVisible();
-  });
-
-  // ── Error Cases ───────────────────────────────────────────────────────────
-
-  test.skip("error: 필수 필드 미입력 커피챗 제출 → 유효성 검사 오류 표시", async ({ page }) => {
-    // TODO(Sprint 3): /coffeechat/create → 주제·설명 비워두고 제출 →
-    //   "주제를 입력해주세요" 등 필드 레벨 에러 메시지 확인
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §4.E1
-    await loginAs(page, TEST_USER);
-    await page.goto("/coffeechat/create");
-    const submitBtn = page.getByRole("button", { name: /제출|신청/ });
-    const hasSubmit = await submitBtn.isVisible({ timeout: 5000 }).catch(() => false);
-    if (hasSubmit) {
-      await submitBtn.click();
+function loadEnv() {
+  const envPath = resolve(process.cwd(), '.env.local')
+  try {
+    for (const line of readFileSync(envPath, 'utf-8').split('\n')) {
+      const trimmed = line.trim()
+      if (!trimmed || trimmed.startsWith('#')) continue
+      const index = trimmed.indexOf('=')
+      if (index === -1) continue
+      const key = trimmed.slice(0, index)
+      const value = trimmed.slice(index + 1)
+      process.env[key] ||= value
     }
-    await expect(page.locator("body")).toBeVisible();
-  });
+  } catch {
+    // CI can provide environment variables directly.
+  }
+}
 
-  test.skip("error: 비인증 사용자 커피챗 신청 페이지 접근 제한", async ({ page }) => {
-    // TODO(Sprint 3): 로그인 없이 /coffeechat/create 접근 →
-    //   로그인 페이지 리다이렉트 또는 인증 필요 안내 메시지 확인
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §4.E2
-    await page.goto("/coffeechat/create");
-    await expect(page.locator("body")).toBeVisible();
-  });
-});
+function getAdminClient() {
+  loadEnv()
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!url || !key) throw new Error('E2E Supabase admin credentials are missing')
+  return createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } })
+}
+
+async function ensureMember(email: string, name: string) {
+  const admin = getAdminClient()
+  const { data: member } = await admin
+    .from('vcx_members')
+    .select('id')
+    .eq('email', email)
+    .single()
+  const userId = member?.id
+  if (!userId) throw new Error(`E2E user not found: ${email}`)
+
+  await admin.from('vcx_members').upsert({
+    id: userId,
+    email,
+    name,
+    current_company: 'ValueConnect X',
+    title: name.includes('작성자') ? 'CTO' : 'Product Lead',
+    professional_fields: ['Engineering', 'Product'],
+    member_tier: 'core',
+    system_role: 'member',
+    is_active: true,
+  })
+
+  return userId
+}
+
+async function createPeerCoffeechat() {
+  const admin = getAdminClient()
+  const authorId = await ensureMember(AUTHOR.email, 'E2E S4 작성자')
+  await ensureMember(APPLICANT.email, 'E2E S4 신청자')
+  const title = `E2E AI Brief 커피챗 ${Date.now()}`
+  const { data, error } = await admin
+    .from('peer_coffee_chats')
+    .insert({
+      author_id: authorId,
+      title,
+      content: 'Phase 1 S4 검증을 위한 커피챗입니다. 신청, 수락, AI Brief fallback 확인까지 한 번에 검증합니다.',
+      category: 'career',
+      status: 'open',
+    })
+    .select('id')
+    .single()
+  if (error || !data) throw new Error(`E2E peer coffeechat seed failed: ${error?.message}`)
+  return {
+    title,
+    url: `/coffeechat/${data.id}`,
+    id: data.id,
+  }
+}
+
+async function hasPeerCoffeechatSchema() {
+  const { error } = await getAdminClient()
+    .from('peer_coffee_chats')
+    .select('id')
+    .limit(1)
+  return !error
+}
+
+async function deletePeerCoffeechat(id: string) {
+  await getAdminClient().from('peer_coffee_chats').delete().eq('id', id)
+}
+
+test.describe('Phase 1 Slice - S4: 커피챗 신청 및 AI Brief 생성', () => {
+  test('멤버가 신청하고 작성자가 수락하면 AI Brief 카드가 표시된다', async ({ browser }) => {
+    test.skip(
+      !(await hasPeerCoffeechatSchema()),
+      'E2E Supabase DB에 peer_coffee_chats 스키마가 없어 전체 신청/수락 경로를 건너뜁니다.'
+    )
+
+    const authorContext = await browser.newContext()
+    const applicantContext = await browser.newContext()
+    const authorPage = await authorContext.newPage()
+    const applicantPage = await applicantContext.newPage()
+    let chatId: string | null = null
+
+    try {
+      const chat = await createPeerCoffeechat()
+      chatId = chat.id
+      await loginAs(authorPage, AUTHOR)
+
+      await loginAs(applicantPage, APPLICANT)
+      await applicantPage.goto(chat.url)
+      await applicantPage.getByRole('button', { name: '비밀 신청하기' }).click()
+      await applicantPage.getByPlaceholder('간단한 자기소개나 신청 이유를 적어주세요').fill(
+        'AI Brief 품질 검증을 위해 신청합니다. 실제 대화 전 핵심 질문을 정리하고 싶습니다.'
+      )
+      await applicantPage.getByRole('button', { name: '신청하기' }).click()
+      await expect(applicantPage.getByText('신청 완료')).toBeVisible()
+
+      await authorPage.goto(chat.url)
+      await expect(authorPage.getByText('신청자 목록')).toBeVisible()
+      await authorPage.getByRole('button', { name: '수락' }).first().click()
+      await expect(authorPage.getByText('수락됨')).toBeVisible()
+
+      await applicantPage.reload()
+      await expect(applicantPage.getByTestId('ai-brief-card')).toBeVisible()
+      await expect(applicantPage.getByTestId('ai-brief-card')).toContainText('AI Pre-Brief')
+      await expect(applicantPage.getByText(/수수료|요금/)).toHaveCount(0)
+    } finally {
+      if (chatId) await deletePeerCoffeechat(chatId).catch(() => undefined)
+      await authorContext.close()
+      await applicantContext.close()
+    }
+  })
+
+  test('비인증 사용자는 커피챗 보드를 볼 수 있지만 멤버 전용 로그인 월이 표시된다', async ({ page }) => {
+    await page.goto('/coffeechat')
+
+    await expect(page.getByRole('heading', { name: /같은 고도에서/ })).toBeVisible()
+    await expect(page.getByText('멤버 전용 콘텐츠입니다')).toBeVisible()
+    await expect(page.locator('a[href="/login?redirect=%2Fcoffeechat"]', { hasText: '로그인' })).toBeVisible()
+    await expect(page.getByText(/수수료|요금/)).toHaveCount(0)
+  })
+
+  test('비인증 사용자의 커피챗 작성 페이지 접근은 로그인으로 보낸다', async ({ page }) => {
+    await page.goto('/coffeechat/create')
+
+    await expect(page).toHaveURL(/\/login\?redirect=%2Fcoffeechat%2Fcreate/)
+  })
+
+  test('커피챗 보드의 보호 UI는 360px 모바일 폭에서 가로 overflow가 없다', async ({ page }) => {
+    await page.setViewportSize({ width: 360, height: 740 })
+
+    await page.goto('/coffeechat')
+    await expect(page.getByText('멤버 전용 콘텐츠입니다')).toBeVisible()
+
+    const hasHorizontalOverflow = await page.evaluate(() => {
+      const root = document.documentElement
+      return root.scrollWidth > root.clientWidth
+    })
+    expect(hasHorizontalOverflow).toBe(false)
+  })
+})

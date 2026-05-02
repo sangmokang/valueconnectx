@@ -4,7 +4,6 @@ import { isPublicRoute, isSemiPublicRoute, isProtectedRoute, isAdminRoute, isAut
 import type { Database } from '@/types/supabase'
 import { rateLimit, apiLimiter, directoryLimiter, directoryBurstLimiter, directoryDailyLimiter } from '@/lib/rate-limit'
 import { createApiError, unauthorized, forbidden, serverError } from '@/lib/api/error'
-import { DEV_QA_COOKIE, isDevQaCookieValue } from '@/lib/auth/dev-qa'
 
 type MemberInfo = { name?: string | null; current_company?: string | null; title?: string | null; linkedin_url?: string | null }
 
@@ -23,7 +22,6 @@ export async function middleware(request: NextRequest) {
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api/invites/verify') ||
-    pathname.startsWith('/api/valuehire') ||
     pathname === '/api/health' ||
     pathname.startsWith('/api/ops/health') ||
     pathname.includes('.')
@@ -35,13 +33,6 @@ export async function middleware(request: NextRequest) {
   if (isPublicRoute(pathname)) return NextResponse.next({ request: { headers: requestHeaders } })
 
   let response = NextResponse.next({ request: { headers: requestHeaders } })
-  const hasDevQaSession = isDevQaCookieValue(request.cookies.get(DEV_QA_COOKIE)?.value)
-
-  if (hasDevQaSession && !isAdminRoute(pathname)) {
-    response.headers.set('x-vcx-authenticated', 'true')
-    return response
-  }
-
   const supabase = createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,

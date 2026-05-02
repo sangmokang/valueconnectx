@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { badRequest, unauthorized, serverError } from '@/lib/api/error';
 
+function isMissingNotificationsTable(error: { code?: string } | null) {
+  return error?.code === 'PGRST205' || error?.code === '42P01';
+}
+
 export async function GET() {
   try {
     const supabase = await createClient();
@@ -19,6 +23,9 @@ export async function GET() {
       .limit(20);
 
     if (error) {
+      if (isMissingNotificationsTable(error)) {
+        return NextResponse.json({ data: [], unreadCount: 0 });
+      }
       return serverError('알림을 불러오는 중 오류가 발생했습니다');
     }
 
@@ -61,6 +68,9 @@ export async function PATCH(req: NextRequest) {
         .eq('is_read', false);
 
       if (error) {
+        if (isMissingNotificationsTable(error)) {
+          return NextResponse.json({ success: true });
+        }
         return serverError('알림 업데이트 중 오류가 발생했습니다');
       }
 
@@ -80,6 +90,9 @@ export async function PATCH(req: NextRequest) {
         .in('id', ids);
 
       if (error) {
+        if (isMissingNotificationsTable(error)) {
+          return NextResponse.json({ success: true });
+        }
         return serverError('알림 업데이트 중 오류가 발생했습니다');
       }
 

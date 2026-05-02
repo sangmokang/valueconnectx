@@ -1,6 +1,4 @@
 import { createClient } from '@/lib/supabase/server'
-import { cookies } from 'next/headers'
-import { DEV_QA_COOKIE, devQaUser, isDevQaCookieValue, isDevQaEnabled } from './dev-qa'
 
 export type VcxUser = {
   id: string
@@ -13,12 +11,6 @@ export type VcxUser = {
 
 export async function getVcxUser(): Promise<VcxUser> {
   try {
-    const cookieStore = await cookies()
-    if (isDevQaCookieValue(cookieStore.get(DEV_QA_COOKIE)?.value)) {
-      return devQaUser
-    }
-    if (isDevQaEnabled()) return null
-
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 

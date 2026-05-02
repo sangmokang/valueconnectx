@@ -15,7 +15,7 @@ const sessionSchema = z.object({
   location_detail: z.string().optional(),
   target_tier: z.enum(['core', 'endorsed', 'all']).optional(),
   tags: z.array(z.string()),
-  agreement_accepted: z.boolean().refine((v) => v === true, '성사 연결 운영 원칙에 동의해야 합니다'),
+  agreement_accepted: z.boolean().refine((v) => v === true, '컬쳐핏 확인 운영 원칙에 동의해야 합니다'),
 })
 
 type SessionFormData = z.infer<typeof sessionSchema>
@@ -282,7 +282,7 @@ export function SessionForm({ initialData, sessionId }: SessionFormProps) {
         )}
       </div>
 
-      {/* Head Hunting Agreement */}
+      {/* Culture fit agreement */}
       <div className="border border-[#e0d9ce] bg-[#fdf9f2] p-4">
         <label className="flex items-start gap-3 cursor-pointer">
           <input
@@ -293,7 +293,7 @@ export function SessionForm({ initialData, sessionId }: SessionFormProps) {
             className="mt-0.5 flex-shrink-0 w-4 h-4 accent-[#c9a84c]"
           />
           <span className="text-[13px] font-vcx-sans text-[#1a1a1a] leading-relaxed">
-            성사 연결 운영 원칙에 동의합니다. ValueConnect X를 통한 채용 성사는 비공개 운영 기준에 따라 관리됩니다.
+            컬쳐핏 확인 운영 원칙에 동의합니다. ValueConnect X를 통한 대화 결과는 비공개 운영 기준에 따라 관리됩니다.
           </span>
         </label>
         {errors.agreement_accepted && (

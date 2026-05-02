@@ -9,13 +9,13 @@ interface SectionHeaderProps {
 
 export function SectionHeader({ title, subtitle, filters, className }: SectionHeaderProps) {
   return (
-    <div className={cn("flex items-end justify-between", className)}>
+    <div className={cn("flex items-end justify-between gap-4", className)}>
       <div className="flex flex-col gap-1">
-        <h2 className="text-[22px] font-bold text-[#f2f2f2] leading-tight sm:text-[24px]">
+        <h2 className="font-vcx-serif text-[22px] font-bold leading-tight text-vcx-dark">
           {title}
         </h2>
         {subtitle && (
-          <p className="text-[15px] text-[#b8b3b0] font-sans leading-relaxed">
+          <p className="font-vcx-sans text-[13px] leading-snug text-vcx-sub-4">
             {subtitle}
           </p>
         )}

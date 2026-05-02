@@ -135,9 +135,33 @@ CREATE TABLE IF NOT EXISTS peer_coffee_applications (
   applicant_id TEXT NOT NULL REFERENCES auth_users(id),
   message TEXT NOT NULL,
   status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'rejected')),
+  host_brief TEXT,
+  applicant_brief TEXT,
+  brief_generated_at TEXT,
+  brief_error TEXT,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   UNIQUE(chat_id, applicant_id)
 );
+
+CREATE TABLE IF NOT EXISTS peer_coffeechat_feedback (
+  id TEXT PRIMARY KEY,
+  chat_id TEXT NOT NULL REFERENCES peer_coffee_chats(id) ON DELETE CASCADE,
+  application_id TEXT NOT NULL REFERENCES peer_coffee_applications(id) ON DELETE CASCADE,
+  reviewer_id TEXT NOT NULL REFERENCES auth_users(id),
+  reviewer_role TEXT NOT NULL CHECK (reviewer_role IN ('host', 'applicant')),
+  overall_rating INTEGER NOT NULL CHECK (overall_rating BETWEEN 1 AND 5),
+  would_connect_again INTEGER CHECK (would_connect_again IN (0, 1)),
+  feedback_tags TEXT NOT NULL DEFAULT '[]',
+  comment TEXT,
+  brief_helpful INTEGER CHECK (brief_helpful IN (0, 1)),
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(application_id, reviewer_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_peer_feedback_chat
+  ON peer_coffeechat_feedback(chat_id);
+CREATE INDEX IF NOT EXISTS idx_peer_feedback_reviewer
+  ON peer_coffeechat_feedback(reviewer_id);
 
 CREATE TABLE IF NOT EXISTS vcx_feed_items (
   id TEXT PRIMARY KEY,
@@ -229,80 +253,3 @@ CREATE INDEX IF NOT EXISTS vcx_newsletter_events_recipient_idx
 CREATE VIEW IF NOT EXISTS vcx_newsletter_recipient_tokens AS
   SELECT *
   FROM vcx_newsletter_recipients;
-
-CREATE TABLE IF NOT EXISTS vcx_company_jds (
-  id TEXT PRIMARY KEY,
-  corporate_user_id TEXT REFERENCES vcx_corporate_users(id) ON DELETE SET NULL,
-  company_name TEXT NOT NULL,
-  title TEXT NOT NULL,
-  domain_sector TEXT NOT NULL,
-  seniority TEXT,
-  jd_text TEXT NOT NULL,
-  required_skills TEXT NOT NULL DEFAULT '[]',
-  preferred_skills TEXT NOT NULL DEFAULT '[]',
-  source_type TEXT NOT NULL DEFAULT 'manual' CHECK (source_type IN ('manual', 'desktop', 'gdrive', 'supabase', 'sqlite')),
-  source_uri TEXT,
-  status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('draft', 'active', 'archived')),
-  created_by TEXT REFERENCES auth_users(id) ON DELETE SET NULL,
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE INDEX IF NOT EXISTS idx_vcx_company_jds_sector_status
-  ON vcx_company_jds(domain_sector, status);
-
-CREATE TABLE IF NOT EXISTS vcx_candidate_resumes (
-  id TEXT PRIMARY KEY,
-  member_id TEXT REFERENCES vcx_members(id) ON DELETE SET NULL,
-  candidate_name TEXT,
-  candidate_email TEXT,
-  current_title TEXT,
-  years_of_experience INTEGER,
-  domain_sectors TEXT NOT NULL DEFAULT '[]',
-  skills TEXT NOT NULL DEFAULT '[]',
-  resume_text TEXT NOT NULL,
-  source_type TEXT NOT NULL DEFAULT 'manual' CHECK (source_type IN ('manual', 'desktop', 'gdrive', 'supabase', 'sqlite')),
-  source_uri TEXT,
-  consent_status TEXT NOT NULL DEFAULT 'internal_review'
-    CHECK (consent_status IN ('internal_review', 'candidate_consented', 'expired')),
-  created_by TEXT REFERENCES auth_users(id) ON DELETE SET NULL,
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS vcx_b2b_market_job_signals (
-  id TEXT PRIMARY KEY,
-  external_id TEXT,
-  source TEXT NOT NULL DEFAULT 'manual',
-  company_name TEXT NOT NULL,
-  title TEXT NOT NULL,
-  domain_sector TEXT,
-  function_tags TEXT NOT NULL DEFAULT '[]',
-  seniority TEXT,
-  location TEXT,
-  salary_band TEXT,
-  jd_text TEXT,
-  url TEXT,
-  published_at TEXT,
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE(source, external_id)
-);
-
-CREATE INDEX IF NOT EXISTS idx_vcx_b2b_market_job_signals_sector
-  ON vcx_b2b_market_job_signals(domain_sector);
-
-CREATE TABLE IF NOT EXISTS vcx_b2b_match_runs (
-  id TEXT PRIMARY KEY,
-  jd_id TEXT REFERENCES vcx_company_jds(id) ON DELETE SET NULL,
-  resume_id TEXT REFERENCES vcx_candidate_resumes(id) ON DELETE SET NULL,
-  overall_score INTEGER NOT NULL CHECK (overall_score BETWEEN 0 AND 100),
-  jd_fit_percentile INTEGER NOT NULL CHECK (jd_fit_percentile BETWEEN 0 AND 100),
-  market_percentile INTEGER NOT NULL CHECK (market_percentile BETWEEN 0 AND 100),
-  structure_score INTEGER NOT NULL CHECK (structure_score BETWEEN 0 AND 100),
-  ai_written_likelihood INTEGER NOT NULL CHECK (ai_written_likelihood BETWEEN 0 AND 100),
-  verdict TEXT NOT NULL,
-  reasons TEXT NOT NULL DEFAULT '[]',
-  risks TEXT NOT NULL DEFAULT '[]',
-  created_by TEXT REFERENCES auth_users(id) ON DELETE SET NULL,
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-);

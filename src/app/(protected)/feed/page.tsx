@@ -10,7 +10,7 @@ export default function FeedPage() {
           <div className="flex items-center gap-3">
             <div className="h-px w-7 bg-vcx-gold" />
             <span className="vcx-section-label">
-              CURATION FEED · WEEKLY
+              큐레이션 피드 · 매주 업데이트
             </span>
           </div>
 

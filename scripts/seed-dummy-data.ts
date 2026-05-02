@@ -221,7 +221,7 @@ async function preflightSchemaCheck() {
 
   const missing: string[] = []
   for (const t of requiredTables) {
-    const { error } = await admin.from(t as any).select('*', { head: true, count: 'exact' }).limit(1)
+    const { error } = await admin.from(t).select('*', { head: true, count: 'exact' }).limit(1)
     if (error) missing.push(t)
   }
 
@@ -241,6 +241,41 @@ async function createAuthUser(
   email: string,
   password: string
 ): Promise<string> {
+  async function findExistingUser(): Promise<string | null> {
+    let page = 1
+    const perPage = 100
+
+    try {
+      while (true) {
+        const { data, error } = await supabase.auth.admin.listUsers({ page, perPage })
+        if (error) throw error
+
+        const existing = data.users?.find((u) => u.email === email)
+        if (existing) return existing.id
+        if (!data.users || data.users.length < perPage) break
+
+        page += 1
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error)
+      console.warn(`  ⚠️ Auth 사용자 목록 조회 실패, 프로필 테이블에서 ${email}을 확인합니다: ${message}`)
+    }
+
+    const { data: member } = await supabase
+      .from('vcx_members')
+      .select('id')
+      .eq('email', email)
+      .maybeSingle()
+    if (member?.id) return member.id
+
+    const { data: corporateUser } = await supabase
+      .from('vcx_corporate_users')
+      .select('id')
+      .eq('email', email)
+      .maybeSingle()
+    return corporateUser?.id ?? null
+  }
+
   const { data, error } = await supabase.auth.admin.createUser({
     email,
     password,
@@ -249,9 +284,8 @@ async function createAuthUser(
 
   if (error) {
     if (error.message?.includes('already been registered')) {
-      const { data: { users } } = await supabase.auth.admin.listUsers()
-      const existing = users?.find((u) => u.email === email)
-      if (existing) return existing.id
+      const existingId = await findExistingUser()
+      if (existingId) return existingId
     }
     throw new Error(`Auth user creation failed for ${email}: ${error.message}`)
   }

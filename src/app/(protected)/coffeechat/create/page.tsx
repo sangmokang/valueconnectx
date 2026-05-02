@@ -7,7 +7,7 @@ export default async function CreatePeerChatPage() {
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
-    redirect('/auth/login')
+    redirect('/login?redirect=%2Fcoffeechat%2Fcreate')
   }
 
   return (

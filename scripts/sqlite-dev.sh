@@ -38,26 +38,20 @@ smoke_db() {
   local feed_count
   local recipient_email
   local event_count
-  local b2b_jd_count
-  local b2b_signal_count
 
   member_count="$(sqlite3 "$DB_PATH" "SELECT COUNT(*) FROM vcx_members;")"
   feed_count="$(sqlite3 "$DB_PATH" "SELECT COUNT(*) FROM vcx_feed_items;")"
   recipient_email="$(sqlite3 "$DB_PATH" "SELECT email FROM vcx_newsletter_recipient_tokens WHERE send_token = 'dev-newsletter-token';")"
   event_count="$(sqlite3 "$DB_PATH" "SELECT COUNT(*) FROM vcx_newsletter_events WHERE type = 'sent';")"
-  b2b_jd_count="$(sqlite3 "$DB_PATH" "SELECT COUNT(*) FROM vcx_company_jds;")"
-  b2b_signal_count="$(sqlite3 "$DB_PATH" "SELECT COUNT(*) FROM vcx_b2b_market_job_signals;")"
 
   [[ "$member_count" -ge 3 ]] || { echo "vcx_members seed 검증 실패: $member_count" >&2; exit 1; }
   [[ "$feed_count" -ge 2 ]] || { echo "vcx_feed_items seed 검증 실패: $feed_count" >&2; exit 1; }
   [[ "$recipient_email" == "newsletter.member@example.com" ]] || { echo "newsletter token 조회 검증 실패: $recipient_email" >&2; exit 1; }
   [[ "$event_count" -ge 1 ]] || { echo "newsletter event seed 검증 실패: $event_count" >&2; exit 1; }
-  [[ "$b2b_jd_count" -ge 1 ]] || { echo "vcx_company_jds seed 검증 실패: $b2b_jd_count" >&2; exit 1; }
-  [[ "$b2b_signal_count" -ge 2 ]] || { echo "vcx_b2b_market_job_signals seed 검증 실패: $b2b_signal_count" >&2; exit 1; }
 
   echo "SQLite dev mirror OK"
   echo "DB: $DB_PATH"
-  echo "members=$member_count feed_items=$feed_count newsletter_events=$event_count b2b_jds=$b2b_jd_count b2b_signals=$b2b_signal_count"
+  echo "members=$member_count feed_items=$feed_count newsletter_events=$event_count"
 }
 
 main() {

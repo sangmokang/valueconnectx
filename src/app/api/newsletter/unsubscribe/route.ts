@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const supabase = await createClient()
-    const { data: recipient } = await (supabase as any).rpc('vcx_get_recipient_by_token', { p_token: token })
+    const { data: recipient } = await supabase.rpc('vcx_get_recipient_by_token', { p_token: token })
 
     if (!recipient?.id) {
       return NextResponse.json({ error: '유효하지 않은 토큰입니다' }, { status: 404 })
@@ -30,18 +30,18 @@ export async function POST(request: NextRequest) {
 
     const now = new Date().toISOString()
     await Promise.all([
-      (supabase as any)
+      supabase
         .from('vcx_newsletter_recipients')
         .update({ unsubscribed_at: now })
         .eq('id', recipient.id),
       // 구독 테이블도 비활성화
       recipient.subscription_id
-        ? (supabase as any)
+        ? supabase
             .from('vcx_feed_subscriptions')
             .update({ active: false })
             .eq('id', recipient.subscription_id)
         : Promise.resolve(),
-      (supabase as any).from('vcx_newsletter_events').insert({
+      supabase.from('vcx_newsletter_events').insert({
         recipient_id: recipient.id,
         type: 'unsubscribe',
       }),

@@ -19,8 +19,8 @@ export default function RootLayout({
         style={{
           margin: 0,
           padding: 0,
-          background: "#050507",
-          fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+          background: "#f0ebe2",
+          fontFamily: "Georgia, serif",
         }}
       >
         <GNBVisibility />

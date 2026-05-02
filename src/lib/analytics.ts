@@ -16,8 +16,10 @@ export type AnalyticsEventName =
   | 'feed_interested'
   | 'feed_skipped'
   | 'feed_detail_opened'
+  | 'feed_item_click'
   | 'interests_saved'
   | 'newsletter_subscribed'
+  | 'session_feedback_submit'
 
 export type AnalyticsEventProperties = {
   page_view: { path: string; title?: string }
@@ -32,8 +34,10 @@ export type AnalyticsEventProperties = {
   feed_interested: { item_id: string; role: string; company: string }
   feed_skipped: { item_id: string; role: string; company: string }
   feed_detail_opened: { item_id: string; role: string; company: string }
+  feed_item_click: { item_id: string; role: string; company: string; surface: 'card_detail' }
   interests_saved: { chips: string[]; count: number }
   newsletter_subscribed: Record<string, never>
+  session_feedback_submit: { session_id: string; application_id: string; type: 'ceo' | 'peer' }
 }
 
 type Mixpanel = {
@@ -42,6 +46,23 @@ type Mixpanel = {
   identify: (userId: string) => void
   people: { set: (traits: Record<string, unknown>) => void }
   reset: () => void
+}
+
+type PostHog = {
+  capture: (event: string, properties?: Record<string, unknown>) => void
+}
+
+function getPostHog(): PostHog | null {
+  if (typeof window === 'undefined') return null
+  return (window as typeof window & { posthog?: PostHog }).posthog ?? null
+}
+
+function capturePostHog(event: string, properties?: Record<string, unknown>): void {
+  try {
+    getPostHog()?.capture(event, properties)
+  } catch (e) {
+    console.warn('[Analytics] PostHog capture failed:', e)
+  }
 }
 
 let mixpanel: Mixpanel | null = null
@@ -75,11 +96,13 @@ export function trackEvent<K extends AnalyticsEventName>(
   properties?: AnalyticsEventProperties[K]
 ): void {
   if (DEV_MODE) {
+    capturePostHog(name, properties as Record<string, unknown>)
     console.log('[Analytics] trackEvent:', name, properties)
     return
   }
-  if (!mixpanel) return
   try {
+    capturePostHog(name, properties as Record<string, unknown>)
+    if (!mixpanel) return
     mixpanel.track(name, properties as Record<string, unknown>)
   } catch (e) {
     console.warn('[Analytics] trackEvent failed:', e)

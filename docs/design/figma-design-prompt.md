@@ -45,13 +45,13 @@ PRD 5.1 기준, VCX는 Invite-only Private Network입니다.
 
 **현재 (사이트)**
 ```
-ValueConnect X | 서비스 소개 ▾ | 커피챗 신청 | CEO Coffeechat N | 익명 게시판 N | 채용 포지션 | [로그인] [회원가입 →]
+ValueConnect X | 서비스 소개 ▾ | 커피챗 신청 | CEO Coffeechat N | 익명 게시판 N | 채용 포지션 | [로그인] [초대 확인하기 →]
 ```
 
 **변경 (PRD 반영)**
 ```
 비로그인:
-ValueConnect X | 서비스 소개 ▾ | 채용 포지션 | 커피챗 🔒 | CEO Coffeechat 🔒 | 익명 게시판 🔒 | [로그인] [회원가입 →]
+ValueConnect X | 서비스 소개 ▾ | 채용 포지션 | 커피챗 🔒 | CEO Coffeechat 🔒 | 익명 게시판 🔒 | [로그인] [초대 확인하기 →]
 
 로그인 후:
 ValueConnect X | 서비스 소개 ▾ | 채용 포지션 | 커피챗 신청 | CEO Coffeechat N | 익명 게시판 N | [프로필] [알림 🔔]
@@ -373,7 +373,7 @@ PRD 5.2 기반. 로그인 필수.
 
 | 상태 | 좌측 | 중앙 메뉴 | 우측 |
 |------|------|----------|------|
-| 비로그인 | ValueConnect X 로고 | 서비스 소개 ▾ · 채용 포지션 · 커피챗 🔒 · CEO Coffeechat 🔒 · 익명 게시판 🔒 | [로그인] [회원가입 →] |
+| 비로그인 | ValueConnect X 로고 | 서비스 소개 ▾ · 채용 포지션 · 커피챗 🔒 · CEO Coffeechat 🔒 · 익명 게시판 🔒 | [로그인] [초대 확인하기 →] |
 | 로그인 | ValueConnect X 로고 | 서비스 소개 ▾ · 채용 포지션 · 커피챗 신청 · CEO Coffeechat N · 익명 게시판 N | [알림 🔔] [프로필 아바타] |
 
 ### 4.2 멤버 티어 뱃지

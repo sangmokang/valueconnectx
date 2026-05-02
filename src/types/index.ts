@@ -111,7 +111,14 @@ export interface Position {
 }
 
 // Community / Lounge
-export type LoungeCategoryKey = 'all' | 'reading' | 'career' | 'company' | 'leadership' | 'productivity' | 'casual';
+export type LoungeCategoryKey =
+  | 'all'
+  | 'career'
+  | 'leadership'
+  | 'salary'
+  | 'burnout'
+  | 'productivity'
+  | 'company_review';
 
 export interface LoungeCategory {
   key: LoungeCategoryKey;

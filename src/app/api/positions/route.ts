@@ -4,6 +4,7 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
 import { unauthorized, forbidden, serverError } from '@/lib/api/error'
 import { parseSearchParams, parseBody } from '@/lib/api/validation'
+import { isMissingSchemaError } from '@/lib/api/supabase-errors'
 
 const querySchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
@@ -87,6 +88,10 @@ export async function GET(request: NextRequest) {
 
     const { data, error, count } = await query
     if (error) {
+      if (isMissingSchemaError(error)) {
+        return NextResponse.json({ data: [], total: 0, page, limit })
+      }
+
       console.error('Positions GET error:', error)
       return serverError()
     }

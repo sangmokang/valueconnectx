@@ -7,15 +7,14 @@ import { LoungePostRow, LoungePost, LoungeComment } from './lounge-post-row'
 import { LoungeWriteModal } from './lounge-write-modal'
 import { Reaction } from './emoji-reactions'
 
-// ─── Category key mapping: lounge UI key → DB category value ──────────────
-// The DB uses the original category values; the new UI keys match or we map them.
-// New lounge cats: all | reading | career | company | leadership | productivity | casual
-// DB cats: career | leadership | salary | burnout | productivity | company_review
-// We use the lounge keys as-is when posting; DB may not have reading/company/casual
-// but we store them anyway via the POST (server accepts any non-empty string from client).
-// For GET filtering we pass the key directly.
-
-const fetcher = (url: string) => fetch(url).then((r) => r.json())
+const fetcher = async (url: string) => {
+  const response = await fetch(url)
+  const json = await response.json().catch(() => ({}))
+  if (!response.ok) {
+    throw new Error(json.error ?? '커뮤니티 글을 불러오지 못했습니다')
+  }
+  return json
+}
 
 interface ApiPost {
   id: string
@@ -57,15 +56,12 @@ function toLoungeCat(cat: string): LoungeCatKey {
   const map: Record<string, LoungeCatKey> = {
     career: 'career',
     leadership: 'leadership',
+    salary: 'salary',
+    burnout: 'burnout',
     productivity: 'productivity',
-    reading: 'reading',
-    company: 'company',
-    company_review: 'company',
-    casual: 'casual',
-    salary: 'casual',
-    burnout: 'casual',
+    company_review: 'company_review',
   }
-  return map[cat] ?? 'casual'
+  return map[cat] ?? 'career'
 }
 
 function apiPostToLounge(p: ApiPost): LoungePost {
@@ -94,7 +90,7 @@ export function LoungeFeed() {
 
   // Fetch posts
   const swrKey = activeCat === 'all' ? '/api/community' : `/api/community?category=${activeCat}`
-  const { data, isLoading } = useSWR<{ data: ApiPost[]; total: number }>(swrKey, fetcher, {
+  const { isLoading } = useSWR<{ data: ApiPost[]; total: number }>(swrKey, fetcher, {
     onSuccess(result) {
       const fetched = (result.data ?? []).map(apiPostToLounge)
       if (!localInited) {
@@ -208,17 +204,7 @@ export function LoungeFeed() {
 
   const handleWrite = useCallback(
     async (form: { cat: LoungeCatKey; title: string; body: string; anon: boolean }) => {
-      // Map lounge cat to DB category
-      const catMap: Record<LoungeCatKey, string> = {
-        all: 'career',
-        reading: 'reading',
-        career: 'career',
-        company: 'company',
-        leadership: 'leadership',
-        productivity: 'productivity',
-        casual: 'casual',
-      }
-      const category = catMap[form.cat]
+      const category = form.cat === 'all' ? 'career' : form.cat
 
       const res = await fetch('/api/community', {
         method: 'POST',

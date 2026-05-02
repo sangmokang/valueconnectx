@@ -6,35 +6,35 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center border border-transparent text-sm font-semibold whitespace-nowrap transition-all outline-none select-none focus-visible:ring-2 focus-visible:ring-[#2fd6a1]/55 active:translate-y-px disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/button inline-flex shrink-0 items-center justify-center border border-transparent text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:ring-2 focus-visible:ring-vcx-gold/50 active:translate-y-px disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
         default:
-          "bg-[#101010] text-[#2fd6a1] border-[#3d3a39] hover:border-[#00d992] hover:bg-[#171717]",
+          "bg-vcx-dark text-vcx-beige hover:bg-vcx-surface-soft",
         primary:
-          "bg-[#101010] text-[#2fd6a1] border-[#3d3a39] hover:border-[#00d992] hover:bg-[#171717]",
+          "bg-vcx-dark text-vcx-beige hover:bg-vcx-surface-soft",
         gold:
-          "bg-[#00d992] text-[#050507] hover:bg-[#2fd6a1]",
+          "bg-vcx-gold text-vcx-dark hover:bg-vcx-gold/90",
         outline:
-          "border-[#3d3a39] bg-transparent text-[#f2f2f2] hover:border-[#00d992] hover:text-[#2fd6a1]",
+          "border-vcx-dark bg-transparent text-vcx-dark hover:bg-vcx-dark hover:text-vcx-beige",
         ghost:
-          "bg-transparent text-[#f2f2f2] hover:bg-[#101010] hover:text-[#2fd6a1]",
+          "bg-transparent text-vcx-dark hover:bg-vcx-beige-dark",
         secondary:
-          "bg-[#171717] text-[#b8b3b0] border-[#3d3a39] hover:text-[#f2f2f2]",
+          "bg-vcx-beige-dark text-vcx-sub-3 hover:bg-vcx-beige-light",
         destructive:
-          "bg-[#2a1012] text-[#fd9c9f] border-[#fb565b]/40 hover:border-[#fb565b]",
-        link: "text-[#2fd6a1] underline-offset-4 hover:underline",
+          "bg-red-100 text-red-700 hover:bg-red-200",
+        link: "text-vcx-dark underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-[48px] px-6 text-[15px] gap-2",
-        sm: "h-10 px-4 text-[14px] gap-1.5",
-        lg: "h-[54px] px-8 text-[16px] gap-2",
-        xs: "h-8 px-3 text-[13px] gap-1",
-        icon: "size-11",
+        default: "h-[46px] px-7 text-[14px] gap-2",
+        sm: "h-9 px-4 text-[13px] gap-1.5",
+        lg: "h-[52px] px-8 text-[15px] gap-2",
+        xs: "h-7 px-3 text-[12px] gap-1",
+        icon: "size-10",
         "icon-xs": "size-7",
-        "icon-sm": "size-10",
-        "icon-lg": "size-12",
+        "icon-sm": "size-9",
+        "icon-lg": "size-11",
       },
     },
     defaultVariants: {
@@ -54,7 +54,6 @@ function Button({
     <ButtonPrimitive
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
-      style={{ borderRadius: 0 }}
       {...props}
     />
   )

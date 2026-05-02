@@ -29,6 +29,18 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
+  async function syncFeedInterests(chips: string[]) {
+    try {
+      await fetch('/api/feed/interests', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chips }),
+      })
+    } catch {
+      // 프로필 저장은 성공 상태로 유지하고, 다음 저장/피드 진입 시 다시 동기화한다.
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
@@ -63,6 +75,7 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
       })
 
       if (res.ok) {
+        await syncFeedInterests(professional_fields)
         trackEvent('profile_updated', { fields_updated: ['bio', 'industry', 'location', 'is_open_to_chat', 'profile_visibility', 'professional_fields', 'linkedin_url'] })
         setMessage({ type: 'success', text: '프로필이 저장되었습니다.' })
       } else {
@@ -125,7 +138,7 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
           type="text"
           value={fieldsInput}
           onChange={(e) => setFieldsInput(e.target.value)}
-          placeholder="예: Product, Engineering, Finance (쉼표로 구분)"
+          placeholder="예: 제품 전략, 엔지니어링, B2B SaaS (쉼표로 구분)"
           className={inputClass}
           style={{ borderRadius: 0 }}
         />

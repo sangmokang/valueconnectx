@@ -389,6 +389,10 @@ export type Database = {
           applicant_id: string
           message: string
           status: 'pending' | 'accepted' | 'rejected'
+          host_brief: string | null
+          applicant_brief: string | null
+          brief_generated_at: string | null
+          brief_error: string | null
           created_at: string
         }
         Insert: {
@@ -397,10 +401,55 @@ export type Database = {
           applicant_id: string
           message: string
           status?: 'pending' | 'accepted' | 'rejected'
+          host_brief?: string | null
+          applicant_brief?: string | null
+          brief_generated_at?: string | null
+          brief_error?: string | null
           created_at?: string
         }
         Update: {
           status?: 'pending' | 'accepted' | 'rejected'
+          host_brief?: string | null
+          applicant_brief?: string | null
+          brief_generated_at?: string | null
+          brief_error?: string | null
+        }
+      }
+      peer_coffeechat_feedback: {
+        Relationships: []
+        Row: {
+          id: string
+          chat_id: string
+          application_id: string
+          reviewer_id: string
+          reviewer_role: 'host' | 'applicant'
+          overall_rating: number
+          would_connect_again: boolean | null
+          feedback_tags: string[]
+          comment: string | null
+          brief_helpful: boolean | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          chat_id: string
+          application_id: string
+          reviewer_id: string
+          reviewer_role: 'host' | 'applicant'
+          overall_rating: number
+          would_connect_again?: boolean | null
+          feedback_tags?: string[]
+          comment?: string | null
+          brief_helpful?: boolean | null
+          created_at?: string
+        }
+        Update: {
+          reviewer_role?: 'host' | 'applicant'
+          overall_rating?: number
+          would_connect_again?: boolean | null
+          feedback_tags?: string[]
+          comment?: string | null
+          brief_helpful?: boolean | null
         }
       }
       community_posts: {
@@ -492,6 +541,131 @@ export type Database = {
           status?: 'pending' | 'reviewed' | 'action_taken'
         }
       }
+      vcx_feed_subscriptions: {
+        Relationships: []
+        Row: {
+          id: string
+          user_id: string | null
+          email: string
+          active: boolean | null
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id?: string | null
+          email: string
+          active?: boolean | null
+          created_at?: string | null
+        }
+        Update: {
+          user_id?: string | null
+          email?: string
+          active?: boolean | null
+        }
+      }
+      vcx_newsletter_campaigns: {
+        Relationships: []
+        Row: {
+          id: string
+          slug: string
+          subject: string
+          preview_text: string | null
+          html_body: string
+          status: 'draft' | 'sending' | 'sent' | 'archived'
+          sent_at: string | null
+          created_by: string | null
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          slug: string
+          subject: string
+          preview_text?: string | null
+          html_body: string
+          status?: 'draft' | 'sending' | 'sent' | 'archived'
+          sent_at?: string | null
+          created_by?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          slug?: string
+          subject?: string
+          preview_text?: string | null
+          html_body?: string
+          status?: 'draft' | 'sending' | 'sent' | 'archived'
+          sent_at?: string | null
+          created_by?: string | null
+          updated_at?: string | null
+        }
+      }
+      vcx_newsletter_recipients: {
+        Relationships: []
+        Row: {
+          id: string
+          campaign_id: string
+          subscription_id: string | null
+          email: string
+          send_token: string
+          sent_at: string | null
+          opened_at: string | null
+          first_clicked_at: string | null
+          unsubscribed_at: string | null
+          bounce_reason: string | null
+        }
+        Insert: {
+          id?: string
+          campaign_id: string
+          subscription_id?: string | null
+          email: string
+          send_token?: string
+          sent_at?: string | null
+          opened_at?: string | null
+          first_clicked_at?: string | null
+          unsubscribed_at?: string | null
+          bounce_reason?: string | null
+        }
+        Update: {
+          campaign_id?: string
+          subscription_id?: string | null
+          email?: string
+          send_token?: string
+          sent_at?: string | null
+          opened_at?: string | null
+          first_clicked_at?: string | null
+          unsubscribed_at?: string | null
+          bounce_reason?: string | null
+        }
+      }
+      vcx_newsletter_events: {
+        Relationships: []
+        Row: {
+          id: number
+          recipient_id: string
+          type: 'sent' | 'open' | 'click' | 'unsubscribe' | 'bounce' | 'complaint'
+          url: string | null
+          user_agent: string | null
+          ip_hash: string | null
+          created_at: string | null
+        }
+        Insert: {
+          id?: number
+          recipient_id: string
+          type: 'sent' | 'open' | 'click' | 'unsubscribe' | 'bounce' | 'complaint'
+          url?: string | null
+          user_agent?: string | null
+          ip_hash?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          recipient_id?: string
+          type?: 'sent' | 'open' | 'click' | 'unsubscribe' | 'bounce' | 'complaint'
+          url?: string | null
+          user_agent?: string | null
+          ip_hash?: string | null
+        }
+      }
     }
     Views: Record<string, never>
     Functions: {
@@ -522,6 +696,10 @@ export type Database = {
           recommendation_id: string | null
           expires_at: string
         }>
+      }
+      vcx_get_recipient_by_token: {
+        Args: { p_token: string }
+        Returns: Database['public']['Tables']['vcx_newsletter_recipients']['Row']
       }
       vcx_get_user_info: {
         Args: { p_user_id: string }

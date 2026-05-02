@@ -8,17 +8,21 @@ import { linkedinUrlSchema } from '@/lib/validation/linkedin'
 export const dynamic = 'force-dynamic'
 
 const updateSchema = z.object({
-  name: z.string().min(1).max(100).optional(),
-  current_company: z.string().min(1).max(200).optional(),
-  title: z.string().min(1).max(200).optional(),
+  name: z.string().trim().min(1, '이름을 입력해주세요').max(100).optional(),
+  current_company: z.string().trim().min(1, '현재 회사를 입력해주세요').max(200).optional(),
+  title: z.string().trim().min(1, '직함을 입력해주세요').max(200).optional(),
   linkedin_url: linkedinUrlSchema.optional(),
   years_of_experience: z.number().int().min(0).max(60).optional().nullable(),
-  bio: z.string().max(1000).optional(),
-  industry: z.string().max(100).optional().nullable(),
-  location: z.string().max(100).optional().nullable(),
+  bio: z.string().trim().max(1000).optional().nullable(),
+  industry: z.string().trim().max(100).optional().nullable(),
+  location: z.string().trim().max(100).optional().nullable(),
   is_open_to_chat: z.boolean().optional(),
   profile_visibility: z.enum(['members_only', 'corporate_only', 'all']).optional(),
-  professional_fields: z.array(z.string()).max(10).optional(),
+  professional_fields: z
+    .array(z.string().trim().min(1, '빈 태그는 저장할 수 없습니다').max(40, '태그는 40자 이하로 입력해주세요'))
+    .max(10, '전문 분야는 최대 10개까지 입력할 수 있습니다')
+    .transform((fields) => Array.from(new Set(fields)))
+    .optional(),
 })
 
 export async function GET(_request: NextRequest) {

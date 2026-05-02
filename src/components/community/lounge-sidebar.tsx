@@ -6,12 +6,12 @@ export type LoungeCatKey = LoungeCategoryKey
 
 export const LOUNGE_CATS = [
   { key: 'all' as LoungeCatKey, icon: '▤', label: '전체' },
-  { key: 'reading' as LoungeCatKey, icon: '📚', label: '독서 & 인사이트' },
   { key: 'career' as LoungeCatKey, icon: '💼', label: '이직 이야기' },
-  { key: 'company' as LoungeCatKey, icon: '🏢', label: '회사 생활' },
   { key: 'leadership' as LoungeCatKey, icon: '🧠', label: '리더십 & 조직' },
+  { key: 'salary' as LoungeCatKey, icon: '💰', label: '연봉 협상' },
+  { key: 'burnout' as LoungeCatKey, icon: '🌿', label: '번아웃·회복' },
   { key: 'productivity' as LoungeCatKey, icon: '⚡', label: '생산성 & Tech' },
-  { key: 'casual' as LoungeCatKey, icon: '☕', label: '가볍게' },
+  { key: 'company_review' as LoungeCatKey, icon: '🏢', label: '이 회사 어때요?' },
 ]
 
 interface LoungeSidebarProps {
@@ -89,7 +89,7 @@ export function LoungeSidebar({ active, counts, onSelect }: LoungeSidebarProps) 
               style={{
                 fontSize: '11px',
                 padding: '2px 7px',
-                borderRadius: '100px',
+                borderRadius: 0,
                 background: isActive ? 'rgba(201,168,76,0.12)' : 'rgba(0,0,0,0.05)',
                 color: isActive ? '#a07c2a' : '#b0a898',
                 fontWeight: isActive ? 700 : 400,

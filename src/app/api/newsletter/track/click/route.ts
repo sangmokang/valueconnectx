@@ -32,17 +32,17 @@ export async function GET(request: NextRequest) {
   if (token) {
     try {
       const supabase = await createClient()
-      const { data: recipient } = await (supabase as any).rpc('vcx_get_recipient_by_token', { p_token: token })
+      const { data: recipient } = await supabase.rpc('vcx_get_recipient_by_token', { p_token: token })
 
       if (recipient?.id) {
         await Promise.all([
           recipient.first_clicked_at
             ? Promise.resolve()
-            : (supabase as any)
+            : supabase
                 .from('vcx_newsletter_recipients')
                 .update({ first_clicked_at: new Date().toISOString() })
                 .eq('id', recipient.id),
-          (supabase as any).from('vcx_newsletter_events').insert({
+          supabase.from('vcx_newsletter_events').insert({
             recipient_id: recipient.id,
             type: 'click',
             url: destination,

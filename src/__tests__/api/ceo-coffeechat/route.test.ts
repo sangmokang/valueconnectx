@@ -300,7 +300,7 @@ describe('POST /api/ceo-coffeechat', () => {
 
     expect(res.status).toBe(400)
     const body = await res.json()
-    expect(body.error).toBe('헤드헌팅 수수료 원칙에 동의해야 합니다')
+    expect(body.error).toBe('성사 연결 운영 원칙에 동의해야 합니다')
   })
 
   it('returns 400 when location_type is invalid', async () => {

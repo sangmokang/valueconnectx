@@ -1,53 +1,163 @@
-import { test, expect } from "@playwright/test";
-import { loginAs, TEST_USER } from "../helpers/auth";
+import { test, expect, type Page } from '@playwright/test'
+import { loginAs, TEST_USER } from '../helpers/auth'
 
-test.describe("Phase 1 Slice — S2: 큐레이션 피드 열람 및 관심사 설정", () => {
-  // ── Golden Path ──────────────────────────────────────────────────────────
+const FEED_ITEMS = [
+  {
+    id: 'feed-ai-1',
+    company: 'Northstar AI',
+    company_tag: 'AI Infra',
+    role: 'Engineering Manager',
+    level: 'Senior',
+    team_size: '50-100명',
+    salary_band: '협의',
+    location: 'Remote',
+    tags: ['AI / ML', '딥테크'],
+    summary: 'AI 인프라 팀의 채용과 실행 리듬을 책임지는 역할',
+    exclusive: true,
+    published_at: '2026-05-01T09:00:00+09:00',
+    user_response: null,
+  },
+  {
+    id: 'feed-fintech-1',
+    company: '토스',
+    company_tag: '핀테크 B2B',
+    role: 'Product Lead',
+    level: 'Lead',
+    team_size: '20-50명',
+    salary_band: '협의',
+    location: '서울',
+    tags: ['핀테크 B2B', 'Product'],
+    summary: '초기 GTM을 제품 관점에서 설계할 리드 포지션',
+    exclusive: false,
+    published_at: '2026-04-30T09:00:00+09:00',
+    user_response: null,
+  },
+]
 
-  test.skip("golden path: 로그인 후 /feed 접근 → 피드 카드 렌더링 확인", async ({ page }) => {
-    // TODO(Sprint 2): loginAs(TEST_USER) → /feed 이동 →
-    //   피드 카드 컴포넌트(data-testid="feed-card" 또는 유사) 1개 이상 노출 확인
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §2.1
-    await loginAs(page, TEST_USER);
-    await page.goto("/feed");
-    await page.waitForLoadState("networkidle");
-    await expect(page.locator("body")).toBeVisible();
-  });
+async function mockFeedApis(
+  page: Page,
+  options?: {
+    chips?: string[]
+    items?: typeof FEED_ITEMS
+    onFeedRequest?: (url: string) => void
+  }
+) {
+  const chips = options?.chips ?? []
+  const items = options?.items ?? FEED_ITEMS
 
-  test.skip("golden path: 관심사(interest) 태그 선택 → 피드 업데이트 확인", async ({ page }) => {
-    // TODO(Sprint 2): /feed → 관심사 필터/태그 클릭 →
-    //   피드가 해당 관심사에 맞게 재렌더링되는지 확인 (카드 수 변화 또는 태그 활성화 상태)
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §2.2
-    await loginAs(page, TEST_USER);
-    await page.goto("/feed");
-    await expect(page.locator("body")).toBeVisible();
-  });
+  await page.route(/\/api\/feed\/interests$/, async (route) => {
+    if (route.request().method() === 'POST') {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ data: { chips } }),
+      })
+      return
+    }
 
-  test.skip("golden path: 피드 카드 클릭 → 상세 페이지 이동", async ({ page }) => {
-    // TODO(Sprint 3): /feed 첫 번째 카드 클릭 →
-    //   상세 URL(/feed/[id] 또는 /positions/[id])로 이동 확인
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §2.3
-    await loginAs(page, TEST_USER);
-    await page.goto("/feed");
-    await expect(page).toHaveURL(/\/feed/);
-  });
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ chips }),
+    })
+  })
 
-  // ── Error Cases ───────────────────────────────────────────────────────────
+  await page.route(/\/api\/feed(?:\?.*)?$/, async (route) => {
+    options?.onFeedRequest?.(route.request().url())
+    const url = new URL(route.request().url())
+    const tags = (url.searchParams.get('tags') ?? '')
+      .split(',')
+      .map((tag) => tag.trim())
+      .filter(Boolean)
+    const data = tags.length > 0
+      ? items.filter((item) => item.tags.some((tag) => tags.includes(tag)))
+      : items
 
-  test.skip("error: 비인증 사용자 /feed 접근 → 제한된 뷰 또는 로그인 유도", async ({ page }) => {
-    // TODO(Sprint 2): 로그인 없이 /feed 접근 →
-    //   "로그인이 필요합니다" 메시지 또는 로그인 버튼 노출 확인
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §2.E1
-    await page.goto("/feed");
-    await expect(page.locator("body")).toBeVisible();
-  });
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ data, total: data.length, page: 1, limit: 10 }),
+    })
+  })
+}
 
-  test.skip("error: 피드 데이터 없음 → 빈 상태(empty state) UI 표시", async ({ page }) => {
-    // TODO(Sprint 3): 관심사 필터 전체 해제 또는 데이터 없는 조건에서
-    //   "아직 피드가 없습니다" 등 empty state 컴포넌트 렌더링 확인
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §2.E2
-    await loginAs(page, TEST_USER);
-    await page.goto("/feed");
-    await expect(page.locator("body")).toBeVisible();
-  });
-});
+test.describe('Phase 1 Slice — S2: 큐레이션 피드 열람 및 관심사 설정', () => {
+  test('golden path: 로그인 후 /feed 접근 → 피드 카드 렌더링 확인', async ({ page }) => {
+    await mockFeedApis(page, { chips: ['AI / ML'] })
+    await loginAs(page, TEST_USER)
+
+    await page.goto('/feed')
+
+    await expect(page.getByRole('heading', { name: /이번 주 큐레이션/ })).toBeVisible()
+    await expect(page.getByTestId('feed-card')).toHaveCount(1)
+    await expect(page.getByText('Northstar AI')).toBeVisible()
+  })
+
+  test('golden path: 관심사 태그 선택 → 피드 업데이트 확인', async ({ page }) => {
+    const feedRequests: string[] = []
+    await mockFeedApis(page, { chips: [], onFeedRequest: (url) => feedRequests.push(url) })
+    await loginAs(page, TEST_USER)
+
+    await page.goto('/feed')
+    await page.getByRole('button', { name: '딥테크' }).click()
+
+    await expect(page.getByTestId('feed-card')).toHaveCount(1)
+    await expect(page.getByText('Northstar AI')).toBeVisible()
+    expect(feedRequests.some((url) => decodeURIComponent(url).includes('tags=딥테크'))).toBe(true)
+  })
+
+  test('golden path: 피드 카드 상세 보기 → 상세 모달 표시', async ({ page }) => {
+    const analyticsLogs: string[] = []
+    page.on('console', (message) => {
+      if (message.type() === 'log') analyticsLogs.push(message.text())
+    })
+
+    await mockFeedApis(page)
+    await loginAs(page, TEST_USER)
+
+    await page.goto('/feed')
+    await page.getByRole('button', { name: /상세 보기/ }).first().click()
+
+    const dialog = page.getByRole('dialog')
+    await expect(dialog).toBeVisible()
+    await expect(dialog.getByRole('heading', { name: 'Engineering Manager' })).toBeVisible()
+    await expect.poll(() =>
+      analyticsLogs.some((log) =>
+        log.includes('[Analytics] trackEvent: feed_item_click')
+      )
+    ).toBe(true)
+  })
+
+  test('mobile: 360px 폭에서 피드 화면 가로 overflow가 없다', async ({ page }) => {
+    await page.setViewportSize({ width: 360, height: 740 })
+    await mockFeedApis(page, { chips: ['AI / ML'] })
+    await loginAs(page, TEST_USER)
+
+    await page.goto('/feed')
+    await expect(page.getByRole('heading', { name: /이번 주 큐레이션/ })).toBeVisible()
+
+    const hasHorizontalOverflow = await page.evaluate(() => {
+      const root = document.documentElement
+      return root.scrollWidth > root.clientWidth
+    })
+    expect(hasHorizontalOverflow).toBe(false)
+  })
+
+  test('error: 비인증 사용자 /feed 접근 → 로그인 유도', async ({ page }) => {
+    await mockFeedApis(page)
+
+    await page.goto('/feed')
+
+    await expect(page.getByText('멤버 전용 콘텐츠입니다')).toBeVisible()
+    await expect(page.locator('a[href="/login?redirect=%2Ffeed"]', { hasText: '로그인' })).toBeVisible()
+  })
+
+  test('error: 피드 데이터 없음 → 빈 상태 UI 표시', async ({ page }) => {
+    await mockFeedApis(page, { items: [] })
+    await loginAs(page, TEST_USER)
+
+    await page.goto('/feed')
+
+    await expect(page.getByText('이번 주 큐레이션이 준비 중입니다')).toBeVisible()
+  })
+})
