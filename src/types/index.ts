@@ -160,4 +160,10 @@ export interface FeedItem {
   exclusive: boolean;
   published_at: string;
   user_response: 'yes' | 'skip' | null;
+  // Extended fields (migration 029)
+  item_type?: string | null;
+  source_url?: string | null;
+  source_name?: string | null;
+  headline?: string | null;
+  interest_count?: number;
 }
