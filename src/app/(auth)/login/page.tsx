@@ -6,27 +6,27 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   const params = await searchParams
 
   return (
-    <div style={{ maxWidth: '420px', width: '100%' }}>
-      <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-        <span style={{ fontFamily: 'Georgia, serif', fontSize: '24px', fontWeight: 800, color: '#f0ebe2' }}>ValueConnect</span>
-        <span style={{ fontFamily: 'Georgia, serif', fontSize: '24px', fontWeight: 800, color: '#c9a84c' }}>X</span>
+    <div className="w-full max-w-[420px]">
+      <div className="mb-10 text-center">
+        <span className="font-vcx-serif text-[24px] font-extrabold text-vcx-beige">ValueConnect</span>
+        <span className="font-vcx-serif text-[24px] font-extrabold text-vcx-gold">X</span>
       </div>
-      <div style={{ background: '#f0ebe2', padding: '48px 36px', borderRadius: 0 }}>
-        <div style={{ width: '32px', height: '1.5px', background: '#c9a84c', margin: '0 auto 24px' }} />
-        <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '22px', fontWeight: 800, color: '#1a1a1a', textAlign: 'center', margin: '0 0 8px', letterSpacing: '-0.5px' }}>
+      <div className="bg-vcx-beige px-9 py-12">
+        <div className="mx-auto mb-6 h-[1.5px] w-8 bg-vcx-gold" />
+        <h1 className="font-vcx-serif text-[22px] font-extrabold text-vcx-dark text-center mt-0 mb-2 tracking-[-0.5px]">
           당신은 이미 검증되었습니다
         </h1>
-        <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: '#888', textAlign: 'center', margin: '0 0 32px' }}>
+        <p className="font-vcx-sans text-[14px] text-vcx-sub-4 text-center mt-0 mb-8">
           초대된 멤버만 접근할 수 있습니다
         </p>
         <LoginForm redirectTo={params.redirect} />
-        <div style={{ textAlign: 'center', marginTop: '20px' }}>
-          <a href="/forgot-password" style={{ display: 'inline-flex', minHeight: '36px', alignItems: 'center', fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#999', textDecoration: 'none' }}>비밀번호를 잊으셨나요?</a>
+        <div className="mt-5 text-center">
+          <a href="/forgot-password" className="inline-flex min-h-[36px] items-center font-vcx-sans text-[12px] text-vcx-sub-5 no-underline">비밀번호를 잊으셨나요?</a>
         </div>
       </div>
-      <div style={{ textAlign: 'center', marginTop: '24px' }}>
-        <span style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'rgba(240,235,226,0.5)' }}>초대 코드가 있으신가요? </span>
-        <a href="/invite/accept" style={{ display: 'inline-flex', minHeight: '36px', alignItems: 'center', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#c9a84c', textDecoration: 'none', fontWeight: 600 }}>초대 수락하기 →</a>
+      <div className="mt-6 text-center">
+        <span className="font-vcx-sans text-[13px] text-vcx-beige/50">초대 코드가 있으신가요? </span>
+        <a href="/invite/accept" className="inline-flex min-h-[36px] items-center font-vcx-sans text-[13px] font-semibold text-vcx-gold no-underline">초대 수락하기 →</a>
       </div>
     </div>
   )

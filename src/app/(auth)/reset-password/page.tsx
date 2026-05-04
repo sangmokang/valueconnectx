@@ -2,15 +2,15 @@ import { ResetPasswordForm } from '@/components/auth/reset-password-form'
 
 export default function ResetPasswordPage() {
   return (
-    <div style={{ maxWidth: '420px', width: '100%' }}>
-      <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-        <span style={{ fontFamily: 'Georgia, serif', fontSize: '24px', fontWeight: 800, color: '#f0ebe2' }}>ValueConnect</span>
-        <span style={{ fontFamily: 'Georgia, serif', fontSize: '24px', fontWeight: 800, color: '#c9a84c' }}>X</span>
+    <div className="w-full max-w-[420px]">
+      <div className="mb-10 text-center">
+        <span className="font-vcx-serif text-[24px] font-extrabold text-vcx-beige">ValueConnect</span>
+        <span className="font-vcx-serif text-[24px] font-extrabold text-vcx-gold">X</span>
       </div>
-      <div style={{ background: '#f0ebe2', padding: '48px 36px', borderRadius: 0 }}>
-        <div style={{ width: '32px', height: '1.5px', background: '#c9a84c', margin: '0 auto 24px' }} />
-        <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '22px', fontWeight: 800, color: '#1a1a1a', textAlign: 'center', margin: '0 0 8px' }}>새 비밀번호 설정</h1>
-        <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: '#888', textAlign: 'center', margin: '0 0 32px' }}>새로운 비밀번호를 입력해주세요</p>
+      <div className="bg-vcx-beige px-9 py-12">
+        <div className="mx-auto mb-6 h-[1.5px] w-8 bg-vcx-gold" />
+        <h1 className="font-vcx-serif text-[22px] font-extrabold text-vcx-dark text-center mt-0 mb-2">새 비밀번호 설정</h1>
+        <p className="font-vcx-sans text-[14px] text-vcx-sub-4 text-center mt-0 mb-8">새로운 비밀번호를 입력해주세요</p>
         <ResetPasswordForm />
       </div>
     </div>
