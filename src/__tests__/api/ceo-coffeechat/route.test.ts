@@ -272,7 +272,8 @@ describe('POST /api/ceo-coffeechat', () => {
       return {}
     })
 
-    const { title: _omit, ...bodyWithoutTitle } = validSessionBody
+    const bodyWithoutTitle = { ...validSessionBody }
+    delete (bodyWithoutTitle as Partial<typeof validSessionBody>).title
     const req = makePostRequest(bodyWithoutTitle)
     const res = await POST(req)
 

@@ -93,9 +93,10 @@ describe('GET /api/peer-coffeechat/[id]/brief', () => {
     expect(body.brief).toBe('참여자가 볼 AI Brief입니다.')
     expect(body.briefGeneratedAt).toBe('2026-05-01T10:00:00.000Z')
     expect(body.applicationId).toBe('00000000-0000-4000-8000-000000000401')
+    expect(body.isFallback).toBe(false)
   })
 
-  it('수락된 호스트에게 저장된 브리프가 없으면 안전한 fallback을 반환한다', async () => {
+  it('수락된 호스트에게 저장된 브리프가 없으면 한국어 기본 안내를 반환한다', async () => {
     mocks.mockGetUser.mockResolvedValue({ data: { user: HOST_USER }, error: null })
     mocks.mockFrom.mockImplementation((table: string) => {
       if (table === 'peer_coffee_chats') {
@@ -123,9 +124,11 @@ describe('GET /api/peer-coffeechat/[id]/brief', () => {
 
     expect(res.status).toBe(200)
     const body = await res.json()
-    expect(body.brief).toContain('[AI Brief fallback]')
+    expect(body.brief).toContain('[AI 브리프 기본 안내]')
+    expect(body.brief).toContain('AI 브리프 생성 환경이 준비되지 않아 기본 브리프를 제공합니다.')
     expect(body.brief).toContain('커리어 전환 커피챗')
     expect(body.applicationId).toBe('00000000-0000-4000-8000-000000000401')
+    expect(body.isFallback).toBe(true)
   })
 
   it('참여자가 아닌 사용자는 브리프 접근이 거부된다', async () => {

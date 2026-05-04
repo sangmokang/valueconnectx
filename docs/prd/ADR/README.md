@@ -102,6 +102,6 @@ VCX는 지난 30일간 **PRD 3회 개정**과 **5개 대형 방향 피봇 제안
 | ADR-0005 | Domain Expert Routing — not VCX | Accepted | 2026-04-20 | 2026-04-22 |
 | ADR-0006 | Archive PRD v6.1 | Accepted | 2026-04-19 | — |
 | ADR-0007 | CDO rev4 Phase 2 quarantine | Accepted | 2026-04-19 | — |
-| **ADR-0008** | **Sprint Evidence Ledger + Harness L4/L5** | **Proposed (Cooldown)** | **2026-04-24** | **2026-04-26 예정** |
+| ADR-0008 | Sprint Evidence Ledger + Harness 워크트리 opt-in | Accepted | 2026-04-24 | 2026-04-26 |
 
 (ADR 추가 시 위 표 수동 갱신. `scripts/adr-index.sh` Sprint 2 작성 예정으로 자동화 대체.)

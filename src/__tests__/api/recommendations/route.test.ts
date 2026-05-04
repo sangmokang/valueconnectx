@@ -79,7 +79,7 @@ describe('POST /api/recommendations', () => {
     const res = await POST(makeRequest({ recommended_email: 'a@b.com', recommended_name: 'A', member_tier: 'core' }))
     expect(res.status).toBe(403)
     const body = await res.json()
-    expect(body.error).toBe('Core Member만 추천할 수 있습니다')
+    expect(body.error).toBe('코어 멤버만 추천할 수 있습니다')
   })
 
   it('returns 403 when member is inactive', async () => {

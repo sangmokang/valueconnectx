@@ -28,20 +28,27 @@ export async function sendNotification(
 
   // 1. In-app notification insert (admin client bypasses RLS)
   try {
-    await adminClient.from('vcx_notifications').insert({
+    const { error } = await adminClient.from('vcx_notifications').insert({
       user_id: userId,
       type,
       title: data.title,
       body: data.body || null,
       link: data.link || null,
     })
+    if (error) {
+      console.error('Notification insert failed:', error)
+    }
   } catch (error) {
     console.error('Notification insert failed:', error)
   }
 
   // 2. Email notification (best-effort)
   try {
-    const { data: userData } = await adminClient.auth.admin.getUserById(userId)
+    const { data: userData, error } = await adminClient.auth.admin.getUserById(userId)
+    if (error) {
+      console.error('Notification email recipient lookup failed:', error)
+      return
+    }
     if (userData?.user?.email) {
       await sendNotificationEmail({
         to: userData.user.email,

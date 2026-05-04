@@ -54,6 +54,16 @@ describe('POST /api/feed/[id]/response', () => {
     expect(res.status).toBe(400)
   })
 
+  it('returns 400 for an invalid feed item id', async () => {
+    const res = await POST(makePostRequest({ response: 'yes' }), params(''))
+
+    expect(res.status).toBe(400)
+    await expect(res.json()).resolves.toMatchObject({
+      error: '유효하지 않은 피드 항목입니다',
+      code: 'BAD_REQUEST',
+    })
+  })
+
   it('upserts the authenticated user response for a feed item', async () => {
     const saved = {
       id: 'response-1',
@@ -84,6 +94,30 @@ describe('DELETE /api/feed/[id]/response', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mockGetVcxUser.mockResolvedValue(USER)
+  })
+
+  it('returns 401 when not authenticated', async () => {
+    mockGetVcxUser.mockResolvedValue(null)
+
+    const res = await DELETE(
+      new NextRequest('http://localhost/api/feed/feed-1/response'),
+      params()
+    )
+
+    expect(res.status).toBe(401)
+  })
+
+  it('returns 400 for an invalid feed item id', async () => {
+    const res = await DELETE(
+      new NextRequest('http://localhost/api/feed/feed-1/response'),
+      params('')
+    )
+
+    expect(res.status).toBe(400)
+    await expect(res.json()).resolves.toMatchObject({
+      error: '유효하지 않은 피드 항목입니다',
+      code: 'BAD_REQUEST',
+    })
   })
 
   it('deletes only the authenticated user response for a feed item', async () => {

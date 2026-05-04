@@ -253,6 +253,50 @@ describe('POST /api/peer-coffeechat/[id]/apply', () => {
     expect(body.data.id).toBe('app-new-1')
   })
 
+  it('returns 201 even when notification delivery fails', async () => {
+    mocks.mockGetUser.mockResolvedValue({ data: { user: MEMBER_USER }, error: null })
+    mocks.mockSendNotification.mockRejectedValue(new Error('notification unavailable'))
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+
+    const newApplication = {
+      id: 'app-new-1',
+      chat_id: CHAT_ID,
+      applicant_id: MEMBER_USER.id,
+      message: '신청합니다',
+      status: 'pending',
+    }
+
+    mocks.mockFrom.mockImplementation((table: string) => {
+      if (table === 'vcx_members') return mockActiveMember(MEMBER_USER.id)
+      if (table === 'peer_coffee_chats') {
+        return {
+          select: vi.fn().mockReturnValue({
+            eq: vi.fn().mockReturnValue({
+              single: vi.fn().mockResolvedValue({ data: openChat, error: null }),
+            }),
+          }),
+        }
+      }
+      if (table === 'peer_coffee_applications') {
+        return {
+          insert: vi.fn().mockReturnValue({
+            select: vi.fn().mockReturnValue({
+              single: vi.fn().mockResolvedValue({ data: newApplication, error: null }),
+            }),
+          }),
+        }
+      }
+      return {}
+    })
+
+    const res = await POST(makePostRequest(CHAT_ID, { message: '신청합니다' }), makeParams())
+
+    expect(res.status).toBe(201)
+    await expect(res.json()).resolves.toEqual({ data: newApplication })
+    expect(errorSpy).toHaveBeenCalledWith('Peer application notification failed:', expect.any(Error))
+    errorSpy.mockRestore()
+  })
+
   it('returns 500 when DB insert fails for non-duplicate reason', async () => {
     mocks.mockGetUser.mockResolvedValue({ data: { user: MEMBER_USER }, error: null })
 

@@ -6,6 +6,7 @@ import { ApplicationList } from '@/components/coffeechat/application-list'
 import { ApplyButton } from '@/components/coffeechat/apply-button'
 import { PreBriefCard } from '@/components/coffeechat/pre-brief-card'
 import { FeedbackForm } from '@/components/coffeechat/feedback-form'
+import { attachAcceptedApplicantEmails } from '@/lib/coffeechat-contact'
 import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
@@ -93,7 +94,7 @@ export default async function SessionDetailPage({ params }: PageProps) {
     applicant: {
       id: string
       name: string
-      email: string
+      email?: string | null
       title?: string | null
       current_company?: string | null
       member_tier: string
@@ -103,6 +104,7 @@ export default async function SessionDetailPage({ params }: PageProps) {
     status: 'pending' | 'accepted' | 'rejected'
     reviewed_at?: string | null
     created_at: string
+    contact_email?: string | null
   }> = []
 
   if (isHost) {
@@ -110,11 +112,11 @@ export default async function SessionDetailPage({ params }: PageProps) {
       .from('vcx_coffee_applications')
       .select(`
         *,
-        applicant:vcx_members(id, name, email, title, current_company, member_tier, avatar_url)
+        applicant:vcx_members(id, name, title, current_company, member_tier, avatar_url)
       `)
       .eq('session_id', id)
       .order('created_at', { ascending: true })
-    applications = (apps ?? []) as unknown as typeof applications
+    applications = await attachAcceptedApplicantEmails((apps ?? []) as unknown as typeof applications)
   }
 
   const host = (session.host ?? {}) as {

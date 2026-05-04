@@ -8,7 +8,7 @@ export const CATEGORIES = {
   leadership: '조직·리더십',
   salary: '연봉 협상',
   burnout: '번아웃',
-  productivity: '생산성·News',
+  productivity: '생산성·뉴스',
   company_review: '이 회사 어때요?',
 } as const
 
@@ -19,7 +19,7 @@ export function CategoryTabs({ current }: { current?: CategoryKey }) {
   const searchParams = useSearchParams()
 
   function buildHref(cat?: CategoryKey) {
-    const params = new URLSearchParams(searchParams.toString())
+    const params = new URLSearchParams(searchParams?.toString() ?? '')
     if (cat) {
       params.set('category', cat)
     } else {

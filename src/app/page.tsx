@@ -23,7 +23,7 @@ export default function ServicePage() {
           <div className="flex min-w-0 flex-col">
             <div className="mb-6 flex items-center gap-3">
               <span className="h-px w-8 bg-vcx-gold" />
-              <span className="vcx-section-label">VALUECONNECT X · 초대 전용 네트워크</span>
+              <span className="vcx-section-label">ValueConnect X · 초대 전용 네트워크</span>
             </div>
             <h1 className="font-vcx-serif text-[36px] font-bold leading-[1.06] text-vcx-white sm:text-[54px] lg:text-[64px]">
               <span className="block whitespace-nowrap">탁월한 사람들이</span>
@@ -36,14 +36,14 @@ export default function ServicePage() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/feed"
-                className="inline-flex h-12 items-center justify-center gap-2 bg-vcx-gold px-6 text-[13px] font-bold uppercase tracking-[0.14em] text-vcx-dark transition-colors hover:bg-vcx-gold/90"
+                className="inline-flex h-12 items-center justify-center gap-2 bg-vcx-gold px-6 text-[14px] font-bold text-vcx-dark transition-colors hover:bg-vcx-gold/90"
               >
                 큐레이션 시작
                 <ArrowRight className="size-4" aria-hidden="true" />
               </Link>
               <Link
                 href="/directory"
-                className="inline-flex h-12 items-center justify-center border border-vcx-muted-dark bg-vcx-surface-soft px-6 text-[13px] font-bold uppercase tracking-[0.14em] text-vcx-white transition-colors hover:border-vcx-gold hover:text-vcx-gold"
+                className="inline-flex h-12 items-center justify-center border border-vcx-muted-dark bg-vcx-surface-soft px-6 text-[14px] font-bold text-vcx-white transition-colors hover:border-vcx-gold hover:text-vcx-gold"
               >
                 멤버 디렉토리
               </Link>
@@ -77,7 +77,7 @@ export default function ServicePage() {
                   <div className="min-w-0">
                     <div className="flex items-center justify-between gap-3">
                       <p className="text-[15px] font-bold text-vcx-white">{step.title}</p>
-                      <span className="font-vcx-sans text-[11px] font-bold text-vcx-silver">
+                      <span className="font-vcx-sans text-[12px] font-bold text-vcx-silver">
                         0{index + 1}
                       </span>
                     </div>
@@ -117,14 +117,14 @@ export default function ServicePage() {
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/feed"
-                className="inline-flex h-12 items-center justify-center gap-2 bg-vcx-gold px-6 text-[13px] font-bold uppercase tracking-[0.14em] text-vcx-dark transition-colors hover:bg-vcx-gold/90"
+                className="inline-flex h-12 items-center justify-center gap-2 bg-vcx-gold px-6 text-[14px] font-bold text-vcx-dark transition-colors hover:bg-vcx-gold/90"
               >
                 큐레이션 피드 보기
                 <ArrowRight className="size-4" aria-hidden="true" />
               </Link>
               <Link
                 href="/directory"
-                className="inline-flex h-12 items-center justify-center border border-vcx-muted-dark bg-transparent px-6 text-[13px] font-bold uppercase tracking-[0.14em] text-vcx-white transition-colors hover:border-vcx-gold hover:text-vcx-gold"
+                className="inline-flex h-12 items-center justify-center border border-vcx-muted-dark bg-transparent px-6 text-[14px] font-bold text-vcx-white transition-colors hover:border-vcx-gold hover:text-vcx-gold"
               >
                 멤버 소개 보기
               </Link>

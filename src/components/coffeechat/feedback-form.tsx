@@ -58,11 +58,15 @@ export function FeedbackForm({
         const d = await res.json()
         setError(d.error ?? '피드백 제출에 실패했습니다')
       } else {
-        trackEvent('session_feedback_submit', {
-          session_id: sessionId,
-          application_id: applicationId,
-          type: apiBasePath === 'peer-coffeechat' ? 'peer' : 'ceo',
-        })
+        try {
+          trackEvent('session_feedback_submit', {
+            session_id: sessionId,
+            application_id: applicationId,
+            type: apiBasePath === 'peer-coffeechat' ? 'peer' : 'ceo',
+          })
+        } catch {
+          // 피드백 저장 성공이 analytics 설정 상태에 막히지 않도록 한다.
+        }
         console.info('session_feedback_submit', { sessionId, applicationId })
         setSubmitted(true)
         onSubmitted?.()

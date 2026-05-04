@@ -17,7 +17,7 @@ export default async function GNB() {
       {/* Logo */}
       <Link
         href="/"
-        className="no-underline font-[Georgia,serif] font-extrabold text-base tracking-tight text-[#1a1a1a]"
+        className="flex min-h-11 items-center no-underline font-[Georgia,serif] font-extrabold text-base tracking-tight text-[#1a1a1a]"
       >
         ValueConnect <span className="text-[#c9a84c]">X</span>
       </Link>
@@ -26,7 +26,7 @@ export default async function GNB() {
       <DesktopNav currentPath={currentPath} />
 
       {/* Desktop Right */}
-      <div className="hidden md:flex items-center gap-4">
+      <div className="hidden lg:flex items-center gap-4">
         {user ? (
           <>
             <NotificationBell />
@@ -36,13 +36,13 @@ export default async function GNB() {
           <>
             <Link
               href="/login"
-              className="text-[13.5px] text-[#666] no-underline"
+              className="inline-flex min-h-9 items-center text-[13.5px] text-[#666] no-underline"
             >
               로그인
             </Link>
             <Link
               href="/invite/accept"
-              className="text-[13px] bg-[#1a1a1a] text-[#f5f0e8] px-[18px] py-[8px] no-underline inline-block"
+              className="inline-flex min-h-9 items-center bg-[#1a1a1a] px-[18px] text-[13px] text-[#f5f0e8] no-underline"
             >
               초대 확인하기 →
             </Link>
@@ -51,7 +51,7 @@ export default async function GNB() {
       </div>
 
       {/* Mobile Hamburger */}
-      <div className="md:hidden">
+      <div className="lg:hidden">
         <MobileMenu
           isAuthenticated={!!user}
           userName={user?.name}

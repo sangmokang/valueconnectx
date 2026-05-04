@@ -27,7 +27,7 @@ export const DESIGN_TOKENS = {
 } as const;
 
 export const HERO_COPY = {
-  h1: 'Selective Hiring\n× Selective Talent',
+  h1: '검증된 채용\n× 검증된 인재',
   paragraphs: [
     '기업은 더 적은 인원으로 높은 성과를 요구하고 있으며,\n핵심 인재 역시 아무 기업과도 매칭되지 않습니다.',
     'ValueConnect X는 검증된 핵심 인재와 의사결정자가\n신뢰 기반으로 연결되는 Private Network입니다.',

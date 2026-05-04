@@ -38,5 +38,5 @@ DROP POLICY IF EXISTS "Members can read active positions" ON positions;
 CREATE POLICY "Members can read active positions" ON positions
   FOR SELECT USING (
     status = 'active'
-    OR EXISTS (SELECT 1 FROM members WHERE user_id = auth.uid() AND role IN ('super_admin', 'admin'))
+    OR EXISTS (SELECT 1 FROM vcx_members WHERE id = auth.uid() AND system_role IN ('super_admin', 'admin'))
   );

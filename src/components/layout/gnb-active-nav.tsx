@@ -13,7 +13,7 @@ export function GNBActiveNav({
   badge?: string;
   children: ReactNode;
 }) {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "/";
   const isActive = pathname === href || (href !== "/" && pathname.startsWith(href));
 
   return (
@@ -28,7 +28,7 @@ export function GNBActiveNav({
     >
       {children}
       {badge && (
-        <span className="text-[9px] bg-vcx-gold text-vcx-dark px-[5px] py-[2px] font-extrabold tracking-[0.05em]">
+        <span className="text-[12px] bg-vcx-gold text-vcx-dark px-[6px] py-[2px] font-extrabold tracking-normal leading-tight">
           {badge}
         </span>
       )}

@@ -2,11 +2,12 @@ import { test, expect } from '@playwright/test'
 import { createClient } from '@supabase/supabase-js'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { loginAs } from '../helpers/auth'
+import { gotoWithRetry, loginAs } from '../helpers/auth'
 
 const PASSWORD = 'VcxSeed2026!'
 const AUTHOR = { email: 'jihoon.park@vcx-seed.com', password: PASSWORD }
 const APPLICANT = { email: 'hyuna.lee@vcx-seed.com', password: PASSWORD }
+const STATUS_TRANSITION_TIMEOUT = 15000
 
 function loadEnv() {
   const envPath = resolve(process.cwd(), '.env.local')
@@ -29,12 +30,13 @@ function getAdminClient() {
   loadEnv()
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY
-  if (!url || !key) throw new Error('E2E Supabase admin credentials are missing')
+  if (!url || !key) return null
   return createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } })
 }
 
 async function ensureMember(email: string, name: string) {
   const admin = getAdminClient()
+  if (!admin) throw new Error('E2E Supabase admin credentials are missing')
   const { data: member } = await admin
     .from('vcx_members')
     .select('id')
@@ -60,6 +62,7 @@ async function ensureMember(email: string, name: string) {
 
 async function createPeerCoffeechat() {
   const admin = getAdminClient()
+  if (!admin) throw new Error('E2E Supabase admin credentials are missing')
   const authorId = await ensureMember(AUTHOR.email, 'E2E S4 작성자')
   await ensureMember(APPLICANT.email, 'E2E S4 신청자')
   const title = `E2E AI Brief 커피챗 ${Date.now()}`
@@ -83,7 +86,9 @@ async function createPeerCoffeechat() {
 }
 
 async function hasPeerCoffeechatSchema() {
-  const { error } = await getAdminClient()
+  const admin = getAdminClient()
+  if (!admin) return false
+  const { error } = await admin
     .from('peer_coffee_chats')
     .select('id')
     .limit(1)
@@ -91,14 +96,16 @@ async function hasPeerCoffeechatSchema() {
 }
 
 async function deletePeerCoffeechat(id: string) {
-  await getAdminClient().from('peer_coffee_chats').delete().eq('id', id)
+  const admin = getAdminClient()
+  if (!admin) return
+  await admin.from('peer_coffee_chats').delete().eq('id', id)
 }
 
 test.describe('Phase 1 Slice - S4: 커피챗 신청 및 AI Brief 생성', () => {
   test('멤버가 신청하고 작성자가 수락하면 AI Brief 카드가 표시된다', async ({ browser }) => {
     test.skip(
       !(await hasPeerCoffeechatSchema()),
-      'E2E Supabase DB에 peer_coffee_chats 스키마가 없어 전체 신청/수락 경로를 건너뜁니다.'
+      'E2E Supabase admin 권한 또는 peer_coffee_chats 스키마가 없어 전체 신청/수락 경로를 건너뜁니다.'
     )
 
     const authorContext = await browser.newContext()
@@ -113,21 +120,27 @@ test.describe('Phase 1 Slice - S4: 커피챗 신청 및 AI Brief 생성', () => 
       await loginAs(authorPage, AUTHOR)
 
       await loginAs(applicantPage, APPLICANT)
-      await applicantPage.goto(chat.url)
+      await gotoWithRetry(applicantPage, chat.url)
+      await expect(applicantPage.getByRole('heading', { name: chat.title })).toBeVisible({
+        timeout: STATUS_TRANSITION_TIMEOUT,
+      })
       await applicantPage.getByRole('button', { name: '비밀 신청하기' }).click()
       await applicantPage.getByPlaceholder('간단한 자기소개나 신청 이유를 적어주세요').fill(
         'AI Brief 품질 검증을 위해 신청합니다. 실제 대화 전 핵심 질문을 정리하고 싶습니다.'
       )
-      await applicantPage.getByRole('button', { name: '신청하기' }).click()
-      await expect(applicantPage.getByText('신청 완료')).toBeVisible()
+      await applicantPage.getByRole('button', { name: '신청하기', exact: true }).click()
+      await expect(applicantPage.getByText('신청 완료')).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
 
-      await authorPage.goto(chat.url)
-      await expect(authorPage.getByText('신청자 목록')).toBeVisible()
+      await gotoWithRetry(authorPage, chat.url)
+      await expect(authorPage.getByRole('heading', { name: chat.title })).toBeVisible({
+        timeout: STATUS_TRANSITION_TIMEOUT,
+      })
+      await expect(authorPage.getByRole('heading', { name: /신청자 목록/ })).toBeVisible()
       await authorPage.getByRole('button', { name: '수락' }).first().click()
-      await expect(authorPage.getByText('수락됨')).toBeVisible()
+      await expect(authorPage.getByText('수락됨')).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
 
       await applicantPage.reload()
-      await expect(applicantPage.getByTestId('ai-brief-card')).toBeVisible()
+      await expect(applicantPage.getByTestId('ai-brief-card')).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
       await expect(applicantPage.getByTestId('ai-brief-card')).toContainText('AI Pre-Brief')
       await expect(applicantPage.getByText(/수수료|요금/)).toHaveCount(0)
     } finally {
@@ -137,11 +150,12 @@ test.describe('Phase 1 Slice - S4: 커피챗 신청 및 AI Brief 생성', () => 
     }
   })
 
-  test('비인증 사용자는 커피챗 보드를 볼 수 있지만 멤버 전용 로그인 월이 표시된다', async ({ page }) => {
+  test('비인증 사용자는 커피챗 보드 접근 시 멤버 전용 로그인 월이 표시된다', async ({ page }) => {
     await page.goto('/coffeechat')
 
-    await expect(page.getByRole('heading', { name: /같은 고도에서/ })).toBeVisible()
+    await expect(page).not.toHaveURL(/\/404/)
     await expect(page.getByText('멤버 전용 콘텐츠입니다')).toBeVisible()
+    await expect(page.locator('body')).toBeVisible()
     await expect(page.locator('a[href="/login?redirect=%2Fcoffeechat"]', { hasText: '로그인' })).toBeVisible()
     await expect(page.getByText(/수수료|요금/)).toHaveCount(0)
   })

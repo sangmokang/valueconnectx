@@ -82,7 +82,7 @@ export function ProfileCompletion({
           >
             <span>{item.filled ? '✓' : '○'}</span>
             <span>{item.label}</span>
-            <span className="text-[10px] opacity-60">({item.weight}%)</span>
+            <span className="text-[12px] opacity-70">({item.weight}%)</span>
           </span>
         ))}
       </div>

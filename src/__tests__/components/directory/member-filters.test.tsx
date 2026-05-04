@@ -1,4 +1,4 @@
-import { render, screen, act } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemberFilters } from '@/components/directory/member-filters'
 
@@ -27,11 +27,11 @@ describe('MemberFilters', () => {
     expect(screen.getByPlaceholderText('이름, 회사, 소개 검색...')).toBeInTheDocument()
   })
 
-  it('renders tier toggle buttons: 전체, Core, Endorsed', () => {
+  it('renders tier toggle buttons: 전체, 코어 멤버, 추천 멤버', () => {
     render(<MemberFilters />)
     expect(screen.getByRole('button', { name: '전체' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Core' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Endorsed' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '코어 멤버' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '추천 멤버' })).toBeInTheDocument()
   })
 
   it('renders industry dropdown', () => {
@@ -67,20 +67,20 @@ describe('MemberFilters', () => {
   })
 
   // Tier/industry buttons call updateParams synchronously (no debounce)
-  it('clicking Core tier button calls router.push with tier=core', async () => {
+  it('clicking 코어 멤버 tier button calls router.push with tier=core', async () => {
     const user = userEvent.setup()
     render(<MemberFilters />)
 
-    await user.click(screen.getByRole('button', { name: 'Core' }))
+    await user.click(screen.getByRole('button', { name: '코어 멤버' }))
 
     expect(mockPush).toHaveBeenCalledWith(expect.stringContaining('tier=core'))
   })
 
-  it('clicking Endorsed tier button calls router.push with tier=endorsed', async () => {
+  it('clicking 추천 멤버 tier button calls router.push with tier=endorsed', async () => {
     const user = userEvent.setup()
     render(<MemberFilters />)
 
-    await user.click(screen.getByRole('button', { name: 'Endorsed' }))
+    await user.click(screen.getByRole('button', { name: '추천 멤버' }))
 
     expect(mockPush).toHaveBeenCalledWith(expect.stringContaining('tier=endorsed'))
   })

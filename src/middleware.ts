@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 import { isPublicRoute, isSemiPublicRoute, isProtectedRoute, isAdminRoute, isAuthRoute } from '@/lib/auth/routes'
 import type { Database } from '@/types/supabase'
-import { rateLimit, apiLimiter, directoryLimiter, directoryBurstLimiter, directoryDailyLimiter } from '@/lib/rate-limit'
+import { rateLimit, apiLimiter, authLimiter, directoryLimiter, directoryBurstLimiter, directoryDailyLimiter } from '@/lib/rate-limit'
 import { createApiError, unauthorized, forbidden, serverError } from '@/lib/api/error'
 
 type MemberInfo = { name?: string | null; current_company?: string | null; title?: string | null; linkedin_url?: string | null }
@@ -10,6 +10,53 @@ type MemberInfo = { name?: string | null; current_company?: string | null; title
 function isProfileIncomplete(member: unknown): boolean {
   const m = member as MemberInfo
   return !m.name || !m.current_company || !m.title || !m.linkedin_url
+}
+
+function getClientIp(request: NextRequest): string {
+  return (
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    request.headers.get('x-real-ip') ||
+    'unknown'
+  )
+}
+
+function matchesRoute(pathname: string, route: string): boolean {
+  return pathname === route || pathname.startsWith(`${route}/`)
+}
+
+function isPublicAuthApiRoute(pathname: string): boolean {
+  return (
+    matchesRoute(pathname, '/api/invites/accept') ||
+    matchesRoute(pathname, '/api/invites/verify') ||
+    matchesRoute(pathname, '/api/auth')
+  )
+}
+
+function isDirectoryProfileLookup(pathname: string, method: string): boolean {
+  return (
+    method === 'GET' &&
+    /^\/api\/directory\/[^/]+$/.test(pathname) &&
+    pathname !== '/api/directory/me'
+  )
+}
+
+async function enforceApiRateLimits(request: NextRequest): Promise<NextResponse | null> {
+  const { pathname } = request.nextUrl
+  const ip = getClientIp(request)
+
+  const { success: rateLimitOk } = await rateLimit(apiLimiter, `api:${ip}`)
+  if (!rateLimitOk) {
+    return createApiError(429, '요청 한도를 초과했습니다. 잠시 후 다시 시도해주세요.', 'RATE_LIMITED')
+  }
+
+  if (isPublicAuthApiRoute(pathname)) {
+    const { success: authLimitOk } = await rateLimit(authLimiter, `auth:${ip}`)
+    if (!authLimitOk) {
+      return createApiError(429, '너무 많은 요청입니다. 잠시 후 다시 시도해주세요.', 'RATE_LIMITED')
+    }
+  }
+
+  return null
 }
 
 export async function middleware(request: NextRequest) {
@@ -21,7 +68,6 @@ export async function middleware(request: NextRequest) {
 
   if (
     pathname.startsWith('/_next') ||
-    pathname.startsWith('/api/invites/verify') ||
     pathname === '/api/health' ||
     pathname.startsWith('/api/ops/health') ||
     pathname.includes('.')
@@ -31,6 +77,14 @@ export async function middleware(request: NextRequest) {
 
   if (isAuthRoute(pathname)) return NextResponse.next({ request: { headers: requestHeaders } })
   if (isPublicRoute(pathname)) return NextResponse.next({ request: { headers: requestHeaders } })
+
+  if (pathname.startsWith('/api/')) {
+    const rateLimitResponse = await enforceApiRateLimits(request)
+    if (rateLimitResponse) return rateLimitResponse
+    if (isPublicAuthApiRoute(pathname)) {
+      return NextResponse.next({ request: { headers: requestHeaders } })
+    }
+  }
 
   let response = NextResponse.next({ request: { headers: requestHeaders } })
   const supabase = createServerClient<Database>(
@@ -58,12 +112,6 @@ export async function middleware(request: NextRequest) {
 
   // API routes
   if (pathname.startsWith('/api/')) {
-    // Rate limit check (before auth to prevent brute force)
-    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || 'unknown'
-    const { success: rateLimitOk } = await rateLimit(apiLimiter, `api:${ip}`)
-    if (!rateLimitOk) {
-      return createApiError(429, '요청 한도를 초과했습니다. 잠시 후 다시 시도해주세요.', 'RATE_LIMITED')
-    }
     if (!user) return unauthorized('인증이 필요합니다')
     // DB call 2: member + corporate 단일 RPC 호출 (기존 2회 → 1회)
     const { data: info, error: rpcError } = await supabase.rpc('vcx_get_user_info', { p_user_id: user.id })
@@ -76,7 +124,8 @@ export async function middleware(request: NextRequest) {
     }
 
     // 디렉토리 API 스크래핑 방지
-    if (pathname.startsWith('/api/directory')) {
+    if (isDirectoryProfileLookup(pathname, request.method)) {
+      const ip = getClientIp(request)
       const dirId = `dir:${ip}`
       const { success: dailyOk } = await rateLimit(directoryDailyLimiter, dirId)
       if (!dailyOk) {

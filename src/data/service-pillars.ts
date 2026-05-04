@@ -6,7 +6,7 @@ export const servicePillars: ServicePillar[] = [
     englishName: 'MEMBER DIRECTORY',
     koreanTitle: '검증된 핵심인재 디렉토리',
     description:
-      'Core Member와 Endorsed Member로 구성된 폐쇄형 인재 네트워크. 이름, 직군, 전문 분야로 검색하고, Member Profile을 통해 커리어 신뢰를 확인할 수 있습니다.',
+      '코어 멤버와 추천 멤버로 구성된 폐쇄형 인재 네트워크. 이름, 직군, 전문 분야로 검색하고, 멤버 프로필을 통해 커리어 신뢰를 확인할 수 있습니다.',
     insight:
       'Anti-Scraping 정책으로 멤버 정보를 보호합니다. 1분 내 10 프로필 조회 시 경고, 20 프로필 조회 시 세션 종료, 하루 50 프로필 조회 시 접근 제한.',
   },
@@ -24,7 +24,7 @@ export const servicePillars: ServicePillar[] = [
     englishName: 'CEO COFFEE CHAT',
     koreanTitle: '의사결정자와의 직접 채널',
     description:
-      'CEO/Founder/C-Level이 직접 세션을 생성하고, 멤버가 신청하며, CEO가 선택하는 1:1 Coffee Chat. 대화의 목적은 서로의 컬쳐핏을 확인하는 데 있습니다.',
+      'CEO·창업자·C레벨 리더가 직접 세션을 생성하고, 멤버가 신청하며, 호스트가 선택하는 1:1 커피챗입니다. 대화의 목적은 서로의 컬처핏을 확인하는 데 있습니다.',
     insight:
       'HR을 거치지 않고 의사결정자와 직접 대화하는 것만으로도, 조직 문화와 결의 수준을 서로 가늠할 수 있다.',
   },
@@ -33,7 +33,7 @@ export const servicePillars: ServicePillar[] = [
     englishName: 'COMMUNITY BOARD',
     koreanTitle: '멤버 전용 익명 커뮤니티',
     description:
-      "커리어 고민, 조직 고민·리더쉽, 연봉 협상, 번아웃, 생산성·News, '이 회사 어때요?' 등 6개 카테고리. CEO는 접근할 수 없습니다.",
+      "커리어 고민, 조직·리더십, 연봉 협상, 번아웃, 생산성·뉴스, '이 회사 어때요?' 등 6개 주제를 다룹니다. CEO는 접근할 수 없습니다.",
     insight:
       '모든 커뮤니티 글은 채용 활용이 불가합니다(Privacy Model). 사실 기반 정보만 허용되며, 가이드라인 위반 글은 Admin이 즉시 삭제합니다.',
   },

@@ -188,7 +188,7 @@ describe('POST /api/invites/accept', () => {
     })
 
     const req = makeRequest({ token: 'valid-token', password: 'password1', name: 'Bob', linkedin_url: 'https://linkedin.com/in/bob' })
-    const res = await POST(req)
+    await POST(req)
 
     expect(mocks.mockAdminAuth.admin.createUser).toHaveBeenCalledWith({
       email: baseInvite.email,

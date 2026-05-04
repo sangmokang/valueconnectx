@@ -1,29 +1,29 @@
 const TIERS = [
   {
-    name: 'Core',
+    name: '코어 멤버',
     dark: true,
     desc: 'ValueConnect가 직접 검증한 멤버.',
     benefits: [
       '채용정보 큐레이션 피드 (주 1회)',
       '커뮤니티 라운지 전체 접근',
-      'CEO Coffee Chat 신청 권한',
-      'Peer Coffee Chat 생성 & 신청',
+      'CEO 커피챗 신청 권한',
+      '멤버 커피챗 생성 및 신청',
       '멤버 디렉터리 전체 열람',
       '맞춤 추천 우선 매칭',
       '채용 연결 시 보상 지급',
     ],
   },
   {
-    name: 'Endorsed',
+    name: '추천 멤버',
     dark: false,
     desc: '멤버의 추천으로 참여한 분. 활동에 따라 전환됩니다.',
     benefits: [
       '채용정보 큐레이션 피드 (주 1회)',
       '커뮤니티 라운지 읽기 + 댓글',
-      'CEO Coffee Chat 열람',
-      'Peer Coffee Chat 신청',
+      'CEO 커피챗 열람',
+      '멤버 커피챗 신청',
       '멤버 디렉터리 부분 열람',
-      'Core 전환 검토 (추천 시)',
+      '코어 멤버 전환 검토 (추천 시)',
     ],
   },
 ]
@@ -48,18 +48,18 @@ const MEMBER_VALUES = [
 
 export default function BenefitPage() {
   return (
-    <div className="bg-[#f5f0e8] min-h-screen font-[system-ui]">
+    <div className="min-h-screen bg-vcx-beige font-vcx-sans">
       {/* HERO */}
-      <div className="bg-[#1a1a1a] py-16 md:py-[64px]">
-        <div className="max-w-[900px] mx-auto px-6 md:px-12">
+      <div className="bg-vcx-dark py-14 sm:py-16">
+        <div className="mx-auto max-w-[900px] px-5 sm:px-8 md:px-12">
           <div className="flex items-center gap-2.5 mb-6">
-            <div className="w-7 h-px bg-[#c9a84c]" />
-            <span className="text-[#c9a84c] text-[11px] tracking-[0.2em] font-semibold">MEMBERSHIP · BENEFIT</span>
+            <div className="h-px w-7 bg-vcx-gold" />
+            <span className="font-vcx-sans text-[12px] font-semibold text-vcx-gold">멤버십 혜택</span>
           </div>
-          <h1 className="text-[clamp(28px,4vw,46px)] font-extrabold text-[#f5f0e8] leading-[1.25] mt-0 mb-5 tracking-[-1px] font-[Georgia,serif]">
+          <h1 className="mb-5 mt-0 font-vcx-serif text-[30px] font-extrabold leading-[1.22] text-vcx-beige sm:text-[42px]">
             멤버십 혜택
           </h1>
-          <p className="text-[15.5px] text-[#b0a898] leading-[1.9] max-w-[500px] m-0">
+          <p className="m-0 max-w-[520px] text-[16px] leading-8 text-[#b0a898]">
             네트워크의 깊이는 구성원의 수준에서 결정됩니다.<br />
             두 개의 등급, 하나의 기준 — 탁월함.
           </p>
@@ -67,26 +67,26 @@ export default function BenefitPage() {
       </div>
 
       {/* CONTENT */}
-      <div className="max-w-[900px] mx-auto px-6 md:px-12 py-12 pb-20">
+      <div className="mx-auto max-w-[900px] px-5 py-12 pb-20 sm:px-8 md:px-12">
         {/* Tier grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {TIERS.map((tier) => (
             <div
               key={tier.name}
-              className="p-9 border"
+              className="border p-6 sm:p-9"
               style={{
                 background: tier.dark ? '#1a1a1a' : '#f7f5f0',
                 borderColor: tier.dark ? '#1a1a1a' : 'rgba(0,0,0,0.08)',
               }}
             >
               <div
-                className="text-[12px] tracking-[0.2em] font-bold mb-2"
+                className="mb-2 font-vcx-sans text-[13px] font-bold"
                 style={{ color: tier.dark ? '#c9a84c' : '#888' }}
               >
-                {tier.name.toUpperCase()} MEMBER
+                {tier.name}
               </div>
               <p
-                className="text-[13.5px] leading-[1.7] mb-7"
+                className="mb-7 text-[14px] leading-7"
                 style={{ color: tier.dark ? '#b0a898' : '#555' }}
               >
                 {tier.desc}
@@ -98,18 +98,17 @@ export default function BenefitPage() {
                       className="w-4 h-4 flex-shrink-0 flex items-center justify-center mt-0.5"
                       style={{
                         background: tier.dark ? '#c9a84c' : '#1a1a1a',
-                        borderRadius: '50%',
                       }}
                     >
                       <span
-                        className="text-[9px] font-extrabold"
+                        className="text-[12px] font-extrabold leading-none"
                         style={{ color: tier.dark ? '#1a1a1a' : '#fff' }}
                       >
                         ✓
                       </span>
                     </div>
                     <span
-                      className="text-[13.5px] leading-[1.5]"
+                      className="text-[14px] leading-6"
                       style={{ color: tier.dark ? '#ddd' : '#555' }}
                     >
                       {b}
@@ -122,14 +121,14 @@ export default function BenefitPage() {
         </div>
 
         {/* Member value */}
-        <div className="mt-10 p-9 bg-white border border-black/[0.08]">
-          <div className="text-[11px] text-[#888] tracking-[0.15em] font-semibold mb-5">MEMBER VALUE</div>
+        <div className="mt-10 border border-black/[0.08] bg-white p-6 sm:p-9">
+          <div className="mb-5 font-vcx-sans text-[12px] font-semibold text-vcx-sub-4">멤버 가치</div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {MEMBER_VALUES.map((v) => (
               <div key={v.title} className="p-5 bg-[#f5f0e8]">
                 <div className="text-[24px] mb-3">{v.icon}</div>
-                <div className="text-[15px] font-bold text-[#1a1a1a] font-[Georgia,serif] mb-2">{v.title}</div>
-                <div className="text-[13px] text-[#555] leading-[1.7]">{v.desc}</div>
+                <div className="mb-2 font-vcx-serif text-[16px] font-bold text-vcx-dark">{v.title}</div>
+                <div className="text-[14px] leading-7 text-vcx-sub-2">{v.desc}</div>
               </div>
             ))}
           </div>

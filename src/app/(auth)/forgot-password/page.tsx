@@ -14,7 +14,7 @@ export default function ForgotPasswordPage() {
         <ForgotPasswordForm />
       </div>
       <div style={{ textAlign: 'center', marginTop: '24px' }}>
-        <a href="/login" style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'rgba(240,235,226,0.5)', textDecoration: 'none' }}>← 로그인으로 돌아가기</a>
+        <a href="/login" style={{ display: 'inline-flex', minHeight: '36px', alignItems: 'center', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'rgba(240,235,226,0.5)', textDecoration: 'none' }}>← 로그인으로 돌아가기</a>
       </div>
     </div>
   )

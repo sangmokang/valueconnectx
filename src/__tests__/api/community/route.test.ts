@@ -101,9 +101,7 @@ describe('GET /api/community', () => {
       },
     ]
 
-    let fromCallCount = 0
     mocks.mockFrom.mockImplementation((table: string) => {
-      fromCallCount++
       if (table === 'vcx_corporate_users') {
         return {
           select: vi.fn().mockReturnValue({

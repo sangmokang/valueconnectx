@@ -42,8 +42,7 @@ export function CeoHero({ sessionCount, totalApplicants, totalSlots }: CeoHeroPr
           <span
             style={{
               color: '#c9a84c',
-              fontSize: 11,
-              letterSpacing: '0.2em',
+              fontSize: 12,
               fontWeight: 600,
               fontFamily: 'system-ui, sans-serif',
             }}

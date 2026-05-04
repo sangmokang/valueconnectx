@@ -18,7 +18,7 @@ export function PeerHero({ onWriteClick }: PeerHeroProps) {
         {/* Label */}
         <div className="flex items-center gap-2.5 mb-6">
           <div className="w-7 h-px bg-[#c9a84c]" />
-          <span className="text-[#c9a84c] text-[11px] tracking-[0.2em] font-semibold font-vcx-sans">
+          <span className="font-vcx-sans text-[12px] font-semibold text-[#c9a84c]">
             멤버 커피챗 · 같은 높이의 대화
           </span>
         </div>

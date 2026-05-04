@@ -29,14 +29,14 @@ const locationLabel: Record<string, string> = {
 
 const roleLabel: Record<string, string> = {
   ceo: 'CEO',
-  founder: 'Founder',
-  c_level: 'C-Level',
-  hr_leader: 'HR Leader',
+  founder: '창업자',
+  c_level: 'C레벨',
+  hr_leader: 'HR 리더',
 }
 
 const tierLabel: Record<string, string> = {
-  core: 'Core Member',
-  endorsed: 'Endorsed Member',
+  core: '코어 멤버',
+  endorsed: '추천 멤버',
   all: '전체 멤버',
 }
 

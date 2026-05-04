@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ProfileEditForm } from '@/components/directory/profile-edit-form'
 
@@ -98,12 +98,11 @@ describe('ProfileEditForm', () => {
   })
 
   it('shows LinkedIn validation error when URL is valid but not LinkedIn', async () => {
-    const user = userEvent.setup()
     render(<ProfileEditForm initialData={defaultInitialData} />)
 
     const linkedinInput = screen.getByPlaceholderText('https://www.linkedin.com/in/yourprofile')
-    await user.type(linkedinInput, 'https://www.example.com/profile')
-    await user.click(screen.getByRole('button', { name: '프로필 저장' }))
+    fireEvent.change(linkedinInput, { target: { value: 'https://www.example.com/profile' } })
+    fireEvent.click(screen.getByRole('button', { name: '프로필 저장' }))
 
     // Valid URL but fails linkedin.com/in/ regex check
     expect(await screen.findByText('LinkedIn 프로필 URL이어야 합니다 (linkedin.com/in/...)')).toBeInTheDocument()

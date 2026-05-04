@@ -82,8 +82,8 @@ export function InviteList() {
             <div>
               <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888', marginBottom: '6px' }}>등급</label>
               <select value={createTier} onChange={(e) => setCreateTier(e.target.value as 'core' | 'endorsed')} style={{ ...inputStyle, cursor: 'pointer' }}>
-                <option value="endorsed">Endorsed</option>
-                <option value="core">Core</option>
+                <option value="endorsed">추천 멤버</option>
+                <option value="core">코어 멤버</option>
               </select>
             </div>
             <button type="submit" disabled={createLoading} style={{ padding: '10px 20px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', fontWeight: 600, color: '#f0ebe2', background: '#1a1a1a', border: 'none', borderRadius: 0, cursor: 'pointer' }}>

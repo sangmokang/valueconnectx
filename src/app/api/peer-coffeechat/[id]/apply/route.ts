@@ -70,16 +70,19 @@ export async function POST(
       return serverError('신청에 실패했습니다')
     }
 
-    // Notify author of new application
-    sendNotification(
-      chat.author_id,
-      'peer_chat_applied',
-      {
-        title: '새로운 피어 커피챗 신청이 도착했습니다',
-        body: chat.title ?? '피어 커피챗 신청',
-        link: `/coffeechat/${id}`,
-      }
-    ).catch(() => {}) // fire-and-forget
+    try {
+      await sendNotification(
+        chat.author_id,
+        'peer_chat_applied',
+        {
+          title: '새로운 피어 커피챗 신청이 도착했습니다',
+          body: chat.title ?? '피어 커피챗 신청',
+          link: `/coffeechat/${id}`,
+        }
+      )
+    } catch (error) {
+      console.error('Peer application notification failed:', error)
+    }
 
     return NextResponse.json({ data: application }, { status: 201 })
   } catch (error) {

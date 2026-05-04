@@ -46,4 +46,33 @@ describe('Security Hardening Verification', () => {
     expect(fs.existsSync(path.join(process.cwd(), 'supabase/migrations/003_vcx_atomic_invite.sql'))).toBe(true)
     expect(fs.existsSync(path.join(process.cwd(), 'supabase/migrations/004_vcx_members_insert_policy.sql'))).toBe(true)
   })
+
+  it('S4.6.1: next config applies launch security headers', () => {
+    const content = fs.readFileSync(
+      path.join(process.cwd(), 'next.config.mjs'), 'utf-8'
+    )
+
+    expect(content).toContain('Strict-Transport-Security')
+    expect(content).toContain('X-Content-Type-Options')
+    expect(content).toContain('X-Frame-Options')
+    expect(content).toContain('Referrer-Policy')
+    expect(content).toContain('Content-Security-Policy')
+    expect(content).toContain("frame-ancestors 'none'")
+    expect(content).toContain('https://*.ingest.sentry.io')
+  })
+
+  it('S4.6.2: Sentry configs stay disabled when DSN is missing', () => {
+    const files = [
+      'instrumentation-client.ts',
+      'sentry.server.config.ts',
+      'sentry.edge.config.ts',
+    ]
+
+    for (const file of files) {
+      const content = fs.readFileSync(path.join(process.cwd(), file), 'utf-8')
+      expect(content).toContain('const sentryDsn = process.env.NEXT_PUBLIC_SENTRY_DSN')
+      expect(content).toContain('if (sentryDsn)')
+      expect(content).toContain('sendDefaultPii: false')
+    }
+  })
 })

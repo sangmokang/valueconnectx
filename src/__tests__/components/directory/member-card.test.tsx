@@ -40,12 +40,12 @@ describe('MemberCard', () => {
 
   it('renders Core tier badge when member_tier is core', () => {
     render(<MemberCard member={baseMember} />)
-    expect(screen.getByText('Core')).toBeInTheDocument()
+    expect(screen.getByText('코어 멤버')).toBeInTheDocument()
   })
 
   it('renders Endorsed tier badge when member_tier is endorsed', () => {
     render(<MemberCard member={{ ...baseMember, member_tier: 'endorsed' }} />)
-    expect(screen.getByText('Endorsed')).toBeInTheDocument()
+    expect(screen.getByText('추천 멤버')).toBeInTheDocument()
   })
 
   it('shows "커피챗 가능" when is_open_to_chat is true', () => {
@@ -60,9 +60,9 @@ describe('MemberCard', () => {
 
   it('renders all professional fields when 3 or fewer', () => {
     render(<MemberCard member={{ ...baseMember, professional_fields: ['Engineering', 'Product', 'Finance'] }} />)
-    expect(screen.getByText('Engineering')).toBeInTheDocument()
-    expect(screen.getByText('Product')).toBeInTheDocument()
-    expect(screen.getByText('Finance')).toBeInTheDocument()
+    expect(screen.getByText('엔지니어링')).toBeInTheDocument()
+    expect(screen.getByText('프로덕트')).toBeInTheDocument()
+    expect(screen.getByText('재무')).toBeInTheDocument()
   })
 
   it('truncates professional fields to first 3 when more than 3 are provided', () => {
@@ -71,9 +71,9 @@ describe('MemberCard', () => {
         member={{ ...baseMember, professional_fields: ['Engineering', 'Product', 'Finance', 'Marketing'] }}
       />
     )
-    expect(screen.getByText('Engineering')).toBeInTheDocument()
-    expect(screen.getByText('Product')).toBeInTheDocument()
-    expect(screen.getByText('Finance')).toBeInTheDocument()
+    expect(screen.getByText('엔지니어링')).toBeInTheDocument()
+    expect(screen.getByText('프로덕트')).toBeInTheDocument()
+    expect(screen.getByText('재무')).toBeInTheDocument()
     expect(screen.queryByText('Marketing')).not.toBeInTheDocument()
   })
 

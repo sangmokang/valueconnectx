@@ -12,6 +12,7 @@ interface BriefData {
   brief: string | null
   briefGeneratedAt: string | null
   applicationId: string
+  isFallback?: boolean
 }
 
 export function PreBriefCard({ sessionId, apiBasePath = 'ceo-coffeechat' }: PreBriefCardProps) {
@@ -49,6 +50,7 @@ export function PreBriefCard({ sessionId, apiBasePath = 'ceo-coffeechat' }: PreB
         minute: '2-digit',
       })
     : null
+  const isFallback = data.isFallback ?? data.brief.includes('[AI 브리프 기본 안내]')
 
   return (
     <div
@@ -60,6 +62,9 @@ export function PreBriefCard({ sessionId, apiBasePath = 'ceo-coffeechat' }: PreB
         <span className="text-xs font-semibold text-vcx-gold uppercase tracking-wider">
           AI Pre-Brief
         </span>
+        {isFallback && (
+          <span className="text-xs font-vcx-sans text-vcx-sub-4">기본 안내</span>
+        )}
         {generatedAt && (
           <span className="text-xs text-vcx-sub-4 sm:ml-auto">{generatedAt} 생성</span>
         )}
@@ -68,7 +73,9 @@ export function PreBriefCard({ sessionId, apiBasePath = 'ceo-coffeechat' }: PreB
         {data.brief}
       </p>
       <p className="text-xs font-vcx-sans text-vcx-sub-4 leading-relaxed">
-        이 브리프는 Claude AI가 세션 정보와 프로필을 분석해 자동 생성했습니다.
+        {isFallback
+          ? 'AI 생성이 제한되어 세션 정보 기반의 기본 브리프를 제공합니다.'
+          : '이 브리프는 Claude AI가 세션 정보와 프로필을 분석해 자동 생성했습니다.'}
       </p>
     </div>
   )

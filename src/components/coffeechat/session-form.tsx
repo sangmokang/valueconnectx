@@ -226,8 +226,8 @@ export function SessionForm({ initialData, sessionId }: SessionFormProps) {
         <div className="flex gap-3">
           {[
             { value: 'all', label: '전체' },
-            { value: 'core', label: 'Core' },
-            { value: 'endorsed', label: 'Endorsed' },
+            { value: 'core', label: '코어 멤버' },
+            { value: 'endorsed', label: '추천 멤버' },
           ].map(({ value, label }) => (
             <button
               key={value}

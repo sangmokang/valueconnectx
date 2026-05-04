@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { unauthorized, forbidden, badRequest, serverError } from '@/lib/api/error'
+import { forbidden, serverError } from '@/lib/api/error'
 import { parseSearchParams, parseBody } from '@/lib/api/validation'
 
 const querySchema = z.object({

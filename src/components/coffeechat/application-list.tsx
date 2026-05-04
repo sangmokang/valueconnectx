@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 interface Applicant {
   id: string
   name: string
-  email: string
+  email?: string | null
   title?: string | null
   current_company?: string | null
   member_tier: string
@@ -31,8 +31,8 @@ interface ApplicationListProps {
 }
 
 const tierLabel: Record<string, string> = {
-  core: 'Core',
-  endorsed: 'Endorsed',
+  core: '코어 멤버',
+  endorsed: '추천 멤버',
 }
 
 const statusLabel: Record<string, string> = {
@@ -92,8 +92,14 @@ export function ApplicationList({ sessionId, initialApplications }: ApplicationL
       {error && (
         <p className="text-[13px] text-red-600 font-vcx-sans mb-2">{error}</p>
       )}
-      {applications.map((app) => (
-        <div key={app.id} className="border border-[#e8e2d9] bg-white p-5">
+      {applications.map((app) => {
+        const acceptedContactEmail =
+          app.status === 'accepted'
+            ? app.contact_email ?? null
+            : null
+
+        return (
+          <div key={app.id} className="border border-[#e8e2d9] bg-white p-5">
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-start gap-4 flex-1 min-w-0">
               {/* Avatar */}
@@ -120,11 +126,11 @@ export function ApplicationList({ sessionId, initialApplications }: ApplicationL
                     {app.message}
                   </p>
                 )}
-                {app.status === 'accepted' && app.contact_email && (
+                {acceptedContactEmail && (
                   <div className="mt-2 flex items-center gap-2 text-sm">
                     <span className="text-[#c9a84c]">📧</span>
-                    <a href={`mailto:${app.contact_email}`} className="text-[#1a1a1a] underline font-vcx-sans text-[13px]">
-                      {app.contact_email}
+                    <a href={`mailto:${acceptedContactEmail}`} className="text-[#1a1a1a] underline font-vcx-sans text-[13px]">
+                      {acceptedContactEmail}
                     </a>
                   </div>
                 )}
@@ -157,7 +163,8 @@ export function ApplicationList({ sessionId, initialApplications }: ApplicationL
             )}
           </div>
         </div>
-      ))}
+        )
+      })}
     </div>
   )
 }

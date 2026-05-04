@@ -96,4 +96,24 @@ describe('sendNotification', () => {
       sendNotification('user-123', 'peer_chat_applied', { title: '피어 챗 신청' })
     ).resolves.toBeUndefined()
   })
+
+  it('continues even if email sending fails', async () => {
+    mockGetUserById.mockResolvedValue({
+      data: { user: { email: 'test@example.com' } },
+      error: null,
+    })
+    mockSendEmail.mockRejectedValueOnce(new Error('email provider down'))
+
+    await expect(
+      sendNotification('user-123', 'peer_chat_accepted', { title: '피어 챗 수락' })
+    ).resolves.toBeUndefined()
+
+    expect(mockInsert).toHaveBeenCalled()
+    expect(mockSendEmail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        to: 'test@example.com',
+        type: 'peer_chat_accepted',
+      })
+    )
+  })
 })

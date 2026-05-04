@@ -61,9 +61,21 @@ test.describe('알림 플로우', () => {
     const bellButton = page.getByRole('button', { name: '알림' })
     await bellButton.click()
 
-    // If there are no notifications, empty state text should appear
     const emptyState = page.getByText('새로운 알림이 없습니다')
     const notificationItems = page.locator('[data-testid="notification-item"]')
+    const loadingState = page.getByText('알림을 불러오고 있습니다')
+
+    await expect(loadingState).not.toBeVisible({ timeout: 10000 }).catch(() => {})
+
+    await expect
+      .poll(async () => {
+        const [itemCount, emptyCount] = await Promise.all([
+          notificationItems.count(),
+          emptyState.count(),
+        ])
+        return itemCount > 0 || emptyCount > 0
+      }, { timeout: 10000 })
+      .toBeTruthy()
 
     const itemCount = await notificationItems.count()
     if (itemCount === 0) {

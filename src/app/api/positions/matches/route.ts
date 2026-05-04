@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { unauthorized, forbidden, serverError } from '@/lib/api/error'
+import { isMissingSchemaError } from '@/lib/api/supabase-errors'
 import { matchPositions } from '@/lib/position-matcher'
 import type { MemberProfile, PositionData } from '@/lib/position-matcher'
 
@@ -39,6 +40,9 @@ export async function GET() {
       .in('status', ['open', 'active'])
 
     if (posError) {
+      if (isMissingSchemaError(posError)) {
+        return NextResponse.json({ data: [] })
+      }
       console.error('Matches GET positions error:', posError)
       return serverError()
     }

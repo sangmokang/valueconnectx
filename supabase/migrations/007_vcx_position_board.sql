@@ -46,7 +46,7 @@ CREATE POLICY "Members can read active positions" ON positions
 -- Admin can manage positions
 CREATE POLICY "Admin can manage positions" ON positions
   FOR ALL USING (
-    EXISTS (SELECT 1 FROM members WHERE user_id = auth.uid() AND role IN ('super_admin', 'admin'))
+    EXISTS (SELECT 1 FROM vcx_members WHERE id = auth.uid() AND system_role IN ('super_admin', 'admin'))
   );
 
 -- Users can manage their own interests

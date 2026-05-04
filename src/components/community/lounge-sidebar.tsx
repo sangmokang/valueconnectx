@@ -10,7 +10,7 @@ export const LOUNGE_CATS = [
   { key: 'leadership' as LoungeCatKey, icon: '🧠', label: '리더십 & 조직' },
   { key: 'salary' as LoungeCatKey, icon: '💰', label: '연봉 협상' },
   { key: 'burnout' as LoungeCatKey, icon: '🌿', label: '번아웃·회복' },
-  { key: 'productivity' as LoungeCatKey, icon: '⚡', label: '생산성 & Tech' },
+  { key: 'productivity' as LoungeCatKey, icon: '⚡', label: '생산성·기술' },
   { key: 'company_review' as LoungeCatKey, icon: '🏢', label: '이 회사 어때요?' },
 ]
 
@@ -39,14 +39,14 @@ export function LoungeSidebar({ active, counts, onSelect }: LoungeSidebarProps) 
       >
         <div
           style={{
-            fontSize: '10px',
+            fontSize: '12px',
             color: '#b0a898',
-            letterSpacing: '0.15em',
+            letterSpacing: '0.02em',
             fontWeight: 600,
             fontFamily: 'system-ui, sans-serif',
           }}
         >
-          CATEGORIES
+          주제
         </div>
       </div>
 

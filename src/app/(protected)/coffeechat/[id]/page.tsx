@@ -5,6 +5,7 @@ import { PeerApplyButton } from '@/components/coffeechat/peer-apply-button'
 import { PeerApplicationList } from '@/components/coffeechat/peer-application-list'
 import { PreBriefCard } from '@/components/coffeechat/pre-brief-card'
 import { FeedbackForm } from '@/components/coffeechat/feedback-form'
+import { attachAcceptedApplicantEmails } from '@/lib/coffeechat-contact'
 import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
@@ -53,15 +54,16 @@ type PeerApplication = {
   applicant: {
     id: string
     name: string
-    email: string
     title?: string | null
     current_company?: string | null
     member_tier: string
     avatar_url?: string | null
+    email?: string | null
   }
   message: string
   status: 'pending' | 'accepted' | 'rejected'
   created_at: string
+  contact_email?: string | null
 }
 
 export default async function PeerChatDetailPage({ params }: PageProps) {
@@ -126,11 +128,11 @@ export default async function PeerChatDetailPage({ params }: PageProps) {
       .from('peer_coffee_applications')
       .select(`
         *,
-        applicant:vcx_members(id, name, email, title, current_company, member_tier, avatar_url)
+        applicant:vcx_members(id, name, title, current_company, member_tier, avatar_url)
       `)
       .eq('chat_id', id)
       .order('created_at', { ascending: true })
-    applications = (apps ?? []) as unknown as PeerApplication[]
+    applications = await attachAcceptedApplicantEmails((apps ?? []) as unknown as PeerApplication[])
   }
 
   const feedbackApplicationId = isAuthor

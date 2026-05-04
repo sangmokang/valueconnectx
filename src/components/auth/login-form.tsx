@@ -36,8 +36,8 @@ export function LoginForm({ redirectTo }: { redirectTo?: string }) {
     borderRadius: 0, outline: 'none', boxSizing: 'border-box' as const,
   }
   const labelStyle = {
-    display: 'block' as const, fontFamily: 'system-ui, sans-serif', fontSize: '11px',
-    letterSpacing: '0.1em', textTransform: 'uppercase' as const, color: '#888', marginBottom: '8px',
+    display: 'block' as const, fontFamily: 'system-ui, sans-serif', fontSize: '12px',
+    letterSpacing: '0.02em', color: '#888', marginBottom: '8px',
   }
 
   return (

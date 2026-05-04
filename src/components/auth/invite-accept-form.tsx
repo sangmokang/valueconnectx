@@ -69,9 +69,9 @@ export function InviteAcceptForm({ initialToken }: { initialToken?: string }) {
     <form onSubmit={handleSubmit}>
       {inviteInfo && (
         <div style={{ background: '#e8e2d9', padding: '16px 20px', marginBottom: '24px', borderLeft: '2px solid #c9a84c', borderRadius: 0 }}>
-          <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#c9a84c', marginBottom: '6px' }}>INVITED BY</div>
+          <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '9px', letterSpacing: '0.2em', color: '#c9a84c', marginBottom: '6px' }}>초대 정보</div>
           <div style={{ fontFamily: 'Georgia, serif', fontSize: '16px', fontWeight: 700, color: '#1a1a1a', marginBottom: '4px' }}>{inviteInfo.invitedByName}님이 초대했습니다</div>
-          <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#888' }}>{inviteInfo.email} · {inviteInfo.memberTier === 'core' ? 'Core Member' : 'Endorsed Member'}</div>
+          <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#888' }}>{inviteInfo.email} · {inviteInfo.memberTier === 'core' ? '코어 멤버' : '추천 멤버'}</div>
         </div>
       )}
       {error && <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', padding: '12px 16px', marginBottom: '16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#EF4444', borderRadius: 0 }}>{error}</div>}

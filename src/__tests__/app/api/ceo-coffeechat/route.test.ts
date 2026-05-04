@@ -168,7 +168,8 @@ describe('POST /api/ceo-coffeechat', () => {
       }),
     })
 
-    const { agreement_accepted: _, ...sessionWithoutAgreement } = validSession
+    const sessionWithoutAgreement = { ...validSession }
+    delete (sessionWithoutAgreement as Partial<typeof validSession>).agreement_accepted
     const req = makePostRequest(sessionWithoutAgreement)
     const res = await POST(req)
 

@@ -28,6 +28,15 @@ function makeQueryBuilder(resolvedValue: unknown) {
   return b
 }
 
+function makeUnreadCountBuilder(resolvedValue: unknown) {
+  const b: Record<string, unknown> = {}
+  b.select = vi.fn().mockReturnValue(b)
+  b.eq = vi.fn()
+    .mockReturnValueOnce(b)
+    .mockResolvedValueOnce(resolvedValue)
+  return b
+}
+
 describe('GET /api/notifications', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -47,8 +56,9 @@ describe('GET /api/notifications', () => {
       { id: 'n1', is_read: false, title: '알림1' },
       { id: 'n2', is_read: true, title: '알림2' },
     ]
-    const builder = makeQueryBuilder({ data: notifications, error: null })
-    mockFrom.mockReturnValue(builder)
+    mockFrom
+      .mockReturnValueOnce(makeQueryBuilder({ data: notifications, error: null }))
+      .mockReturnValueOnce(makeUnreadCountBuilder({ count: 1, error: null }))
 
     const res = await GET()
     expect(res.status).toBe(200)
@@ -115,6 +125,24 @@ describe('PATCH /api/notifications', () => {
     expect(res.status).toBe(200)
     const json = await res.json()
     expect(json.success).toBe(true)
+  })
+
+  it('marks selected notifications read for the current user only', async () => {
+    mockGetUser.mockResolvedValue({ data: { user: { id: 'user-1' } }, error: null })
+
+    const inMock = vi.fn().mockResolvedValue({ error: null })
+    const firstEq = vi.fn().mockReturnValue({ in: inMock })
+    const update = vi.fn().mockReturnValue({ eq: firstEq })
+    mockFrom.mockReturnValue({ update })
+
+    const res = await PATCH(makePatchRequest({ notificationIds: ['n1', 'n2'] }))
+    expect(res.status).toBe(200)
+    await expect(res.json()).resolves.toEqual({ success: true })
+
+    expect(mockFrom).toHaveBeenCalledWith('vcx_notifications')
+    expect(update).toHaveBeenCalledWith({ is_read: true })
+    expect(firstEq).toHaveBeenCalledWith('user_id', 'user-1')
+    expect(inMock).toHaveBeenCalledWith('id', ['n1', 'n2'])
   })
 
   it('treats markAllRead as a no-op when the optional notifications table is missing', async () => {

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import type { PeerSession } from '@/types'
+import { displayMemberTier } from '@/lib/display-labels'
 
 export type { PeerSession }
 
@@ -37,7 +38,7 @@ export function PeerSessionCard({ session, isApplied, onApply }: PeerSessionCard
                 color: session.authorBadge === 'Core' ? '#c9a84c' : '#777',
               }}
             >
-              {session.authorBadge}
+              {displayMemberTier(session.authorBadge)}
             </span>
             <span className="text-[13px] text-[#1a1a1a] font-semibold font-vcx-sans">
               {session.role}

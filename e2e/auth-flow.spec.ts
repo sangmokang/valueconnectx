@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test'
-import { loginAs, TEST_USER } from './helpers/auth'
+import { gotoWithRetry, loginAs, TEST_USER } from './helpers/auth'
 
 test.describe('인증 플로우', () => {
   test('비인증 사용자 보호 라우트 접근', async ({ page }) => {
-    await page.goto('/directory')
+    await gotoWithRetry(page, '/directory')
 
     // The page renders with x-vcx-authenticated: false — should show login prompt or restricted view
     const body = page.locator('body')
@@ -38,7 +38,7 @@ test.describe('인증 플로우', () => {
   })
 
   test('로그인 실패 — 잘못된 비밀번호', async ({ page }) => {
-    await page.goto('/login')
+    await gotoWithRetry(page, '/login')
     await page.fill('input[type="email"]', 'test@valueconnectx.com')
     await page.fill('input[type="password"]', 'wrongpassword')
     await page.click('button[type="submit"]')
@@ -51,14 +51,15 @@ test.describe('인증 플로우', () => {
   test('관리자 라우트 비인가 접근', async ({ page }) => {
     await loginAs(page, TEST_USER)
 
-    await page.goto('/admin')
+    await gotoWithRetry(page, '/admin')
 
     // Non-admin user should be redirected to home
     await page.waitForURL((url) => url.pathname === '/', { timeout: 10000 })
     expect(new URL(page.url()).pathname).toBe('/')
   })
 
-  test('비인증 API 요청 차단', async ({ request }) => {
+  test('비인증 API 요청 차단', async ({ page, request }) => {
+    await gotoWithRetry(page, '/login')
     const response = await request.get('/api/directory')
     expect(response.status()).toBe(401)
   })

@@ -26,7 +26,7 @@ export default async function CreateSessionPage() {
     <div className="min-h-screen bg-vcx-beige">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
         <div className="mb-10 pb-6 border-b border-[#1a1a1a]">
-          <p className="vcx-section-label mb-2">CEO Coffee Chat</p>
+          <p className="vcx-section-label mb-2">CEO 커피챗</p>
           <h1 className="font-vcx-serif text-[28px] font-normal text-vcx-dark">
             새 커피챗 세션 만들기
           </h1>

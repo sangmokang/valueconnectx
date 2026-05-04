@@ -4,6 +4,10 @@ import { createClient } from '@/lib/supabase/server'
 import { unauthorized, forbidden, notFound, serverError } from '@/lib/api/error'
 import { parseBody } from '@/lib/api/validation'
 import { linkedinUrlSchema } from '@/lib/validation/linkedin'
+import {
+  INTEREST_TAG_LIMIT,
+  normalizeInterestTags,
+} from '@/constants/profile'
 
 export const dynamic = 'force-dynamic'
 
@@ -20,12 +24,12 @@ const updateSchema = z.object({
   profile_visibility: z.enum(['members_only', 'corporate_only', 'all']).optional(),
   professional_fields: z
     .array(z.string().trim().min(1, '빈 태그는 저장할 수 없습니다').max(40, '태그는 40자 이하로 입력해주세요'))
-    .max(10, '전문 분야는 최대 10개까지 입력할 수 있습니다')
-    .transform((fields) => Array.from(new Set(fields)))
+    .max(INTEREST_TAG_LIMIT, `관심 분야는 최대 ${INTEREST_TAG_LIMIT}개까지 입력할 수 있습니다`)
+    .transform(normalizeInterestTags)
     .optional(),
 })
 
-export async function GET(_request: NextRequest) {
+export async function GET() {
   try {
     const supabase = await createClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()

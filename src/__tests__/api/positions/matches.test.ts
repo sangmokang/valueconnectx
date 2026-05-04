@@ -29,7 +29,6 @@ vi.mock('@/lib/rate-limit', () => ({
 }))
 
 import { GET } from '@/app/api/positions/matches/route'
-import { NextRequest } from 'next/server'
 
 const authenticatedUser = { id: 'user-id-1' }
 
@@ -54,10 +53,6 @@ const samplePosition = {
   team_size: '10-50',
   salary_range: '5000-8000',
   status: 'active',
-}
-
-function makeGetRequest() {
-  return new NextRequest('http://localhost/api/positions/matches')
 }
 
 // Build a fluent Supabase query chain terminating with the given resolved value

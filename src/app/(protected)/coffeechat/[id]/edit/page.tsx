@@ -50,7 +50,7 @@ export default async function EditPeerChatPage({ params }: PageProps) {
           </Link>
         </nav>
         <div className="mb-10 pb-6 border-b border-[#1a1a1a]">
-          <p className="vcx-section-label mb-2">Peer Coffee Chat</p>
+          <p className="vcx-section-label mb-2">멤버 커피챗</p>
           <h1 className="font-vcx-serif text-[28px] font-normal text-vcx-dark">
             글 수정
           </h1>

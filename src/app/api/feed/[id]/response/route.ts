@@ -4,8 +4,24 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { getVcxUser } from '@/lib/auth/get-vcx-user'
-import { unauthorized, serverError } from '@/lib/api/error'
+import { badRequest, unauthorized, serverError } from '@/lib/api/error'
 import { parseBody } from '@/lib/api/validation'
+
+const paramsSchema = z.object({
+  id: z.string().trim().min(1, '피드 항목을 찾을 수 없습니다'),
+})
+
+function parseFeedParams(params: { id: string }) {
+  const parsed = paramsSchema.safeParse(params)
+  if (!parsed.success) {
+    return {
+      data: null,
+      error: badRequest('유효하지 않은 피드 항목입니다', parsed.error.issues),
+    }
+  }
+
+  return { data: parsed.data, error: null }
+}
 
 export async function DELETE(
   _request: NextRequest,
@@ -17,7 +33,9 @@ export async function DELETE(
 
     const supabase = await createClient()
 
-    const { id } = await params
+    const parsedParams = parseFeedParams(await params)
+    if (parsedParams.error) return parsedParams.error
+    const { id } = parsedParams.data
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { error } = await (supabase as any)
@@ -52,7 +70,9 @@ export async function POST(
 
     const supabase = await createClient()
 
-    const { id } = await params
+    const parsedParams = parseFeedParams(await params)
+    if (parsedParams.error) return parsedParams.error
+    const { id } = parsedParams.data
 
     const parsed = await parseBody(request, schema)
     if (parsed.error) return parsed.error

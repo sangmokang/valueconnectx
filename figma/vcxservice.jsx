@@ -11,14 +11,6 @@ function GNB({ activePage, setActivePage }) {
     { key: "benefit", label: "Benefit" },
   ];
 
-  const topMenus = [
-    { key: "service-group", label: "서비스 소개", hasDropdown: true },
-    { key: "coffeechat", label: "커피챗 신청" },
-    { key: "ceo", label: "CEO Coffeechat" },
-    { key: "board", label: "익명 게시판" },
-    { key: "positions", label: "채용 포지션" },
-  ];
-
   const isServiceActive = ["service", "members", "benefit"].includes(activePage);
 
   useEffect(() => {
@@ -676,7 +668,7 @@ function BenefitPage() {
   );
 }
 
-function BenefitCard({ benefit, idx, isHighlight }) {
+function BenefitCard({ benefit, isHighlight }) {
   const [hovered, setHovered] = useState(false);
 
   return (

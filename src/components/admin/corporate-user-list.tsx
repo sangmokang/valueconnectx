@@ -15,9 +15,9 @@ interface CorporateUserRow {
 
 const ROLE_LABELS: Record<string, string> = {
   ceo: 'CEO',
-  founder: 'Founder',
-  c_level: 'C-Level',
-  hr_leader: 'HR Leader',
+  founder: '창업자',
+  c_level: 'C레벨',
+  hr_leader: 'HR 리더',
 }
 
 const inputStyle: React.CSSProperties = {
@@ -143,9 +143,9 @@ export function CorporateUserList() {
               <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888', marginBottom: '6px' }}>역할</label>
               <select value={form.role} onChange={(e) => setForm(f => ({ ...f, role: e.target.value as typeof form.role }))} style={{ ...inputStyle, cursor: 'pointer' }}>
                 <option value="ceo">CEO</option>
-                <option value="founder">Founder</option>
-                <option value="c_level">C-Level</option>
-                <option value="hr_leader">HR Leader</option>
+                <option value="founder">창업자</option>
+                <option value="c_level">C레벨</option>
+                <option value="hr_leader">HR 리더</option>
               </select>
             </div>
             <button type="submit" disabled={createLoading} style={{ padding: '10px 20px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', fontWeight: 600, color: '#f0ebe2', background: '#1a1a1a', border: 'none', borderRadius: 0, cursor: 'pointer' }}>

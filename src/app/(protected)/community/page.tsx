@@ -42,13 +42,12 @@ export default async function CommunityPage() {
               <span
                 style={{
                   color: '#c9a84c',
-                  fontSize: '11px',
-                  letterSpacing: '0.2em',
+                  fontSize: '12px',
                   fontWeight: 600,
                   fontFamily: 'system-ui, sans-serif',
                 }}
               >
-                COMMUNITY LOUNGE · INVITE-ONLY
+                커뮤니티 라운지 · 초대 전용
               </span>
             </div>
 

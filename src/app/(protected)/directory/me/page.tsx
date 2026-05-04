@@ -25,7 +25,7 @@ export default async function ProfileEditPage() {
     <div className="max-w-2xl mx-auto px-4 py-8">
       <Link
         href="/directory"
-        className="inline-flex items-center gap-1.5 text-xs font-vcx-sans text-[#888888] hover:text-[#1a1a1a] transition-colors mb-6"
+        className="mb-6 inline-flex min-h-9 items-center gap-1.5 text-xs font-vcx-sans text-[#888888] transition-colors hover:text-[#1a1a1a]"
       >
         <span>←</span>
         <span>멤버 디렉토리로 돌아가기</span>

@@ -18,7 +18,7 @@ bash "$REPO_ROOT/scripts/prd-freeze-check.sh"
 bash "$REPO_ROOT/scripts/secret-scan.sh"
 
 # Guard 1.6: ADR-0001 member UI fee disclosure block
-bash "$REPO_ROOT/scripts/check-fee-hidden.sh"
+bash "$REPO_ROOT/scripts/check-fee-hidden.sh" --staged
 
 # Guard 2 (migration number duplicate) — wire after D-0001 cleanup
 # bash "$REPO_ROOT/scripts/migration-number-check.sh"

@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { InviteAcceptForm } from '@/components/auth/invite-accept-form'
 
@@ -45,7 +45,7 @@ describe('InviteAcceptForm', () => {
     render(<InviteAcceptForm initialToken="abc123" />)
     expect(await screen.findByText('홍길동님이 초대했습니다')).toBeInTheDocument()
     expect(screen.getByText(/test@example\.com/)).toBeInTheDocument()
-    expect(screen.getByText(/Core Member/)).toBeInTheDocument()
+    expect(screen.getByText(/코어 멤버/)).toBeInTheDocument()
   })
 
   it('shows error on invalid token: "유효하지 않은 초대 링크입니다"', async () => {
@@ -68,13 +68,14 @@ describe('InviteAcceptForm', () => {
     render(<InviteAcceptForm initialToken="abc123" />)
     await screen.findByText('홍길동님이 초대했습니다')
 
-    const user = userEvent.setup()
-    await user.type(screen.getByPlaceholderText('홍길동'), '김철수')
+    fireEvent.change(screen.getByPlaceholderText('홍길동'), { target: { value: '김철수' } })
     const passwordInputs = screen.getAllByPlaceholderText('••••••••')
-    await user.type(passwordInputs[0], 'password123')
-    await user.type(passwordInputs[1], 'password123')
-    await user.type(screen.getByPlaceholderText('https://linkedin.com/in/your-profile'), 'https://linkedin.com/in/kimcheolsu')
-    await user.click(screen.getByRole('button', { name: '계정 생성하기' }))
+    fireEvent.change(passwordInputs[0], { target: { value: 'password123' } })
+    fireEvent.change(passwordInputs[1], { target: { value: 'password123' } })
+    fireEvent.change(screen.getByPlaceholderText('https://linkedin.com/in/your-profile'), {
+      target: { value: 'https://linkedin.com/in/kimcheolsu' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: '계정 생성하기' }))
 
     await waitFor(() => {
       expect(mockFetch).toHaveBeenCalledWith(
@@ -102,13 +103,11 @@ describe('InviteAcceptForm', () => {
     render(<InviteAcceptForm initialToken="abc123" />)
     await screen.findByText('홍길동님이 초대했습니다')
 
-    const user = userEvent.setup()
-
-    await user.type(screen.getByPlaceholderText('홍길동'), '김철수')
+    fireEvent.change(screen.getByPlaceholderText('홍길동'), { target: { value: '김철수' } })
     const passwordInputs = screen.getAllByPlaceholderText('••••••••')
-    await user.type(passwordInputs[0], 'password123')
-    await user.type(passwordInputs[1], 'different456')
-    await user.click(screen.getByRole('button', { name: '계정 생성하기' }))
+    fireEvent.change(passwordInputs[0], { target: { value: 'password123' } })
+    fireEvent.change(passwordInputs[1], { target: { value: 'different456' } })
+    fireEvent.click(screen.getByRole('button', { name: '계정 생성하기' }))
 
     expect(await screen.findByText('비밀번호가 일치하지 않습니다')).toBeInTheDocument()
   })

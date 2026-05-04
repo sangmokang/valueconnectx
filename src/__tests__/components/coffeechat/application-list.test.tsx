@@ -64,15 +64,15 @@ describe('ApplicationList', () => {
     expect(screen.getByText('이')).toBeInTheDocument()
   })
 
-  it('renders Core tier badge for core member', () => {
+  it('renders Korean Core tier badge for core member', () => {
     render(<ApplicationList sessionId="session-1" initialApplications={[makeApplication()]} />)
-    expect(screen.getByText('Core')).toBeInTheDocument()
+    expect(screen.getByText('코어 멤버')).toBeInTheDocument()
   })
 
-  it('renders Endorsed tier badge for endorsed member', () => {
+  it('renders Korean Endorsed tier badge for endorsed member', () => {
     const app = makeApplication({ applicant: makeApplicant({ member_tier: 'endorsed' }) })
     render(<ApplicationList sessionId="session-1" initialApplications={[app]} />)
-    expect(screen.getByText('Endorsed')).toBeInTheDocument()
+    expect(screen.getByText('추천 멤버')).toBeInTheDocument()
   })
 
   it('renders "검토중" status badge for pending application', () => {

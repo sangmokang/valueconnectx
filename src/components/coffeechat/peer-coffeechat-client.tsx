@@ -41,10 +41,10 @@ function toSession(chat: ApiChat): PeerSession {
 
   // derive tags from category
   const categoryTagMap: Record<string, string[]> = {
-    general: ['General'],
-    career: ['Career'],
-    hiring: ['Hiring'],
-    mentoring: ['Mentoring'],
+    general: ['일반'],
+    career: ['커리어'],
+    hiring: ['채용'],
+    mentoring: ['멘토링'],
   }
   const tags = categoryTagMap[chat.category] ?? []
 

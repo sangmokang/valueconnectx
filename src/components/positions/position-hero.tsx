@@ -18,10 +18,10 @@ export function PositionHero() {
         <div className="mb-6 flex items-center gap-2.5">
           <div style={{ width: 28, height: 1, background: '#c9a84c' }} />
           <span
-            className="font-bold tracking-[0.2em]"
-            style={{ color: '#c9a84c', fontSize: 11 }}
+            className="font-vcx-sans font-bold"
+            style={{ color: '#c9a84c', fontSize: 12 }}
           >
-            POSITIONS · CURATED BY VCX
+            선별 포지션 · VCX 큐레이션
           </span>
         </div>
 

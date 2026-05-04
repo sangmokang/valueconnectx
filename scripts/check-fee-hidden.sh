@@ -22,14 +22,14 @@
 #   0 = clean, 1 = violation
 #
 # Modes:
-#   (no arg)   staged — scan git diff --cached (pre-commit hook)
-#   --all      scan whole working tree
+#   (no arg)   all — scan whole tracked working tree (CI/manual verification)
+#   --staged   scan git diff --cached (pre-commit hook)
 
 set -uo pipefail
 cd "$(dirname "$0")/.." || exit 1
 
-MODE="staged"
-[[ "${1:-}" == "--all" ]] && MODE="all"
+MODE="all"
+[[ "${1:-}" == "--staged" ]] && MODE="staged"
 
 # Target file filter (paths + extensions)
 FILE_REGEX='^src/(app|components)/.*\.(ts|tsx|js|jsx)$'

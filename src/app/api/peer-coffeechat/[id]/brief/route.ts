@@ -35,8 +35,8 @@ function buildFallbackBrief(chat: PeerChatBriefRow, application: PeerBriefApplic
   const message = application.message ? `\n신청 메시지: ${application.message}` : ''
 
   return [
-    '[AI Brief fallback]',
-    `"${chat.title}" 커피챗이 수락되었습니다. AI 브리프 생성 환경이 준비되지 않아 안전한 기본 브리프를 제공합니다.`,
+    '[AI 브리프 기본 안내]',
+    `"${chat.title}" 커피챗이 수락되었습니다. AI 브리프 생성 환경이 준비되지 않아 기본 브리프를 제공합니다.`,
     `${counterpart}와 대화하기 전에 글의 목적, 기대하는 도움, 다음 액션 1가지를 정리해주세요.`,
     `주제 요약: ${chat.content.slice(0, 240)}${message}`,
   ].join('\n')
@@ -77,11 +77,13 @@ export async function GET(
 
     const storedBrief = isHost ? application.host_brief : application.applicant_brief
     const role = isHost ? 'host' : 'applicant'
+    const isFallback = !storedBrief
 
     return NextResponse.json({
       brief: storedBrief || buildFallbackBrief(chat, application, role),
       briefGeneratedAt: application.brief_generated_at,
       applicationId: application.id,
+      isFallback,
     })
   } catch {
     return serverError()

@@ -110,7 +110,12 @@ export async function GET(request: NextRequest) {
       ? scored
       : scored.sort((a, b) => b._score - a._score)
 
-    const result = sorted.map(({ _score: _s, linkedin_url: _l, ...m }) => m)
+    const result = sorted.map((member) => {
+      const { _score, linkedin_url, ...publicMember } = member
+      void _score
+      void linkedin_url
+      return publicMember
+    })
 
     return NextResponse.json({ data: result, total: count, page, limit })
   } catch (error) {

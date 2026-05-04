@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { LoginForm } from '@/components/auth/login-form'
 
@@ -41,12 +41,15 @@ describe('LoginForm', () => {
 
   it('shows error on auth failure', async () => {
     mockSignIn.mockResolvedValueOnce({ error: { message: 'Invalid credentials' } })
-    const user = userEvent.setup()
     render(<LoginForm />)
 
-    await user.type(screen.getByPlaceholderText('name@company.com'), 'test@example.com')
-    await user.type(screen.getByPlaceholderText('••••••••'), 'password123')
-    await user.click(screen.getByRole('button', { name: '로그인' }))
+    fireEvent.change(screen.getByPlaceholderText('name@company.com'), {
+      target: { value: 'test@example.com' },
+    })
+    fireEvent.change(screen.getByPlaceholderText('••••••••'), {
+      target: { value: 'password123' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: '로그인' }))
 
     expect(await screen.findByText('이메일 또는 비밀번호가 올바르지 않습니다')).toBeInTheDocument()
   })

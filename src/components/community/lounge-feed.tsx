@@ -244,7 +244,7 @@ export function LoungeFeed() {
       <div
         style={{
           display: 'none',
-          overflowX: 'auto',
+          flexWrap: 'wrap',
           gap: '8px',
           padding: '0 16px 16px',
         }}
@@ -263,7 +263,7 @@ export function LoungeFeed() {
               cursor: 'pointer',
               whiteSpace: 'nowrap',
               fontFamily: 'system-ui, sans-serif',
-              flexShrink: 0,
+              flexShrink: 1,
             }}
           >
             {cat.icon} {cat.label}

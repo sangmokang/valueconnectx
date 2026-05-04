@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (!member || member.member_tier !== 'core' || !member.is_active) {
-      return NextResponse.json({ error: 'Core Member만 추천할 수 있습니다' }, { status: 403 })
+      return NextResponse.json({ error: '코어 멤버만 추천할 수 있습니다' }, { status: 403 })
     }
 
     let body

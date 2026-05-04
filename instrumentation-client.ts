@@ -1,18 +1,20 @@
 import * as Sentry from '@sentry/nextjs'
 
-Sentry.init({
-  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart
 
-  // Performance monitoring
-  tracesSampleRate: 0.1, // 10% of transactions
+const sentryDsn = process.env.NEXT_PUBLIC_SENTRY_DSN
 
-  // Session replay (disabled for privacy - VCX handles sensitive data)
-  replaysSessionSampleRate: 0,
-  replaysOnErrorSampleRate: 0,
+if (sentryDsn) {
+  Sentry.init({
+    dsn: sentryDsn,
+    tracesSampleRate: 0.1,
 
-  // Only enable in production
-  enabled: process.env.NODE_ENV === 'production',
+    // Session replay remains disabled because VCX handles sensitive profile data.
+    replaysSessionSampleRate: 0,
+    replaysOnErrorSampleRate: 0,
 
-  // Environment
-  environment: process.env.NODE_ENV,
-})
+    enabled: process.env.NODE_ENV === 'production',
+    environment: process.env.NODE_ENV,
+    sendDefaultPii: false,
+  })
+}

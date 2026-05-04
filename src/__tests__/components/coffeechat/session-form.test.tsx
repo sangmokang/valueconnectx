@@ -59,11 +59,11 @@ describe('SessionForm', () => {
     expect(screen.getByRole('button', { name: '하이브리드' })).toBeInTheDocument()
   })
 
-  it('renders target tier buttons: 전체, Core, Endorsed', () => {
+  it('renders target tier buttons: 전체, 코어 멤버, 추천 멤버', () => {
     render(<SessionForm />)
     expect(screen.getByRole('button', { name: '전체' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Core' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Endorsed' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '코어 멤버' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '추천 멤버' })).toBeInTheDocument()
   })
 
   it('renders location detail input', () => {

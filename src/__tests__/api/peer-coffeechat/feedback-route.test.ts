@@ -69,8 +69,9 @@ function mockApplication(row: Record<string, unknown> | null) {
 }
 
 function mockInsert(error: unknown = null) {
+  const insert = vi.fn().mockResolvedValue({ error })
   return {
-    insert: vi.fn().mockResolvedValue({ error }),
+    insert,
   }
 }
 
@@ -81,6 +82,8 @@ describe('POST /api/peer-coffeechat/[id]/feedback', () => {
   })
 
   it('완료된 커피챗의 수락된 신청자가 피드백을 제출할 수 있다', async () => {
+    const feedbackTable = mockInsert()
+
     mocks.mockFrom.mockImplementation((table: string) => {
       if (table === 'peer_coffee_chats') {
         return mockSingleRow({ id: CHAT_ID, author_id: HOST_ID, status: 'closed' })
@@ -88,7 +91,7 @@ describe('POST /api/peer-coffeechat/[id]/feedback', () => {
       if (table === 'peer_coffee_applications') {
         return mockApplication({ id: APP_ID, applicant_id: APPLICANT_ID, status: 'accepted' })
       }
-      if (table === 'peer_coffeechat_feedback') return mockInsert()
+      if (table === 'peer_coffeechat_feedback') return feedbackTable
       return {}
     })
 
@@ -96,6 +99,41 @@ describe('POST /api/peer-coffeechat/[id]/feedback', () => {
 
     expect(res.status).toBe(200)
     await expect(res.json()).resolves.toEqual({ success: true })
+    expect(feedbackTable.insert).toHaveBeenCalledWith({
+      chat_id: CHAT_ID,
+      application_id: APP_ID,
+      reviewer_id: APPLICANT_ID,
+      reviewer_role: 'applicant',
+      overall_rating: 5,
+      would_connect_again: true,
+      feedback_tags: ['인사이트 풍부'],
+      comment: '좋은 대화였습니다.',
+      brief_helpful: true,
+    })
+  })
+
+  it('작성자도 완료된 커피챗의 수락된 신청에 피드백을 제출할 수 있다', async () => {
+    mocks.mockGetUser.mockResolvedValue({ data: { user: { id: HOST_ID } }, error: null })
+    const feedbackTable = mockInsert()
+
+    mocks.mockFrom.mockImplementation((table: string) => {
+      if (table === 'peer_coffee_chats') {
+        return mockSingleRow({ id: CHAT_ID, author_id: HOST_ID, status: 'closed' })
+      }
+      if (table === 'peer_coffee_applications') {
+        return mockApplication({ id: APP_ID, applicant_id: APPLICANT_ID, status: 'accepted' })
+      }
+      if (table === 'peer_coffeechat_feedback') return feedbackTable
+      return {}
+    })
+
+    const res = await POST(makeRequest(), makeParams())
+
+    expect(res.status).toBe(200)
+    expect(feedbackTable.insert).toHaveBeenCalledWith(expect.objectContaining({
+      reviewer_id: HOST_ID,
+      reviewer_role: 'host',
+    }))
   })
 
   it('완료되지 않은 커피챗에는 피드백을 제출할 수 없다', async () => {

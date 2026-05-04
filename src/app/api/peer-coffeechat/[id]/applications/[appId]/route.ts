@@ -56,7 +56,7 @@ export async function PUT(
 
     const parsed = updateApplicationSchema.safeParse(body)
     if (!parsed.success) {
-      return badRequest(parsed.error.issues[0]?.message ?? 'Validation error')
+      return badRequest('신청 상태는 수락 또는 거절만 가능합니다')
     }
 
     const { data: updated, error: updateError } = await supabase
@@ -83,16 +83,19 @@ export async function PUT(
       }
     }
 
-    // Send notification via service layer
-    sendNotification(
-      updated.applicant_id,
-      parsed.data.status === 'accepted' ? 'peer_chat_accepted' : 'peer_chat_rejected',
-      {
-        title: `피어 커피챗 신청이 ${parsed.data.status === 'accepted' ? '수락' : '거절'}되었습니다`,
-        body: chat.title ?? '피어 커피챗 신청',
-        link: `/coffeechat/${id}`,
-      }
-    ).catch(() => {}) // fire-and-forget
+    try {
+      await sendNotification(
+        updated.applicant_id,
+        parsed.data.status === 'accepted' ? 'peer_chat_accepted' : 'peer_chat_rejected',
+        {
+          title: `피어 커피챗 신청이 ${parsed.data.status === 'accepted' ? '수락' : '거절'}되었습니다`,
+          body: chat.title ?? '피어 커피챗 신청',
+          link: `/coffeechat/${id}`,
+        }
+      )
+    } catch (error) {
+      console.error('Peer application notification failed:', error)
+    }
 
     // Fetch applicant email for author when accepted
     let contactEmail: string | null = null

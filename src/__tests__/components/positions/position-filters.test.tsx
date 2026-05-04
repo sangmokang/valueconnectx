@@ -14,23 +14,23 @@ describe('PositionFilters', () => {
   it('renders all domain filter tabs', () => {
     render(<PositionFilters {...defaultProps} />)
     expect(screen.getByText('전체')).toBeInTheDocument()
-    expect(screen.getByText('Business')).toBeInTheDocument()
-    expect(screen.getByText('Product')).toBeInTheDocument()
-    expect(screen.getByText('Engineering')).toBeInTheDocument()
-    expect(screen.getByText('Finance')).toBeInTheDocument()
-    expect(screen.getByText('Sales')).toBeInTheDocument()
+    expect(screen.getByText('사업개발')).toBeInTheDocument()
+    expect(screen.getByText('프로덕트')).toBeInTheDocument()
+    expect(screen.getByText('엔지니어링')).toBeInTheDocument()
+    expect(screen.getByText('재무')).toBeInTheDocument()
+    expect(screen.getByText('세일즈')).toBeInTheDocument()
   })
 
   it('calls onChange when a filter tab is clicked', () => {
     const onChange = vi.fn()
     render(<PositionFilters {...defaultProps} onChange={onChange} />)
-    fireEvent.click(screen.getByText('Engineering'))
-    expect(onChange).toHaveBeenCalledWith('Engineering')
+    fireEvent.click(screen.getByText('엔지니어링'))
+    expect(onChange).toHaveBeenCalledWith('엔지니어링')
   })
 
   it('calls onChange with 전체 when 전체 tab is clicked', () => {
     const onChange = vi.fn()
-    render(<PositionFilters {...defaultProps} value="Engineering" onChange={onChange} />)
+    render(<PositionFilters {...defaultProps} value="엔지니어링" onChange={onChange} />)
     fireEvent.click(screen.getByText('전체'))
     expect(onChange).toHaveBeenCalledWith('전체')
   })

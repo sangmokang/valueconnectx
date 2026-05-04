@@ -1,10 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+export type DomainFilter = '전체' | '사업개발' | '프로덕트' | '엔지니어링' | '재무' | '세일즈'
 
-export type DomainFilter = '전체' | 'Business' | 'Product' | 'Engineering' | 'Finance' | 'Sales'
-
-const FILTERS: DomainFilter[] = ['전체', 'Business', 'Product', 'Engineering', 'Finance', 'Sales']
+const FILTERS: DomainFilter[] = ['전체', '사업개발', '프로덕트', '엔지니어링', '재무', '세일즈']
 
 interface PositionFiltersProps {
   value: DomainFilter
@@ -19,7 +17,7 @@ export function PositionFilters({ value, onChange }: PositionFiltersProps) {
         borderBottom: '1px solid rgba(0,0,0,0.08)',
       }}
     >
-      <div className="mx-auto max-w-[1100px] px-6 md:px-12 flex overflow-x-auto">
+      <div className="mx-auto max-w-[1100px] px-4 md:px-12 flex flex-wrap md:flex-nowrap md:overflow-x-auto">
         {FILTERS.map((f) => {
           const active = f === value
           return (
@@ -29,7 +27,7 @@ export function PositionFilters({ value, onChange }: PositionFiltersProps) {
               onClick={() => onChange(f)}
               className="shrink-0 transition-colors"
               style={{
-                padding: '16px 20px',
+                padding: '14px 16px',
                 background: 'none',
                 border: 'none',
                 borderBottom: active ? '2px solid #c9a84c' : '2px solid transparent',

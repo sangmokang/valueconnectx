@@ -96,10 +96,8 @@ describe('GET /api/positions', () => {
   it('returns list of active positions with total count for authenticated member', async () => {
     mocks.mockGetUser.mockResolvedValue({ data: { user: activeUser }, error: null })
 
-    let memberCallCount = 0
     mocks.mockFrom.mockImplementation((table: string) => {
       if (table === 'vcx_members') {
-        memberCallCount++
         return makeQueryChain({ data: activeMember, error: null })
       }
       if (table === 'positions') {

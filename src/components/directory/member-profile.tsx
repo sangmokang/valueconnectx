@@ -1,4 +1,5 @@
 import { Badge } from '@/components/ui/badge'
+import { displayFieldLabel, displayMemberTier, displayRoleLabel } from '@/lib/display-labels'
 
 export interface MemberProfileData {
   id: string
@@ -32,7 +33,7 @@ export function MemberProfile({ member }: MemberProfileProps) {
         {/* Tier badge row */}
         <div className="mb-4">
           <Badge variant={member.member_tier}>
-            {member.member_tier === 'core' ? 'Core Member' : 'Endorsed Member'}
+            {displayMemberTier(member.member_tier)}
           </Badge>
         </div>
 
@@ -58,7 +59,7 @@ export function MemberProfile({ member }: MemberProfileProps) {
             </h1>
 
             {member.title && (
-              <p className="text-sm font-vcx-sans text-[#c9a84c] mt-1">{member.title}</p>
+              <p className="text-sm font-vcx-sans text-[#c9a84c] mt-1">{displayRoleLabel(member.title)}</p>
             )}
             {member.current_company && (
               <p className="text-sm font-vcx-sans text-[#a09080] mt-0.5">
@@ -69,7 +70,7 @@ export function MemberProfile({ member }: MemberProfileProps) {
             {member.is_open_to_chat && (
               <div className="flex items-center gap-1.5 mt-3">
                 <span className="w-2 h-2 bg-[#c9a84c]" />
-                <span className="text-[11px] font-vcx-sans text-[#c9a84c] tracking-[0.1em] uppercase font-bold">커피챗 가능</span>
+                <span className="text-[12px] font-vcx-sans text-[#c9a84c] tracking-[0.02em] font-bold">커피챗 가능</span>
               </div>
             )}
           </div>
@@ -100,7 +101,7 @@ export function MemberProfile({ member }: MemberProfileProps) {
                 className="px-3 py-1 text-xs font-vcx-sans text-[#666666] bg-[#f0ebe2] border border-[#e0d9ce]"
   
               >
-                {field}
+                {displayFieldLabel(field)}
               </span>
             ))}
           </div>
@@ -114,7 +115,7 @@ export function MemberProfile({ member }: MemberProfileProps) {
           {member.industry && (
             <div className="flex gap-4">
               <dt className="text-xs font-vcx-sans text-[#999999] w-20 sm:w-24 flex-shrink-0">업종</dt>
-              <dd className="text-sm font-vcx-sans text-[#444444]">{member.industry}</dd>
+              <dd className="text-sm font-vcx-sans text-[#444444]">{displayFieldLabel(member.industry)}</dd>
             </div>
           )}
           {member.location && (
@@ -156,7 +157,7 @@ export function MemberProfile({ member }: MemberProfileProps) {
             href={member.linkedin_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm font-vcx-sans text-[#c9a84c] hover:text-[#1a1a1a] transition-colors"
+            className="inline-flex min-h-9 items-center gap-2 text-sm font-vcx-sans text-[#c9a84c] hover:text-[#1a1a1a] transition-colors"
           >
             <span>LinkedIn 프로필 보기</span>
             <span>→</span>

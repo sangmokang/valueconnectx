@@ -1,9 +1,10 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, type ReactNode } from 'react'
 import useSWR from 'swr'
-import { CheckCircle2, Info, Loader2 } from 'lucide-react'
+import { AlertCircle, CheckCircle2, Info, Loader2 } from 'lucide-react'
 import { trackEvent } from '@/lib/analytics'
+import { cn } from '@/lib/utils'
 import { InterestSelector } from './interest-selector'
 import { FeedCard, type FeedItem } from './feed-card'
 import { FeedDetailModal } from './feed-detail-modal'
@@ -22,13 +23,18 @@ export function FeedClient() {
   const [selectedChipsOverride, setSelectedChipsOverride] = useState<string[] | null>(null)
   const [showDetail, setShowDetail] = useState<FeedItem | null>(null)
   const [interestError, setInterestError] = useState('')
+  const [responseError, setResponseError] = useState('')
 
-  const { data: interestsData, mutate: mutateInterests } = useSWR<{ chips: string[] }>(
+  const {
+    data: interestsData,
+    error: interestsLoadError,
+    mutate: mutateInterests,
+  } = useSWR<{ chips: string[] }>(
     '/api/feed/interests',
     fetcher
   )
   const selectedChips = selectedChipsOverride ?? interestsData?.chips ?? []
-  const feedReady = selectedChipsOverride !== null || interestsData !== undefined
+  const feedReady = selectedChipsOverride !== null || interestsData !== undefined || interestsLoadError
   const feedKey = feedReady
     ? selectedChips.length > 0
       ? `/api/feed?limit=10&tags=${encodeURIComponent(selectedChips.join(','))}`
@@ -55,6 +61,7 @@ export function FeedClient() {
   const handleChipsChange = useCallback(
     async (chips: string[]) => {
       setInterestError('')
+      setResponseError('')
       setSelectedChipsOverride(chips)
       mutateInterests({ chips }, { revalidate: false })
       trackEvent('interests_saved', { chips, count: chips.length })
@@ -77,7 +84,10 @@ export function FeedClient() {
 
   const handleResponse = useCallback(
     async (itemId: string, response: 'yes' | 'skip' | null) => {
+      setResponseError('')
       const item = data?.data.find((i) => i.id === itemId)
+      const previousData = data
+
       if (item) {
         if (response === 'yes') {
           trackEvent('feed_interested', { item_id: itemId, role: item.role, company: item.company })
@@ -107,23 +117,27 @@ export function FeedClient() {
 
       if (response === null) {
         try {
-          await fetch(`/api/feed/${itemId}/response`, { method: 'DELETE' })
+          const result = await fetch(`/api/feed/${itemId}/response`, { method: 'DELETE' })
+          if (!result.ok) throw new Error('반응 삭제 실패')
         } catch (err) {
           console.error('피드 반응 삭제 오류:', err)
-          mutate()
+          setResponseError('선택을 저장하지 못했습니다. 잠시 후 다시 시도해주세요.')
+          mutate(previousData, { revalidate: false })
         }
         return
       }
 
       try {
-        await fetch(`/api/feed/${itemId}/response`, {
+        const result = await fetch(`/api/feed/${itemId}/response`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ response }),
         })
+        if (!result.ok) throw new Error('반응 저장 실패')
       } catch (err) {
         console.error('피드 반응 저장 오류:', err)
-        mutate()
+        setResponseError('선택을 저장하지 못했습니다. 잠시 후 다시 시도해주세요.')
+        mutate(previousData, { revalidate: false })
       }
     },
     [mutate, data]
@@ -147,6 +161,16 @@ export function FeedClient() {
             {interestError}
           </div>
         )}
+        {interestsLoadError && !interestError && (
+          <NoticeBanner tone="warning">
+            관심 분야를 불러오지 못했습니다. 우선 전체 큐레이션을 보여드립니다.
+          </NoticeBanner>
+        )}
+        {responseError && (
+          <NoticeBanner tone="error">
+            {responseError}
+          </NoticeBanner>
+        )}
 
         <div className="mb-7 flex flex-wrap items-center justify-between gap-3">
           <div>
@@ -166,7 +190,13 @@ export function FeedClient() {
 
         <NewsletterBar />
 
-        {error ? (
+        {!feedReady ? (
+          <EmptyState
+            icon="loading"
+            title="피드를 준비하는 중입니다"
+            description="관심 분야를 먼저 확인하고 있습니다."
+          />
+        ) : error ? (
           <EmptyState
             title="피드를 불러오지 못했습니다"
             description="잠시 후 다시 시도해주세요."
@@ -236,6 +266,28 @@ export function FeedClient() {
         />
       )}
     </>
+  )
+}
+
+function NoticeBanner({
+  tone,
+  children,
+}: {
+  tone: 'warning' | 'error'
+  children: ReactNode
+}) {
+  return (
+    <div
+      className={cn(
+        'mb-5 flex items-start gap-2 border px-4 py-3 font-vcx-sans text-[13px]',
+        tone === 'warning'
+          ? 'border-vcx-gold/30 bg-vcx-gold/10 text-vcx-dark'
+          : 'border-red-200 bg-red-50 text-red-700'
+      )}
+    >
+      <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+      <span>{children}</span>
+    </div>
   )
 }
 

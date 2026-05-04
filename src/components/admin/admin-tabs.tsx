@@ -16,7 +16,7 @@ const tabs = [
 ]
 
 export function AdminTabs() {
-  const pathname = usePathname()
+  const pathname = usePathname() ?? ''
   return (
     <nav style={{ display: 'flex', gap: '0', borderBottom: '1px solid rgba(0,0,0,0.08)', marginBottom: '32px' }}>
       {tabs.map((tab) => {

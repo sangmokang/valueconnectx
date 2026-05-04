@@ -2,11 +2,12 @@ import { test, expect, type Browser } from '@playwright/test'
 import { createClient } from '@supabase/supabase-js'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { loginAs } from '../helpers/auth'
+import { gotoWithRetry, loginAs } from '../helpers/auth'
 
 const PASSWORD = 'VcxSeed2026!'
 const AUTHOR = { email: 'jihoon.park@vcx-seed.com', password: PASSWORD }
 const APPLICANT = { email: 'hyuna.lee@vcx-seed.com', password: PASSWORD }
+const STATUS_TRANSITION_TIMEOUT = 15000
 
 function loadEnv() {
   const envPath = resolve(process.cwd(), '.env.local')
@@ -29,12 +30,13 @@ function getAdminClient() {
   loadEnv()
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY
-  if (!url || !key) throw new Error('E2E Supabase admin credentials are missing')
+  if (!url || !key) return null
   return createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } })
 }
 
 async function ensureMember(email: string, name: string) {
   const admin = getAdminClient()
+  if (!admin) throw new Error('E2E Supabase admin credentials are missing')
   const { data: member } = await admin
     .from('vcx_members')
     .select('id')
@@ -60,6 +62,7 @@ async function ensureMember(email: string, name: string) {
 
 async function createPeerCoffeechat() {
   const admin = getAdminClient()
+  if (!admin) throw new Error('E2E Supabase admin credentials are missing')
   const authorId = await ensureMember(AUTHOR.email, 'E2E S5 작성자')
   await ensureMember(APPLICANT.email, 'E2E S5 신청자')
   const title = `E2E 피드백 커피챗 ${Date.now()}`
@@ -75,11 +78,13 @@ async function createPeerCoffeechat() {
     .select('id')
     .single()
   if (error || !data) throw new Error(`E2E peer coffeechat seed failed: ${error?.message}`)
-  return { chatUrl: `/coffeechat/${data.id}`, chatId: data.id }
+  return { chatUrl: `/coffeechat/${data.id}`, chatId: data.id, title }
 }
 
 async function hasPeerCoffeechatSchema() {
-  const { error } = await getAdminClient()
+  const admin = getAdminClient()
+  if (!admin) return false
+  const { error } = await admin
     .from('peer_coffee_chats')
     .select('id')
     .limit(1)
@@ -87,7 +92,9 @@ async function hasPeerCoffeechatSchema() {
 }
 
 async function deletePeerCoffeechat(id: string) {
-  await getAdminClient().from('peer_coffee_chats').delete().eq('id', id)
+  const admin = getAdminClient()
+  if (!admin) return
+  await admin.from('peer_coffee_chats').delete().eq('id', id)
 }
 
 async function createAcceptedPeerCoffeechat(browser: Browser) {
@@ -95,21 +102,27 @@ async function createAcceptedPeerCoffeechat(browser: Browser) {
   const applicantContext = await browser.newContext()
   const authorPage = await authorContext.newPage()
   const applicantPage = await applicantContext.newPage()
-  const { chatUrl, chatId } = await createPeerCoffeechat()
+  const { chatUrl, chatId, title } = await createPeerCoffeechat()
 
   await loginAs(authorPage, AUTHOR)
   await loginAs(applicantPage, APPLICANT)
-  await applicantPage.goto(chatUrl)
+  await gotoWithRetry(applicantPage, chatUrl)
+  await expect(applicantPage.getByRole('heading', { name: title })).toBeVisible({
+    timeout: STATUS_TRANSITION_TIMEOUT,
+  })
   await applicantPage.getByRole('button', { name: '비밀 신청하기' }).click()
   await applicantPage.getByPlaceholder('간단한 자기소개나 신청 이유를 적어주세요').fill(
     '세션 이후 피드백 제출 흐름을 검증하기 위해 신청합니다.'
   )
-  await applicantPage.getByRole('button', { name: '신청하기' }).click()
-  await expect(applicantPage.getByText('신청 완료')).toBeVisible()
+  await applicantPage.getByRole('button', { name: '신청하기', exact: true }).click()
+  await expect(applicantPage.getByText('신청 완료')).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
 
-  await authorPage.goto(chatUrl)
+  await gotoWithRetry(authorPage, chatUrl)
+  await expect(authorPage.getByRole('heading', { name: title })).toBeVisible({
+    timeout: STATUS_TRANSITION_TIMEOUT,
+  })
   await authorPage.getByRole('button', { name: '수락' }).first().click()
-  await expect(authorPage.getByText('수락됨')).toBeVisible()
+  await expect(authorPage.getByText('수락됨')).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
 
   const closeResponse = await authorPage.request.put(`/api/peer-coffeechat/${chatId}`, {
     data: { status: 'closed' },
@@ -123,7 +136,7 @@ test.describe('Phase 1 Slice - S5: 세션 완료 후 피드백 제출', () => {
   test('완료된 Peer 커피챗에서 피드백을 제출하고 완료 메시지를 본다', async ({ browser }) => {
     test.skip(
       !(await hasPeerCoffeechatSchema()),
-      'E2E Supabase DB에 peer_coffee_chats 스키마가 없어 전체 피드백 경로를 건너뜁니다.'
+      'E2E Supabase admin 권한 또는 peer_coffee_chats 스키마가 없어 전체 피드백 경로를 건너뜁니다.'
     )
 
     const flow = await createAcceptedPeerCoffeechat(browser)

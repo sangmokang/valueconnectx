@@ -202,9 +202,9 @@
 
   /* VCX Section Label */
   .vcx-section-label {
-    font-size: 10px;
+    font-size: 12px;
     text-transform: uppercase;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.08em;
     font-family: system-ui, -apple-system, sans-serif;
     color: #c9a84c;
   }

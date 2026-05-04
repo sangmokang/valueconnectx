@@ -1,18 +1,9 @@
-import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
 import { LoginForm } from '@/components/auth/login-form'
-import { sanitizeRedirect } from '@/lib/auth/routes'
 
 export const dynamic = 'force-dynamic'
 
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ redirect?: string; error?: string }> }) {
   const params = await searchParams
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (user) {
-    const { data: member } = await supabase.from('vcx_members').select('id').eq('id', user.id).single()
-    if (member) redirect(sanitizeRedirect(params.redirect))
-  }
 
   return (
     <div style={{ maxWidth: '420px', width: '100%' }}>
@@ -30,12 +21,12 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
         </p>
         <LoginForm redirectTo={params.redirect} />
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
-          <a href="/forgot-password" style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#999', textDecoration: 'none' }}>비밀번호를 잊으셨나요?</a>
+          <a href="/forgot-password" style={{ display: 'inline-flex', minHeight: '36px', alignItems: 'center', fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#999', textDecoration: 'none' }}>비밀번호를 잊으셨나요?</a>
         </div>
       </div>
       <div style={{ textAlign: 'center', marginTop: '24px' }}>
         <span style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'rgba(240,235,226,0.5)' }}>초대 코드가 있으신가요? </span>
-        <a href="/invite/accept" style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#c9a84c', textDecoration: 'none', fontWeight: 600 }}>초대 수락하기 →</a>
+        <a href="/invite/accept" style={{ display: 'inline-flex', minHeight: '36px', alignItems: 'center', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#c9a84c', textDecoration: 'none', fontWeight: 600 }}>초대 수락하기 →</a>
       </div>
     </div>
   )

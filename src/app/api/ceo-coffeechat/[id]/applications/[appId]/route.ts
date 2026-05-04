@@ -65,7 +65,7 @@ export async function PUT(
     }
 
     // Send notification via service layer (admin client, bypasses RLS)
-    sendNotification(
+    await sendNotification(
       application.applicant_id,
       status === 'accepted' ? 'coffeechat_accepted' : 'coffeechat_rejected',
       {
@@ -73,7 +73,7 @@ export async function PUT(
         body: session.title,
         link: `/ceo-coffeechat/${sessionId}`,
       }
-    ).catch(() => {}) // fire-and-forget, non-blocking
+    )
 
     // Fetch applicant email for host when accepted
     let contactEmail: string | null = null

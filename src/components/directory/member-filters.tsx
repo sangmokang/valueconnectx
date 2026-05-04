@@ -8,17 +8,18 @@ export function MemberFilters() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const search = searchParams?.toString() ?? ''
 
-  const [q, setQ] = useState(searchParams.get('q') ?? '')
+  const [q, setQ] = useState(searchParams?.get('q') ?? '')
   const [showFilters, setShowFilters] = useState(false)
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const currentTier = searchParams.get('tier') ?? ''
-  const currentIndustry = searchParams.get('industry') ?? ''
+  const currentTier = searchParams?.get('tier') ?? ''
+  const currentIndustry = searchParams?.get('industry') ?? ''
 
   const updateParams = useCallback(
     (updates: Record<string, string>) => {
-      const params = new URLSearchParams(searchParams.toString())
+      const params = new URLSearchParams(search)
       for (const [key, value] of Object.entries(updates)) {
         if (value) {
           params.set(key, value)
@@ -29,7 +30,7 @@ export function MemberFilters() {
       params.delete('page')
       router.push(`${pathname}?${params.toString()}`)
     },
-    [pathname, router, searchParams]
+    [pathname, router, search]
   )
 
   useEffect(() => {
@@ -45,8 +46,8 @@ export function MemberFilters() {
 
   const tierOptions = [
     { label: '전체', value: '' },
-    { label: 'Core', value: 'core' },
-    { label: 'Endorsed', value: 'endorsed' },
+    { label: '코어 멤버', value: 'core' },
+    { label: '추천 멤버', value: 'endorsed' },
   ]
 
   return (
@@ -65,7 +66,7 @@ export function MemberFilters() {
         <button
           type="button"
           onClick={() => setShowFilters((v) => !v)}
-          className="md:hidden px-3 py-2 text-xs font-vcx-sans text-[#666666] border border-[#e0d9ce] bg-[#f7f3ed]"
+          className="md:hidden min-h-9 px-3 py-2 text-xs font-vcx-sans text-[#666666] border border-[#e0d9ce] bg-[#f7f3ed]"
           style={{ borderRadius: 0 }}
         >
           필터 {showFilters ? '닫기' : '열기'}
@@ -81,7 +82,7 @@ export function MemberFilters() {
               key={opt.value}
               type="button"
               onClick={() => updateParams({ tier: opt.value })}
-              className={`px-3 py-1.5 text-xs font-vcx-sans border transition-colors ${
+              className={`min-h-9 px-3 py-1.5 text-xs font-vcx-sans border transition-colors ${
                 currentTier === opt.value
                   ? 'bg-[#1a1a1a] text-[#c9a84c] border-[#1a1a1a]'
                   : 'bg-white text-[#666666] border-[#e0d9ce] hover:border-[#888888]'
@@ -97,7 +98,7 @@ export function MemberFilters() {
         <select
           value={currentIndustry}
           onChange={(e) => updateParams({ industry: e.target.value })}
-          className="px-3 py-1.5 text-xs font-vcx-sans bg-white border border-[#e0d9ce] text-[#666666] outline-none focus:border-[#c9a84c] cursor-pointer"
+          className="min-h-9 px-3 py-1.5 text-xs font-vcx-sans bg-white border border-[#e0d9ce] text-[#666666] outline-none focus:border-[#c9a84c] cursor-pointer"
           style={{ borderRadius: 0 }}
         >
           <option value="">업종 전체</option>
@@ -116,7 +117,7 @@ export function MemberFilters() {
               setQ('')
               updateParams({ tier: '', industry: '', q: '' })
             }}
-            className="text-xs font-vcx-sans text-[#999999] underline hover:text-[#666666]"
+            className="inline-flex min-h-9 items-center text-xs font-vcx-sans text-[#999999] underline hover:text-[#666666]"
           >
             필터 초기화
           </button>

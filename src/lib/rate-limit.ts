@@ -2,6 +2,18 @@ import { Ratelimit } from '@upstash/ratelimit'
 import { getRedis } from '@/lib/redis'
 
 const redis = getRedis()
+let warnedMissingLimiter = false
+
+function isDeployedProductionRuntime(): boolean {
+  if (process.env.NODE_ENV !== 'production') return false
+  return Boolean(
+    process.env.VERCEL ||
+      process.env.VERCEL_ENV ||
+      process.env.AWS_REGION ||
+      process.env.FLY_APP_NAME ||
+      process.env.RENDER
+  )
+}
 
 export const apiLimiter = redis
   ? new Ratelimit({
@@ -48,12 +60,21 @@ export async function rateLimit(
   identifier: string
 ): Promise<{ success: boolean; remaining: number }> {
   if (!limiter) {
-    if (process.env.NODE_ENV === 'production') {
+    if (isDeployedProductionRuntime()) {
       console.error('SECURITY: Rate limiter unavailable in production')
       return { success: false, remaining: 0 }
     }
+    if (process.env.NODE_ENV === 'production' && !warnedMissingLimiter) {
+      console.warn('Rate limiter unavailable in local production runtime; allowing request')
+      warnedMissingLimiter = true
+    }
     return { success: true, remaining: 999 }
   }
-  const result = await limiter.limit(identifier)
-  return { success: result.success, remaining: result.remaining }
+  try {
+    const result = await limiter.limit(identifier)
+    return { success: result.success, remaining: result.remaining }
+  } catch (error) {
+    console.error('Rate limiter request failed; allowing request', error)
+    return { success: true, remaining: 0 }
+  }
 }

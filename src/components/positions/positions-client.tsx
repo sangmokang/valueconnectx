@@ -22,16 +22,27 @@ const fetcher = async (url: string) => {
 }
 
 const DOMAIN_KEYWORDS: Record<Exclude<DomainFilter, '전체'>, string[]> = {
-  Business: ['business', 'bd', '사업', '파트너십', '전략'],
-  Product: ['product', 'pm', '프로덕트', '기획'],
-  Engineering: ['engineer', 'developer', 'tech', '개발', 'ml', 'platform', 'cto'],
-  Finance: ['finance', 'cfo', '재무', '투자', '회계'],
-  Sales: ['sales', 'cro', '세일즈', '영업'],
+  사업개발: ['business', 'bd', '사업', '파트너십', '전략'],
+  프로덕트: ['product', 'pm', '프로덕트', '기획'],
+  엔지니어링: ['engineer', 'developer', 'tech', '개발', 'ml', 'platform', 'cto'],
+  재무: ['finance', 'cfo', '재무', '투자', '회계'],
+  세일즈: ['sales', 'cro', '세일즈', '영업'],
+}
+
+const DOMAIN_ALIASES: Record<Exclude<DomainFilter, '전체'>, string[]> = {
+  사업개발: ['business', 'bd', '사업개발'],
+  프로덕트: ['product', '프로덕트'],
+  엔지니어링: ['engineering', 'engineer', '엔지니어링'],
+  재무: ['finance', '재무'],
+  세일즈: ['sales', '세일즈'],
 }
 
 function matchesDomain(pos: PositionCardData, filter: DomainFilter): boolean {
   if (filter === '전체') return true
-  if (pos.domain) return pos.domain.toLowerCase() === filter.toLowerCase()
+  if (pos.domain) {
+    const normalized = pos.domain.toLowerCase()
+    return DOMAIN_ALIASES[filter].some((alias) => alias.toLowerCase() === normalized)
+  }
   const keywords = DOMAIN_KEYWORDS[filter]
   const haystack = `${pos.title} ${pos.role_description}`.toLowerCase()
   return keywords.some((kw) => haystack.includes(kw))

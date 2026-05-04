@@ -35,7 +35,7 @@ function ServiceDropdown({
     <div ref={dropRef} className="relative">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-1 bg-transparent border-0 cursor-pointer text-[13.5px] pb-[2px] select-none"
+        className="flex min-h-9 items-center gap-1 bg-transparent border-0 cursor-pointer text-[13.5px] select-none"
         style={{
           color: isServiceActive ? "#1a1a1a" : "#666",
           fontWeight: isServiceActive ? 600 : 400,
@@ -103,7 +103,7 @@ function ServiceDropdown({
 
 export function DesktopNav({ currentPath }: { currentPath: string }) {
   return (
-    <div className="hidden md:flex items-center gap-7 text-[13.5px]">
+    <div className="hidden lg:flex items-center gap-7 text-[13.5px]">
       {mainNavItems.map((item) => {
         if (item.children) {
           return (
@@ -120,7 +120,7 @@ export function DesktopNav({ currentPath }: { currentPath: string }) {
           <Link
             key={item.label}
             href={item.href}
-            className="flex items-center gap-1.5 no-underline pb-[2px]"
+            className="flex min-h-9 items-center gap-1.5 no-underline"
             style={{
               color: isActive ? "#1a1a1a" : "#666",
               fontWeight: isActive ? 600 : 400,
@@ -131,7 +131,7 @@ export function DesktopNav({ currentPath }: { currentPath: string }) {
           >
             {item.label}
             {item.badge && (
-              <span className="text-[9px] font-extrabold tracking-[0.05em] px-1.5 py-0.5 bg-[#c9a84c] text-[#1a1a1a]">
+              <span className="text-[12px] font-extrabold tracking-normal leading-tight px-1.5 py-0.5 bg-[#c9a84c] text-[#1a1a1a]">
                 {item.badge}
               </span>
             )}
@@ -204,7 +204,7 @@ export function MobileMenu({
             <Link
               href="/"
               onClick={closeMenu}
-              className="no-underline font-[Georgia,serif] font-extrabold text-base tracking-tight text-[#1a1a1a]"
+              className="flex min-h-11 items-center no-underline font-[Georgia,serif] font-extrabold text-base tracking-tight text-[#1a1a1a]"
             >
               ValueConnect <span className="text-[#c9a84c]">X</span>
             </Link>
@@ -295,7 +295,7 @@ export function MobileMenu({
                 >
                   {item.label}
                   {item.badge && (
-                    <span className="text-[9px] font-extrabold tracking-[0.05em] px-1.5 py-0.5 bg-[#c9a84c] text-[#1a1a1a]">
+                    <span className="text-[12px] font-extrabold tracking-normal leading-tight px-1.5 py-0.5 bg-[#c9a84c] text-[#1a1a1a]">
                       {item.badge}
                     </span>
                   )}

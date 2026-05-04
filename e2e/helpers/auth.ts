@@ -10,13 +10,37 @@ export const TEST_CORPORATE_USER = {
   password: process.env.E2E_CORPORATE_PASSWORD || 'testpass123!',
 }
 
+export async function gotoWithRetry(page: Page, url: string, attempts = 5) {
+  let lastError: unknown
+
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      await page.goto(url, { waitUntil: 'load' })
+      return
+    } catch (error) {
+      lastError = error
+      const message = error instanceof Error ? error.message : String(error)
+      if (!message.includes('ERR_CONNECTION_REFUSED') || attempt === attempts) {
+        throw error
+      }
+      await page.waitForTimeout(1000 * attempt)
+    }
+  }
+
+  throw lastError
+}
+
 export async function loginAs(page: Page, user: { email: string; password: string }) {
-  await page.goto('/login')
+  await gotoWithRetry(page, '/login')
   await page.getByLabel('이메일').fill(user.email)
   await page.getByLabel('비밀번호').fill(user.password)
-  await page.getByRole('button', { name: '로그인' }).click()
-  // Wait for navigation after login
-  await page.waitForURL((url) => !url.pathname.includes('/login'), { timeout: 10000 })
+  await Promise.all([
+    page.waitForURL((url) => !url.pathname.includes('/login'), {
+      timeout: 15000,
+      waitUntil: 'domcontentloaded',
+    }),
+    page.getByRole('button', { name: '로그인' }).click(),
+  ])
 }
 
 /**

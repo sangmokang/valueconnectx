@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { displayFieldLabel, displayMemberTier, displayRoleLabel } from '@/lib/display-labels'
 
 export interface MemberCardData {
   id: string
@@ -38,12 +39,10 @@ export function MemberCard({ member }: MemberCardProps) {
             src={member.avatar_url}
             alt={member.name}
             className="w-[52px] h-[52px] object-cover flex-shrink-0"
-            style={{ borderRadius: '50%' }}
           />
         ) : (
           <div
             className="w-[52px] h-[52px] bg-[#1a1a1a] flex items-center justify-center flex-shrink-0"
-            style={{ borderRadius: '50%' }}
           >
             <span
               className="text-[#c9a84c] text-[18px] font-extrabold"
@@ -65,13 +64,13 @@ export function MemberCard({ member }: MemberCardProps) {
               {member.name}
             </span>
             <span
-              className="text-[11px] px-2 py-0.5 font-bold tracking-[0.05em]"
+              className="px-2 py-0.5 text-[12px] font-bold"
               style={{
                 background: isCore ? '#1a1a1a' : '#f5f0e8',
                 color: isCore ? '#c9a84c' : '#777',
               }}
             >
-              {isCore ? 'Core' : 'Endorsed'}
+              {displayMemberTier(member.member_tier)}
             </span>
             {joinLabel && (
               <span className="text-[12px] text-[#888] ml-auto">{joinLabel}</span>
@@ -85,14 +84,14 @@ export function MemberCard({ member }: MemberCardProps) {
                 <div className="text-[13.5px] text-[#555] font-medium">{member.current_company}</div>
               )}
               {member.title && (
-                <div className="text-[13px] text-[#777]">{member.title}</div>
+                <div className="text-[13px] text-[#777]">{displayRoleLabel(member.title)}</div>
               )}
             </div>
           )}
 
           {/* Industry */}
           {member.industry && (
-            <div className="text-[12px] text-[#888] mb-2">{member.industry}</div>
+            <div className="text-[12px] text-[#888] mb-2">{displayFieldLabel(member.industry)}</div>
           )}
 
           {/* Bio */}
@@ -111,13 +110,13 @@ export function MemberCard({ member }: MemberCardProps) {
               {member.professional_fields.slice(0, 3).map((field) => (
                 <span
                   key={field}
-                  className="text-[11.5px] px-2 py-0.5 bg-[#f5f0e8] border border-black/[0.08] text-[#777]"
+                  className="bg-[#f5f0e8] border border-black/[0.08] px-2 py-0.5 text-[12px] text-[#777]"
                 >
-                  {field}
+                  {displayFieldLabel(field)}
                 </span>
               ))}
               {member.professional_fields.length > 3 && (
-                <span className="text-[11.5px] text-[#999]">
+                <span className="text-[12px] text-[#999]">
                   +{member.professional_fields.length - 3}
                 </span>
               )}
@@ -127,7 +126,7 @@ export function MemberCard({ member }: MemberCardProps) {
           {member.is_open_to_chat && (
             <div className="flex items-center gap-1.5 mt-2 pt-2 border-t border-[#e8e2d9]">
               <span className="w-1.5 h-1.5 bg-[#c9a84c] flex-shrink-0" style={{ borderRadius: 0 }} />
-              <span className="text-[11px] text-[#c9a84c] font-semibold tracking-[0.05em]">커피챗 가능</span>
+              <span className="text-[12px] text-[#c9a84c] font-semibold">커피챗 가능</span>
             </div>
           )}
         </div>

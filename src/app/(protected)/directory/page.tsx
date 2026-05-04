@@ -47,7 +47,7 @@ async function DirectoryContent({ searchParams }: { searchParams: SearchParams }
         </p>
         <Link
           href="/directory/me"
-          className="px-3 py-1.5 text-xs font-vcx-sans bg-[#1a1a1a] text-[#c9a84c] hover:bg-[#333333] transition-colors"
+          className="inline-flex min-h-9 items-center px-3 py-1.5 text-xs font-vcx-sans bg-[#1a1a1a] text-[#c9a84c] hover:bg-[#333333] transition-colors"
           style={{ borderRadius: 0 }}
         >
           내 프로필 수정

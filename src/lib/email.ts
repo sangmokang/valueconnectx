@@ -49,7 +49,7 @@ export async function sendInviteEmail({ to, inviterName, token, memberTier }: Se
           </h1>
           <p style="font-size:14px;text-align:center;color:#666;line-height:1.8;font-family:system-ui,sans-serif;margin:0 0 32px;">
             <strong style="color:#1a1a1a;">${escapeHtml(inviterName)}</strong>님이 당신을 ValueConnect X 네트워크에 초대했습니다.<br/>
-            ${memberTier === 'core' ? 'Core Member' : 'Endorsed Member'}로 초대되었습니다.
+            ${memberTier === 'core' ? '코어 멤버' : '추천 멤버'}로 초대되었습니다.
           </p>
           <div style="text-align:center;margin-bottom:32px;">
             <a href="${inviteUrl}" style="display:inline-block;background:#1a1a1a;color:#f0ebe2;font-size:14px;font-family:system-ui,sans-serif;padding:14px 32px;text-decoration:none;font-weight:600;">

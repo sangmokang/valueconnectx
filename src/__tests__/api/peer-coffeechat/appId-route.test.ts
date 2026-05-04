@@ -200,6 +200,9 @@ describe('PUT /api/peer-coffeechat/[id]/applications/[appId]', () => {
     const res = await PUT(makePutRequest(CHAT_ID, APP_ID, { status: 'pending' }), makeParams())
 
     expect(res.status).toBe(400)
+    await expect(res.json()).resolves.toEqual(expect.objectContaining({
+      error: '신청 상태는 수락 또는 거절만 가능합니다',
+    }))
   })
 
   it('returns 200 and accepts application with contact email', async () => {
@@ -359,6 +362,84 @@ describe('PUT /api/peer-coffeechat/[id]/applications/[appId]', () => {
     await vi.waitFor(() => {
       expect(mocks.mockGenerateCoffeechatBrief).toHaveBeenCalled()
       expect(errorSpy).toHaveBeenCalledWith('Peer brief generation failed:', expect.any(Error))
+    })
+
+    errorSpy.mockRestore()
+  })
+
+  it('returns 200 even when notification delivery fails', async () => {
+    mocks.mockGetUser.mockResolvedValue({ data: { user: AUTHOR_USER }, error: null })
+    mocks.mockSendNotification.mockRejectedValue(new Error('notification unavailable'))
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+
+    const acceptedApplication = { ...existingApplication, status: 'accepted' }
+    const chatStatusUpdate = vi.fn().mockReturnValue({
+      eq: vi.fn().mockResolvedValue({ error: null }),
+    })
+    const applicationUpdate = vi.fn().mockImplementation(() => {
+      const chain = {
+        eq: vi.fn(() => chain),
+        select: vi.fn().mockReturnValue({
+          single: vi.fn().mockResolvedValue({ data: acceptedApplication, error: null }),
+        }),
+      }
+      return chain
+    })
+
+    let chatSelectCount = 0
+    mocks.mockFrom.mockImplementation((table: string) => {
+      if (table === 'vcx_members') return mockMemberForAcceptFlow(AUTHOR_USER.id)
+      if (table === 'peer_coffee_chats') {
+        return {
+          select: vi.fn().mockReturnValue({
+            eq: vi.fn().mockReturnValue({
+              single: vi.fn().mockImplementation(() => {
+                chatSelectCount += 1
+                return Promise.resolve({
+                  data: chatSelectCount === 1
+                    ? existingChat
+                    : {
+                        title: existingChat.title,
+                        content: '테스트 커피챗 소개',
+                        category: 'career',
+                        author: {
+                          name: '작성자',
+                          title: 'CTO',
+                          current_company: 'VCX',
+                          professional_fields: ['Product'],
+                          member_tier: 'core',
+                        },
+                      },
+                  error: null,
+                })
+              }),
+            }),
+          }),
+          update: chatStatusUpdate,
+        }
+      }
+      if (table === 'peer_coffee_applications') return { update: applicationUpdate }
+      return {}
+    })
+
+    mocks.mockAdminFrom.mockImplementation(() => ({
+      select: vi.fn().mockReturnValue({
+        eq: vi.fn().mockReturnValue({
+          single: vi.fn().mockResolvedValue({ data: { email: 'applicant@example.com' }, error: null }),
+        }),
+      }),
+    }))
+
+    const res = await PUT(makePutRequest(CHAT_ID, APP_ID, { status: 'accepted' }), makeParams())
+
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(body.data.status).toBe('accepted')
+    expect(body.data.contact_email).toBe('applicant@example.com')
+    expect(errorSpy).toHaveBeenCalledWith('Peer application notification failed:', expect.any(Error))
+
+    await vi.waitFor(() => {
+      expect(mocks.mockGenerateCoffeechatBrief).toHaveBeenCalled()
     })
 
     errorSpy.mockRestore()

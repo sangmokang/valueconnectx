@@ -18,7 +18,7 @@ export function Badge({ variant = "core", children, className }: BadgeProps) {
   return (
     <span
       className={cn(
-        "inline-block px-2 py-0.5 text-[9px] uppercase tracking-[0.22em] font-sans leading-none",
+        "inline-block px-2 py-1 text-[12px] uppercase tracking-[0.08em] font-sans leading-tight",
         variantStyles[variant],
         className
       )}

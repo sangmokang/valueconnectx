@@ -11,10 +11,9 @@ export async function ProtectedPageWrapper({
   const headersList = await headers()
   const isAuthenticated = headersList.get('x-vcx-authenticated') === 'true'
 
-  return (
-    <>
-      {children}
-      {!isAuthenticated && <LoginWall currentPath={currentPath} />}
-    </>
-  )
+  if (!isAuthenticated) {
+    return <LoginWall currentPath={currentPath} />
+  }
+
+  return <>{children}</>
 }

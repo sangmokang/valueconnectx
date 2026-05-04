@@ -81,7 +81,7 @@ export async function POST(
     }
 
     // Notify host of new application
-    sendNotification(
+    await sendNotification(
       session.host_id,
       'coffeechat_applied',
       {
@@ -89,7 +89,7 @@ export async function POST(
         body: session.title,
         link: `/ceo-coffeechat/${sessionId}`,
       }
-    ).catch(() => {}) // fire-and-forget
+    )
 
     return NextResponse.json({ data: application }, { status: 201 })
   } catch (error) {

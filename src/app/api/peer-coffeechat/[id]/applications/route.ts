@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { unauthorized, forbidden, notFound, serverError } from '@/lib/api/error'
+import { attachAcceptedApplicantEmails } from '@/lib/coffeechat-contact'
 
 export async function GET(
   request: NextRequest,
@@ -37,7 +38,7 @@ export async function GET(
       .from('peer_coffee_applications')
       .select(`
         *,
-        applicant:vcx_members(id, name, email, title, current_company, member_tier, avatar_url)
+        applicant:vcx_members(id, name, title, current_company, member_tier, avatar_url)
       `)
       .eq('chat_id', id)
       .order('created_at', { ascending: true })
@@ -47,7 +48,14 @@ export async function GET(
       return serverError('신청 목록 조회에 실패했습니다')
     }
 
-    return NextResponse.json({ data: applications ?? [] })
+    const applicationsWithContacts = await attachAcceptedApplicantEmails(
+      ((applications ?? []) as Array<{
+        applicant_id: string
+        status: 'pending' | 'accepted' | 'rejected'
+      }>)
+    )
+
+    return NextResponse.json({ data: applicationsWithContacts })
   } catch (error) {
     console.error('GET /api/peer-coffeechat/[id]/applications error:', error)
     return serverError('서버 오류가 발생했습니다')

@@ -2,6 +2,7 @@
 
 import { LOUNGE_CATS, LoungeCatKey } from './lounge-sidebar'
 import { EmojiReactions, Reaction } from './emoji-reactions'
+import { displayMemberTier } from '@/lib/display-labels'
 
 export interface LoungeComment {
   id: string
@@ -82,7 +83,7 @@ export function LoungePostRow({
                   background: '#f5f0e8',
                   border: '1px solid rgba(0,0,0,0.08)',
                   color: '#b0a898',
-                  borderRadius: '100px',
+                  borderRadius: 0,
                   flexShrink: 0,
                   fontFamily: 'system-ui, sans-serif',
                 }}
@@ -97,12 +98,12 @@ export function LoungePostRow({
                 background:
                   post.tier === 'Core' ? 'rgba(26,26,26,0.07)' : 'rgba(0,0,0,0.04)',
                 color: post.tier === 'Core' ? '#1a1a1a' : '#b0a898',
-                borderRadius: '3px',
+                borderRadius: 0,
                 fontWeight: 600,
                 fontFamily: 'system-ui, sans-serif',
               }}
             >
-              {post.tier}
+              {displayMemberTier(post.tier)}
             </span>
             <span
               style={{

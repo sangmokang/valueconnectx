@@ -61,7 +61,7 @@ CREATE POLICY "Authors can manage posts" ON community_posts
 -- Admin 관리
 CREATE POLICY "Admin can manage all posts" ON community_posts
   FOR ALL USING (
-    EXISTS (SELECT 1 FROM members WHERE user_id = auth.uid() AND role IN ('super_admin', 'admin'))
+    EXISTS (SELECT 1 FROM vcx_members WHERE id = auth.uid() AND system_role IN ('super_admin', 'admin'))
   );
 
 -- 댓글 정책
@@ -73,7 +73,7 @@ CREATE POLICY "Authors can manage comments" ON community_comments
 
 CREATE POLICY "Admin can manage all comments" ON community_comments
   FOR ALL USING (
-    EXISTS (SELECT 1 FROM members WHERE user_id = auth.uid() AND role IN ('super_admin', 'admin'))
+    EXISTS (SELECT 1 FROM vcx_members WHERE id = auth.uid() AND system_role IN ('super_admin', 'admin'))
   );
 
 -- 신고
@@ -82,5 +82,5 @@ CREATE POLICY "Members can create reports" ON community_reports
 
 CREATE POLICY "Admin can read reports" ON community_reports
   FOR SELECT USING (
-    EXISTS (SELECT 1 FROM members WHERE user_id = auth.uid() AND role IN ('super_admin', 'admin'))
+    EXISTS (SELECT 1 FROM vcx_members WHERE id = auth.uid() AND system_role IN ('super_admin', 'admin'))
   );

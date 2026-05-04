@@ -62,7 +62,7 @@ export default async function EditSessionPage({ params }: PageProps) {
           </Link>
         </nav>
         <div className="mb-10 pb-6 border-b border-[#1a1a1a]">
-          <p className="vcx-section-label mb-2">CEO Coffee Chat</p>
+          <p className="vcx-section-label mb-2">CEO 커피챗</p>
           <h1 className="font-vcx-serif text-[28px] font-normal text-vcx-dark">
             세션 수정
           </h1>
