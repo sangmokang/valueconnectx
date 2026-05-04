@@ -84,7 +84,7 @@ export default async function CommunityPage() {
                     fontFamily: 'system-ui, sans-serif',
                   }}
                 >
-                  익명이지만 멤버 인증된 공간. 평가 없이 집단 지성이 작동합니다.
+                  고민과 성장을 함께 나눠요.
                 </p>
               </div>
 

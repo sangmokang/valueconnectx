@@ -118,7 +118,8 @@ export type LoungeCategoryKey =
   | 'salary'
   | 'burnout'
   | 'productivity'
-  | 'company_review';
+  | 'company_review'
+  | 'industry_news';
 
 export interface LoungeCategory {
   key: LoungeCategoryKey;

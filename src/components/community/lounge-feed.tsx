@@ -6,6 +6,7 @@ import { LoungeSidebar, LOUNGE_CATS, LoungeCatKey } from './lounge-sidebar'
 import { LoungePostRow, LoungePost, LoungeComment } from './lounge-post-row'
 import { LoungeWriteModal } from './lounge-write-modal'
 import { Reaction } from './emoji-reactions'
+import { IndustryNewsFeed } from './industry-news-feed'
 
 const fetcher = async (url: string) => {
   const response = await fetch(url)
@@ -323,30 +324,35 @@ export function LoungeFeed() {
                   fontFamily: 'system-ui, sans-serif',
                 }}
               >
-                {filtered.length}개의 대화
+                {activeCat === 'industry_news' ? 'AI 큐레이션 업데이트' : `${filtered.length}개의 대화`}
               </div>
             </div>
-            <button
-              onClick={() => setShowWrite(true)}
-              style={{
-                padding: '10px 20px',
-                background: '#1a1a1a',
-                color: '#f5f0e8',
-                border: 'none',
-                fontSize: '13.5px',
-                fontWeight: 700,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '7px',
-                fontFamily: 'system-ui, sans-serif',
-              }}
-            >
-              ✏️ 글 쓰기
-            </button>
+            {activeCat !== 'industry_news' && (
+              <button
+                onClick={() => setShowWrite(true)}
+                style={{
+                  padding: '10px 20px',
+                  background: '#1a1a1a',
+                  color: '#f5f0e8',
+                  border: 'none',
+                  fontSize: '13.5px',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '7px',
+                  fontFamily: 'system-ui, sans-serif',
+                }}
+              >
+                ✏️ 글 쓰기
+              </button>
+            )}
           </div>
 
           {/* Post list */}
+          {activeCat === 'industry_news' ? (
+            <IndustryNewsFeed />
+          ) : (
           <div
             style={{
               background: '#ffffff',
@@ -409,6 +415,7 @@ export function LoungeFeed() {
               ))
             )}
           </div>
+          )}
         </div>
       </div>
 

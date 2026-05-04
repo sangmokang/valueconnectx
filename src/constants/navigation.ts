@@ -23,7 +23,7 @@ export const mainNavItems: NavItem[] = [
     requiresAuth: true,
   },
   {
-    label: '커피챗 신청',
+    label: 'Coffeechat',
     href: '/coffeechat',
     requiresAuth: true,
   },

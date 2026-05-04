@@ -48,6 +48,8 @@ export function FeedClient() {
 
   const items: FeedItem[] = data?.data ?? []
   const visibleItems = items.filter((i) => i.user_response !== 'skip')
+  const hotLineItems = visibleItems.filter((i) => i.exclusive)
+  const regularItems = visibleItems.filter((i) => !i.exclusive)
   const interestedCount = items.filter((i) => i.user_response === 'yes').length
 
   useEffect(() => {
@@ -175,10 +177,10 @@ export function FeedClient() {
         <div className="mb-7 flex flex-wrap items-center justify-between gap-3">
           <div>
             <div className="mb-1.5 font-vcx-sans text-[12px] font-semibold text-vcx-sub-4">
-              이번 주 큐레이션 · {today} 기준
+              채용 기회 · {today} 기준
             </div>
             <h2 className="font-vcx-serif text-[22px] font-bold text-vcx-dark">
-              이번 주 큐레이션 {visibleItems.length}건
+              이번 주 채용 기회 {visibleItems.length}건
             </h2>
           </div>
           {interestedCount > 0 && (
@@ -207,40 +209,78 @@ export function FeedClient() {
             title="피드를 불러오는 중입니다"
             description="이번 주 큐레이션을 확인하고 있습니다."
           />
-        ) : visibleItems.length > 0 ? (
-          <div className="grid gap-4">
-            {visibleItems.map((item) => (
-              <FeedCard
-                key={item.id}
-                item={item}
-                onInterest={(value) => handleResponse(item.id, value)}
-                onSkip={() => handleResponse(item.id, 'skip')}
-                onDetail={() => {
-                  trackEvent('feed_item_click', {
-                    item_id: item.id,
-                    role: item.role,
-                    company: item.company,
-                    surface: 'card_detail',
-                  })
-                  trackEvent('feed_detail_opened', { item_id: item.id, role: item.role, company: item.company })
-                  setShowDetail(item)
-                }}
-              />
-            ))}
-          </div>
         ) : (
-          <EmptyState
-            title={
-              items.length === 0
-                ? '이번 주 큐레이션이 준비 중입니다'
-                : '이번 주 피드를 모두 확인했습니다'
-            }
-            description={
-              items.length === 0
-                ? '매주 월요일에 새로운 포지션이 도착합니다.'
-                : '다음 주 월요일에 새로운 포지션이 도착합니다.'
-            }
-          />
+          <>
+            {hotLineItems.length > 0 && (
+              <div className="mb-8">
+                <div className="mb-3 flex items-center gap-2.5">
+                  <span className="inline-block h-2.5 w-2.5 animate-pulse bg-red-500" />
+                  <span className="font-vcx-sans text-[13px] font-bold tracking-[0.08em] text-red-600">
+                    HOT LINE
+                  </span>
+                  <span className="font-vcx-sans text-[12px] text-vcx-sub-4">
+                    — CEO가 직접 등록한 긴급 채용 공고
+                  </span>
+                </div>
+                <div className="grid gap-3 border-l-2 border-red-500 pl-4">
+                  {hotLineItems.map((item) => (
+                    <FeedCard
+                      key={item.id}
+                      item={item}
+                      onInterest={(value) => handleResponse(item.id, value)}
+                      onSkip={() => handleResponse(item.id, 'skip')}
+                      onDetail={() => {
+                        trackEvent('feed_item_click', {
+                          item_id: item.id,
+                          role: item.role,
+                          company: item.company,
+                          surface: 'card_detail',
+                        })
+                        trackEvent('feed_detail_opened', { item_id: item.id, role: item.role, company: item.company })
+                        setShowDetail(item)
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {regularItems.length > 0 ? (
+              <div className="grid gap-4">
+                {regularItems.map((item) => (
+                  <FeedCard
+                    key={item.id}
+                    item={item}
+                    onInterest={(value) => handleResponse(item.id, value)}
+                    onSkip={() => handleResponse(item.id, 'skip')}
+                    onDetail={() => {
+                      trackEvent('feed_item_click', {
+                        item_id: item.id,
+                        role: item.role,
+                        company: item.company,
+                        surface: 'card_detail',
+                      })
+                      trackEvent('feed_detail_opened', { item_id: item.id, role: item.role, company: item.company })
+                      setShowDetail(item)
+                    }}
+                  />
+                ))}
+              </div>
+            ) : hotLineItems.length === 0 ? (
+              <EmptyState
+                title={
+                  items.length === 0
+                    ? '이번 주 큐레이션이 준비 중입니다'
+                    : '이번 주 피드를 모두 확인했습니다'
+                }
+                description={
+                  items.length === 0
+                    ? '매주 월요일에 새로운 포지션이 도착합니다.'
+                    : '다음 주 월요일에 새로운 포지션이 도착합니다.'
+                }
+              />
+            ) : null}
+          </>
         )}
 
         <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 bg-vcx-beige-dark px-5 py-4">

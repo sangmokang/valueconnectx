@@ -19,7 +19,7 @@ export function PeerHero({ onWriteClick }: PeerHeroProps) {
         <div className="flex items-center gap-2.5 mb-6">
           <div className="w-7 h-px bg-[#c9a84c]" />
           <span className="font-vcx-sans text-[12px] font-semibold text-[#c9a84c]">
-            멤버 커피챗 · 같은 높이의 대화
+            Coffeechat · 같은 고민, 직접 만남
           </span>
         </div>
 
@@ -27,12 +27,15 @@ export function PeerHero({ onWriteClick }: PeerHeroProps) {
         <div className="flex items-end justify-between gap-6">
           <div>
             <h1
-              className="font-vcx-serif text-[clamp(28px,4vw,46px)] font-extrabold text-[#f5f0e8] leading-[1.25] tracking-tight mb-5"
+              className="font-vcx-serif text-[clamp(24px,3.5vw,40px)] font-extrabold text-[#f5f0e8] leading-[1.25] tracking-tight mb-5"
             >
-              같은 고도에서<br />나누는 대화
+              같은 고민을 갖고 있는<br />프로페셔널들과<br />온·오프라인 미팅
             </h1>
-            <p className="text-[15px] text-[#b0a898] leading-[1.9] font-vcx-sans max-w-[480px]">
-              멤버가 사연을 올리고 신청자를 직접 선택합니다.
+            <p className="text-[15px] text-[#b0a898] leading-[1.9] font-vcx-sans max-w-[520px] mb-4">
+              갖고 있는 Agenda를 간단히 남겨주시거나, 꼭 특정 주제가 없더라도 네트워킹 확장을 위해 신청해주세요.
+            </p>
+            <p className="text-[13px] text-[#888] leading-[1.8] font-vcx-sans max-w-[520px] border-l-2 border-[#c9a84c]/40 pl-3">
+              VCX는 네트워크 안에서 이루어지는 채용 연결도 함께 지원합니다. 대화가 채용으로 이어지는 경우, ValueConnect 팀에 먼저 알려주시면 합격자분께 리워드가 돌아갑니다.
             </p>
           </div>
 

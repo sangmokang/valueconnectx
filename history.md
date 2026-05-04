@@ -17,18 +17,24 @@
 - [prompt] **중간 점검 요청** — PRD 6.0 대비 구현 상태 종합 분석 + 브라우저 로그인 실증 요청 (source:chat:450d16e1)
 - [fix] **기술 부채 + ADR 수정 요청** — `.env.local` ValueHire 오염, ADR 미작성(수수료 비노출·CEO 커피챗 정체성), `FEATURE_MANIFEST.yaml` 미생성, 온보딩 중복 입력/progress 0% 버그 (source:chat:66dbcf29, 미반영 — 대기 중)
 - [chore] Prevent notification policy migrations from failing on reapply (commit:e8ef54d)
+- [chore] Prevent notification policy migrations from failing on reapply (commit:e8ef54d)
+- [chore] S4/S5 TDD checkpoint + migration cleanup + E2E hardening (commit:75bb722)
+- [fix] remove erroneous src/pages/_error.tsx (App Router project) (commit:18f2cf6)
 
 ## 2026-05-03
 
+- [chore] Close the Feed MVP vertical slice (commit:a72637d)
 - [chore] Close the Feed MVP vertical slice (commit:a72637d)
 
 ## 2026-05-02
 
 - [chore] Recenter VCX on invite-only member network (commit:0159dd1)
+- [chore] Recenter VCX on invite-only member network (commit:0159dd1)
 
 ## 2026-05-01
 
 - [chore] DEBT-0005 등재 — newsletter API explicit-any 10건 (Sprint 3 타입 regen 후 정리) (commit:4ed30fc)
+- [feat] ValueHire 및 B2B 인텔리전스 슬라이스 추가 (commit:078d859)
 - [feat] ValueHire 및 B2B 인텔리전스 슬라이스 추가 (commit:078d859)
 
 ## 2026-04-30

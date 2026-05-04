@@ -10,27 +10,27 @@ export default function FeedPage() {
           <div className="flex items-center gap-3">
             <div className="h-px w-7 bg-vcx-gold" />
             <span className="vcx-section-label">
-              큐레이션 피드 · 매주 업데이트
+              채용 기회 · AI 큐레이션
             </span>
           </div>
 
           <div className="max-w-[560px]">
             <h1 className="font-vcx-serif text-[34px] font-bold leading-tight text-vcx-beige sm:text-[42px]">
-              어떤 시장이
+              지금 어디서
               <br />
-              궁금하신가요?
+              채용하고 있나요?
             </h1>
 
             <p className="mt-5 font-vcx-sans text-[15px] leading-8 text-vcx-sub-5 sm:text-[16px]">
-              관심 분야를 선택하면 해당 시장의 핵심 포지션을
+              AI가 실시간으로 수집한 국내외 채용 기회와
               <br />
-              매주 직접 받아보실 수 있습니다.
+              CEO가 직접 올린 긴급 포지션을 확인하세요.
             </p>
           </div>
 
           <div className="inline-flex w-fit items-center gap-3 border border-vcx-gold/40 bg-vcx-gold/10 px-4 py-3 font-vcx-sans text-[13px] text-vcx-gold">
             <MailCheck className="h-4 w-4" aria-hidden="true" />
-            <span>이 내용이 매주 이메일로 전송됩니다</span>
+            <span>관심 포지션은 매주 이메일로 알림을 드립니다</span>
           </div>
         </div>
       </section>

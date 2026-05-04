@@ -55,8 +55,9 @@ export function FeedCard({ item, onInterest, onSkip, onDetail }: FeedCardProps) 
               </span>
             )}
             {item.exclusive && (
-              <span className="bg-vcx-dark px-2 py-0.5 font-vcx-sans text-[10px] font-bold tracking-[0.05em] text-vcx-gold">
-                EXCLUSIVE
+              <span className="inline-flex items-center gap-1 bg-red-600 px-2 py-0.5 font-vcx-sans text-[10px] font-bold tracking-[0.05em] text-white">
+                <span className="inline-block h-1.5 w-1.5 animate-pulse bg-white" />
+                HOT LINE
               </span>
             )}
           </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, type KeyboardEvent } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import {
@@ -50,7 +50,6 @@ export default function OnboardingPage() {
   // 읽기 전용 — 초대 시 입력된 값
   const [readOnlyName, setReadOnlyName] = useState('')
   const [readOnlyLinkedin, setReadOnlyLinkedin] = useState('')
-  const [fieldInput, setFieldInput] = useState('')
 
   const [form, setForm] = useState<ProfileSnapshot>({
     name: '',
@@ -105,7 +104,6 @@ export default function OnboardingPage() {
         ? prev.professional_fields
         : [...prev.professional_fields, field],
     }))
-    setFieldInput('')
   }
 
   function removeField(field: string) {
@@ -113,12 +111,6 @@ export default function OnboardingPage() {
       ...prev,
       professional_fields: prev.professional_fields.filter((f) => f !== field),
     }))
-  }
-
-  function handleFieldKeyDown(e: KeyboardEvent<HTMLInputElement>) {
-    if (e.key !== 'Enter' && e.key !== ',') return
-    e.preventDefault()
-    addField(fieldInput)
   }
 
   function validate(): boolean {
@@ -257,7 +249,7 @@ export default function OnboardingPage() {
 
             {!readOnlyName && (
               <div className="mb-4">
-                <label className="vcx-label text-vcx-sub-4 block mb-1.5">이름 *</label>
+                <label className="font-vcx-sans text-[13px] font-medium text-vcx-sub-3 block mb-1.5">이름 *</label>
                 <input
                   type="text"
                   value={form.name}
@@ -275,7 +267,7 @@ export default function OnboardingPage() {
 
             {!readOnlyLinkedin && (
               <div className="mb-4">
-                <label className="vcx-label text-vcx-sub-4 block mb-1.5">LinkedIn URL *</label>
+                <label className="font-vcx-sans text-[13px] font-medium text-vcx-sub-3 block mb-1.5">LinkedIn URL *</label>
                 <input
                   type="url"
                   value={form.linkedin_url}
@@ -288,12 +280,15 @@ export default function OnboardingPage() {
                 {fieldErrors.linkedin_url && (
                   <p className="font-vcx-sans text-[12px] text-red-500 mt-1">{fieldErrors.linkedin_url}</p>
                 )}
+                <p className="font-vcx-sans text-[12px] text-vcx-sub-5 mt-1">
+                  LinkedIn URL을 입력하시면 경력을 자동으로 요약해드립니다.
+                </p>
               </div>
             )}
 
             {/* Bio — 한 문장 자기소개 */}
             <div>
-              <label className="vcx-label text-vcx-sub-4 block mb-1.5">
+              <label className="font-vcx-sans text-[13px] font-medium text-vcx-sub-3 block mb-1.5">
                 당신을 한 문장으로 소개해주세요 *
               </label>
               <textarea
@@ -331,7 +326,7 @@ export default function OnboardingPage() {
 
             {/* Current company */}
             <div className="mb-4">
-              <label className="vcx-label text-vcx-sub-4 block mb-1.5">현재 회사 *</label>
+              <label className="font-vcx-sans text-[13px] font-medium text-vcx-sub-3 block mb-1.5">현재 회사 *</label>
               <input
                 type="text"
                 value={form.current_company}
@@ -348,7 +343,7 @@ export default function OnboardingPage() {
 
             {/* Title */}
             <div>
-              <label className="vcx-label text-vcx-sub-4 block mb-1.5">직함 *</label>
+              <label className="font-vcx-sans text-[13px] font-medium text-vcx-sub-3 block mb-1.5">직함 *</label>
               <input
                 type="text"
                 value={form.title}
@@ -366,65 +361,40 @@ export default function OnboardingPage() {
 
           {/* ── 섹션 3: 관심 분야 (선택) ── */}
           <div className="bg-white border border-vcx-beige-dark px-6 py-7">
-            <div className="mb-5">
-              <p className="vcx-label tracking-[0.12em] text-vcx-sub-4 border-b border-vcx-beige-dark pb-2">
-                관심 분야 <span className="text-[10px] font-normal normal-case tracking-normal ml-1">(선택)</span>
+            <div className="mb-4">
+              <p className="font-vcx-sans text-[13px] font-bold text-vcx-gold tracking-[0.08em] uppercase border-b border-vcx-beige-dark pb-2">
+                관심 분야 <span className="text-[11px] font-normal normal-case tracking-normal ml-1 text-vcx-sub-5">(선택 · 최대 {INTEREST_TAG_LIMIT}개)</span>
               </p>
             </div>
 
-            <p className="font-vcx-sans text-[13px] text-vcx-sub-4 mb-3">
-              보고 싶은 기회와 연결 주제를 자유롭게 태그로 남겨주세요.
+            <p className="font-vcx-sans text-[13px] text-vcx-sub-4 mb-4 leading-relaxed">
+              관심 있는 분야를 선택하면 맞춤 큐레이션 피드가 제공됩니다.
             </p>
 
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={fieldInput}
-                onChange={(e) => setFieldInput(e.target.value)}
-                onKeyDown={handleFieldKeyDown}
-                placeholder="예: B2B 소프트웨어, 조직문화, 글로벌 채용"
-                className="min-w-0 flex-1 px-3.5 py-3 font-vcx-sans text-[14px] text-vcx-dark bg-vcx-beige-light border border-black/[0.08] outline-none focus:border-vcx-gold"
-              />
-              <button
-                type="button"
-                onClick={() => addField(fieldInput)}
-                disabled={form.professional_fields.length >= 10}
-                className="px-4 py-3 font-vcx-sans text-[12px] font-semibold bg-vcx-dark text-vcx-beige disabled:opacity-40"
-              >
-                추가
-              </button>
-            </div>
-            <p className="font-vcx-sans text-[11px] text-vcx-sub-5 mt-1">
-              Enter 또는 쉼표로 추가할 수 있습니다. 최대 {INTEREST_TAG_LIMIT}개까지 저장됩니다.
-            </p>
-
-            <div className="flex flex-wrap gap-2 mt-3">
-              {CURATION_INTEREST_TAGS.filter((field) => !form.professional_fields.includes(field)).map((field) => (
-                <button
-                  key={field}
-                  type="button"
-                  onClick={() => addField(field)}
-                  className="px-3 py-1.5 font-vcx-sans text-[12px] border border-vcx-beige-dark bg-white text-vcx-sub-3 hover:border-vcx-gold hover:text-vcx-gold transition-colors"
-                >
-                  + {field}
-                </button>
-              ))}
-            </div>
-
-            {form.professional_fields.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-4">
-                {form.professional_fields.map((field) => (
+            <div className="flex flex-wrap gap-2">
+              {CURATION_INTEREST_TAGS.map((field) => {
+                const selected = form.professional_fields.includes(field)
+                return (
                   <button
                     key={field}
                     type="button"
-                    onClick={() => removeField(field)}
-                    className="px-3 py-1.5 font-vcx-sans text-[12px] border border-vcx-gold bg-[#fdf9f2] text-vcx-gold transition-colors"
-                    aria-label={`${field} 태그 제거`}
+                    onClick={() => selected ? removeField(field) : addField(field)}
+                    className={`px-3.5 py-2 font-vcx-sans text-[13px] border transition-colors ${
+                      selected
+                        ? 'border-vcx-gold bg-[#fdf9f2] text-vcx-gold font-semibold'
+                        : 'border-vcx-beige-dark bg-white text-vcx-sub-3 hover:border-vcx-gold hover:text-vcx-gold'
+                    }`}
                   >
-                    {field} ×
+                    {selected ? `✓ ${field}` : field}
                   </button>
-                ))}
-              </div>
+                )
+              })}
+            </div>
+
+            {form.professional_fields.length > 0 && (
+              <p className="font-vcx-sans text-[12px] text-vcx-sub-5 mt-3">
+                {form.professional_fields.length}개 선택됨
+              </p>
             )}
           </div>
 

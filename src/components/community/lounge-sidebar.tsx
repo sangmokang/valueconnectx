@@ -12,6 +12,7 @@ export const LOUNGE_CATS = [
   { key: 'burnout' as LoungeCatKey, icon: '🌿', label: '번아웃·회복' },
   { key: 'productivity' as LoungeCatKey, icon: '⚡', label: '생산성·기술' },
   { key: 'company_review' as LoungeCatKey, icon: '🏢', label: '이 회사 어때요?' },
+  { key: 'industry_news' as LoungeCatKey, icon: '📰', label: '업계뉴스' },
 ]
 
 interface LoungeSidebarProps {

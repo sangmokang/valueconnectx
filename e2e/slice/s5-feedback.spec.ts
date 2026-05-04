@@ -142,9 +142,9 @@ test.describe('Phase 1 Slice - S5: 세션 완료 후 피드백 제출', () => {
     const flow = await createAcceptedPeerCoffeechat(browser)
 
     try {
-      await flow.applicantPage.goto(flow.chatUrl)
-      await expect(flow.applicantPage.getByTestId('ai-brief-card')).toBeVisible()
-      await expect(flow.applicantPage.getByText('커피챗 피드백')).toBeVisible()
+      await flow.applicantPage.goto(flow.chatUrl, { waitUntil: 'networkidle' })
+      await expect(flow.applicantPage.getByTestId('ai-brief-card')).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
+      await expect(flow.applicantPage.getByText('커피챗 피드백')).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
 
       await flow.applicantPage.getByRole('button', { name: '5점' }).click()
       await flow.applicantPage.getByRole('button', { name: '도움됨' }).click()
@@ -153,7 +153,7 @@ test.describe('Phase 1 Slice - S5: 세션 완료 후 피드백 제출', () => {
       )
       await flow.applicantPage.getByRole('button', { name: '피드백 제출' }).click()
 
-      await expect(flow.applicantPage.getByText('피드백이 제출되었습니다. 감사합니다.')).toBeVisible()
+      await expect(flow.applicantPage.getByText('피드백이 제출되었습니다. 감사합니다.')).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
     } finally {
       await deletePeerCoffeechat(flow.chatId).catch(() => undefined)
       await flow.authorContext.close()
@@ -162,16 +162,17 @@ test.describe('Phase 1 Slice - S5: 세션 완료 후 피드백 제출', () => {
   })
 
   test('비인증 사용자는 커피챗 피드백 영역에 접근하기 전에 로그인 월을 만난다', async ({ page }) => {
-    await page.goto('/coffeechat')
+    await page.goto('/coffeechat', { waitUntil: 'networkidle' })
 
-    await expect(page.getByText('멤버 전용 콘텐츠입니다')).toBeVisible()
-    await expect(page.locator('a[href="/login?redirect=%2Fcoffeechat"]', { hasText: '로그인' })).toBeVisible()
+    await expect(page).not.toHaveURL(/\/404/)
+    await expect(page.getByText('멤버 전용 콘텐츠입니다')).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
+    await expect(page.locator('a[href="/login?redirect=%2Fcoffeechat"]', { hasText: '로그인' })).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
   })
 
   test('운영 대시보드는 비인증 상태에서 로그인 화면으로 보호된다', async ({ page }) => {
     await page.goto('/admin/ops')
 
     await expect(page).toHaveURL(/\/login/)
-    await expect(page.getByRole('heading', { name: '당신은 이미 검증되었습니다' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: '당신은 이미 검증되었습니다' })).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
   })
 })

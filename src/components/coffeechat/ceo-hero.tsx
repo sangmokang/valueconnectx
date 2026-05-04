@@ -75,12 +75,25 @@ export function CeoHero({ sessionCount, totalApplicants, totalSlots }: CeoHeroPr
             color: '#b0a898',
             lineHeight: 1.9,
             maxWidth: 520,
-            margin: 0,
+            margin: '0 0 16px',
             fontFamily: 'system-ui, sans-serif',
           }}
         >
-          평가 면접이 아닙니다. 사업에 몰입하는 CEO와 분야 최고의 인재가 서로의 컬쳐핏을
-          대화로 확인하는 자리입니다.
+          기업 경영을 하면서 주요 포지션의 채용이 필요하거나, 기간 한정적으로 미션 해결을 위해 도움이 필요할 때 계약관계로 협업할 수 있습니다.
+        </p>
+        <p
+          style={{
+            fontSize: 13,
+            color: '#888',
+            lineHeight: 1.8,
+            maxWidth: 520,
+            margin: 0,
+            fontFamily: 'system-ui, sans-serif',
+            paddingLeft: 12,
+            borderLeft: '2px solid rgba(201,168,76,0.4)',
+          }}
+        >
+          채용 및 프리랜서 계약 논의 시, ValueConnect 팀과 함께 진행해주시면 감사하겠습니다.
         </p>
 
         {/* Stats */}
