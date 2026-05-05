@@ -14,12 +14,36 @@
 
 ## 2026-05-05
 
+- [prompt] **Standup Meeting + Vertical Slice 검증 기획 요청** — Sprint 3 Week 2 스탠드업 + 당면 과제 정리 + Vertical Slice 제품 검증 기획 문서 작성 요청 (source:chat:2dc6379e)
+  - **요청**: 스탠드업 형식으로 현재 상태 점검, 당면 과제 가시화, Vertical Slice 기반 제품 검증 기획 .md 파일 작성
+  - **개선**: 반영 완료 — `docs/plans/vcx-vertical-slice-validation.md` 신규 생성
+  - **영향 파일**: `history.md`, `docs/plans/vcx-vertical-slice-validation.md`
+- [prompt] **Standup Meeting + Lastmile 점검 요청** — 서비스 전체 상태 점검 및 Phase 1 DoD 달성 가능성 브리핑 요청 (source:chat:f7ec7e08)
+  - **요청**: 현재 서비스 상태를 스탠드업 형식으로 점검하고 Lastmile(Phase 1 DoD 달성) 가능 여부 종합 브리핑 요청
+  - **개선**: 브리핑 문서 작성 + 미해결 이슈 가시화
+  - **영향 파일**: `history.md`, 브리핑 내용은 대화 응답으로 전달
+- [feat] **LinkedIn AI 경력 요약 + 피드 외부 소스 크롤러** — OpenAI gpt-4o-mini 전환 (commit:3319efb, 9002d9d)
+  - **요청**: LinkedIn URL → AI 경력 자동 요약 파이프라인 구현 (최초 Anthropic → OpenAI gpt-4o-mini 전환), Reddit/X.com/TechCrunch 외부 소스 크롤러 구현
+  - **개선**: 반영 완료 — `openai` SDK 설치, career-summary API 전환, 크롤러 구현
+  - **영향 파일**: `src/app/api/career-summary/`, `src/lib/feed-crawler.ts` 계열
+- [prompt] **이력서 템플릿 선택 UI 변경** — 미리보기 영역 제거, 업로드 버튼 위에 미니멀/임팩트/사이드바/컴팩트/크리에이티브 5종 옵션 배치 요청 (source:chat:9c5ed4b4)
+  - **요청**: 이력서 양식 미리보기 영역 불필요 판단, 업로드 버튼 위에 템플릿 스타일 선택 옵션 추가하여 하단 콘텐츠 가시성 확보
+  - **개선**: 반영 완료 (세션 내 즉시 변경 지시)
+  - **영향 파일**: 이력서 관련 컴포넌트 (onboarding resume upload 영역)
 - [prompt] **중간 점검 요청** — PRD 6.0 대비 구현 상태 종합 분석 + 브라우저 로그인 실증 요청 (source:chat:450d16e1)
 - [fix] **기술 부채 + ADR 수정 요청** — `.env.local` ValueHire 오염, ADR 미작성(수수료 비노출·CEO 커피챗 정체성), `FEATURE_MANIFEST.yaml` 미생성, 온보딩 중복 입력/progress 0% 버그 (source:chat:66dbcf29, 미반영 — 대기 중)
 - [chore] Prevent notification policy migrations from failing on reapply (commit:e8ef54d)
 - [chore] Prevent notification policy migrations from failing on reapply (commit:e8ef54d)
 - [chore] S4/S5 TDD checkpoint + migration cleanup + E2E hardening (commit:75bb722)
 - [fix] remove erroneous src/pages/_error.tsx (App Router project) (commit:18f2cf6)
+- [fix] add missing timeouts to S5 feedback spec + feed/community UI polish (commit:c914bd6)
+- [feat] Feed 뉴스 타입 확장 — migration 029 + 상세 페이지 + admin 큐레이션 API (L-Std) (commit:c4eb1e7)
+- [fix] 중복 제출 방지 + progress 0% 버그 수정 (L-Std) (commit:4284f7f)
+- [feat] auth 페이지 + 랜딩 디자인 토큰 Hardening — inline style → VCX 유틸 클래스 전환 (L-Std) (commit:c15091d)
+- [chore] merge Track C — onboarding 중복 제출 방지 (4284f7f) (commit:cc580e5)
+- [feat] LinkedIn AI 경력 요약 + 피드 외부 소스 크롤러 (L-Std) (commit:9002d9d)
+- [feat] career-summary OpenAI 전환 (gpt-4o-mini) + openai SDK 설치 (commit:3319efb)
+- [test] S3·S4 E2E 구현 + D-0001 CLOSED + D-0002 verify 스크립트 (L-Std) (commit:c0d487f)
 
 ## 2026-05-03
 
@@ -39,6 +63,10 @@
 
 ## 2026-04-30
 
+- [prompt] **디자인 시스템 전면 재정렬 요청** — Airbnb 디자인 시스템 기준 적용, S1~S5 전 페이지 폰트·레이아웃 일관성 재정렬, CTO/Chief Designer 협업 지시 (/ralph 모드) (source:chat:4117b1e3)
+  - **요청**: 하위 페이지 폰트 크기·레이아웃·디자인 시스템 붕괴 현상 지적, Airbnb 디자인 시스템 참조 적용으로 전 페이지 기준 통일
+  - **개선**: S1~S5 + 랜딩 전 페이지 감사 리포트 생성 완료, 옵션 A(토큰 Hardening ~85%) 범위 확정. 실제 파일 수정은 미반영 — 대기 중
+  - **영향 파일**: `src/app/(auth)/login/`, `src/app/(auth)/invite/`, `src/app/(protected)/feed/`, `src/app/(protected)/directory/`, `src/app/(protected)/coffeechat/`, `src/app/page.tsx`
 - [feat] **Feed UI 1차 구현** — VCX 디자인 토큰 기반 피드 레이아웃 전면 정리 (미커밋, S2)
   - 히어로 섹션 VCX 토큰 재구성 (`feed/page.tsx`)
   - 관심사 초기 로드/저장 연동 + empty/loading/error 상태 (`feed-client.tsx`)
