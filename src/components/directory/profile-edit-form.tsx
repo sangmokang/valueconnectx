@@ -30,6 +30,8 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
   const [fieldsInput, setFieldsInput] = useState(initialData.professional_fields.join(', '))
   const [linkedinUrl, setLinkedinUrl] = useState(initialData.linkedin_url ?? '')
   const [linkedinError, setLinkedinError] = useState<string | null>(null)
+  const [summaryLoading, setSummaryLoading] = useState(false)
+  const [summaryError, setSummaryError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
@@ -42,6 +44,26 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
       })
     } catch {
       // 프로필 저장은 성공 상태로 유지하고, 다음 저장/피드 진입 시 다시 동기화한다.
+    }
+  }
+
+  async function handleGenerateSummary() {
+    setSummaryLoading(true)
+    setSummaryError(null)
+    try {
+      const res = await fetch('/api/directory/me/linkedin-summary', {
+        method: 'POST',
+      })
+      const json = await res.json()
+      if (res.ok) {
+        setBio(json.summary ?? '')
+      } else {
+        setSummaryError(json.error ?? 'AI 소개 생성에 실패했습니다.')
+      }
+    } catch {
+      setSummaryError('네트워크 오류가 발생했습니다.')
+    } finally {
+      setSummaryLoading(false)
     }
   }
 
@@ -115,6 +137,17 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
           <p className="text-xs font-vcx-sans text-red-500 mt-1">{linkedinError}</p>
         )}
         <p className="text-xs font-vcx-sans text-[#999999] mt-1">linkedin.com/in/ 형식의 URL을 입력하세요 (필수)</p>
+        <button
+          type="button"
+          onClick={handleGenerateSummary}
+          disabled={!linkedinUrl || summaryLoading}
+          className="mt-2 text-sm font-vcx-sans underline text-[var(--color-gold)] disabled:opacity-40"
+        >
+          {summaryLoading ? '생성 중...' : 'AI로 소개 자동 생성'}
+        </button>
+        {summaryError && (
+          <p className="text-xs font-vcx-sans text-red-500 mt-1">{summaryError}</p>
+        )}
       </div>
 
       {/* Bio */}
