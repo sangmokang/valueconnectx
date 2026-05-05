@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import {
@@ -19,6 +19,7 @@ interface ProfileSnapshot {
 }
 
 // 완성도 가중치 (합계 100)
+// linkedin_url 은 선택값이지만 가중치를 유지하여 입력 시 진행도가 올라가도록 한다.
 const WEIGHTS = {
   name: 10,
   current_company: 15,
@@ -60,8 +61,10 @@ export default function OnboardingPage() {
     professional_fields: [],
   })
 
-  // 완성도는 로딩 중에는 숨김 — 깜빡임 방지
-  const completion = checkingProfile ? null : calcCompletion(form)
+  // 완성도는 form 상태에서 직접 파생 — 재방문 시 사전 채워진 데이터가 즉시 반영된다.
+  // 로딩 중에는 깜빡임 방지를 위해 숨긴다.
+  const completion = useMemo(() => calcCompletion(form), [form])
+  const showCompletion = !checkingProfile
 
   useEffect(() => {
     async function checkProfile() {
@@ -69,7 +72,8 @@ export default function OnboardingPage() {
         const res = await fetch('/api/directory/me')
         if (res.ok) {
           const { data } = await res.json()
-          if (data?.name && data?.current_company && data?.title && data?.linkedin_url && data?.bio) {
+          // linkedin_url 은 선택이므로 필수 필드(name/current_company/title/bio)만 충족되면 디렉토리로 이동한다.
+          if (data?.name && data?.current_company && data?.title && data?.bio) {
             router.replace('/directory')
             return
           }
@@ -116,7 +120,10 @@ export default function OnboardingPage() {
   function validate(): boolean {
     const errors: Partial<Record<keyof ProfileSnapshot, string>> = {}
     if (!form.name.trim()) errors.name = '이름을 입력해주세요'
-    if (!form.linkedin_url.trim()) errors.linkedin_url = 'LinkedIn URL을 입력해주세요'
+    // linkedin_url 은 선택값 — 입력했다면 형식만 확인한다.
+    if (form.linkedin_url.trim() && !/^https?:\/\/(www\.)?linkedin\.com\/in\//i.test(form.linkedin_url.trim())) {
+      errors.linkedin_url = 'LinkedIn 프로필 URL이어야 합니다 (linkedin.com/in/...)'
+    }
     if (!form.current_company.trim()) errors.current_company = '현재 회사를 입력해주세요'
     if (!form.title.trim()) errors.title = '직함을 입력해주세요'
     if (!form.bio.trim()) errors.bio = '자기소개를 입력해주세요'
@@ -152,7 +159,8 @@ export default function OnboardingPage() {
           name: form.name.trim(),
           current_company: form.current_company.trim(),
           title: form.title.trim(),
-          linkedin_url: form.linkedin_url.trim(),
+          // linkedin_url 은 선택 — 비어있으면 null 로 저장한다.
+          linkedin_url: form.linkedin_url.trim() || null,
           bio: form.bio.trim() || null,
           professional_fields: form.professional_fields,
         }),
@@ -199,8 +207,8 @@ export default function OnboardingPage() {
           </p>
         </div>
 
-        {/* Progress bar — only shown after load */}
-        {completion !== null && (
+        {/* Progress bar — only shown after load. 재방문 시 사전 채워진 데이터로 즉시 % 표시. */}
+        {showCompletion && (
           <div className="mb-8">
             <div className="flex justify-between items-center mb-1.5">
               <span className="font-vcx-sans text-[11px] text-vcx-sub-4">프로필 완성도</span>
@@ -268,7 +276,9 @@ export default function OnboardingPage() {
 
             {!readOnlyLinkedin && (
               <div className="mb-4">
-                <label className="font-vcx-sans text-[13px] font-medium text-vcx-sub-3 block mb-1.5">LinkedIn URL *</label>
+                <label className="font-vcx-sans text-[13px] font-medium text-vcx-sub-3 block mb-1.5">
+                  LinkedIn URL <span className="text-vcx-sub-5 font-normal">(선택)</span>
+                </label>
                 <input
                   type="url"
                   value={form.linkedin_url}

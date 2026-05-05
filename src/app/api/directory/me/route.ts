@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { unauthorized, forbidden, notFound, serverError } from '@/lib/api/error'
 import { parseBody } from '@/lib/api/validation'
-import { linkedinUrlSchema } from '@/lib/validation/linkedin'
+import { optionalLinkedinUrlSchema } from '@/lib/validation/linkedin'
 import {
   INTEREST_TAG_LIMIT,
   normalizeInterestTags,
@@ -15,7 +15,7 @@ const updateSchema = z.object({
   name: z.string().trim().min(1, '이름을 입력해주세요').max(100).optional(),
   current_company: z.string().trim().min(1, '현재 회사를 입력해주세요').max(200).optional(),
   title: z.string().trim().min(1, '직함을 입력해주세요').max(200).optional(),
-  linkedin_url: linkedinUrlSchema.optional(),
+  linkedin_url: optionalLinkedinUrlSchema,
   years_of_experience: z.number().int().min(0).max(60).optional().nullable(),
   bio: z.string().trim().max(1000).optional().nullable(),
   industry: z.string().trim().max(100).optional().nullable(),

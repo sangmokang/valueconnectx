@@ -146,6 +146,12 @@ test.describe('Phase 1 Slice - S5: 세션 완료 후 피드백 제출', () => {
       await expect(flow.applicantPage.getByTestId('ai-brief-card')).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
       await expect(flow.applicantPage.getByText('커피챗 피드백')).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
 
+      // AC5: session_feedback_submit 이벤트 캡처
+      const consoleEvents: string[] = []
+      flow.applicantPage.on('console', (msg) => {
+        if (msg.type() === 'info') consoleEvents.push(msg.text())
+      })
+
       await flow.applicantPage.getByRole('button', { name: '5점' }).click()
       await flow.applicantPage.getByRole('button', { name: '도움됨' }).click()
       await flow.applicantPage.getByPlaceholder('자유롭게 남겨주세요').fill(
@@ -154,6 +160,7 @@ test.describe('Phase 1 Slice - S5: 세션 완료 후 피드백 제출', () => {
       await flow.applicantPage.getByRole('button', { name: '피드백 제출' }).click()
 
       await expect(flow.applicantPage.getByText('피드백이 제출되었습니다. 감사합니다.')).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
+      expect(consoleEvents.some((msg) => msg.includes('session_feedback_submit'))).toBe(true)
     } finally {
       await deletePeerCoffeechat(flow.chatId).catch(() => undefined)
       await flow.authorContext.close()

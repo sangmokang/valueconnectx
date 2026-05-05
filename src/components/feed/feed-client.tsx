@@ -180,7 +180,7 @@ export function FeedClient() {
               채용 기회 · {today} 기준
             </div>
             <h2 className="font-vcx-serif text-[22px] font-bold text-vcx-dark">
-              이번 주 채용 기회 {visibleItems.length}건
+              이번 주 큐레이션 {visibleItems.length}건
             </h2>
           </div>
           {interestedCount > 0 && (

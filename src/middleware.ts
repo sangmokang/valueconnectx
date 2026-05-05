@@ -5,11 +5,13 @@ import type { Database } from '@/types/supabase'
 import { rateLimit, apiLimiter, authLimiter, directoryLimiter, directoryBurstLimiter, directoryDailyLimiter } from '@/lib/rate-limit'
 import { createApiError, unauthorized, forbidden, serverError } from '@/lib/api/error'
 
-type MemberInfo = { name?: string | null; current_company?: string | null; title?: string | null; linkedin_url?: string | null }
+type MemberInfo = { name?: string | null; current_company?: string | null; title?: string | null }
 
+// linkedin_url 은 선택값(D-0004) — RPC 가 반환하는 필드 중 필수 3개(name/current_company/title) 만 검사한다.
+// bio 검증은 클라이언트(/onboarding) + API(/api/directory/me) 에서 처리한다.
 function isProfileIncomplete(member: unknown): boolean {
   const m = member as MemberInfo
-  return !m.name || !m.current_company || !m.title || !m.linkedin_url
+  return !m.name || !m.current_company || !m.title
 }
 
 function getClientIp(request: NextRequest): string {
