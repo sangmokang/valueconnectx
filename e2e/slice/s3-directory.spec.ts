@@ -1,63 +1,273 @@
 import { test, expect } from "@playwright/test";
+import { createClient } from "@supabase/supabase-js";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { loginAs, TEST_USER } from "../helpers/auth";
 
-test.describe("Phase 1 Slice — S3: 멤버 디렉토리 열람 및 프로필 확인", () => {
-  // ── Golden Path ──────────────────────────────────────────────────────────
+// ── Admin 헬퍼 ────────────────────────────────────────────────────────────────
 
-  test.skip("golden path: /directory 접근 → 멤버 카드 목록 렌더링", async ({ page }) => {
-    // TODO(Sprint 2): loginAs(TEST_USER) → /directory 이동 →
-    //   멤버 카드(data-testid="member-card" 또는 유사) 1개 이상 노출 확인
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §3.1
+function loadEnv() {
+  const envPath = resolve(process.cwd(), ".env.local");
+  try {
+    for (const line of readFileSync(envPath, "utf-8").split("\n")) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith("#")) continue;
+      const index = trimmed.indexOf("=");
+      if (index === -1) continue;
+      const key = trimmed.slice(0, index);
+      const value = trimmed.slice(index + 1);
+      process.env[key] ||= value;
+    }
+  } catch {
+    // CI는 환경변수를 직접 주입한다.
+  }
+}
+
+function getAdminClient() {
+  loadEnv();
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) return null;
+  return createClient(url, key, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+}
+
+async function hasDirectorySchema() {
+  const admin = getAdminClient();
+  if (!admin) return false;
+  const { error } = await admin.from("vcx_members").select("id").limit(1);
+  return !error;
+}
+
+async function hasAtLeastOneMember() {
+  const admin = getAdminClient();
+  if (!admin) return false;
+  const { data, error } = await admin
+    .from("vcx_members")
+    .select("id")
+    .eq("is_active", true)
+    .limit(1);
+  return !error && (data?.length ?? 0) > 0;
+}
+
+async function getFirstActiveMemberId(): Promise<string | null> {
+  const admin = getAdminClient();
+  if (!admin) return null;
+  const { data, error } = await admin
+    .from("vcx_members")
+    .select("id")
+    .eq("is_active", true)
+    .limit(1)
+    .single();
+  if (error || !data) return null;
+  return data.id;
+}
+
+// ── 테스트 스위트 ──────────────────────────────────────────────────────────────
+
+test.describe("Phase 1 Slice — S3: 멤버 디렉토리 열람 및 프로필 확인", () => {
+  // ── 비인증 접근 (인증 불필요, 즉시 실행 가능) ──────────────────────────────
+
+  test("비인증 사용자가 /directory 접근 시 멤버 전용 로그인 월이 표시된다", async ({
+    page,
+  }) => {
+    await page.goto("/directory");
+
+    // 미들웨어는 리다이렉트하지 않고 x-vcx-authenticated: false 헤더만 설정
+    // ProtectedPageWrapper가 LoginWall을 렌더한다
+    await expect(page).not.toHaveURL(/\/login/);
+    await expect(page.getByText("멤버 전용 콘텐츠입니다")).toBeVisible({
+      timeout: 15000,
+    });
+    await expect(page.getByText("초대된 멤버만 열람할 수 있습니다")).toBeVisible();
+    await expect(
+      page.locator('a[href="/login?redirect=%2Fdirectory"]', {
+        hasText: "로그인",
+      })
+    ).toBeVisible();
+    await expect(page.getByText(/수수료|요금|fee/i)).toHaveCount(0);
+  });
+
+  test("비인증 사용자의 /directory/[id] 접근 시 멤버 전용 로그인 월이 표시된다", async ({
+    page,
+  }) => {
+    // 존재 여부에 관계없이 비인증 상태이므로 LoginWall이 먼저 렌더된다
+    await page.goto("/directory/non-existent-member-id-00000000");
+
+    await expect(page).not.toHaveURL(/\/login/);
+    await expect(page.getByText("멤버 전용 콘텐츠입니다")).toBeVisible({
+      timeout: 15000,
+    });
+    await expect(page.getByText(/수수료|요금|fee/i)).toHaveCount(0);
+  });
+
+  test("디렉토리 로그인 월은 360px 모바일 폭에서 가로 overflow가 없다", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 360, height: 740 });
+
+    await page.goto("/directory");
+    await expect(page.getByText("멤버 전용 콘텐츠입니다")).toBeVisible({
+      timeout: 15000,
+    });
+
+    const hasHorizontalOverflow = await page.evaluate(() => {
+      const root = document.documentElement;
+      return root.scrollWidth > root.clientWidth;
+    });
+    expect(hasHorizontalOverflow).toBe(false);
+  });
+
+  test("디렉토리 로그인 월에 수수료·요금 관련 문구가 노출되지 않는다", async ({
+    page,
+  }) => {
+    await page.goto("/directory");
+    await expect(page.getByText("멤버 전용 콘텐츠입니다")).toBeVisible({
+      timeout: 15000,
+    });
+    await expect(page.getByText(/수수료/)).toHaveCount(0);
+    await expect(page.getByText(/요금/)).toHaveCount(0);
+    await expect(page.getByText(/25%/)).toHaveCount(0);
+  });
+
+  // ── 인증 필요 테스트 (E2E 자격증명 + DB 스키마가 있을 때) ─────────────────
+
+  test("인증된 사용자가 /directory 접근 시 멤버 카드 목록이 렌더링된다", async ({
+    page,
+  }) => {
+    test.skip(
+      !(await hasAtLeastOneMember()),
+      "E2E Supabase admin 권한 또는 활성 멤버 데이터가 없어 건너뜁니다."
+    );
+
     await loginAs(page, TEST_USER);
     await page.goto("/directory");
     await page.waitForLoadState("networkidle");
-    await expect(page.locator("body")).toBeVisible();
+
+    // 페이지 헤더 확인
+    await expect(
+      page.getByRole("heading", { name: "멤버 디렉토리" })
+    ).toBeVisible({ timeout: 15000 });
+
+    // 멤버 카드: MemberCard는 Link로 감싸진 카드이며 /directory/[id] 링크를 가진다
+    const memberLinks = page.locator('a[href^="/directory/"]').filter({
+      hasNot: page.locator('[href="/directory/me"]'),
+    });
+    await expect(memberLinks.first()).toBeVisible({ timeout: 15000 });
+    const count = await memberLinks.count();
+    expect(count).toBeGreaterThanOrEqual(1);
+
+    // 총 멤버 수 텍스트 표시 확인
+    await expect(page.getByText(/명의 멤버/)).toBeVisible();
+
+    // 수수료 문구 0건 확인
+    await expect(page.getByText(/수수료|요금|25%/)).toHaveCount(0);
   });
 
-  test.skip("golden path: 멤버 카드 클릭 → 프로필 상세 페이지 이동", async ({ page }) => {
-    // TODO(Sprint 2): /directory → 첫 번째 멤버 카드 클릭 →
-    //   /directory/[memberId] URL 패턴으로 이동 및 프로필 정보 렌더링 확인
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §3.2
+  test("인증된 사용자가 멤버 카드 클릭 시 /directory/[memberId]로 이동한다", async ({
+    page,
+  }) => {
+    test.skip(
+      !(await hasAtLeastOneMember()),
+      "E2E Supabase admin 권한 또는 활성 멤버 데이터가 없어 건너뜁니다."
+    );
+
     await loginAs(page, TEST_USER);
     await page.goto("/directory");
-    await expect(page).toHaveURL(/\/directory/);
+    await page.waitForLoadState("networkidle");
+
+    // 첫 번째 멤버 카드(/directory/me 제외) 클릭
+    const firstCard = page.locator('a[href^="/directory/"]').filter({
+      hasNot: page.locator('[href="/directory/me"]'),
+    }).first();
+    await expect(firstCard).toBeVisible({ timeout: 15000 });
+    await firstCard.click();
+
+    // URL이 /directory/[uuid] 패턴으로 이동하는지 확인
+    await expect(page).toHaveURL(/\/directory\/[^/]+$/, { timeout: 15000 });
+    await expect(page).not.toHaveURL(/\/directory\/me/);
+    await expect(page).not.toHaveURL(/\/directory$/, { timeout: 15000 });
   });
 
-  test.skip("golden path: 내 프로필(me 탭) 접근 → 본인 정보 표시", async ({ page }) => {
-    // TODO(Sprint 3): /directory 의 'me' 탭 또는 /directory/me 접근 →
-    //   로그인한 사용자의 이름·직책·회사 정보 렌더링 확인
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §3.3
+  test("인증된 사용자의 멤버 프로필 상세 페이지에 수수료 문구가 없다", async ({
+    page,
+  }) => {
+    test.skip(
+      !(await hasDirectorySchema()),
+      "E2E Supabase admin 권한이 없어 건너뜁니다."
+    );
+
+    const memberId = await getFirstActiveMemberId();
+    test.skip(
+      !memberId,
+      "활성 멤버가 없어 프로필 상세 페이지 검증을 건너뜁니다."
+    );
+
+    await loginAs(page, TEST_USER);
+    await page.goto(`/directory/${memberId}`);
+    await page.waitForLoadState("networkidle");
+
+    // 멤버 전용 콘텐츠(LoginWall)가 아닌 실제 프로필이 보여야 한다
+    await expect(page.getByText("멤버 전용 콘텐츠입니다")).toHaveCount(0);
+    await expect(page.getByText("멤버 디렉토리로 돌아가기")).toBeVisible({
+      timeout: 15000,
+    });
+    await expect(page.getByText(/수수료|요금|25%/)).toHaveCount(0);
+  });
+
+  test("인증된 사용자의 /directory가 360px 모바일 폭에서 가로 overflow가 없다", async ({
+    page,
+  }) => {
+    test.skip(
+      !(await hasDirectorySchema()),
+      "E2E Supabase admin 권한이 없어 건너뜁니다."
+    );
+
+    await page.setViewportSize({ width: 360, height: 740 });
+
     await loginAs(page, TEST_USER);
     await page.goto("/directory");
-    await expect(page.locator("body")).toBeVisible();
+    await page.waitForLoadState("networkidle");
+
+    const hasHorizontalOverflow = await page.evaluate(() => {
+      const root = document.documentElement;
+      return root.scrollWidth > root.clientWidth;
+    });
+    expect(hasHorizontalOverflow).toBe(false);
   });
 
-  test.skip("golden path: 검색/필터로 특정 멤버 조회", async ({ page }) => {
-    // TODO(Sprint 3): /directory → 검색창에 이름 입력 →
-    //   해당 멤버만 필터링되어 노출되는지 확인
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §3.4
-    await loginAs(page, TEST_USER);
-    await page.goto("/directory");
-    await expect(page.locator("body")).toBeVisible();
+  // ── 에러 케이스 ───────────────────────────────────────────────────────────
+
+  test("존재하지 않는 멤버 프로필 접근 시 비인증 상태이면 로그인 월이 표시된다", async ({
+    page,
+  }) => {
+    // 비인증이므로 ProtectedPageWrapper가 LoginWall을 먼저 렌더한다 (notFound 도달 전)
+    await page.goto("/directory/non-existent-member-id-00000000");
+
+    await expect(page).not.toHaveURL(/\/404/);
+    await expect(page.getByText("멤버 전용 콘텐츠입니다")).toBeVisible({
+      timeout: 15000,
+    });
   });
 
-  // ── Error Cases ───────────────────────────────────────────────────────────
+  test("인증된 사용자가 존재하지 않는 멤버 프로필 접근 시 404 처리된다", async ({
+    page,
+  }) => {
+    test.skip(
+      !(await hasDirectorySchema()),
+      "E2E Supabase admin 권한이 없어 건너뜁니다."
+    );
 
-  test.skip("error: 비인증 사용자 /directory 접근 → 제한된 뷰 표시", async ({ page }) => {
-    // TODO(Sprint 2): 로그인 없이 /directory 접근 →
-    //   "로그인이 필요합니다" 또는 멤버 정보 숨김 처리 확인
-    //   (미들웨어가 x-vcx-authenticated: false 헤더를 전달, 페이지에서 처리)
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §3.E1
-    await page.goto("/directory");
-    await expect(page.locator("body")).toBeVisible();
-  });
-
-  test.skip("error: 존재하지 않는 멤버 프로필 접근 → 404 처리", async ({ page }) => {
-    // TODO(Sprint 3): /directory/non-existent-id 접근 →
-    //   404 페이지 또는 "존재하지 않는 멤버입니다" 메시지 확인
-    // AC: docs/plans/VERTICAL_SLICE_PHASE1.md §3.E2
     await loginAs(page, TEST_USER);
     await page.goto("/directory/non-existent-member-id-00000000");
-    await expect(page.locator("body")).toBeVisible();
+    await page.waitForLoadState("networkidle");
+
+    // Next.js notFound() 호출 시 404 페이지 또는 404 status
+    const isNotFound =
+      (await page.locator("text=404").isVisible()) ||
+      (await page.locator("text=찾을 수 없").isVisible()) ||
+      (await page.locator("text=존재하지 않").isVisible());
+    expect(isNotFound).toBe(true);
   });
 });
