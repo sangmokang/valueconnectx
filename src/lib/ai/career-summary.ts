@@ -1,4 +1,4 @@
-import { claude, CLAUDE_MODEL } from './claude'
+import { openai, OPENAI_MODEL } from './openai-client'
 
 export interface CareerInput {
   name: string
@@ -42,18 +42,18 @@ ${input.existingBio ? `- 기존 소개: ${input.existingBio}` : ''}
 `
 
 export async function generateCareerSummary(input: CareerInput): Promise<string> {
-  if (!claude) {
+  if (!openai) {
     return buildFallbackSummary(input)
   }
 
   try {
-    const response = await claude.messages.create({
-      model: CLAUDE_MODEL,
+    const response = await openai.chat.completions.create({
+      model: OPENAI_MODEL,
       max_tokens: 256,
       messages: [{ role: 'user', content: CAREER_SUMMARY_PROMPT(input) }],
     })
 
-    const text = response.content[0]?.type === 'text' ? response.content[0].text.trim() : ''
+    const text = response.choices[0]?.message?.content?.trim() ?? ''
     if (!text) return buildFallbackSummary(input)
 
     return text
