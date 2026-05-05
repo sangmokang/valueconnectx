@@ -14,6 +14,19 @@
 
 ## 2026-05-05
 
+- [fix] **S1 버그 3종 수정 + D-0004 CLOSED + D-0005 CLOSED (Multi-Agent, commit:90e831f)**
+  - GNB visibility 매처 강화 — `/onboarding` 경로 숨김 보장 (`gnb-visibility.tsx`)
+  - Progress bar 0% 버그 수정 — `useMemo` 기반 재계산 (`onboarding-client.tsx`)
+  - D-0004 CLOSED: `linkedin_url` optional 구현 (`optionalLinkedinUrlSchema`, middleware, API route, 라벨 변경)
+  - D-0005 CLOSED: Newsletter API `any` 타입 이미 해소 확인 — DEBT_LEDGER 업데이트
+  - **영향 파일**: `src/components/layout/gnb-visibility.tsx`, `src/app/(protected)/onboarding/onboarding-client.tsx`, `src/lib/validation/linkedin.ts`, `src/app/api/directory/me/route.ts`, `src/middleware.ts`, `src/__tests__/api/directory/me.test.ts`, `docs/sdd/DEBT_LEDGER.md`
+- [test] **E2E Slice spec 정비 (Multi-Agent, commit:90e831f)**
+  - `e2e/slice/s1-invite-onboarding.spec.ts` 신규 (8 tests — AC1~6 + D-0001·D-0004 regression)
+  - `e2e/slice/s5-feedback.spec.ts` AC5 추가 (`session_feedback_submit` console.info 검증)
+  - `e2e/slice/s2-feed.spec.ts` 기존 spec AC1~5 + 모바일 완비 확인 (중복 파일 제거)
+  - E2E 현황: S1(spec완성) S2(spec완성) S3✅ S4✅ S5(spec완성)
+  - **영향 파일**: `e2e/slice/s1-invite-onboarding.spec.ts`, `e2e/slice/s5-feedback.spec.ts`
+- [chore] **feed-client.tsx 헤딩 텍스트 S2 E2E 정합** — `이번 주 채용 기회` → `이번 주 큐레이션` (commit:90e831f)
 - [prompt] **Standup Meeting + Vertical Slice 검증 기획 요청** — Sprint 3 Week 2 스탠드업 + 당면 과제 정리 + Vertical Slice 제품 검증 기획 문서 작성 요청 (source:chat:2dc6379e)
   - **요청**: 스탠드업 형식으로 현재 상태 점검, 당면 과제 가시화, Vertical Slice 기반 제품 검증 기획 .md 파일 작성
   - **개선**: 반영 완료 — `docs/plans/vcx-vertical-slice-validation.md` 신규 생성
