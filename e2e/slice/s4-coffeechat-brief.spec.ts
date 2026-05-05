@@ -154,11 +154,11 @@ test.describe('Phase 1 Slice - S4: AI Brief 내용 품질 검증', () => {
       await expect(briefCard).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
       await expect(briefCard).toContainText('AI Pre-Brief')
 
-      // Then: 카드 내부에 최소 1개 이상의 질문/주제가 있어야 함
-      // 질문 항목은 li, p, [data-testid*="question"], [data-testid*="topic"] 등으로 렌더링될 수 있음
-      const questionItems = briefCard.locator('li, [data-testid*="question"], [data-testid*="topic"]')
-      const questionCount = await questionItems.count()
-      expect(questionCount).toBeGreaterThanOrEqual(1)
+      // Then: 카드 내부 brief 텍스트에 최소 10자 이상의 내용이 있어야 함
+      // PreBriefCard는 <p> 태그로 brief 전체를 렌더링한다 (li 없음)
+      const briefParagraph = briefCard.locator('p').first()
+      const textContent = await briefParagraph.textContent()
+      expect((textContent ?? '').trim().length).toBeGreaterThanOrEqual(10)
     } finally {
       if (chatId) await deletePeerCoffeechat(chatId).catch(() => undefined)
       await authorContext.close()
