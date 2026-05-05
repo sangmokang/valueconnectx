@@ -31,16 +31,25 @@ export function PreBriefCard({ sessionId, apiBasePath = 'ceo-coffeechat' }: PreB
 
   if (loading) {
     return (
-      <div className="border border-vcx-gold bg-vcx-beige-light p-4">
+      <div data-testid="ai-brief-skeleton" className="border border-vcx-gold bg-vcx-beige-light p-4">
         <div className="flex min-w-0 items-center gap-2 text-vcx-gold text-sm">
           <RefreshCw size={14} className="animate-spin" />
-          <span>AI 브리프 생성 중...</span>
+          <span>AI Brief를 생성 중입니다</span>
         </div>
       </div>
     )
   }
 
-  if (!data?.brief) return null
+  if (!data?.brief) {
+    return (
+      <div data-testid="ai-brief-skeleton" className="border border-vcx-gold bg-vcx-beige-light p-4">
+        <div className="flex min-w-0 items-center gap-2 text-vcx-gold text-sm">
+          <RefreshCw size={14} />
+          <span>AI Brief를 생성 중입니다</span>
+        </div>
+      </div>
+    )
+  }
 
   const generatedAt = data.briefGeneratedAt
     ? new Date(data.briefGeneratedAt).toLocaleDateString('ko-KR', {
