@@ -102,7 +102,7 @@ describe('POST /api/invites/accept', () => {
 
     expect(res.status).toBe(400)
     const body = await res.json()
-    expect(body.error).toBe('모든 필드를 입력해주세요')
+    expect(body.error).toBe('필수 항목을 입력해주세요')
   })
 
   it('returns 400 when password is less than 8 characters', async () => {
@@ -317,15 +317,16 @@ describe('POST /api/invites/accept', () => {
     )
   })
 
-  it('returns 400 when linkedin_url is not provided', async () => {
+  it('proceeds without linkedin_url (optional since D-0004)', async () => {
     mocks.mockRateLimit.mockReturnValue({ success: true, remaining: 4 })
+    mocks.mockRpc.mockResolvedValue({ data: [], error: null })
 
     const req = makeRequest({ token: 'valid-token', password: 'password1', name: 'Bob' })
     const res = await POST(req)
-
-    expect(res.status).toBe(400)
     const body = await res.json()
-    expect(body.error).toBe('모든 필드를 입력해주세요')
+
+    // linkedin_url is now optional — error is token-not-found, not missing field
+    expect(body.error).toBe('초대 링크가 유효하지 않습니다')
   })
 
   it('returns 400 when linkedin_url format is invalid', async () => {

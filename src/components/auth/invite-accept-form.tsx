@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { linkedinUrlSchema } from '@/lib/validation/linkedin'
 
-interface InviteInfo { email: string; invitedByName: string; memberTier: 'core' | 'endorsed' }
+interface InviteInfo { email: string; invitedByName: string; memberTier: 'core' | 'endorsed'; inviteeName?: string | null; inviteeCompany?: string | null; inviteeTitle?: string | null }
 
 export function InviteAcceptForm({ initialToken }: { initialToken?: string }) {
   const [token, setToken] = useState(initialToken || '')
   const [inviteInfo, setInviteInfo] = useState<InviteInfo | null>(null)
   const [name, setName] = useState('')
+  const [company, setCompany] = useState('')
+  const [title, setTitle] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [linkedinUrl, setLinkedinUrl] = useState('')
@@ -26,7 +28,13 @@ export function InviteAcceptForm({ initialToken }: { initialToken?: string }) {
     try {
       const res = await fetch(`/api/invites/verify/${t}`)
       const data = await res.json()
-      if (data.valid) { setInviteInfo({ email: data.email, invitedByName: data.invitedByName, memberTier: data.memberTier }); setStep('form') }
+      if (data.valid) {
+        setInviteInfo({ email: data.email, invitedByName: data.invitedByName, memberTier: data.memberTier, inviteeName: data.inviteeName, inviteeCompany: data.inviteeCompany, inviteeTitle: data.inviteeTitle })
+        if (data.inviteeName) setName(data.inviteeName)
+        if (data.inviteeCompany) setCompany(data.inviteeCompany)
+        if (data.inviteeTitle) setTitle(data.inviteeTitle)
+        setStep('form')
+      }
       else setError(data.reason || '유효하지 않은 초대 링크입니다')
     } catch { setError('초대 확인 중 오류가 발생했습니다') }
     finally { setVerifying(false) }
@@ -36,12 +44,13 @@ export function InviteAcceptForm({ initialToken }: { initialToken?: string }) {
     e.preventDefault(); setError(null)
     if (password !== confirmPassword) { setError('비밀번호가 일치하지 않습니다'); return }
     if (password.length < 8) { setError('비밀번호는 8자 이상이어야 합니다'); return }
-    if (!linkedinUrl) { setError('LinkedIn URL을 입력해주세요'); return }
-    const linkedinResult = linkedinUrlSchema.safeParse(linkedinUrl)
-    if (!linkedinResult.success) { setError(linkedinResult.error.issues[0]?.message ?? 'LinkedIn 프로필 URL이어야 합니다 (linkedin.com/in/...)'); return }
+    if (linkedinUrl) {
+      const linkedinResult = linkedinUrlSchema.safeParse(linkedinUrl)
+      if (!linkedinResult.success) { setError(linkedinResult.error.issues[0]?.message ?? 'LinkedIn 프로필 URL이어야 합니다 (linkedin.com/in/...)'); return }
+    }
     setLoading(true)
     try {
-      const res = await fetch('/api/invites/accept', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token, password, name, linkedin_url: linkedinUrl }) })
+      const res = await fetch('/api/invites/accept', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token, password, name, linkedin_url: linkedinUrl || undefined, company: company || undefined, title: title || undefined }) })
       const data = await res.json()
       if (data.success) {
         router.push(data.redirectTo); router.refresh()
@@ -50,15 +59,15 @@ export function InviteAcceptForm({ initialToken }: { initialToken?: string }) {
     } catch { setError('계정 생성 중 오류가 발생했습니다'); setLoading(false) }
   }
 
-  const inputStyle = { width: '100%', padding: '14px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: '#1a1a1a', background: '#f7f3ed', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 0, outline: 'none', boxSizing: 'border-box' as const }
-  const labelStyle = { display: 'block' as const, fontFamily: 'system-ui, sans-serif', fontSize: '13px', letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#888', marginBottom: '8px' }
+  const inputStyle = { width: '100%', padding: '14px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: 'var(--color-vcx-dark)', background: 'var(--color-vcx-beige-light)', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 0, outline: 'none', boxSizing: 'border-box' as const }
+  const labelStyle = { display: 'block' as const, fontFamily: 'system-ui, sans-serif', fontSize: '13px', letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: '#888888', marginBottom: '8px' }
 
   if (step === 'token' && !initialToken) {
     return (
       <div>
         {error && <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', padding: '12px 16px', marginBottom: '16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#EF4444', borderRadius: 0 }}>{error}</div>}
         <div style={{ marginBottom: '24px' }}><label style={labelStyle}>초대 코드</label><input type="text" value={token} onChange={(e) => setToken(e.target.value)} placeholder="초대 이메일의 링크를 붙여넣어 주세요" style={inputStyle} /></div>
-        <button onClick={() => verifyToken(token)} disabled={verifying || !token} style={{ width: '100%', padding: '14px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', fontWeight: 600, color: '#f0ebe2', background: verifying ? '#444' : '#1a1a1a', border: 'none', borderRadius: 0, cursor: verifying ? 'not-allowed' : 'pointer' }}>
+        <button onClick={() => verifyToken(token)} disabled={verifying || !token} style={{ width: '100%', padding: '14px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', fontWeight: 600, color: 'var(--color-vcx-beige)', background: verifying ? '#444444' : 'var(--color-vcx-dark)', border: 'none', borderRadius: 0, cursor: verifying ? 'not-allowed' : 'pointer' }}>
           {verifying ? '확인 중...' : '초대 확인하기'}
         </button>
       </div>
@@ -68,18 +77,20 @@ export function InviteAcceptForm({ initialToken }: { initialToken?: string }) {
   return (
     <form onSubmit={handleSubmit}>
       {inviteInfo && (
-        <div style={{ background: '#e8e2d9', padding: '16px 20px', marginBottom: '24px', borderLeft: '2px solid #c9a84c', borderRadius: 0 }}>
-          <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '9px', letterSpacing: '0.2em', color: '#c9a84c', marginBottom: '6px' }}>초대 정보</div>
-          <div style={{ fontFamily: 'Georgia, serif', fontSize: '16px', fontWeight: 700, color: '#1a1a1a', marginBottom: '4px' }}>{inviteInfo.invitedByName}님이 초대했습니다</div>
-          <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#888' }}>{inviteInfo.email} · {inviteInfo.memberTier === 'core' ? '코어 멤버' : '추천 멤버'}</div>
+        <div style={{ background: 'var(--color-vcx-beige)', padding: '16px 20px', marginBottom: '24px', borderLeft: '2px solid var(--color-vcx-gold)', borderRadius: 0 }}>
+          <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '9px', letterSpacing: '0.2em', color: 'var(--color-vcx-gold)', marginBottom: '6px' }}>초대 정보</div>
+          <div style={{ fontFamily: 'Georgia, serif', fontSize: '16px', fontWeight: 700, color: 'var(--color-vcx-dark)', marginBottom: '4px' }}>{inviteInfo.invitedByName}님이 초대했습니다</div>
+          <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#888888' }}>{inviteInfo.email} · {inviteInfo.memberTier === 'core' ? '코어 멤버' : '추천 멤버'}</div>
         </div>
       )}
       {error && <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', padding: '12px 16px', marginBottom: '16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#EF4444', borderRadius: 0 }}>{error}</div>}
       <div style={{ marginBottom: '16px' }}><label style={labelStyle}>이름 (실명)</label><input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="홍길동" style={inputStyle} /></div>
+      <div style={{ marginBottom: '16px' }}><label style={labelStyle}>현 소속 (선택)</label><input type="text" value={company} onChange={(e) => setCompany(e.target.value)} placeholder="회사명" style={inputStyle} /></div>
+      <div style={{ marginBottom: '16px' }}><label style={labelStyle}>직책 (선택)</label><input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="CTO, 시니어 엔지니어 등" style={inputStyle} /></div>
       <div style={{ marginBottom: '16px' }}><label style={labelStyle}>비밀번호 (8자 이상)</label><input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" style={inputStyle} /></div>
       <div style={{ marginBottom: '16px' }}><label style={labelStyle}>비밀번호 확인</label><input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="••••••••" style={inputStyle} /></div>
-      <div style={{ marginBottom: '24px' }}><label style={labelStyle}>LinkedIn URL</label><input type="url" value={linkedinUrl} onChange={(e) => setLinkedinUrl(e.target.value)} placeholder="https://linkedin.com/in/your-profile" style={inputStyle} /></div>
-      <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', fontWeight: 600, color: '#f0ebe2', background: loading ? '#444' : '#1a1a1a', border: 'none', borderRadius: 0, cursor: loading ? 'not-allowed' : 'pointer' }}>
+      <div style={{ marginBottom: '24px' }}><label style={labelStyle}>LinkedIn URL (선택)</label><input type="url" value={linkedinUrl} onChange={(e) => setLinkedinUrl(e.target.value)} placeholder="https://linkedin.com/in/your-profile" style={inputStyle} /></div>
+      <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', fontWeight: 600, color: 'var(--color-vcx-beige)', background: loading ? '#444444' : 'var(--color-vcx-dark)', border: 'none', borderRadius: 0, cursor: loading ? 'not-allowed' : 'pointer' }}>
         {loading ? '계정 생성 중...' : '계정 생성하기'}
       </button>
     </form>

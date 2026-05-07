@@ -42,14 +42,14 @@ describe('PeerChatForm', () => {
   it('defaults to general category selected', () => {
     render(<PeerChatForm />)
     const generalButton = screen.getByRole('button', { name: '일반' })
-    expect(generalButton).toHaveClass('border-[#c9a84c]')
+    expect(generalButton).toHaveClass('border-vcx-gold')
   })
 
   it('changes selected category when a category button is clicked', async () => {
     render(<PeerChatForm />)
     const careerButton = screen.getByRole('button', { name: '커리어' })
     await userEvent.click(careerButton)
-    expect(careerButton).toHaveClass('border-[#c9a84c]')
+    expect(careerButton).toHaveClass('border-vcx-gold')
   })
 
   it('shows title character count', async () => {

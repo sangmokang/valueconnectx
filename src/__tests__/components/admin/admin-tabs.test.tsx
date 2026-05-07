@@ -31,9 +31,9 @@ describe('AdminTabs', () => {
     mockUsePathname.mockReturnValue('/admin/recommendations')
     render(<AdminTabs />)
     const activeLink = screen.getByText('추천 심사').closest('a')
-    expect(activeLink).toHaveStyle({ color: '#c9a84c' })
+    expect(activeLink).toHaveStyle({ color: 'var(--color-vcx-gold)' })
     const inactiveLink = screen.getByText('초대 관리').closest('a')
-    expect(inactiveLink).toHaveStyle({ color: '#1a1a1a' })
+    expect(inactiveLink).toHaveStyle({ color: 'var(--color-vcx-dark)' })
   })
 
   it('links have correct hrefs', () => {
