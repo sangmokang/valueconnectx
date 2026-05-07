@@ -12,6 +12,10 @@
 
 ---
 
+## 2026-05-07
+
+- [fix] feed-card EXCLUSIVE→HOT LINE + D-0002 CLOSED (L-Std) (commit:7888c45)
+
 ## 2026-05-05
 
 - [fix] **S1 버그 3종 수정 + D-0004 CLOSED + D-0005 CLOSED (Multi-Agent, commit:90e831f)**
@@ -57,9 +61,26 @@
 - [feat] LinkedIn AI 경력 요약 + 피드 외부 소스 크롤러 (L-Std) (commit:9002d9d)
 - [feat] career-summary OpenAI 전환 (gpt-4o-mini) + openai SDK 설치 (commit:3319efb)
 - [test] S3·S4 E2E 구현 + D-0001 CLOSED + D-0002 verify 스크립트 (L-Std) (commit:c0d487f)
+- [chore] Prevent notification policy migrations from failing on reapply (commit:e8ef54d)
+- [chore] S4/S5 TDD checkpoint + migration cleanup + E2E hardening (commit:75bb722)
+- [fix] remove erroneous src/pages/_error.tsx (App Router project) (commit:18f2cf6)
+- [fix] add missing timeouts to S5 feedback spec + feed/community UI polish (commit:c914bd6)
+- [feat] Feed 뉴스 타입 확장 — migration 029 + 상세 페이지 + admin 큐레이션 API (L-Std) (commit:c4eb1e7)
+- [fix] 중복 제출 방지 + progress 0% 버그 수정 (L-Std) (commit:4284f7f)
+- [feat] auth 페이지 + 랜딩 디자인 토큰 Hardening — inline style → VCX 유틸 클래스 전환 (L-Std) (commit:c15091d)
+- [chore] merge Track C — onboarding 중복 제출 방지 (4284f7f) (commit:cc580e5)
+- [feat] LinkedIn AI 경력 요약 + 피드 외부 소스 크롤러 (L-Std) (commit:9002d9d)
+- [feat] career-summary OpenAI 전환 (gpt-4o-mini) + openai SDK 설치 (commit:3319efb)
+- [test] S3·S4 E2E 구현 + D-0001 CLOSED + D-0002 verify 스크립트 (L-Std) (commit:c0d487f)
+- [fix] PreBriefCard 로딩·null 상태 skeleton fallback 통일 (L-Std) (commit:f2d5aff)
+- [fix] S3·S4 E2E 13/13 통과 — selector 및 locator 수정 (L-Std) (commit:ee237b4)
+- [docs] 2026-05-05 작업 이력 업데이트 (commit:ab52366)
+- [fix] GNB+Progress0%+D-0004 버그 수정 + E2E spec + D-0005 CLOSED (L-Std) (commit:90e831f)
+- [docs] 2026-05-05 Multi-Agent 작업 이력 업데이트 (commit:e6d48fa)
 
 ## 2026-05-03
 
+- [chore] Close the Feed MVP vertical slice (commit:a72637d)
 - [chore] Close the Feed MVP vertical slice (commit:a72637d)
 - [chore] Close the Feed MVP vertical slice (commit:a72637d)
 
@@ -67,10 +88,12 @@
 
 - [chore] Recenter VCX on invite-only member network (commit:0159dd1)
 - [chore] Recenter VCX on invite-only member network (commit:0159dd1)
+- [chore] Recenter VCX on invite-only member network (commit:0159dd1)
 
 ## 2026-05-01
 
 - [chore] DEBT-0005 등재 — newsletter API explicit-any 10건 (Sprint 3 타입 regen 후 정리) (commit:4ed30fc)
+- [feat] ValueHire 및 B2B 인텔리전스 슬라이스 추가 (commit:078d859)
 - [feat] ValueHire 및 B2B 인텔리전스 슬라이스 추가 (commit:078d859)
 - [feat] ValueHire 및 B2B 인텔리전스 슬라이스 추가 (commit:078d859)
 
