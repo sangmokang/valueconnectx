@@ -53,16 +53,16 @@ export function ProfileCompletion({
   const incomplete = items.filter((item) => !item.filled)
 
   return (
-    <div className={cn('bg-white border border-[#e0d9ce] p-4', className)}>
+    <div className={cn('bg-white border border-vcx-dark/10 p-4', className)}>
       <div className="flex items-center justify-between mb-2">
-        <p className="text-sm font-vcx-sans font-medium text-[#1a1a1a]">프로필 완성도</p>
-        <p className="text-sm font-vcx-sans font-bold text-[#c9a84c]">{completionPercent}%</p>
+        <p className="text-sm font-vcx-sans font-medium text-vcx-dark">프로필 완성도</p>
+        <p className="text-sm font-vcx-sans font-bold text-vcx-gold">{completionPercent}%</p>
       </div>
 
       {/* Progress bar */}
-      <div className="w-full h-2 bg-[#e0d9ce] mb-4" style={{ borderRadius: 0 }}>
+      <div className="w-full h-2 bg-vcx-dark/10 mb-4" style={{ borderRadius: 0 }}>
         <div
-          className="h-2 bg-[#c9a84c] transition-all duration-500"
+          className="h-2 bg-vcx-gold transition-all duration-500"
           style={{ width: `${completionPercent}%`, borderRadius: 0 }}
         />
       </div>
@@ -89,7 +89,7 @@ export function ProfileCompletion({
 
       {/* Incomplete hint */}
       {incomplete.length > 0 && (
-        <p className="text-xs font-vcx-sans text-[#888888] mt-3">
+        <p className="text-xs font-vcx-sans text-vcx-sub-4 mt-3">
           미완성 항목: {incomplete.map((i) => i.label).join(', ')}
         </p>
       )}

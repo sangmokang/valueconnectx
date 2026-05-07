@@ -78,12 +78,12 @@ export function PeerSessionCard({ session, isApplied, onApply }: PeerSessionCard
           ) : isOpen ? (
             <button
               onClick={() => onApply(session.id)}
-              className="px-5 py-2.5 bg-vcx-dark text-vcx-beige text-[13.5px] font-bold font-vcx-sans hover:bg-[#333] transition-colors"
+              className="px-5 py-2.5 bg-vcx-dark text-vcx-beige text-[13.5px] font-bold font-vcx-sans hover:bg-vcx-card transition-colors"
             >
               신청하기 →
             </button>
           ) : (
-            <div className="px-4 py-2 text-[13px] font-vcx-sans text-sub-5 border border-[#ddd]">
+            <div className="px-4 py-2 text-[13px] font-vcx-sans text-vcx-sub-5 border border-vcx-dark/20">
               마감
             </div>
           )}

@@ -118,7 +118,7 @@ export function SessionForm({ initialData, sessionId }: SessionFormProps) {
           value={form.title ?? ''}
           onChange={(e) => setField('title', e.target.value)}
           placeholder="커피챗 제목을 입력해주세요"
-          className="w-full border border-[#1a1a1a] bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark placeholder-[#bbb] focus:outline-none focus:border-[#c9a84c]"
+          className="w-full border border-vcx-dark bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark placeholder-[#bbb] focus:outline-none focus:border-vcx-gold"
           disabled={loading}
         />
         {errors.title && <p className="text-[12px] text-red-500 mt-1">{errors.title}</p>}
@@ -132,7 +132,7 @@ export function SessionForm({ initialData, sessionId }: SessionFormProps) {
           onChange={(e) => setField('description', e.target.value)}
           placeholder="커피챗에 대해 설명해주세요"
           rows={6}
-          className="w-full border border-[#1a1a1a] bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark placeholder-[#bbb] focus:outline-none focus:border-[#c9a84c] resize-vertical"
+          className="w-full border border-vcx-dark bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark placeholder-[#bbb] focus:outline-none focus:border-vcx-gold resize-vertical"
           disabled={loading}
         />
         {errors.description && <p className="text-[12px] text-red-500 mt-1">{errors.description}</p>}
@@ -146,7 +146,7 @@ export function SessionForm({ initialData, sessionId }: SessionFormProps) {
           type="datetime-local"
           value={form.session_date ?? ''}
           onChange={(e) => setField('session_date', e.target.value)}
-          className="w-full border border-[#1a1a1a] bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark focus:outline-none focus:border-[#c9a84c]"
+          className="w-full border border-vcx-dark bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark focus:outline-none focus:border-vcx-gold"
           disabled={loading}
         />
         {errors.session_date && <p className="text-[12px] text-red-500 mt-1">{errors.session_date}</p>}
@@ -163,7 +163,7 @@ export function SessionForm({ initialData, sessionId }: SessionFormProps) {
             max={480}
             value={form.duration_minutes ?? 60}
             onChange={(e) => setField('duration_minutes', Number(e.target.value))}
-            className="w-full border border-[#1a1a1a] bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark focus:outline-none focus:border-[#c9a84c]"
+            className="w-full border border-vcx-dark bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark focus:outline-none focus:border-vcx-gold"
             disabled={loading}
           />
           {errors.duration_minutes && <p className="text-[12px] text-red-500 mt-1">{errors.duration_minutes}</p>}
@@ -177,7 +177,7 @@ export function SessionForm({ initialData, sessionId }: SessionFormProps) {
             max={50}
             value={form.max_participants ?? 5}
             onChange={(e) => setField('max_participants', Number(e.target.value))}
-            className="w-full border border-[#1a1a1a] bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark focus:outline-none focus:border-[#c9a84c]"
+            className="w-full border border-vcx-dark bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark focus:outline-none focus:border-vcx-gold"
             disabled={loading}
           />
           {errors.max_participants && <p className="text-[12px] text-red-500 mt-1">{errors.max_participants}</p>}
@@ -195,8 +195,8 @@ export function SessionForm({ initialData, sessionId }: SessionFormProps) {
               onClick={() => setField('location_type', type)}
               className={`flex-1 py-3 text-[13px] font-vcx-sans border transition-colors ${
                 form.location_type === type
-                  ? 'bg-[#1a1a1a] text-[#f0ebe2] border-[#1a1a1a]'
-                  : 'bg-white text-vcx-dark border-[#1a1a1a] hover:bg-[#f0ebe2]'
+                  ? 'bg-vcx-dark text-vcx-beige border-vcx-dark'
+                  : 'bg-white text-vcx-dark border-vcx-dark hover:bg-vcx-beige'
               }`}
               disabled={loading}
             >
@@ -215,7 +215,7 @@ export function SessionForm({ initialData, sessionId }: SessionFormProps) {
           value={form.location_detail ?? ''}
           onChange={(e) => setField('location_detail', e.target.value)}
           placeholder="Zoom 링크, 주소 등"
-          className="w-full border border-[#1a1a1a] bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark placeholder-[#bbb] focus:outline-none focus:border-[#c9a84c]"
+          className="w-full border border-vcx-dark bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark placeholder-[#bbb] focus:outline-none focus:border-vcx-gold"
           disabled={loading}
         />
       </div>
@@ -235,8 +235,8 @@ export function SessionForm({ initialData, sessionId }: SessionFormProps) {
               onClick={() => setField('target_tier', value as 'all' | 'core' | 'endorsed')}
               className={`flex-1 py-2.5 text-[13px] font-vcx-sans border transition-colors ${
                 form.target_tier === value
-                  ? 'bg-[#1a1a1a] text-[#f0ebe2] border-[#1a1a1a]'
-                  : 'bg-white text-vcx-dark border-[#ccc] hover:border-[#1a1a1a]'
+                  ? 'bg-vcx-dark text-vcx-beige border-vcx-dark'
+                  : 'bg-white text-vcx-dark border-[#ccc] hover:border-vcx-dark'
               }`}
               disabled={loading}
             >
@@ -256,7 +256,7 @@ export function SessionForm({ initialData, sessionId }: SessionFormProps) {
             onChange={(e) => setTagInput(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addTag() } }}
             placeholder="태그 입력 후 Enter"
-            className="flex-1 border border-[#1a1a1a] bg-white px-4 py-2.5 text-[14px] font-vcx-sans text-vcx-dark placeholder-[#bbb] focus:outline-none focus:border-[#c9a84c]"
+            className="flex-1 border border-vcx-dark bg-white px-4 py-2.5 text-[14px] font-vcx-sans text-vcx-dark placeholder-[#bbb] focus:outline-none focus:border-vcx-gold"
             disabled={loading}
           />
           <Button type="button" variant="outline" size="sm" onClick={addTag} disabled={loading}>
@@ -266,7 +266,7 @@ export function SessionForm({ initialData, sessionId }: SessionFormProps) {
         {(form.tags ?? []).length > 0 && (
           <div className="flex flex-wrap gap-2">
             {(form.tags ?? []).map((tag) => (
-              <span key={tag} className="vcx-label px-2.5 py-1 bg-[#f0ebe2] border border-[#e8e2d9] text-vcx-sub-3 flex items-center gap-1.5">
+              <span key={tag} className="vcx-label px-2.5 py-1 bg-vcx-beige border border-vcx-dark/10 text-vcx-sub-3 flex items-center gap-1.5">
                 {tag}
                 <button
                   type="button"
@@ -283,7 +283,7 @@ export function SessionForm({ initialData, sessionId }: SessionFormProps) {
       </div>
 
       {/* Culture fit agreement */}
-      <div className="border border-[#e0d9ce] bg-[#fdf9f2] p-4">
+      <div className="border border-vcx-dark/10 bg-vcx-off-white p-4">
         <label className="flex items-start gap-3 cursor-pointer">
           <input
             type="checkbox"
@@ -292,7 +292,7 @@ export function SessionForm({ initialData, sessionId }: SessionFormProps) {
             disabled={loading}
             className="mt-0.5 flex-shrink-0 w-4 h-4 accent-[#c9a84c]"
           />
-          <span className="text-[13px] font-vcx-sans text-[#1a1a1a] leading-relaxed">
+          <span className="text-[13px] font-vcx-sans text-vcx-dark leading-relaxed">
             컬쳐핏 확인 운영 원칙에 동의합니다. ValueConnect X를 통한 대화 결과는 비공개 운영 기준에 따라 관리됩니다.
           </span>
         </label>

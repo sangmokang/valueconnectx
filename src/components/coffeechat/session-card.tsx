@@ -75,11 +75,11 @@ export function SessionCard({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between pt-4 border-t border-[#e8e2d9] gap-3">
+        <div className="flex items-center justify-between pt-4 border-t border-vcx-dark/10 gap-3">
           {/* Tags */}
           <div className="flex flex-wrap gap-1.5">
             {tags.slice(0, 3).map((tag) => (
-              <span key={tag} className="vcx-label px-2 py-0.5 bg-[#f0ebe2] text-vcx-sub-3">
+              <span key={tag} className="vcx-label px-2 py-0.5 bg-vcx-beige text-vcx-sub-3">
                 {tag}
               </span>
             ))}

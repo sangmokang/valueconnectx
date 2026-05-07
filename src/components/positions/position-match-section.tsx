@@ -27,7 +27,7 @@ export function PositionMatchSection() {
           {Array.from({ length: 3 }).map((_, i) => (
             <div
               key={i}
-              className="min-w-[260px] h-44 bg-white border border-[#e0d9ce] animate-pulse flex-shrink-0"
+              className="min-w-[260px] h-44 bg-white border border-vcx-dark/10 animate-pulse flex-shrink-0"
               style={{ borderRadius: 0 }}
             />
           ))}
@@ -44,11 +44,11 @@ export function PositionMatchSection() {
       <div className="flex items-center justify-between mb-3">
         <div>
           <p className="vcx-section-label mb-0.5">AI 추천 포지션</p>
-          <h2 className="font-vcx-serif font-bold text-[#1a1a1a] text-xl">
+          <h2 className="font-vcx-serif font-bold text-vcx-dark text-xl">
             내 프로필에 맞는 포지션
           </h2>
         </div>
-        <span className="text-xs font-vcx-sans text-[#888888]">
+        <span className="text-xs font-vcx-sans text-vcx-sub-4">
           {matches.length}개 추천
         </span>
       </div>

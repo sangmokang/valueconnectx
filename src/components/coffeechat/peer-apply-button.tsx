@@ -147,7 +147,7 @@ export function PeerApplyButton({ chatId, chatTitle, chatStatus, hasApplied, app
                     maxLength={1000}
                     rows={4}
                     required
-                    className="w-full border border-vcx-dark bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark placeholder-[#bbb] focus:outline-none focus:border-[#c9a84c] resize-none"
+                    className="w-full border border-vcx-dark bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark placeholder-[#bbb] focus:outline-none focus:border-vcx-gold resize-none"
                     disabled={loading}
                   />
                   <p className="text-[11px] text-vcx-sub-5 text-right mt-1">{message.length}/1000</p>

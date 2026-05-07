@@ -165,14 +165,14 @@ export default async function PeerChatDetailPage({ params }: PageProps) {
           <div className="lg:col-span-2">
             {/* Meta */}
             <div className="flex items-center gap-2 flex-wrap mb-4">
-              <span className="vcx-label px-2 py-1 bg-[#f0ebe2] text-vcx-sub-3">
+              <span className="vcx-label px-2 py-1 bg-vcx-beige text-vcx-sub-3">
                 {categoryLabel[chat.category] ?? chat.category}
               </span>
               <span
                 className={`vcx-label px-2 py-1 border ${
                   chat.status === 'open'
-                    ? 'border-[#c9a84c] text-[#c9a84c]'
-                    : 'border-[#999] text-[#999]'
+                    ? 'border-vcx-gold text-vcx-gold'
+                    : 'border-vcx-sub-5 text-vcx-sub-5'
                 }`}
               >
                 {statusLabel[chat.status] ?? chat.status}
@@ -186,9 +186,9 @@ export default async function PeerChatDetailPage({ params }: PageProps) {
             </h1>
 
             {/* Author info */}
-            <div className="flex items-center gap-3 mb-8 pb-6 border-b border-[#e8e2d9]">
-              <div className="w-10 h-10 bg-[#1a1a1a] flex items-center justify-center flex-shrink-0">
-                <span className="font-vcx-serif text-[#f0ebe2] text-[14px]">
+            <div className="flex items-center gap-3 mb-8 pb-6 border-b border-vcx-dark/10">
+              <div className="w-10 h-10 bg-vcx-dark flex items-center justify-center flex-shrink-0">
+                <span className="font-vcx-serif text-vcx-beige text-[14px]">
                   {chat.author?.name?.charAt(0) ?? '?'}
                 </span>
               </div>
@@ -206,7 +206,7 @@ export default async function PeerChatDetailPage({ params }: PageProps) {
             </div>
 
             {/* Application count */}
-            <div className="mt-8 pt-6 border-t border-[#e8e2d9]">
+            <div className="mt-8 pt-6 border-t border-vcx-dark/10">
               <p className="vcx-label text-vcx-sub-4">
                 {applicationCount ?? 0}명이 신청했습니다
               </p>
@@ -230,7 +230,7 @@ export default async function PeerChatDetailPage({ params }: PageProps) {
           <div className="lg:col-span-1">
             <div className="sticky top-6 space-y-4">
               {isAuthor ? (
-                <div className="border border-[#1a1a1a] bg-[#f7f3ed] p-5">
+                <div className="border border-vcx-dark bg-vcx-beige-light p-5">
                   <p className="vcx-section-label mb-3">작성자 관리</p>
                   <p className="text-[13px] font-vcx-sans text-vcx-sub-3 mb-4">
                     내가 작성한 글입니다
@@ -253,7 +253,7 @@ export default async function PeerChatDetailPage({ params }: PageProps) {
               )}
 
               {/* Info box */}
-              <div className="border border-[#e8e2d9] bg-[#f7f3ed] p-4">
+              <div className="border border-vcx-dark/10 bg-vcx-beige-light p-4">
                 <p className="vcx-section-label mb-2">ValueConnect X</p>
                 <p className="text-[12px] font-vcx-sans text-vcx-sub-3 leading-relaxed">
                   커피챗을 통한 성사 연결은 ValueConnect X의 비공개 운영 원칙에 따라 관리됩니다.
@@ -265,7 +265,7 @@ export default async function PeerChatDetailPage({ params }: PageProps) {
 
         {/* Author: applications section */}
         {isAuthor && (
-          <div className="mt-12 pt-8 border-t border-[#1a1a1a]">
+          <div className="mt-12 pt-8 border-t border-vcx-dark">
             <h2 className="font-vcx-serif text-[22px] font-normal text-vcx-dark mb-2">
               신청자 목록 ({applications.length}명)
             </h2>

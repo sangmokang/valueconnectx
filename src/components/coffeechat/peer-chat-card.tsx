@@ -79,7 +79,7 @@ export function PeerChatCard({
         </p>
 
         {/* Footer */}
-        <div className="flex items-center justify-between pt-4 border-t border-[#e8e2d9]">
+        <div className="flex items-center justify-between pt-4 border-t border-vcx-dark/10">
           <div>
             <p className="font-vcx-serif text-[13px] text-vcx-dark">{authorName}</p>
             {(authorTitle || authorCompany) && (

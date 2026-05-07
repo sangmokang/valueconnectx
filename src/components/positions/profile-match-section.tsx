@@ -27,7 +27,7 @@ export function ProfileMatchSection() {
           {Array.from({ length: 3 }).map((_, i) => (
             <div
               key={i}
-              className="h-20 bg-white border border-[#e0d9ce] animate-pulse"
+              className="h-20 bg-white border border-vcx-dark/10 animate-pulse"
               style={{ borderRadius: 0 }}
             />
           ))}
@@ -44,13 +44,13 @@ export function ProfileMatchSection() {
       <div className="flex items-center justify-between mb-3">
         <div>
           <p className="vcx-section-label mb-0.5">맞춤 포지션</p>
-          <h2 className="font-vcx-serif font-bold text-[#1a1a1a] text-xl">
+          <h2 className="font-vcx-serif font-bold text-vcx-dark text-xl">
             내 프로필에 맞는 포지션
           </h2>
         </div>
         <Link
           href="/positions"
-          className="text-xs font-vcx-sans text-[#888888] hover:text-[#1a1a1a] transition-colors"
+          className="text-xs font-vcx-sans text-vcx-sub-4 hover:text-vcx-dark transition-colors"
         >
           전체 보기 →
         </Link>

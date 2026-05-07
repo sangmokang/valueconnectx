@@ -10,10 +10,10 @@ interface InterestButtonProps {
   initialInterest: InterestType | null
 }
 
-const INTEREST_OPTIONS: { type: InterestType; label: string; activeColor: string }[] = [
-  { type: 'interested', label: '관심 있음', activeColor: '#c9a84c' },
-  { type: 'bookmark', label: '나중에 보기', activeColor: '#4a7cc9' },
-  { type: 'not_interested', label: '관심 없음', activeColor: '#888888' },
+const INTEREST_OPTIONS: { type: InterestType; label: string }[] = [
+  { type: 'interested', label: '관심 있음' },
+  { type: 'bookmark', label: '나중에 보기' },
+  { type: 'not_interested', label: '관심 없음' },
 ]
 
 export function InterestButton({ positionId, initialInterest }: InterestButtonProps) {
@@ -56,8 +56,8 @@ export function InterestButton({ positionId, initialInterest }: InterestButtonPr
             onClick={() => handleClick(opt.type)}
             className={`px-3 py-1.5 text-xs font-vcx-sans border transition-colors disabled:opacity-50 ${
               isActive
-                ? 'bg-[#1a1a1a] text-[#c9a84c] border-[#1a1a1a]'
-                : 'bg-white text-[#666666] border-[#e0d9ce] hover:border-[#888888]'
+                ? 'bg-vcx-dark text-vcx-gold border-vcx-dark'
+                : 'bg-white text-vcx-sub-3 border-vcx-dark/10 hover:border-vcx-sub-4'
             }`}
             style={{ borderRadius: 0 }}
           >

@@ -12,27 +12,27 @@ export function PositionMatchCard({ match }: PositionMatchCardProps) {
 
   return (
     <div
-      className="bg-white border border-[#e0d9ce] hover:border-[#c9a84c] transition-colors duration-150 min-w-[260px] max-w-[300px] flex-shrink-0 flex flex-col"
+      className="bg-white border border-vcx-dark/10 hover:border-vcx-gold transition-colors duration-150 min-w-[260px] max-w-[300px] flex-shrink-0 flex flex-col"
       style={{ borderRadius: 0 }}
     >
       <Link href={`/positions/${position.id}`} className="block p-4 flex-1">
         {/* 매칭 점수 */}
         <div className="flex items-center justify-between mb-2">
-          <span className="text-[10px] font-vcx-sans text-[#c9a84c] uppercase tracking-widest">
+          <span className="text-[10px] font-vcx-sans text-vcx-gold uppercase tracking-widest">
             AI 추천
           </span>
-          <span className="text-xs font-vcx-sans font-semibold text-[#1a1a1a]">
+          <span className="text-xs font-vcx-sans font-semibold text-vcx-dark">
             {matchScore}% 일치
           </span>
         </div>
 
         {/* 프로그레스 바 */}
         <div
-          className="w-full h-1 bg-[#f0ebe2] mb-3"
+          className="w-full h-1 bg-vcx-beige mb-3"
           style={{ borderRadius: 0 }}
         >
           <div
-            className="h-1 bg-[#c9a84c] transition-all duration-300"
+            className="h-1 bg-vcx-gold transition-all duration-300"
             style={{ width: `${matchScore}%`, borderRadius: 0 }}
           />
         </div>
@@ -41,7 +41,7 @@ export function PositionMatchCard({ match }: PositionMatchCardProps) {
         <p className="vcx-section-label mb-1">{position.company_name}</p>
 
         {/* 포지션 제목 */}
-        <h3 className="font-vcx-serif font-bold text-[#1a1a1a] text-base leading-snug mb-3">
+        <h3 className="font-vcx-serif font-bold text-vcx-dark text-base leading-snug mb-3">
           {position.title}
         </h3>
 
@@ -51,7 +51,7 @@ export function PositionMatchCard({ match }: PositionMatchCardProps) {
             {matchReasons.slice(0, 3).map((reason, i) => (
               <span
                 key={i}
-                className="px-2 py-0.5 text-[10px] font-vcx-sans text-[#666666] bg-[#f0ebe2] border border-[#e0d9ce]"
+                className="px-2 py-0.5 text-[10px] font-vcx-sans text-vcx-sub-3 bg-vcx-beige border border-vcx-dark/10"
                 style={{ borderRadius: 0 }}
               >
                 {reason}

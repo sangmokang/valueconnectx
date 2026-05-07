@@ -31,18 +31,18 @@ export function ApplyButton({ sessionId, sessionTitle, sessionStatus, hasApplied
 
   return (
     <>
-      <div className="border border-[#1a1a1a] bg-white p-5">
+      <div className="border border-vcx-dark bg-white p-5">
         <p className="vcx-section-label mb-3">커피챗 신청</p>
 
         {applied ? (
           <div className="text-center py-3">
-            <span className="vcx-label px-3 py-1.5 border border-[#c9a84c] text-[#c9a84c]">
+            <span className="vcx-label px-3 py-1.5 border border-vcx-gold text-vcx-gold">
               {applicationStatus === 'accepted' ? '수락됨' : applicationStatus === 'rejected' ? '거절됨' : '신청 완료'}
             </span>
             {applicationStatus === 'accepted' && hostContactEmail ? (
               <div className="mt-3 flex items-center justify-center gap-2">
-                <span className="text-[#c9a84c]">📧</span>
-                <a href={`mailto:${hostContactEmail}`} className="text-[13px] font-vcx-sans text-[#1a1a1a] underline">
+                <span className="text-vcx-gold">📧</span>
+                <a href={`mailto:${hostContactEmail}`} className="text-[13px] font-vcx-sans text-vcx-dark underline">
                   {hostContactEmail}
                 </a>
               </div>
@@ -54,7 +54,7 @@ export function ApplyButton({ sessionId, sessionTitle, sessionStatus, hasApplied
           </div>
         ) : !isOpen ? (
           <div className="text-center py-3">
-            <span className="vcx-label px-3 py-1.5 border border-[#999] text-vcx-sub-4">
+            <span className="vcx-label px-3 py-1.5 border border-vcx-sub-5 text-vcx-sub-4">
               신청 마감
             </span>
           </div>

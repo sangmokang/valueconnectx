@@ -69,68 +69,68 @@ export default async function PositionDetailPage({
       <div className="mb-6">
         <Link
           href="/positions"
-          className="text-xs font-vcx-sans text-[#888888] hover:text-[#c9a84c] transition-colors"
+          className="text-xs font-vcx-sans text-vcx-sub-4 hover:text-vcx-gold transition-colors"
         >
           ← 포지션 목록
         </Link>
       </div>
 
       {/* Main card */}
-      <div className="bg-white border border-[#e0d9ce] p-8">
+      <div className="bg-white border border-vcx-dark/10 p-8">
         {/* Company */}
         <p className="vcx-section-label mb-1">{pos.company_name}</p>
 
         {/* Title */}
-        <h1 className="font-vcx-serif font-bold text-[#1a1a1a] text-3xl mb-4">
+        <h1 className="font-vcx-serif font-bold text-vcx-dark text-3xl mb-4">
           {pos.title}
         </h1>
 
         {/* Divider */}
-        <div className="border-t border-[#c9a84c] mb-6" />
+        <div className="border-t border-vcx-gold mb-6" />
 
         {/* Meta */}
         <div className="grid grid-cols-2 gap-4 mb-6">
           {pos.team_size && (
             <div>
-              <p className="vcx-label text-[#888888] mb-0.5">조직 규모</p>
-              <p className="text-sm font-vcx-sans text-[#1a1a1a]">{pos.team_size}</p>
+              <p className="vcx-label text-vcx-sub-4 mb-0.5">조직 규모</p>
+              <p className="text-sm font-vcx-sans text-vcx-dark">{pos.team_size}</p>
             </div>
           )}
           {pos.salary_range && (
             <div>
-              <p className="vcx-label text-[#888888] mb-0.5">연봉 밴드</p>
-              <p className="text-sm font-vcx-sans text-[#c9a84c] font-medium">{pos.salary_range}</p>
+              <p className="vcx-label text-vcx-sub-4 mb-0.5">연봉 밴드</p>
+              <p className="text-sm font-vcx-sans text-vcx-gold font-medium">{pos.salary_range}</p>
             </div>
           )}
         </div>
 
         {/* Role description */}
         <div className="mb-8">
-          <p className="vcx-label text-[#888888] mb-2">주요 역할</p>
-          <p className="text-sm font-vcx-sans text-[#444444] leading-relaxed whitespace-pre-wrap">
+          <p className="vcx-label text-vcx-sub-4 mb-2">주요 역할</p>
+          <p className="text-sm font-vcx-sans text-vcx-sub-1 leading-relaxed whitespace-pre-wrap">
             {pos.role_description}
           </p>
         </div>
 
         {/* Interest counts */}
-        <div className="flex gap-4 mb-6 py-3 px-4 bg-[#f7f3ed] border border-[#e0d9ce]">
-          <span className="text-xs font-vcx-sans text-[#888888]">
-            관심 있음 <span className="text-[#c9a84c] font-medium">{counts.interested}</span>
+        <div className="flex gap-4 mb-6 py-3 px-4 bg-vcx-beige-light border border-vcx-dark/10">
+          <span className="text-xs font-vcx-sans text-vcx-sub-4">
+            관심 있음 <span className="text-vcx-gold font-medium">{counts.interested}</span>
           </span>
-          <span className="text-xs font-vcx-sans text-[#888888]">
-            나중에 보기 <span className="text-[#1a1a1a] font-medium">{counts.bookmark}</span>
+          <span className="text-xs font-vcx-sans text-vcx-sub-4">
+            나중에 보기 <span className="text-vcx-dark font-medium">{counts.bookmark}</span>
           </span>
         </div>
 
         {/* Interest buttons */}
         <div>
-          <p className="vcx-label text-[#888888] mb-2">이 포지션에 대한 반응</p>
+          <p className="vcx-label text-vcx-sub-4 mb-2">이 포지션에 대한 반응</p>
           <InterestButton positionId={pos.id} initialInterest={myInterest} />
         </div>
       </div>
 
       {/* Posted date */}
-      <p className="text-xs font-vcx-sans text-[#999999] mt-4 text-right">
+      <p className="text-xs font-vcx-sans text-vcx-sub-5 mt-4 text-right">
         등록일: {new Date(pos.created_at).toLocaleDateString('ko-KR')}
       </p>
     </div>

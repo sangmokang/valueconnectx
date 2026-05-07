@@ -51,7 +51,7 @@ export function MemberFilters() {
   ]
 
   return (
-    <div className="bg-white border border-[#e0d9ce] p-4 mb-6">
+    <div className="bg-white border border-vcx-dark/10 p-4 mb-6">
       {/* Search input */}
       <div className="flex gap-2 items-center">
         <input
@@ -59,14 +59,14 @@ export function MemberFilters() {
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="이름, 회사, 소개 검색..."
-          className="flex-1 px-3 py-2 text-sm font-vcx-sans bg-[#f7f3ed] border border-[#e0d9ce] text-[#1a1a1a] placeholder-[#999999] outline-none focus:border-[#c9a84c]"
+          className="flex-1 px-3 py-2 text-sm font-vcx-sans bg-vcx-beige-light border border-vcx-dark/10 text-vcx-dark placeholder-[#bbb] outline-none focus:border-vcx-gold"
           style={{ borderRadius: 0 }}
         />
         {/* Mobile filter toggle */}
         <button
           type="button"
           onClick={() => setShowFilters((v) => !v)}
-          className="md:hidden min-h-9 px-3 py-2 text-xs font-vcx-sans text-[#666666] border border-[#e0d9ce] bg-[#f7f3ed]"
+          className="md:hidden min-h-9 px-3 py-2 text-xs font-vcx-sans text-vcx-sub-3 border border-vcx-dark/10 bg-vcx-beige-light"
           style={{ borderRadius: 0 }}
         >
           필터 {showFilters ? '닫기' : '열기'}
@@ -84,8 +84,8 @@ export function MemberFilters() {
               onClick={() => updateParams({ tier: opt.value })}
               className={`min-h-9 px-3 py-1.5 text-xs font-vcx-sans border transition-colors ${
                 currentTier === opt.value
-                  ? 'bg-[#1a1a1a] text-[#c9a84c] border-[#1a1a1a]'
-                  : 'bg-white text-[#666666] border-[#e0d9ce] hover:border-[#888888]'
+                  ? 'bg-vcx-dark text-vcx-gold border-vcx-dark'
+                  : 'bg-white text-vcx-sub-3 border-vcx-dark/10 hover:border-vcx-sub-4'
               }`}
               style={{ borderRadius: 0 }}
             >
@@ -98,7 +98,7 @@ export function MemberFilters() {
         <select
           value={currentIndustry}
           onChange={(e) => updateParams({ industry: e.target.value })}
-          className="min-h-9 px-3 py-1.5 text-xs font-vcx-sans bg-white border border-[#e0d9ce] text-[#666666] outline-none focus:border-[#c9a84c] cursor-pointer"
+          className="min-h-9 px-3 py-1.5 text-xs font-vcx-sans bg-white border border-vcx-dark/10 text-vcx-sub-3 outline-none focus:border-vcx-gold cursor-pointer"
           style={{ borderRadius: 0 }}
         >
           <option value="">업종 전체</option>
@@ -117,7 +117,7 @@ export function MemberFilters() {
               setQ('')
               updateParams({ tier: '', industry: '', q: '' })
             }}
-            className="inline-flex min-h-9 items-center text-xs font-vcx-sans text-[#999999] underline hover:text-[#666666]"
+            className="inline-flex min-h-9 items-center text-xs font-vcx-sans text-vcx-sub-5 underline hover:text-vcx-sub-3"
           >
             필터 초기화
           </button>

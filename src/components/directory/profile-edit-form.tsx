@@ -113,7 +113,7 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
   }
 
   const inputClass =
-    'w-full px-3 py-2 text-sm font-vcx-sans bg-[#f7f3ed] border border-[#e0d9ce] text-[#1a1a1a] placeholder-[#999999] outline-none focus:border-[#c9a84c]'
+    'w-full px-3 py-2 text-sm font-vcx-sans bg-vcx-beige-light border border-vcx-dark/10 text-vcx-dark placeholder-[#bbb] outline-none focus:border-vcx-gold'
   const labelClass = 'vcx-section-label block mb-1.5'
 
   return (
@@ -136,12 +136,12 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
         {linkedinError && (
           <p className="text-xs font-vcx-sans text-red-500 mt-1">{linkedinError}</p>
         )}
-        <p className="text-xs font-vcx-sans text-[#999999] mt-1">linkedin.com/in/ 형식의 URL을 입력하세요 (필수)</p>
+        <p className="text-xs font-vcx-sans text-vcx-sub-5 mt-1">linkedin.com/in/ 형식의 URL을 입력하세요 (필수)</p>
         <button
           type="button"
           onClick={handleGenerateSummary}
           disabled={!linkedinUrl || summaryLoading}
-          className="mt-2 text-sm font-vcx-sans underline text-[var(--color-gold)] disabled:opacity-40"
+          className="mt-2 text-sm font-vcx-sans underline text-vcx-gold disabled:opacity-40"
         >
           {summaryLoading ? '생성 중...' : 'AI로 소개 자동 생성'}
         </button>
@@ -162,7 +162,7 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
           className={inputClass}
           style={{ borderRadius: 0, resize: 'vertical' }}
         />
-        <p className="text-xs font-vcx-sans text-[#999999] mt-1 text-right">{bio.length} / 1000</p>
+        <p className="text-xs font-vcx-sans text-vcx-sub-5 mt-1 text-right">{bio.length} / 1000</p>
       </div>
 
       {/* Professional fields */}
@@ -176,7 +176,7 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
           className={inputClass}
           style={{ borderRadius: 0 }}
         />
-        <p className="text-xs font-vcx-sans text-[#999999] mt-1">
+        <p className="text-xs font-vcx-sans text-vcx-sub-5 mt-1">
           쉼표(,)로 구분하여 최대 {INTEREST_TAG_LIMIT}개까지 입력하세요. 저장하면 피드 필터와 함께 동기화됩니다.
         </p>
       </div>
@@ -221,7 +221,7 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
           aria-checked={isOpenToChat}
           onClick={() => setIsOpenToChat((v) => !v)}
           className={`w-10 h-5 relative transition-colors flex-shrink-0 ${
-            isOpenToChat ? 'bg-[#c9a84c]' : 'bg-[#e0d9ce]'
+            isOpenToChat ? 'bg-vcx-gold' : 'bg-vcx-dark/10'
           }`}
           style={{ borderRadius: 0 }}
         >
@@ -233,8 +233,8 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
           />
         </button>
         <div>
-          <p className="text-sm font-vcx-sans text-[#1a1a1a] font-medium">커피챗 가능</p>
-          <p className="text-xs font-vcx-sans text-[#999999]">다른 멤버들이 커피챗 요청을 할 수 있습니다</p>
+          <p className="text-sm font-vcx-sans text-vcx-dark font-medium">커피챗 가능</p>
+          <p className="text-xs font-vcx-sans text-vcx-sub-5">다른 멤버들이 커피챗 요청을 할 수 있습니다</p>
         </div>
       </div>
 
@@ -251,8 +251,8 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
               key={opt.value}
               className={`flex items-start gap-3 p-3 border cursor-pointer transition-colors ${
                 profileVisibility === opt.value
-                  ? 'border-[#c9a84c] bg-[#fdf9f2]'
-                  : 'border-[#e0d9ce] bg-white hover:border-[#888888]'
+                  ? 'border-vcx-gold bg-vcx-beige-light'
+                  : 'border-vcx-dark/10 bg-white hover:border-vcx-sub-4'
               }`}
               style={{ borderRadius: 0 }}
             >
@@ -265,8 +265,8 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
                 className="mt-0.5 flex-shrink-0"
               />
               <div>
-                <p className="text-sm font-vcx-sans text-[#1a1a1a] font-medium">{opt.label}</p>
-                <p className="text-xs font-vcx-sans text-[#999999]">{opt.desc}</p>
+                <p className="text-sm font-vcx-sans text-vcx-dark font-medium">{opt.label}</p>
+                <p className="text-xs font-vcx-sans text-vcx-sub-5">{opt.desc}</p>
               </div>
             </label>
           ))}
@@ -293,8 +293,8 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
         disabled={loading}
         className={`w-full py-3 text-sm font-vcx-sans font-medium transition-colors ${
           loading
-            ? 'bg-[#888888] text-white cursor-not-allowed'
-            : 'bg-[#1a1a1a] text-[#c9a84c] hover:bg-[#333333]'
+            ? 'bg-vcx-sub-4 text-white cursor-not-allowed'
+            : 'bg-vcx-dark text-vcx-gold hover:bg-[#333333]'
         }`}
         style={{ borderRadius: 0 }}
       >
