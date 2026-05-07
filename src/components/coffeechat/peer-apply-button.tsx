@@ -53,18 +53,18 @@ export function PeerApplyButton({ chatId, chatTitle, chatStatus, hasApplied, app
 
   return (
     <>
-      <div className="border border-[#1a1a1a] bg-white p-5">
+      <div className="border border-vcx-dark bg-white p-5">
         <p className="vcx-section-label mb-3">커피챗 신청</p>
 
         {applied ? (
           <div className="text-center py-3">
-            <span className="vcx-label px-3 py-1.5 border border-[#c9a84c] text-[#c9a84c]">
+            <span className="vcx-label px-3 py-1.5 border border-vcx-gold text-vcx-gold">
               {applicationStatus === 'accepted' ? '수락됨' : applicationStatus === 'rejected' ? '거절됨' : '신청 완료'}
             </span>
             {applicationStatus === 'accepted' && authorContactEmail ? (
               <div className="mt-3 flex items-center justify-center gap-2">
-                <span className="text-[#c9a84c]">📧</span>
-                <a href={`mailto:${authorContactEmail}`} className="text-[13px] font-vcx-sans text-[#1a1a1a] underline">
+                <span className="text-vcx-gold">📧</span>
+                <a href={`mailto:${authorContactEmail}`} className="text-[13px] font-vcx-sans text-vcx-dark underline">
                   {authorContactEmail}
                 </a>
               </div>
@@ -107,7 +107,7 @@ export function PeerApplyButton({ chatId, chatTitle, chatStatus, hasApplied, app
 
           {/* Modal */}
           <div
-            className="fixed z-50 bg-white border border-[#1a1a1a]
+            className="fixed z-50 bg-white border border-vcx-dark
               bottom-0 inset-x-0
               sm:inset-0 sm:m-auto sm:max-w-lg sm:h-fit"
             role="dialog"
@@ -129,7 +129,7 @@ export function PeerApplyButton({ chatId, chatTitle, chatStatus, hasApplied, app
                 </button>
               </div>
 
-              <div className="bg-[#f7f3ed] border border-[#e8e2d9] p-4 mb-5">
+              <div className="bg-vcx-beige-light border border-vcx-dark/10 p-4 mb-5">
                 <p className="text-[12px] font-vcx-sans text-vcx-sub-3">
                   이 신청은 다른 멤버에게 공개되지 않습니다. 작성자만 신청 내용을 확인할 수 있으며, 수락 시 연락처가 공개됩니다.
                 </p>
@@ -147,7 +147,7 @@ export function PeerApplyButton({ chatId, chatTitle, chatStatus, hasApplied, app
                     maxLength={1000}
                     rows={4}
                     required
-                    className="w-full border border-[#1a1a1a] bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark placeholder-[#bbb] focus:outline-none focus:border-[#c9a84c] resize-none"
+                    className="w-full border border-vcx-dark bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark placeholder-[#bbb] focus:outline-none focus:border-[#c9a84c] resize-none"
                     disabled={loading}
                   />
                   <p className="text-[11px] text-vcx-sub-5 text-right mt-1">{message.length}/1000</p>

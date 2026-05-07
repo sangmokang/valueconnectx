@@ -12,6 +12,23 @@
 
 ---
 
+## 2026-05-08
+
+- [design] **브랜드 일관성 전면 정비 — 하드코딩 hex → VCX 디자인 토큰 전환 (Multi-Agent, commit:8051d28)**
+  - `globals.css`: `--color-vcx-cream/off-white/error` 토큰 3건 신규 추가
+  - `layout.tsx`: background hex → `var(--color-vcx-beige)` 전환
+  - `global-error.tsx`: CSS var 폴백 hex 추가 (globals.css 미로드 환경 안전성)
+  - `gnb-dropdown.tsx`: 16건 arbitrary hex → `vcx-gold/dark/beige` Tailwind 유틸
+  - `position-card.tsx`: 17건 hex 전환 + `MATCH→매치` 한국어 통일
+  - coffeechat 4파일 (`ceo-session-card`, `peer-hero`, `peer-session-card`, `peer-write-modal`): ~56건 전환
+  - `member-profile.tsx`: 13건 / `member-card.tsx`: 12건 — arbitrary Tailwind 전량 vcx-* 유틸로 전환
+  - `page.tsx`: 히어로 카피 Community 프레이밍 업데이트
+  - vitest 785/785 PASS, npm run build (clean) exit 0
+- [fix] feed-card EXCLUSIVE→HOT LINE + D-0002 CLOSED (commit:7888c45)
+- [chore] HUD state + history 업데이트 (commit:40a64a0)
+- [chore] design(brand): 하드코딩 hex → VCX 디자인 토큰 전환 (L-Std) (commit:8051d28)
+- [chore] design(brand): 2차 VCX 토큰 전환 — gnb/auth/coffeechat/admin/ui (L-Std) (commit:b8ba106)
+
 ## 2026-05-07
 
 - [fix] feed-card EXCLUSIVE→HOT LINE + D-0002 CLOSED (L-Std) (commit:7888c45)

@@ -61,11 +61,11 @@ export function SessionDetail({
   return (
     <div className="space-y-8">
       {/* Host profile */}
-      <div className="bg-[#f7f3ed] border border-[#e8e2d9] p-4 sm:p-6">
+      <div className="bg-vcx-beige-light border border-vcx-dark/10 p-4 sm:p-6">
         <p className="vcx-section-label mb-3">호스트</p>
         <div className="flex items-start gap-3 sm:gap-4">
-          <div className="w-12 h-12 bg-[#1a1a1a] flex items-center justify-center flex-shrink-0">
-            <span className="font-vcx-serif text-[#f0ebe2] text-[18px]">
+          <div className="w-12 h-12 bg-vcx-dark flex items-center justify-center flex-shrink-0">
+            <span className="font-vcx-serif text-vcx-beige text-[18px]">
               {host.name.charAt(0)}
             </span>
           </div>
@@ -74,7 +74,7 @@ export function SessionDetail({
             <p className="text-[13px] text-vcx-sub-3 font-vcx-sans mt-0.5">
               {host.title && `${host.title} · `}{host.company}
             </p>
-            <span className="vcx-label px-2 py-0.5 border border-[#c9a84c] text-[#c9a84c] mt-2 inline-block">
+            <span className="vcx-label px-2 py-0.5 border border-vcx-gold text-vcx-gold mt-2 inline-block">
               {roleLabel[host.role] ?? host.role}
             </span>
           </div>
@@ -90,8 +90,8 @@ export function SessionDetail({
           <span
             className={`vcx-label px-3 py-1.5 border flex-shrink-0 ${
               status === 'open'
-                ? 'border-[#c9a84c] text-[#c9a84c]'
-                : 'border-[#999] text-[#999]'
+                ? 'border-vcx-gold text-vcx-gold'
+                : 'border-vcx-sub-5 text-vcx-sub-5'
             }`}
           >
             {status === 'open' ? '모집중' : status === 'closed' ? '마감' : status === 'completed' ? '완료' : '취소'}
@@ -99,7 +99,7 @@ export function SessionDetail({
         </div>
 
         {/* Meta info grid */}
-        <dl className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 border border-[#e8e2d9] p-4 sm:p-5 mb-6">
+        <dl className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 border border-vcx-dark/10 p-4 sm:p-5 mb-6">
           <div>
             <dt className="vcx-label text-vcx-sub-4 mb-1">날짜</dt>
             <dd className="text-[13px] font-vcx-sans text-vcx-dark">{dateStr}</dd>
@@ -136,7 +136,7 @@ export function SessionDetail({
         {tags.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {tags.map((tag) => (
-              <span key={tag} className="vcx-label px-3 py-1 bg-[#f0ebe2] border border-[#e8e2d9] text-vcx-sub-3">
+              <span key={tag} className="vcx-label px-3 py-1 bg-vcx-beige border border-vcx-dark/10 text-vcx-sub-3">
                 {tag}
               </span>
             ))}
