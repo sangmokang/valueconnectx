@@ -76,7 +76,7 @@ export function PeerApplyButton({ chatId, chatTitle, chatStatus, hasApplied, app
           </div>
         ) : !isOpen ? (
           <div className="text-center py-3">
-            <span className="vcx-label px-3 py-1.5 border border-[#999] text-vcx-sub-4">
+            <span className="vcx-label px-3 py-1.5 border border-vcx-sub-5 text-vcx-sub-4">
               신청 마감
             </span>
           </div>

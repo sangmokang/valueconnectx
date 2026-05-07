@@ -103,14 +103,14 @@ export function PeerCoffeechatClient({ initialSessions, appliedIds: initialAppli
   }
 
   return (
-    <div className="min-h-screen bg-[#f5f0e8] font-vcx-sans">
+    <div className="min-h-screen bg-vcx-beige-light font-vcx-sans">
       <PeerHero onWriteClick={() => setShowWrite(true)} />
 
       <div className="max-w-[1000px] mx-auto px-6 sm:px-12 pt-10 pb-20">
         {sessions.length === 0 ? (
           <div className="py-24 text-center">
-            <p className="font-vcx-serif text-[20px] text-[#888] mb-2">첫 번째 커피챗 사연을 올려보세요</p>
-            <p className="text-[14px] text-[#aaa] font-vcx-sans">
+            <p className="font-vcx-serif text-[20px] text-vcx-sub-4 mb-2">첫 번째 커피챗 사연을 올려보세요</p>
+            <p className="text-[14px] text-vcx-sub-5 font-vcx-sans">
               사연을 올리면 나와 대화하고 싶은 멤버가 신청합니다
             </p>
           </div>
