@@ -13,11 +13,24 @@ export interface BriefInput {
   applicantCompany: string
   applicantSpecialties: string[]
   applicantMemberTier: 'core' | 'endorsed'
+  briefType?: 'peer' | 'ceo'
 }
 
 export interface GeneratedBrief {
   hostBrief: string
   applicantBrief: string
+}
+
+function filterFeeContent(text: string): string {
+  const feePatterns = [
+    /수수료/g,
+    /25%/g,
+    /fee/gi,
+    /commission/gi,
+    /채용\s*비용/g,
+    /계약금/g,
+  ]
+  return feePatterns.reduce((acc, pattern) => acc.replace(pattern, ''), text)
 }
 
 function buildFallbackBrief(input: BriefInput): GeneratedBrief {
@@ -40,6 +53,70 @@ function buildFallbackBrief(input: BriefInput): GeneratedBrief {
     ].join('\n'),
   }
 }
+
+const CEO_HOST_BRIEF_PROMPT = (input: BriefInput) => `
+당신은 ValueConnect X의 AI 커피챗 코디네이터입니다.
+아래 정보를 바탕으로 CEO/호스트가 커피챗 전에 읽을 **호스트용 브리프**를 한국어로 작성하세요.
+이 미팅의 목적은 이 인재가 우리 조직 문화에 맞는 사람인지 확인하는 비공식 대화입니다.
+
+## 세션 정보
+- 제목: ${input.sessionTitle}
+- 설명: ${input.sessionDescription}
+- 태그: ${input.sessionTags.join(', ')}
+
+## 호스트 정보
+- 이름: ${input.hostName}
+- 직함: ${input.hostTitle}
+- 회사: ${input.hostCompany}
+${input.hostCompanyDesc ? `- 회사 소개: ${input.hostCompanyDesc}` : ''}
+
+## 신청자 정보
+- 이름: ${input.applicantName}
+- 현재 역할: ${input.applicantRole}
+- 소속: ${input.applicantCompany}
+- 전문 분야: ${input.applicantSpecialties.join(', ')}
+- 멤버 등급: ${input.applicantMemberTier === 'core' ? '코어 멤버 (최상위 검증 인재)' : '추천 멤버 (추천 인재)'}
+
+## 작성 지침
+1. **이 멤버를 주목해야 하는 이유** (2-3문장): 세션 주제와 신청자 전문성의 교차점, 그리고 조직 문화 적합성
+2. **컬쳐핏 확인 포인트 3가지**: 대화 중 확인할 구체적인 가치관/일하는 방식 관련 주제
+3. **주의사항 1가지**: 대화 시 유의할 점
+
+300자 이내로 간결하게 작성하세요. 불필요한 소개나 형식 없이 바로 내용으로 시작하세요.
+
+절대 포함 금지: "수수료", "25%", "fee", "commission", "채용 비용", "계약금" 등 금전 관련 문구.
+`
+
+const CEO_APPLICANT_BRIEF_PROMPT = (input: BriefInput) => `
+당신은 ValueConnect X의 AI 커피챗 코디네이터입니다.
+아래 정보를 바탕으로 커피챗 신청자가 미팅 전에 읽을 **신청자용 브리프**를 한국어로 작성하세요.
+이 미팅의 목적은 CEO/창업자와 컬쳐핏을 확인하는 자리입니다.
+
+## 세션 정보
+- 제목: ${input.sessionTitle}
+- 설명: ${input.sessionDescription}
+- 태그: ${input.sessionTags.join(', ')}
+
+## 호스트(CEO/리더) 정보
+- 이름: ${input.hostName}
+- 직함: ${input.hostTitle}
+- 회사: ${input.hostCompany}
+${input.hostCompanyDesc ? `- 회사 소개: ${input.hostCompanyDesc}` : ''}
+
+## 내 프로필
+- 이름: ${input.applicantName}
+- 역할: ${input.applicantRole}
+- 전문 분야: ${input.applicantSpecialties.join(', ')}
+
+## 작성 지침
+1. **이 미팅의 가치** (2-3문장): 이 CEO/회사의 가치관과 조직 문화를 이해할 기회
+2. **컬쳐핏 확인 질문 3가지**: 이 회사의 가치관, 일하는 방식, 조직 문화에 대해 물어볼 핵심 질문
+3. **어필 포인트**: 내 경험 중 이 회사의 문화와 맞는 부분 1가지
+
+300자 이내로 간결하게 작성하세요. 불필요한 소개나 형식 없이 바로 내용으로 시작하세요.
+
+절대 포함 금지: "수수료", "25%", "fee", "commission", "채용 비용", "계약금" 등 금전 관련 문구.
+`
 
 const HOST_BRIEF_PROMPT = (input: BriefInput) => `
 당신은 ValueConnect X의 AI 커피챗 코디네이터입니다.
@@ -69,6 +146,8 @@ ${input.hostCompanyDesc ? `- 회사 소개: ${input.hostCompanyDesc}` : ''}
 3. **주의사항 1가지**: 대화 시 유의할 점
 
 300자 이내로 간결하게 작성하세요. 불필요한 소개나 형식 없이 바로 내용으로 시작하세요.
+
+절대 포함 금지: "수수료", "25%", "fee", "commission", "채용 비용", "계약금" 등 금전 관련 문구.
 `
 
 const APPLICANT_BRIEF_PROMPT = (input: BriefInput) => `
@@ -97,6 +176,8 @@ ${input.hostCompanyDesc ? `- 회사 소개: ${input.hostCompanyDesc}` : ''}
 3. **어필 포인트**: 내 경험 중 이 대화에서 빛날 수 있는 부분 1가지
 
 300자 이내로 간결하게 작성하세요. 불필요한 소개나 형식 없이 바로 내용으로 시작하세요.
+
+절대 포함 금지: "수수료", "25%", "fee", "commission", "채용 비용", "계약금" 등 금전 관련 문구.
 `
 
 export async function generateCoffeechatBrief(
@@ -107,16 +188,19 @@ export async function generateCoffeechatBrief(
   }
 
   try {
+    const hostPrompt = input.briefType === 'ceo' ? CEO_HOST_BRIEF_PROMPT(input) : HOST_BRIEF_PROMPT(input)
+    const applicantPrompt = input.briefType === 'ceo' ? CEO_APPLICANT_BRIEF_PROMPT(input) : APPLICANT_BRIEF_PROMPT(input)
+
     const [hostRes, applicantRes] = await Promise.all([
       claude.messages.create({
         model: CLAUDE_MODEL,
         max_tokens: 512,
-        messages: [{ role: 'user', content: HOST_BRIEF_PROMPT(input) }],
+        messages: [{ role: 'user', content: hostPrompt }],
       }),
       claude.messages.create({
         model: CLAUDE_MODEL,
         max_tokens: 512,
-        messages: [{ role: 'user', content: APPLICANT_BRIEF_PROMPT(input) }],
+        messages: [{ role: 'user', content: applicantPrompt }],
       }),
     ])
 
@@ -127,7 +211,10 @@ export async function generateCoffeechatBrief(
 
     if (!hostBrief || !applicantBrief) return buildFallbackBrief(input)
 
-    return { hostBrief, applicantBrief }
+    return { 
+      hostBrief: filterFeeContent(hostBrief), 
+      applicantBrief: filterFeeContent(applicantBrief) 
+    }
   } catch {
     return buildFallbackBrief(input)
   }
