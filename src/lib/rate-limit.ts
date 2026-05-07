@@ -55,6 +55,22 @@ export const directoryDailyLimiter = redis
     })
   : null
 
+export const commentLimiter = redis
+  ? new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(10, '60 s'),
+      prefix: 'ratelimit:community-comment',
+    })
+  : null
+
+export const reactionLimiter = redis
+  ? new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(30, '60 s'),
+      prefix: 'ratelimit:community-reaction',
+    })
+  : null
+
 export async function rateLimit(
   limiter: Ratelimit | null,
   identifier: string

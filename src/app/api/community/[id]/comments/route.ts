@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { unauthorized, forbidden, notFound, serverError } from '@/lib/api/error'
 import { parseBody } from '@/lib/api/validation'
 import { sendNotification } from '@/lib/notification'
+import { rateLimit, commentLimiter } from '@/lib/rate-limit'
 
 const commentSchema = z.object({
   content: z.string().min(1).max(5000),
@@ -62,6 +63,10 @@ export async function POST(
     const supabase = await createClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError || !user) return unauthorized()
+
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+    const { success: rlOk } = await rateLimit(commentLimiter, `comment:${user.id}:${ip}`)
+    if (!rlOk) return NextResponse.json({ error: '너무 많은 요청입니다. 잠시 후 다시 시도해주세요.' }, { status: 429 })
 
     const { data: member } = await supabase
       .from('vcx_members')

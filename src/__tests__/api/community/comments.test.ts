@@ -25,12 +25,14 @@ vi.mock('@/lib/notification', () => ({
 }))
 
 vi.mock('@/lib/rate-limit', () => ({
-  rateLimit: vi.fn(),
+  rateLimit: vi.fn().mockResolvedValue({ success: true }),
   authLimiter: null,
   apiLimiter: null,
   directoryLimiter: null,
   directoryBurstLimiter: null,
   directoryDailyLimiter: null,
+  commentLimiter: null,
+  reactionLimiter: null,
 }))
 
 import { GET, POST } from '@/app/api/community/[id]/comments/route'

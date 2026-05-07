@@ -5,6 +5,7 @@ import useSWR from 'swr'
 import { HealthStatus } from '@/components/admin/ops/HealthStatus'
 import { SnapshotView } from '@/components/admin/ops/SnapshotView'
 import { RunbookLinks } from '@/components/admin/ops/RunbookLinks'
+import { CommunityReports } from '@/components/admin/ops/CommunityReports'
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
@@ -67,6 +68,7 @@ export default function OpsPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           <HealthStatus health={data.health || data} />
           {data.snapshot && <SnapshotView snapshot={data.snapshot} />}
+          <CommunityReports />
           <RunbookLinks />
         </div>
       )}
