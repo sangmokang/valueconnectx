@@ -8,10 +8,10 @@ interface GoldLineProps {
 export function GoldLine({ label, className }: GoldLineProps) {
   return (
     <div className={cn("flex items-center gap-4", className)}>
-      <div className="w-8 h-px bg-[#c9a84c] shrink-0" />
+      <div className="w-8 h-px bg-vcx-gold shrink-0" />
       {label && (
         <span
-          className="text-[10px] uppercase text-[#c9a84c] font-sans leading-none"
+          className="text-[10px] uppercase text-vcx-gold font-sans leading-none"
           style={{ letterSpacing: "0.22em" }}
         >
           {label}

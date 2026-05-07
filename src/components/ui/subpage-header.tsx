@@ -36,13 +36,13 @@ export function SubpageHeader({
       </nav>
 
       {/* Gold accent divider */}
-      <div className="w-8 h-[2px] bg-[#c9a84c] mb-5" />
+      <div className="w-8 h-[2px] bg-vcx-gold mb-5" />
 
       {/* Category + status row */}
       {(category || status) && (
         <div className="flex items-center gap-2 flex-wrap mb-3">
           {category && (
-            <span className="vcx-label px-2 py-0.5 bg-[#f0ebe2] text-vcx-sub-3">
+            <span className="vcx-label px-2 py-0.5 bg-vcx-beige text-vcx-sub-3">
               {category}
             </span>
           )}
@@ -50,8 +50,8 @@ export function SubpageHeader({
             <span
               className={`vcx-label px-2 py-0.5 border ${
                 status.active
-                  ? 'border-[#c9a84c] text-[#c9a84c]'
-                  : 'border-[#999] text-[#999]'
+                  ? 'border-vcx-gold text-vcx-gold'
+                  : 'border-vcx-sub-5 text-vcx-sub-5'
               }`}
             >
               {status.label}

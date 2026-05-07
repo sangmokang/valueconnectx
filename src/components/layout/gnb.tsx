@@ -13,13 +13,13 @@ export default async function GNB() {
   const currentPath = headersList.get("x-pathname") ?? "/";
 
   return (
-    <nav className="sticky top-0 z-[200] h-[60px] bg-[#f5f0e8] border-b border-black/[0.08] flex items-center justify-between px-4 md:px-12">
+    <nav className="sticky top-0 z-[200] h-[60px] bg-vcx-beige border-b border-black/[0.08] flex items-center justify-between px-4 md:px-12">
       {/* Logo */}
       <Link
         href="/"
-        className="flex min-h-11 items-center no-underline font-[Georgia,serif] font-extrabold text-base tracking-tight text-[#1a1a1a]"
+        className="flex min-h-11 items-center no-underline font-[Georgia,serif] font-extrabold text-base tracking-tight text-vcx-dark"
       >
-        ValueConnect <span className="text-[#c9a84c]">X</span>
+        ValueConnect <span className="text-vcx-gold">X</span>
       </Link>
 
       {/* Desktop Center Nav */}
@@ -36,13 +36,13 @@ export default async function GNB() {
           <>
             <Link
               href="/login"
-              className="inline-flex min-h-9 items-center text-[13.5px] text-[#666] no-underline"
+              className="inline-flex min-h-9 items-center text-[13.5px] text-vcx-sub-3 no-underline"
             >
               로그인
             </Link>
             <Link
               href="/invite/accept"
-              className="inline-flex min-h-9 items-center bg-[#1a1a1a] px-[18px] text-[13px] text-[#f5f0e8] no-underline"
+              className="inline-flex min-h-9 items-center bg-vcx-dark px-[18px] text-[13px] text-vcx-beige no-underline"
             >
               초대 확인하기 →
             </Link>

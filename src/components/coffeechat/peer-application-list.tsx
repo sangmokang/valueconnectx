@@ -41,8 +41,8 @@ const statusLabel: Record<string, string> = {
 }
 
 const statusStyle: Record<string, string> = {
-  pending: 'border-[#ccc] text-vcx-sub-4',
-  accepted: 'border-[#c9a84c] text-[#c9a84c]',
+  pending: 'border-vcx-dark/20 text-vcx-sub-4',
+  accepted: 'border-vcx-gold text-vcx-gold',
   rejected: 'border-red-300 text-red-500',
 }
 
@@ -80,7 +80,7 @@ export function PeerApplicationList({ chatId, initialApplications }: PeerApplica
 
   if (applications.length === 0) {
     return (
-      <div className="border border-[#e8e2d9] p-8 text-center">
+      <div className="border border-vcx-dark/10 p-8 text-center">
         <p className="text-[14px] text-vcx-sub-4 font-vcx-sans">아직 신청자가 없습니다</p>
       </div>
     )
@@ -98,19 +98,19 @@ export function PeerApplicationList({ chatId, initialApplications }: PeerApplica
             : null
 
         return (
-          <div key={app.id} className="border border-[#e8e2d9] bg-white p-5">
+          <div key={app.id} className="border border-vcx-dark/10 bg-white p-5">
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-start gap-4 flex-1 min-w-0">
               {/* Avatar */}
-              <div className="w-10 h-10 bg-[#1a1a1a] flex items-center justify-center flex-shrink-0">
-                <span className="font-vcx-serif text-[#f0ebe2] text-[14px]">
+              <div className="w-10 h-10 bg-vcx-dark flex items-center justify-center flex-shrink-0">
+                <span className="font-vcx-serif text-vcx-beige text-[14px]">
                   {app.applicant.name.charAt(0)}
                 </span>
               </div>
               <div className="min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                   <p className="font-vcx-serif text-[15px] text-vcx-dark">{app.applicant.name}</p>
-                  <span className="vcx-label px-1.5 py-0.5 bg-[#f0ebe2] text-vcx-sub-3">
+                  <span className="vcx-label px-1.5 py-0.5 bg-vcx-beige text-vcx-sub-3">
                     {tierLabel[app.applicant.member_tier] ?? app.applicant.member_tier}
                   </span>
                   <span className={`vcx-label px-1.5 py-0.5 border ${statusStyle[app.status]}`}>
@@ -122,8 +122,8 @@ export function PeerApplicationList({ chatId, initialApplications }: PeerApplica
                 </p>
                 {acceptedContactEmail && (
                   <div className="mt-2 flex items-center gap-2 text-sm">
-                    <span className="text-[#c9a84c]">📧</span>
-                    <a href={`mailto:${acceptedContactEmail}`} className="text-[#1a1a1a] underline font-vcx-sans text-[13px]">
+                    <span className="text-vcx-gold">📧</span>
+                    <a href={`mailto:${acceptedContactEmail}`} className="text-vcx-dark underline font-vcx-sans text-[13px]">
                       {acceptedContactEmail}
                     </a>
                   </div>

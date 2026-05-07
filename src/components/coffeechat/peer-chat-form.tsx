@@ -71,8 +71,8 @@ export function PeerChatForm({ initialData, chatId }: PeerChatFormProps) {
               onClick={() => setCategory(opt.value as typeof category)}
               className={`vcx-label px-4 py-2 border transition-colors ${
                 category === opt.value
-                  ? 'border-[#c9a84c] text-[#c9a84c] bg-[#fdf8f0]'
-                  : 'border-[#ccc] text-vcx-sub-4 hover:border-[#1a1a1a]'
+                  ? 'border-vcx-gold text-vcx-gold bg-vcx-off-white'
+                  : 'border-vcx-dark/20 text-vcx-sub-4 hover:border-vcx-dark'
               }`}
             >
               {opt.label}
@@ -94,7 +94,7 @@ export function PeerChatForm({ initialData, chatId }: PeerChatFormProps) {
           placeholder="커피챗 제목을 입력해주세요"
           maxLength={100}
           required
-          className="w-full border border-[#1a1a1a] bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark placeholder-[#bbb] focus:outline-none focus:border-[#c9a84c]"
+          className="w-full border border-vcx-dark bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark placeholder-[#bbb] focus:outline-none focus:border-vcx-gold"
           disabled={loading}
         />
         <p className="text-[11px] text-vcx-sub-5 text-right mt-1">{title.length}/100</p>
@@ -113,14 +113,14 @@ export function PeerChatForm({ initialData, chatId }: PeerChatFormProps) {
           maxLength={3000}
           rows={8}
           required
-          className="w-full border border-[#1a1a1a] bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark placeholder-[#bbb] focus:outline-none focus:border-[#c9a84c] resize-none leading-relaxed"
+          className="w-full border border-vcx-dark bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark placeholder-[#bbb] focus:outline-none focus:border-vcx-gold resize-none leading-relaxed"
           disabled={loading}
         />
         <p className="text-[11px] text-vcx-sub-5 text-right mt-1">{content.length}/3000</p>
       </div>
 
       {/* Notice */}
-      <div className="bg-[#f7f3ed] border border-[#e8e2d9] p-4">
+      <div className="bg-vcx-beige-light border border-vcx-dark/10 p-4">
         <p className="text-[12px] font-vcx-sans text-vcx-sub-3">
           신청자 목록은 작성자에게만 공개됩니다. 다른 멤버들은 누가 신청했는지 볼 수 없습니다.
         </p>

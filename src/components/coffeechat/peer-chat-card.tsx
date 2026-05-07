@@ -48,18 +48,18 @@ export function PeerChatCard({
 
   return (
     <Link href={`/coffeechat/${id}`} className="block group">
-      <div className="bg-white border border-[#1a1a1a] p-6 hover:bg-[#f7f3ed] transition-colors">
+      <div className="bg-white border border-vcx-dark p-6 hover:bg-vcx-beige-light transition-colors">
         {/* Header */}
         <div className="flex items-start justify-between gap-4 mb-4">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="vcx-label px-2 py-1 bg-[#f0ebe2] text-vcx-sub-3">
+            <span className="vcx-label px-2 py-1 bg-vcx-beige text-vcx-sub-3">
               {categoryLabel[category]}
             </span>
             <span
               className={`vcx-label px-2 py-1 border ${
                 status === 'open'
-                  ? 'border-[#c9a84c] text-[#c9a84c]'
-                  : 'border-[#999] text-[#999]'
+                  ? 'border-vcx-gold text-vcx-gold'
+                  : 'border-vcx-sub-5 text-vcx-sub-5'
               }`}
             >
               {statusLabel[status]}
@@ -69,7 +69,7 @@ export function PeerChatCard({
         </div>
 
         {/* Title */}
-        <h3 className="font-vcx-serif text-[18px] font-normal text-vcx-dark mb-2 leading-snug group-hover:text-[#c9a84c] transition-colors">
+        <h3 className="font-vcx-serif text-[18px] font-normal text-vcx-dark mb-2 leading-snug group-hover:text-vcx-gold transition-colors">
           {title}
         </h3>
 

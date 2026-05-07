@@ -50,7 +50,7 @@ export function ApplyModal({ sessionId, sessionTitle, onClose, onSuccess }: Appl
 
       {/* Modal — bottom sheet on mobile, centered on sm+ */}
       <div
-        className="fixed z-50 bg-white border border-[#1a1a1a]
+        className="fixed z-50 bg-white border border-vcx-dark
           bottom-0 inset-x-0
           sm:inset-0 sm:m-auto sm:max-w-lg sm:h-fit"
         role="dialog"
@@ -72,7 +72,7 @@ export function ApplyModal({ sessionId, sessionTitle, onClose, onSuccess }: Appl
             </button>
           </div>
 
-          <div className="bg-[#f7f3ed] border border-[#e8e2d9] p-4 mb-5">
+          <div className="bg-vcx-beige-light border border-vcx-dark/10 p-4 mb-5">
             <p className="text-[12px] font-vcx-sans text-vcx-sub-3">
               이 신청은 다른 멤버에게 공개되지 않습니다. 호스트만 신청 내용을 확인할 수 있습니다.
             </p>
@@ -89,7 +89,7 @@ export function ApplyModal({ sessionId, sessionTitle, onClose, onSuccess }: Appl
                 placeholder="간단한 자기소개나 신청 이유를 적어주세요"
                 maxLength={1000}
                 rows={3}
-                className="w-full border border-[#1a1a1a] bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark placeholder-[#bbb] focus:outline-none focus:border-[#c9a84c] resize-none"
+                className="w-full border border-vcx-dark bg-white px-4 py-3 text-[14px] font-vcx-sans text-vcx-dark placeholder-[#bbb] focus:outline-none focus:border-vcx-gold resize-none"
                 disabled={loading}
               />
               <p className="text-[11px] text-vcx-sub-5 text-right mt-1">{message.length}/1000</p>

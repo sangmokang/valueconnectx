@@ -93,16 +93,16 @@ export function PositionForm({ initialData, positionId }: PositionFormProps) {
   }
 
   const inputCls =
-    'w-full px-3 py-2 text-sm font-vcx-sans bg-[#f7f3ed] border border-[#e0d9ce] text-[#1a1a1a] outline-none focus:border-[#c9a84c]'
-  const labelCls = 'block text-xs font-vcx-sans text-[#666666] mb-1'
+    'w-full px-3 py-2 text-sm font-vcx-sans bg-vcx-beige-light border border-vcx-dark/10 text-vcx-dark outline-none focus:border-vcx-gold'
+  const labelCls = 'block text-xs font-vcx-sans text-vcx-sub-3 mb-1'
 
   const set = (key: keyof PositionFormData) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => setForm((f) => ({ ...f, [key]: e.target.value }))
 
   return (
-    <div className="bg-white border border-[#e0d9ce] p-6">
-      <h3 className="font-vcx-serif font-bold text-[#1a1a1a] text-lg mb-6">
+    <div className="bg-white border border-vcx-dark/10 p-6">
+      <h3 className="font-vcx-serif font-bold text-vcx-dark text-lg mb-6">
         {isEdit ? '포지션 수정' : '포지션 등록'}
       </h3>
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -241,7 +241,7 @@ export function PositionForm({ initialData, positionId }: PositionFormProps) {
           <button
             type="submit"
             disabled={submitting}
-            className="px-4 py-2 text-sm font-vcx-sans bg-[#1a1a1a] text-[#c9a84c] hover:bg-[#333333] transition-colors disabled:opacity-50"
+            className="px-4 py-2 text-sm font-vcx-sans bg-vcx-dark text-vcx-gold hover:bg-[#333333] transition-colors disabled:opacity-50"
             style={{ borderRadius: 0 }}
           >
             {submitting ? '저장 중...' : isEdit ? '수정' : '등록'}
@@ -249,7 +249,7 @@ export function PositionForm({ initialData, positionId }: PositionFormProps) {
           <button
             type="button"
             onClick={() => router.push('/admin/positions')}
-            className="px-4 py-2 text-sm font-vcx-sans text-[#666666] border border-[#e0d9ce] hover:border-[#888888] transition-colors"
+            className="px-4 py-2 text-sm font-vcx-sans text-vcx-sub-3 border border-vcx-dark/10 hover:border-vcx-sub-4 transition-colors"
             style={{ borderRadius: 0 }}
           >
             취소

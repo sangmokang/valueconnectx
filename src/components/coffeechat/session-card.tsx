@@ -39,7 +39,7 @@ export function SessionCard({
 
   return (
     <Link href={`/ceo-coffeechat/${id}`} className="block group">
-      <div className="bg-white border border-[#1a1a1a] p-4 sm:p-6 hover:bg-[#f7f3ed] transition-colors">
+      <div className="bg-white border border-vcx-dark p-4 sm:p-6 hover:bg-vcx-beige-light transition-colors">
         {/* Header */}
         <div className="flex items-start justify-between gap-4 mb-4 flex-wrap">
           <div>
@@ -50,20 +50,20 @@ export function SessionCard({
             <span
               className={`vcx-label px-2 py-1 border ${
                 status === 'open'
-                  ? 'border-[#c9a84c] text-[#c9a84c]'
-                  : 'border-[#999] text-[#999]'
+                  ? 'border-vcx-gold text-vcx-gold'
+                  : 'border-vcx-sub-5 text-vcx-sub-5'
               }`}
             >
               {status === 'open' ? '모집중' : status === 'closed' ? '마감' : status === 'completed' ? '완료' : '취소'}
             </span>
-            <span className="vcx-label text-vcx-sub-4 border border-[#ccc] px-2 py-1">
+            <span className="vcx-label text-vcx-sub-4 border border-vcx-dark/20 px-2 py-1">
               {locationLabel[locationType]}
             </span>
           </div>
         </div>
 
         {/* Title */}
-        <h3 className="font-vcx-serif text-[18px] font-normal text-vcx-dark mb-3 leading-snug group-hover:text-[#c9a84c] transition-colors">
+        <h3 className="font-vcx-serif text-[18px] font-normal text-vcx-dark mb-3 leading-snug group-hover:text-vcx-gold transition-colors">
           {title}
         </h3>
 
