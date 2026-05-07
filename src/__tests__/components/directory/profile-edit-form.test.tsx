@@ -32,10 +32,12 @@ describe('ProfileEditForm', () => {
     expect(screen.getByPlaceholderText('자신을 소개해 주세요 (최대 1000자)')).toBeInTheDocument()
   })
 
-  it('renders interest fields input', () => {
+  it('renders PROFESSIONAL_FIELDS preset chips in interest fields section', () => {
     render(<ProfileEditForm initialData={defaultInitialData} />)
-    expect(screen.getByPlaceholderText('예: 제품 전략, 엔지니어링, B2B 소프트웨어 (쉼표로 구분)')).toBeInTheDocument()
     expect(screen.getByText('관심 분야')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '엔지니어링 빠른 선택' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '프로덕트 빠른 선택' })).toBeInTheDocument()
+    expect(screen.getByPlaceholderText('예: 엔지니어링, 프로덕트')).toBeInTheDocument()
   })
 
   it('renders industry dropdown', () => {

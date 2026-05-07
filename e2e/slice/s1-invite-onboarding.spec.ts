@@ -299,6 +299,38 @@ test.describe("Phase 1 Slice — S1: 초대 수락 + 로그인 + 온보딩", () 
     }
   });
 
+  // ── AC-V2: 전문 분야 프리셋 칩 렌더 + 선택 ────────────────────────────────────
+
+  test("AC-V2: /onboarding 전문 분야 프리셋 칩이 표시되고 선택 시 태그로 추가된다", async ({
+    page,
+  }) => {
+    test.skip(
+      !(await hasMembersTable()),
+      "E2E Supabase admin 권한이 없어 건너뜁니다."
+    );
+
+    const reset = await resetTestMemberToPartialOnboarding();
+    test.skip(!reset, "테스트 멤버를 초기화할 수 없어 건너뜁니다.");
+
+    try {
+      await loginAs(page, TEST_USER);
+      await page.goto("/onboarding");
+      await expect(
+        page.getByRole("heading", { name: "당신의 이야기를 들려주세요" })
+      ).toBeVisible({ timeout: 15000 });
+
+      // 프리셋 칩 "엔지니어링" 이 존재하는지 확인
+      const chip = page.getByRole("button", { name: "엔지니어링 빠른 선택" });
+      await expect(chip).toBeVisible();
+
+      // 클릭 → aria-pressed="true" (선택됨)
+      await chip.click();
+      await expect(chip).toHaveAttribute("aria-pressed", "true");
+    } finally {
+      await restoreTestMemberAfterOnboarding();
+    }
+  });
+
   // ── 회귀 방지: GNB 가 /onboarding 에서 절대 노출되지 않는다 (D-0001) ───────
 
   test("회귀: /onboarding 에서 GNB 가 0회 렌더된다 (D-0001)", async ({

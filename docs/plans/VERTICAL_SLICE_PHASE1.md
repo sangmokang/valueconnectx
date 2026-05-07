@@ -39,7 +39,7 @@
 
 ### S2 — 큐레이션 피드 MVP
 - [x] `supabase/migrations/022_vcx_feed_items.sql` — `vcx_feed_items` 테이블 (company, tags, url, published_at, curator_note)
-- [ ] 관심 분야 태깅 UI (온보딩에서 수집, 프로필에서 편집)
+- [x] 관심 분야 태깅 UI (온보딩에서 수집, 프로필에서 편집)
 - [x] `/api/feed?limit=&tags=` Route Handler + Zod 검증
 - [x] `/feed` 페이지: 관심 태그 기반 필터링된 10건 + 매주 수동 업데이트
 - [ ] Stibee 뉴스레터 1회 발송 + 오픈율/클릭율 측정 (prd6.0 §1.4 Week 1~4)

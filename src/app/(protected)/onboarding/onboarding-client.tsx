@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import {
   INTEREST_TAG_LIMIT,
+  PROFESSIONAL_FIELDS,
   normalizeInterestTag,
 } from '@/constants/profile'
 
@@ -394,9 +395,32 @@ export default function OnboardingPage() {
               </p>
             </div>
 
-            <p className="font-vcx-sans text-[13px] text-vcx-sub-4 mb-4 leading-relaxed">
-              전문 분야를 직접 입력하세요. 엔터 또는 쉼표로 태그를 추가합니다.
+            <p className="font-vcx-sans text-[13px] text-vcx-sub-4 mb-3 leading-relaxed">
+              빠른 선택 또는 직접 입력하세요. 엔터 또는 쉼표로 태그를 추가합니다.
             </p>
+
+            {/* 프리셋 칩 — PROFESSIONAL_FIELDS 빠른 선택 */}
+            <div className="flex flex-wrap gap-1.5 mb-4">
+              {PROFESSIONAL_FIELDS.map((field) => {
+                const isSelected = form.professional_fields.includes(field)
+                return (
+                  <button
+                    key={field}
+                    type="button"
+                    aria-label={`${field} 빠른 선택`}
+                    aria-pressed={isSelected}
+                    onClick={() => isSelected ? removeField(field) : addField(field)}
+                    className={`px-3 py-1.5 font-vcx-sans text-[12px] border transition-colors ${
+                      isSelected
+                        ? 'border-vcx-gold text-vcx-gold bg-[#fdf9f2]'
+                        : 'border-vcx-beige-dark text-vcx-sub-4 bg-white hover:border-vcx-gold hover:text-vcx-gold'
+                    }`}
+                  >
+                    {field}
+                  </button>
+                )
+              })}
+            </div>
 
             {/* 추가된 태그 목록 */}
             {form.professional_fields.length > 0 && (

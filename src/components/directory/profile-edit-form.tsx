@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, type KeyboardEvent } from 'react'
 import { trackEvent } from '@/lib/analytics'
 import { linkedinUrlSchema } from '@/lib/validation/linkedin'
 import {
   INDUSTRIES,
   INTEREST_TAG_LIMIT,
-  normalizeInterestTags,
+  PROFESSIONAL_FIELDS,
+  normalizeInterestTag,
 } from '@/constants/profile'
 
 interface ProfileEditFormProps {
@@ -27,7 +28,8 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
   const [location, setLocation] = useState(initialData.location ?? '')
   const [isOpenToChat, setIsOpenToChat] = useState(initialData.is_open_to_chat)
   const [profileVisibility, setProfileVisibility] = useState(initialData.profile_visibility)
-  const [fieldsInput, setFieldsInput] = useState(initialData.professional_fields.join(', '))
+  const [fields, setFields] = useState<string[]>(initialData.professional_fields)
+  const [tagInput, setTagInput] = useState('')
   const [linkedinUrl, setLinkedinUrl] = useState(initialData.linkedin_url ?? '')
   const [linkedinError, setLinkedinError] = useState<string | null>(null)
   const [summaryLoading, setSummaryLoading] = useState(false)
@@ -45,6 +47,27 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
     } catch {
       // 프로필 저장은 성공 상태로 유지하고, 다음 저장/피드 진입 시 다시 동기화한다.
     }
+  }
+
+  function addField(rawField: string) {
+    const field = normalizeInterestTag(rawField)
+    if (!field) return
+    setFields((prev) =>
+      prev.includes(field) || prev.length >= INTEREST_TAG_LIMIT ? prev : [...prev, field]
+    )
+  }
+  function removeField(field: string) {
+    setFields((prev) => prev.filter((f) => f !== field))
+  }
+  function handleTagKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault()
+      addField(tagInput)
+      setTagInput('')
+    }
+  }
+  function handleTagInputBlur() {
+    if (tagInput.trim()) { addField(tagInput); setTagInput('') }
   }
 
   async function handleGenerateSummary() {
@@ -80,7 +103,7 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
       return
     }
 
-    const professional_fields = normalizeInterestTags(fieldsInput.split(','))
+    const professional_fields = fields
 
     try {
       const res = await fetch('/api/directory/me', {
@@ -168,16 +191,72 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
       {/* Professional fields */}
       <div>
         <label className={labelClass}>관심 분야</label>
-        <input
-          type="text"
-          value={fieldsInput}
-          onChange={(e) => setFieldsInput(e.target.value)}
-          placeholder="예: 제품 전략, 엔지니어링, B2B 소프트웨어 (쉼표로 구분)"
-          className={inputClass}
-          style={{ borderRadius: 0 }}
-        />
+        {/* 프리셋 칩 */}
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          {PROFESSIONAL_FIELDS.map((field) => {
+            const isSelected = fields.includes(field)
+            return (
+              <button
+                key={field}
+                type="button"
+                aria-label={`${field} 빠른 선택`}
+                aria-pressed={isSelected}
+                onClick={() => isSelected ? removeField(field) : addField(field)}
+                className={`px-3 py-1.5 font-vcx-sans text-[12px] border transition-colors ${
+                  isSelected
+                    ? 'border-vcx-gold text-vcx-gold bg-[#fdf9f2]'
+                    : 'border-vcx-beige-dark text-vcx-sub-4 bg-white hover:border-vcx-gold hover:text-vcx-gold'
+                }`}
+              >
+                {field}
+              </button>
+            )
+          })}
+        </div>
+        {/* 선택된 태그 */}
+        {fields.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mb-2">
+            {fields.map((field) => (
+              <span
+                key={field}
+                className="inline-flex items-center gap-1 px-3 py-1.5 font-vcx-sans text-[12px] border border-vcx-gold bg-[#fdf9f2] text-vcx-gold"
+              >
+                {field}
+                <button
+                  type="button"
+                  onClick={() => removeField(field)}
+                  aria-label={`${field} 태그 삭제`}
+                  className="text-[13px] leading-none hover:text-vcx-dark"
+                >×</button>
+              </span>
+            ))}
+          </div>
+        )}
+        {/* 자유 입력 */}
+        {fields.length < INTEREST_TAG_LIMIT && (
+          <input
+            type="text"
+            value={tagInput}
+            onChange={(e) => {
+              const val = e.target.value
+              if (val.includes(',')) {
+                val.split(',').forEach((p) => addField(p))
+                setTagInput('')
+              } else {
+                setTagInput(val)
+              }
+            }}
+            onKeyDown={handleTagKeyDown}
+            onBlur={handleTagInputBlur}
+            placeholder="예: 엔지니어링, 프로덕트"
+            className={inputClass}
+            style={{ borderRadius: 0 }}
+          />
+        )}
         <p className="text-xs font-vcx-sans text-vcx-sub-5 mt-1">
-          쉼표(,)로 구분하여 최대 {INTEREST_TAG_LIMIT}개까지 입력하세요. 저장하면 피드 필터와 함께 동기화됩니다.
+          {fields.length > 0
+            ? `${fields.length}개 입력됨 · 최대 ${INTEREST_TAG_LIMIT}개`
+            : `최대 ${INTEREST_TAG_LIMIT}개까지 입력 가능합니다`}
         </p>
       </div>
 
