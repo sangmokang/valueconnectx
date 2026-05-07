@@ -16,9 +16,9 @@ const STATUS_LABELS: Record<string, string> = {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  pending: '#c9a84c',
+  pending: 'var(--color-vcx-gold)',
   reviewed: '#888888',
-  action_taken: '#1a1a1a',
+  action_taken: 'var(--color-vcx-dark)',
 }
 
 export default async function AdminReportsPage() {
@@ -48,7 +48,7 @@ export default async function AdminReportsPage() {
     <ProtectedPageWrapper currentPath="/admin/reports">
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '80px 40px 60px' }}>
         <div style={{ marginBottom: '32px' }}>
-          <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '24px', fontWeight: 800, color: '#1a1a1a', marginBottom: '8px' }}>
+          <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '24px', fontWeight: 800, color: 'var(--color-vcx-dark)', marginBottom: '8px' }}>
             신고 관리
           </h1>
           <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#888888' }}>
@@ -70,7 +70,7 @@ export default async function AdminReportsPage() {
                   key={report.id}
                   style={{
                     background: '#ffffff',
-                    border: `1px solid ${report.status === 'pending' ? '#c9a84c' : '#e0d9ce'}`,
+                    border: `1px solid ${report.status === 'pending' ? 'var(--color-vcx-gold)' : 'rgba(26,26,26,0.1)'}`,
                     padding: '20px 24px',
                   }}
                 >
@@ -82,7 +82,7 @@ export default async function AdminReportsPage() {
                         padding: '2px 8px',
                         background: report.status === 'pending' ? '#fff8e6' : '#f5f0eb',
                         color: STATUS_COLORS[report.status] ?? '#888888',
-                        border: `1px solid ${STATUS_COLORS[report.status] ?? '#e0d9ce'}`,
+                        border: `1px solid ${STATUS_COLORS[report.status] ?? 'rgba(26,26,26,0.1)'}`,
                       }}
                     >
                       {STATUS_LABELS[report.status] ?? report.status}
@@ -96,28 +96,28 @@ export default async function AdminReportsPage() {
                     <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#555555', marginBottom: '4px' }}>
                       신고 사유
                     </p>
-                    <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: '#1a1a1a', lineHeight: '1.5' }}>
+                    <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: 'var(--color-vcx-dark)', lineHeight: '1.5' }}>
                       {report.reason}
                     </p>
                   </div>
 
                   {post && (
-                    <div style={{ marginBottom: '8px', padding: '10px 12px', background: '#f5f0eb', border: '1px solid #e0d9ce' }}>
+                    <div style={{ marginBottom: '8px', padding: '10px 12px', background: '#f5f0eb', border: '1px solid rgba(26,26,26,0.1)' }}>
                       <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '11px', color: '#888888', marginBottom: '4px' }}>
                         신고된 게시글 {post.status !== 'active' && `(${post.status})`}
                       </p>
-                      <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#1a1a1a' }}>
+                      <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'var(--color-vcx-dark)' }}>
                         {post.title}
                       </p>
                     </div>
                   )}
 
                   {comment && (
-                    <div style={{ marginBottom: '8px', padding: '10px 12px', background: '#f5f0eb', border: '1px solid #e0d9ce' }}>
+                    <div style={{ marginBottom: '8px', padding: '10px 12px', background: '#f5f0eb', border: '1px solid rgba(26,26,26,0.1)' }}>
                       <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '11px', color: '#888888', marginBottom: '4px' }}>
                         신고된 댓글 {comment.status !== 'active' && `(${comment.status})`}
                       </p>
-                      <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#1a1a1a', lineHeight: '1.5' }}>
+                      <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'var(--color-vcx-dark)', lineHeight: '1.5' }}>
                         {comment.content}
                       </p>
                     </div>

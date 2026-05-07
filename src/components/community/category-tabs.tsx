@@ -48,9 +48,9 @@ export function CategoryTabs({ current }: { current?: CategoryKey }) {
               fontFamily: 'system-ui, sans-serif',
               textDecoration: 'none',
               border: '1px solid',
-              borderColor: isActive ? '#1a1a1a' : '#e0d9ce',
-              background: isActive ? '#1a1a1a' : 'transparent',
-              color: isActive ? '#c9a84c' : '#555555',
+              borderColor: isActive ? 'var(--color-vcx-dark)' : 'rgba(26,26,26,0.1)',
+              background: isActive ? 'var(--color-vcx-dark)' : 'transparent',
+              color: isActive ? 'var(--color-vcx-gold)' : '#555555',
               transition: 'all 0.15s',
               whiteSpace: 'nowrap',
             }}

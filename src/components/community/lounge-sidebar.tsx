@@ -64,7 +64,7 @@ export function LoungeSidebar({ active, counts, onSelect }: LoungeSidebarProps) 
               width: '100%',
               padding: '10px 16px',
               cursor: 'pointer',
-              borderLeft: isActive ? '2px solid #c9a84c' : '2px solid transparent',
+              borderLeft: isActive ? '2px solid var(--color-vcx-gold)' : '2px solid transparent',
               background: isActive ? '#faf8f4' : 'transparent',
               borderTop: 'none',
               borderRight: 'none',
@@ -75,7 +75,7 @@ export function LoungeSidebar({ active, counts, onSelect }: LoungeSidebarProps) 
             <span
               style={{
                 fontSize: '13.5px',
-                color: isActive ? '#1a1a1a' : '#666',
+                color: isActive ? 'var(--color-vcx-dark)' : '#666',
                 fontWeight: isActive ? 700 : 400,
                 display: 'flex',
                 alignItems: 'center',

@@ -67,7 +67,7 @@ export function CeoCoffeechatClient() {
   )
 
   return (
-    <div style={{ background: '#f5f0e8', minHeight: '100vh', fontFamily: 'system-ui, sans-serif' }}>
+    <div style={{ background: 'var(--color-vcx-beige)', minHeight: '100vh', fontFamily: 'system-ui, sans-serif' }}>
       <CeoHero
         sessionCount={sessions.length}
         totalApplicants={totalApplicants}
@@ -95,7 +95,7 @@ export function CeoCoffeechatClient() {
               style={{
                 fontFamily: 'Georgia, serif',
                 fontSize: 20,
-                color: '#333',
+                color: 'var(--color-vcx-card)',
                 margin: '0 0 8px',
               }}
             >
@@ -105,7 +105,7 @@ export function CeoCoffeechatClient() {
               style={{
                 fontFamily: 'system-ui, sans-serif',
                 fontSize: 14,
-                color: '#888',
+                color: 'var(--color-vcx-sub-4)',
                 margin: 0,
               }}
             >
@@ -138,7 +138,7 @@ export function CeoCoffeechatClient() {
               style={{
                 fontFamily: 'Georgia, serif',
                 fontSize: 20,
-                color: '#888',
+                color: 'var(--color-vcx-sub-4)',
                 margin: '0 0 8px',
               }}
             >

@@ -64,7 +64,7 @@ export function LoungeWriteModal({ onClose, onSubmit }: LoungeWriteModalProps) {
         <div
           style={{
             height: '3px',
-            background: 'linear-gradient(90deg, #c9a84c, #a07c2a)',
+            background: `linear-gradient(90deg, var(--color-vcx-gold), #a07c2a)`,
           }}
         />
 
@@ -93,7 +93,7 @@ export function LoungeWriteModal({ onClose, onSubmit }: LoungeWriteModalProps) {
               fontWeight: 800,
               margin: '0 0 24px',
               fontFamily: 'Georgia, serif',
-              color: '#1a1a1a',
+              color: 'var(--color-vcx-dark)',
             }}
           >
             라운지에 글 쓰기
@@ -107,7 +107,7 @@ export function LoungeWriteModal({ onClose, onSubmit }: LoungeWriteModalProps) {
               gap: '10px',
               marginBottom: '20px',
               padding: '12px 16px',
-              background: '#f5f0e8',
+              background: 'var(--color-vcx-beige)',
             }}
           >
             <button
@@ -115,7 +115,7 @@ export function LoungeWriteModal({ onClose, onSubmit }: LoungeWriteModalProps) {
               style={{
                 width: '40px',
                 height: '22px',
-                background: form.anon ? '#1a1a1a' : '#ddd',
+                background: form.anon ? 'var(--color-vcx-dark)' : '#ddd',
                 borderRadius: 0,
                 border: 'none',
                 cursor: 'pointer',
@@ -139,7 +139,7 @@ export function LoungeWriteModal({ onClose, onSubmit }: LoungeWriteModalProps) {
             <span
               style={{
                 fontSize: '13.5px',
-                color: '#1a1a1a',
+                color: 'var(--color-vcx-dark)',
                 fontWeight: 600,
                 fontFamily: 'system-ui, sans-serif',
               }}
@@ -182,7 +182,7 @@ export function LoungeWriteModal({ onClose, onSubmit }: LoungeWriteModalProps) {
                     style={{
                       padding: '6px 13px',
                       fontSize: '13px',
-                      border: `1.5px solid ${isActive ? '#c9a84c' : 'rgba(0,0,0,0.1)'}`,
+                      border: `1.5px solid ${isActive ? 'var(--color-vcx-gold)' : 'rgba(0,0,0,0.1)'}`,
                       background: isActive ? 'rgba(201,168,76,0.1)' : 'transparent',
                       color: isActive ? '#a07c2a' : '#666',
                       cursor: 'pointer',
@@ -284,7 +284,7 @@ export function LoungeWriteModal({ onClose, onSubmit }: LoungeWriteModalProps) {
               style={{
                 flex: 2,
                 padding: '12px',
-                background: '#1a1a1a',
+                background: 'var(--color-vcx-dark)',
                 color: '#f5f0e8',
                 border: 'none',
                 fontSize: '14px',

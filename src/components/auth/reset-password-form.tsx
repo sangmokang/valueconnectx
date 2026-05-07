@@ -24,20 +24,20 @@ export function ResetPasswordForm() {
     } catch { setError('오류가 발생했습니다'); setLoading(false) }
   }
 
-  const inputStyle = { width: '100%', padding: '14px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: '#1a1a1a', background: '#f7f3ed', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 0, outline: 'none', boxSizing: 'border-box' as const }
+  const inputStyle = { width: '100%', padding: '14px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: 'var(--color-vcx-dark)', background: 'var(--color-vcx-beige-light)', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 0, outline: 'none', boxSizing: 'border-box' as const }
 
   return (
     <form onSubmit={handleSubmit}>
       {error && <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', padding: '12px 16px', marginBottom: '16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#EF4444', borderRadius: 0 }}>{error}</div>}
       <div style={{ marginBottom: '16px' }}>
-        <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888', marginBottom: '8px' }}>새 비밀번호</label>
+        <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888888', marginBottom: '8px' }}>새 비밀번호</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required minLength={8} style={inputStyle} />
       </div>
       <div style={{ marginBottom: '24px' }}>
-        <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888', marginBottom: '8px' }}>비밀번호 확인</label>
+        <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888888', marginBottom: '8px' }}>비밀번호 확인</label>
         <input type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} placeholder="••••••••" required minLength={8} style={inputStyle} />
       </div>
-      <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', fontWeight: 600, color: '#f0ebe2', background: loading ? '#444' : '#1a1a1a', border: 'none', borderRadius: 0, cursor: loading ? 'not-allowed' : 'pointer' }}>
+      <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', fontWeight: 600, color: 'var(--color-vcx-beige)', background: loading ? '#444444' : 'var(--color-vcx-dark)', border: 'none', borderRadius: 0, cursor: loading ? 'not-allowed' : 'pointer' }}>
         {loading ? '변경 중...' : '비밀번호 변경하기'}
       </button>
     </form>

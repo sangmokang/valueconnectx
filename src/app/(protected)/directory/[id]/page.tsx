@@ -28,7 +28,7 @@ export default async function MemberDetailPage({
       <div className="max-w-6xl mx-auto px-4 py-8">
         <Link
           href="/directory"
-          className="mb-6 inline-flex min-h-9 items-center gap-1.5 text-xs font-vcx-sans text-[#888888] transition-colors hover:text-[#1a1a1a]"
+          className="mb-6 inline-flex min-h-9 items-center gap-1.5 text-xs font-vcx-sans text-vcx-sub-4 transition-colors hover:text-vcx-dark"
         >
           <span>←</span>
           <span>멤버 디렉토리로 돌아가기</span>

@@ -32,7 +32,7 @@ export function RecommendationsSection() {
           {Array.from({ length: 4 }).map((_, i) => (
             <div
               key={i}
-              className="flex-shrink-0 w-[220px] sm:w-[240px] h-[140px] bg-[#e8e2d9] animate-pulse"
+              className="flex-shrink-0 w-[220px] sm:w-[240px] h-[140px] bg-vcx-beige animate-pulse"
             />
           ))}
         </div>

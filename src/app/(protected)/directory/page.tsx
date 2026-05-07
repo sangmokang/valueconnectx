@@ -42,12 +42,12 @@ async function DirectoryContent({ searchParams }: { searchParams: SearchParams }
   return (
     <>
       <div className="flex items-center justify-between mb-2">
-        <p className="text-xs font-vcx-sans text-[#888888]">
-          총 <span className="text-[#1a1a1a] font-medium">{total}</span>명의 멤버
+        <p className="text-xs font-vcx-sans text-vcx-sub-4">
+          총 <span className="text-vcx-dark font-medium">{total}</span>명의 멤버
         </p>
         <Link
           href="/directory/me"
-          className="inline-flex min-h-9 items-center px-3 py-1.5 text-xs font-vcx-sans bg-[#1a1a1a] text-[#c9a84c] hover:bg-[#333333] transition-colors"
+          className="inline-flex min-h-9 items-center px-3 py-1.5 text-xs font-vcx-sans bg-vcx-dark text-vcx-gold hover:bg-vcx-card transition-colors"
           style={{ borderRadius: 0 }}
         >
           내 프로필 수정
@@ -62,7 +62,7 @@ async function DirectoryContent({ searchParams }: { searchParams: SearchParams }
         </div>
       ) : (
         <div className="py-16 text-center">
-          <p className="text-sm font-vcx-sans text-[#999999]">해당 조건의 멤버를 찾지 못했습니다. 다른 키워드로 검색해보세요.</p>
+          <p className="text-sm font-vcx-sans text-vcx-sub-5">해당 조건의 멤버를 찾지 못했습니다. 다른 키워드로 검색해보세요.</p>
         </div>
       )}
 
@@ -103,8 +103,8 @@ function PaginationLink({
       href={`/directory?${params.toString()}`}
       className={`w-8 h-8 flex items-center justify-center text-xs font-vcx-sans border transition-colors ${
         page === currentPage
-          ? 'bg-[#1a1a1a] text-[#c9a84c] border-[#1a1a1a]'
-          : 'bg-white text-[#666666] border-[#e0d9ce] hover:border-[#888888]'
+          ? 'bg-vcx-dark text-vcx-gold border-vcx-dark'
+          : 'bg-white text-vcx-sub-3 border-vcx-dark/10 hover:border-vcx-sub-4'
       }`}
       style={{ borderRadius: 0 }}
     >
@@ -125,7 +125,7 @@ export default async function DirectoryPage({
         {/* Header */}
         <div className="mb-6">
           <p className="vcx-section-label mb-1">멤버 디렉토리</p>
-          <h1 className="font-vcx-serif font-bold text-[#1a1a1a] text-3xl">멤버 디렉토리</h1>
+          <h1 className="font-vcx-serif font-bold text-vcx-dark text-3xl">멤버 디렉토리</h1>
         </div>
 
         {/* Filters (client component) */}
@@ -138,7 +138,7 @@ export default async function DirectoryPage({
           fallback={
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="bg-white border border-[#e0d9ce] p-5 h-40 animate-pulse" />
+                <div key={i} className="bg-white border border-vcx-dark/10 p-5 h-40 animate-pulse" />
               ))}
             </div>
           }

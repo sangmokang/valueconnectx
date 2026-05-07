@@ -80,7 +80,7 @@ export function LoungePostRow({
                 style={{
                   fontSize: '11px',
                   padding: '2px 8px',
-                  background: '#f5f0e8',
+                  background: 'var(--color-vcx-beige)',
                   border: '1px solid rgba(0,0,0,0.08)',
                   color: '#b0a898',
                   borderRadius: 0,
@@ -97,7 +97,7 @@ export function LoungePostRow({
                 padding: '1px 7px',
                 background:
                   post.tier === 'Core' ? 'rgba(26,26,26,0.07)' : 'rgba(0,0,0,0.04)',
-                color: post.tier === 'Core' ? '#1a1a1a' : '#b0a898',
+                color: post.tier === 'Core' ? 'var(--color-vcx-dark)' : '#b0a898',
                 borderRadius: 0,
                 fontWeight: 600,
                 fontFamily: 'system-ui, sans-serif',
@@ -131,7 +131,7 @@ export function LoungePostRow({
             style={{
               fontSize: '15px',
               fontWeight: 700,
-              color: '#1a1a1a',
+              color: 'var(--color-vcx-dark)',
               lineHeight: 1.45,
               fontFamily: 'Georgia, serif',
               marginBottom: '6px',
@@ -195,7 +195,7 @@ export function LoungePostRow({
                 key={r.e}
                 style={{
                   fontSize: '11.5px',
-                  background: '#f5f0e8',
+                  background: 'var(--color-vcx-beige)',
                   padding: '1px 7px',
                   borderRadius: '100px',
                   color: '#888',
@@ -270,14 +270,14 @@ export function LoungePostRow({
                     style={{
                       width: '26px',
                       height: '26px',
-                      background: '#e8e2d9',
+                      background: 'var(--color-vcx-beige)',
                       borderRadius: '50%',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       fontSize: '10px',
                       fontWeight: 700,
-                      color: '#1a1a1a',
+                      color: 'var(--color-vcx-dark)',
                       flexShrink: 0,
                       marginTop: '1px',
                       fontFamily: 'system-ui, sans-serif',
@@ -305,7 +305,7 @@ export function LoungePostRow({
                         style={{
                           fontSize: '12.5px',
                           fontWeight: 700,
-                          color: '#1a1a1a',
+                          color: 'var(--color-vcx-dark)',
                           fontFamily: 'system-ui, sans-serif',
                         }}
                       >
@@ -359,14 +359,14 @@ export function LoungePostRow({
               style={{
                 width: '26px',
                 height: '26px',
-                background: '#1a1a1a',
+                background: 'var(--color-vcx-dark)',
                 borderRadius: '50%',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '9px',
                 fontWeight: 700,
-                color: '#c9a84c',
+                color: 'var(--color-vcx-gold)',
                 flexShrink: 0,
                 marginTop: '3px',
                 fontFamily: 'system-ui, sans-serif',
@@ -394,7 +394,7 @@ export function LoungePostRow({
                 onClick={onComment}
                 style={{
                   padding: '9px 16px',
-                  background: '#1a1a1a',
+                  background: 'var(--color-vcx-dark)',
                   color: '#f5f0e8',
                   border: 'none',
                   fontSize: '13px',

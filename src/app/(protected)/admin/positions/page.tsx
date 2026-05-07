@@ -109,24 +109,24 @@ export default function AdminPositionsPage() {
     }
   }
 
-  const inputCls = "w-full px-3 py-2 text-sm font-vcx-sans bg-[#f7f3ed] border border-[#e0d9ce] text-[#1a1a1a] outline-none focus:border-[#c9a84c]"
-  const labelCls = "block text-xs font-vcx-sans text-[#666666] mb-1"
+  const inputCls = "w-full px-3 py-2 text-sm font-vcx-sans bg-vcx-beige-light border border-vcx-dark/10 text-vcx-dark outline-none focus:border-vcx-gold"
+  const labelCls = "block text-xs font-vcx-sans text-vcx-sub-3 mb-1"
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
       <div className="mb-6">
         <p className="vcx-section-label mb-1">관리자</p>
-        <h1 className="font-vcx-serif font-bold text-[#1a1a1a] text-3xl">Admin</h1>
+        <h1 className="font-vcx-serif font-bold text-vcx-dark text-3xl">Admin</h1>
       </div>
 
       <AdminTabs />
 
       <div className="flex items-center justify-between mb-6">
-        <h2 className="font-vcx-serif font-bold text-[#1a1a1a] text-xl">포지션 관리</h2>
+        <h2 className="font-vcx-serif font-bold text-vcx-dark text-xl">포지션 관리</h2>
         <button
           type="button"
           onClick={openCreate}
-          className="px-4 py-2 text-sm font-vcx-sans bg-[#1a1a1a] text-[#c9a84c] hover:bg-[#333333] transition-colors"
+          className="px-4 py-2 text-sm font-vcx-sans bg-vcx-dark text-vcx-gold hover:bg-vcx-card transition-colors"
           style={{ borderRadius: 0 }}
         >
           + 포지션 등록
@@ -135,8 +135,8 @@ export default function AdminPositionsPage() {
 
       {/* Form */}
       {showForm && (
-        <div className="bg-white border border-[#c9a84c] p-6 mb-8">
-          <h3 className="font-vcx-serif font-bold text-[#1a1a1a] text-lg mb-4">
+        <div className="bg-white border border-vcx-gold p-6 mb-8">
+          <h3 className="font-vcx-serif font-bold text-vcx-dark text-lg mb-4">
             {editingId ? '포지션 수정' : '포지션 등록'}
           </h3>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -220,7 +220,7 @@ export default function AdminPositionsPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="px-4 py-2 text-sm font-vcx-sans bg-[#1a1a1a] text-[#c9a84c] hover:bg-[#333333] transition-colors disabled:opacity-50"
+                className="px-4 py-2 text-sm font-vcx-sans bg-vcx-dark text-vcx-gold hover:bg-vcx-card transition-colors disabled:opacity-50"
                 style={{ borderRadius: 0 }}
               >
                 {submitting ? '저장 중...' : editingId ? '수정' : '등록'}
@@ -228,7 +228,7 @@ export default function AdminPositionsPage() {
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
-                className="px-4 py-2 text-sm font-vcx-sans text-[#666666] border border-[#e0d9ce] hover:border-[#888888] transition-colors"
+                className="px-4 py-2 text-sm font-vcx-sans text-vcx-sub-3 border border-vcx-dark/10 hover:border-vcx-sub-4 transition-colors"
                 style={{ borderRadius: 0 }}
               >
                 취소
@@ -242,19 +242,19 @@ export default function AdminPositionsPage() {
       {loading ? (
         <div className="space-y-3">
           {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="bg-white border border-[#e0d9ce] p-5 h-20 animate-pulse" />
+            <div key={i} className="bg-white border border-vcx-dark/10 p-5 h-20 animate-pulse" />
           ))}
         </div>
       ) : positions.length === 0 ? (
         <div className="py-16 text-center">
-          <p className="text-sm font-vcx-sans text-[#999999]">등록된 포지션이 없습니다</p>
+          <p className="text-sm font-vcx-sans text-vcx-sub-5">등록된 포지션이 없습니다</p>
         </div>
       ) : (
         <div className="space-y-3">
           {positions.map((p) => (
             <div
               key={p.id}
-              className="bg-white border border-[#e0d9ce] p-5 flex items-start justify-between gap-4"
+              className="bg-white border border-vcx-dark/10 p-5 flex items-start justify-between gap-4"
             >
               <div className="min-w-0">
                 <div className="flex items-center gap-2 mb-1">
@@ -262,19 +262,19 @@ export default function AdminPositionsPage() {
                   <span
                     className={`px-2 py-0.5 text-[10px] font-vcx-sans border ${
                       p.status === 'active'
-                        ? 'text-[#c9a84c] border-[#c9a84c] bg-[#fdf8ef]'
+                        ? 'text-vcx-gold border-vcx-gold bg-[#fdf8ef]'
                         : p.status === 'draft'
-                        ? 'text-[#888888] border-[#e0d9ce] bg-[#f7f3ed]'
-                        : 'text-[#999999] border-[#dddddd] bg-[#f5f5f5]'
+                        ? 'text-vcx-sub-4 border-vcx-dark/10 bg-vcx-beige-light'
+                        : 'text-vcx-sub-5 border-[#dddddd] bg-[#f5f5f5]'
                     }`}
                     style={{ borderRadius: 0 }}
                   >
                     {p.status === 'active' ? '공개' : p.status === 'draft' ? '임시저장' : '마감'}
                   </span>
                 </div>
-                <p className="font-vcx-serif font-bold text-[#1a1a1a] text-base">{p.title}</p>
+                <p className="font-vcx-serif font-bold text-vcx-dark text-base">{p.title}</p>
                 {(p.team_size || p.salary_range) && (
-                  <p className="text-xs font-vcx-sans text-[#888888] mt-1">
+                  <p className="text-xs font-vcx-sans text-vcx-sub-4 mt-1">
                     {[p.team_size, p.salary_range].filter(Boolean).join(' · ')}
                   </p>
                 )}
@@ -283,7 +283,7 @@ export default function AdminPositionsPage() {
                 <button
                   type="button"
                   onClick={() => openEdit(p)}
-                  className="px-3 py-1.5 text-xs font-vcx-sans text-[#666666] border border-[#e0d9ce] hover:border-[#888888] transition-colors"
+                  className="px-3 py-1.5 text-xs font-vcx-sans text-vcx-sub-3 border border-vcx-dark/10 hover:border-vcx-sub-4 transition-colors"
                   style={{ borderRadius: 0 }}
                 >
                   수정

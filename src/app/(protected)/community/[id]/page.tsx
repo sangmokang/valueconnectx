@@ -72,47 +72,47 @@ export default async function CommunityPostPage({
           {/* Back */}
           <Link
             href="/community"
-            className="font-vcx-sans text-[13px] text-[#888888] no-underline inline-flex items-center gap-1 mb-6 hover:text-[#1a1a1a] transition-colors"
+            className="font-vcx-sans text-[13px] text-vcx-sub-4 no-underline inline-flex items-center gap-1 mb-6 hover:text-vcx-dark transition-colors"
           >
             ← 커뮤니티
           </Link>
 
           {/* Post */}
-          <div className="bg-vcx-beige border border-[#e0d9ce] p-8 mb-8">
+          <div className="bg-vcx-beige border border-vcx-dark/10 p-8 mb-8">
             <div className="flex items-center gap-2 mb-4">
               <span
                 className={`text-[11px] font-vcx-sans px-2 py-0.5 border ${
                   isCompanyReview
-                    ? 'bg-[#fff8e6] text-[#c9a84c] border-[#c9a84c]'
-                    : 'bg-[#f5f0eb] text-[#888888] border-[#e0d9ce]'
+                    ? 'bg-[#fff8e6] text-vcx-gold border-vcx-gold'
+                    : 'bg-vcx-beige text-vcx-sub-4 border-vcx-dark/10'
                 }`}
               >
                 {categoryLabel}
               </span>
               {maskedPost.is_anonymous || (isCompanyReview && isCorporateUser) ? (
-                <span className="text-[11px] font-vcx-sans text-[#aaaaaa]">익명</span>
+                <span className="text-[11px] font-vcx-sans text-vcx-sub-5">익명</span>
               ) : null}
             </div>
 
-            <h1 className="font-vcx-serif text-[22px] font-bold text-[#1a1a1a] mb-3 leading-[1.4]">
+            <h1 className="font-vcx-serif text-[22px] font-bold text-vcx-dark mb-3 leading-[1.4]">
               {maskedPost.title}
             </h1>
 
-            <p className="font-vcx-sans text-[12px] text-[#aaaaaa] mb-6">
+            <p className="font-vcx-sans text-[12px] text-vcx-sub-5 mb-6">
               {formatDate(maskedPost.created_at)}
             </p>
 
             {isCompanyReview && (
-              <div className="px-3.5 py-2.5 bg-[#fff8e6] border border-[#c9a84c] font-vcx-sans text-[12px] text-[#7a6020] mb-5 leading-[1.5]">
+              <div className="px-3.5 py-2.5 bg-[#fff8e6] border border-vcx-gold font-vcx-sans text-[12px] text-[#7a6020] mb-5 leading-[1.5]">
                 이 게시글은 사실 기반 정보만 허용됩니다. 허위 정보나 감정적 비방이 포함된 경우 신고해 주세요.
               </div>
             )}
 
-            <div className="font-vcx-sans text-[15px] text-[#333333] leading-[1.8] whitespace-pre-wrap break-words">
+            <div className="font-vcx-sans text-[15px] text-vcx-card leading-[1.8] whitespace-pre-wrap break-words">
               {maskedPost.content}
             </div>
 
-            <div className="mt-6 pt-4 border-t border-[#f0ebe2] flex justify-between items-center">
+            <div className="mt-6 pt-4 border-t border-vcx-beige flex justify-between items-center">
               <LikeButton postId={maskedPost.id} />
               <ReportButton postId={maskedPost.id} />
             </div>
@@ -120,13 +120,13 @@ export default async function CommunityPostPage({
 
           {/* Comments */}
           <div>
-            <h2 className="font-vcx-serif text-[16px] font-bold text-[#1a1a1a] mb-4">
+            <h2 className="font-vcx-serif text-[16px] font-bold text-vcx-dark mb-4">
               댓글 {comments.length > 0 && `(${comments.length})`}
             </h2>
 
             <CommentList comments={comments} postId={id} />
 
-            <div className="mt-6 pt-6 border-t border-[#e0d9ce]">
+            <div className="mt-6 pt-6 border-t border-vcx-dark/10">
               <CommentForm postId={id} />
             </div>
           </div>

@@ -32,7 +32,7 @@ export function CommentList({ comments, postId }: { comments: CommunityComment[]
           style={{
             padding: '16px 20px',
             background: '#faf8f5',
-            borderBottom: '1px solid #e0d9ce',
+            borderBottom: '1px solid rgba(26,26,26,0.1)',
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>

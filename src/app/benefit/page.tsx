@@ -75,13 +75,13 @@ export default function BenefitPage() {
               key={tier.name}
               className="border p-6 sm:p-9"
               style={{
-                background: tier.dark ? '#1a1a1a' : '#f7f5f0',
-                borderColor: tier.dark ? '#1a1a1a' : 'rgba(0,0,0,0.08)',
+                background: tier.dark ? 'var(--color-vcx-dark)' : '#f7f5f0',
+                borderColor: tier.dark ? 'var(--color-vcx-dark)' : 'rgba(0,0,0,0.08)',
               }}
             >
               <div
                 className="mb-2 font-vcx-sans text-[13px] font-bold"
-                style={{ color: tier.dark ? '#c9a84c' : '#888' }}
+                style={{ color: tier.dark ? 'var(--color-vcx-gold)' : '#888888' }}
               >
                 {tier.name}
               </div>
@@ -97,12 +97,12 @@ export default function BenefitPage() {
                     <div
                       className="w-4 h-4 flex-shrink-0 flex items-center justify-center mt-0.5"
                       style={{
-                        background: tier.dark ? '#c9a84c' : '#1a1a1a',
+                        background: tier.dark ? 'var(--color-vcx-gold)' : 'var(--color-vcx-dark)',
                       }}
                     >
                       <span
                         className="text-[12px] font-extrabold leading-none"
-                        style={{ color: tier.dark ? '#1a1a1a' : '#fff' }}
+                        style={{ color: tier.dark ? 'var(--color-vcx-dark)' : '#fff' }}
                       >
                         ✓
                       </span>

@@ -272,15 +272,15 @@ export function CurationForm({ item, onSuccess, onCancel }: CurationFormProps) {
               key={tag}
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: '4px',
-                padding: '4px 10px', background: '#f5f0e8', border: '1px solid rgba(201,168,76,0.4)',
-                fontSize: '12px', fontFamily: 'system-ui, sans-serif', color: '#1a1a1a',
+                padding: '4px 10px', background: 'var(--color-vcx-beige)', border: '1px solid rgba(201,168,76,0.4)',
+                fontSize: '12px', fontFamily: 'system-ui, sans-serif', color: 'var(--color-vcx-dark)',
               }}
             >
               {tag}
               <button
                 type="button"
                 onClick={() => removeTag(tag)}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888', padding: 0, lineHeight: 1 }}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888888', padding: 0, lineHeight: 1 }}
               >×</button>
             </span>
           ))}
@@ -298,7 +298,7 @@ export function CurationForm({ item, onSuccess, onCancel }: CurationFormProps) {
             onClick={addTag}
             disabled={form.tags.length >= 10}
             style={{
-              padding: '10px 16px', background: form.tags.length >= 10 ? '#999' : '#1a1a1a', color: '#fff',
+              padding: '10px 16px', background: form.tags.length >= 10 ? '#999999' : 'var(--color-vcx-dark)', color: '#fff',
               border: 'none', cursor: form.tags.length >= 10 ? 'not-allowed' : 'pointer', fontSize: '13px', fontFamily: 'system-ui, sans-serif',
               whiteSpace: 'nowrap',
             }}
@@ -325,7 +325,7 @@ export function CurationForm({ item, onSuccess, onCancel }: CurationFormProps) {
           id="exclusive"
           checked={form.exclusive}
           onChange={(e) => handleChange('exclusive', e.target.checked)}
-          style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: '#c9a84c' }}
+          style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: 'var(--color-vcx-gold)' }}
         />
         <label htmlFor="exclusive" style={{ ...labelStyle, marginBottom: 0, cursor: 'pointer' }}>
           익스클루시브 포지션
@@ -358,7 +358,7 @@ export function CurationForm({ item, onSuccess, onCancel }: CurationFormProps) {
           type="submit"
           disabled={loading}
           style={{
-            padding: '12px 24px', background: loading ? '#999' : '#c9a84c', color: '#fff',
+            padding: '12px 24px', background: loading ? '#999999' : 'var(--color-vcx-gold)', color: '#fff',
             border: 'none', cursor: loading ? 'not-allowed' : 'pointer',
             fontSize: '14px', fontFamily: 'system-ui, sans-serif', fontWeight: 600,
           }}

@@ -35,7 +35,7 @@ export function HealthStatus({ health }: { health: HealthData }) {
   return (
     <div style={{ border: '1px solid rgba(0,0,0,0.08)', background: '#fff' }}>
       <div style={{ padding: '20px 24px', borderBottom: '1px solid rgba(0,0,0,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h3 style={{ fontFamily: 'Georgia, serif', fontSize: '18px', fontWeight: 700, color: '#1a1a1a', margin: 0 }}>
+        <h3 style={{ fontFamily: 'Georgia, serif', fontSize: '18px', fontWeight: 700, color: 'var(--color-vcx-dark)', margin: 0 }}>
           인프라 상태
         </h3>
         <div style={{ padding: '4px 16px', background: overall.bg, display: 'inline-flex', alignItems: 'center' }}>
@@ -60,7 +60,7 @@ export function HealthStatus({ health }: { health: HealthData }) {
               const style = CHECK_STYLES[check.status] || CHECK_STYLES.error
               return (
                 <tr key={key} style={{ borderBottom: '1px solid rgba(0,0,0,0.04)' }}>
-                  <td style={{ padding: '10px 0', fontWeight: 600, color: '#1a1a1a' }}>
+                  <td style={{ padding: '10px 0', fontWeight: 600, color: 'var(--color-vcx-dark)' }}>
                     {key === 'supabase' ? 'Supabase DB' : 'Upstash Redis'}
                   </td>
                   <td style={{ padding: '10px 0', color: style.color, fontWeight: 500 }}>{style.label}</td>
@@ -70,7 +70,7 @@ export function HealthStatus({ health }: { health: HealthData }) {
               )
             })}
             <tr>
-              <td style={{ padding: '10px 0', fontWeight: 600, color: '#1a1a1a' }}>환경변수</td>
+              <td style={{ padding: '10px 0', fontWeight: 600, color: 'var(--color-vcx-dark)' }}>환경변수</td>
               <td style={{ padding: '10px 0', color: health.checks.env_vars.missing.length > 0 ? '#dc2626' : '#16a34a', fontWeight: 500 }}>
                 {health.checks.env_vars.missing.length > 0 ? '누락 있음' : '정상'}
               </td>

@@ -24,7 +24,7 @@ export default function OpsPage() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
         <div>
-          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '24px', fontWeight: 700, color: '#1a1a1a', margin: 0 }}>
+          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '24px', fontWeight: 700, color: 'var(--color-vcx-dark)', margin: 0 }}>
             서비스 운영 현황
           </h2>
           <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#888', marginTop: '4px' }}>
@@ -40,7 +40,7 @@ export default function OpsPage() {
             fontSize: '13px',
             fontWeight: 600,
             color: '#fff',
-            background: refreshing || isLoading ? '#ccc' : '#c9a84c',
+            background: refreshing || isLoading ? '#ccc' : 'var(--color-vcx-gold)',
             border: 'none',
             cursor: refreshing || isLoading ? 'not-allowed' : 'pointer',
           }}

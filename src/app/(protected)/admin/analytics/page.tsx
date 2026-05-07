@@ -44,7 +44,7 @@ interface AnalyticsData {
   fieldDistribution: FieldData[]
 }
 
-const PIE_COLORS = ['#c9a84c', '#d4b06e', '#e0c890', '#a08040', '#7a6030', '#e8d4a8', '#b89050', '#f0e0c0']
+const PIE_COLORS = ['var(--color-vcx-gold)', '#d4b06e', '#e0c890', '#a08040', '#7a6030', '#e8d4a8', '#b89050', '#f0e0c0']
 
 function KpiCard({ label, total, weekly }: { label: string; total: number; weekly: number }) {
   return (
@@ -59,10 +59,10 @@ function KpiCard({ label, total, weekly }: { label: string; total: number; weekl
       <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#888', margin: '0 0 8px', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
         {label}
       </p>
-      <p style={{ fontFamily: 'Georgia, serif', fontSize: '36px', fontWeight: 800, color: '#1a1a1a', margin: '0 0 6px', letterSpacing: '-1px' }}>
+      <p style={{ fontFamily: 'Georgia, serif', fontSize: '36px', fontWeight: 800, color: 'var(--color-vcx-dark)', margin: '0 0 6px', letterSpacing: '-1px' }}>
         {total.toLocaleString()}
       </p>
-      <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: weekly > 0 ? '#c9a84c' : '#888', margin: 0, fontWeight: 600 }}>
+      <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: weekly > 0 ? 'var(--color-vcx-gold)' : '#888', margin: 0, fontWeight: 600 }}>
         이번 주 +{weekly}
       </p>
     </div>
@@ -122,8 +122,8 @@ export default function AnalyticsPage() {
         marginBottom: '24px',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-          <div style={{ width: '20px', height: '1.5px', background: '#c9a84c' }} />
-          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '18px', fontWeight: 700, color: '#1a1a1a', margin: 0 }}>
+          <div style={{ width: '20px', height: '1.5px', background: 'var(--color-vcx-gold)' }} />
+          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '18px', fontWeight: 700, color: 'var(--color-vcx-dark)', margin: 0 }}>
             최근 7일 일별 현황
           </h2>
         </div>
@@ -137,8 +137,8 @@ export default function AnalyticsPage() {
               labelFormatter={(l) => `날짜: ${l}`}
             />
             <Legend wrapperStyle={{ fontSize: '13px', paddingTop: '12px' }} />
-            <Line type="monotone" dataKey="members" name="신규 멤버" stroke="#c9a84c" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} />
-            <Line type="monotone" dataKey="coffeechats" name="커피챗 생성" stroke="#1a1a1a" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} />
+            <Line type="monotone" dataKey="members" name="신규 멤버" stroke="var(--color-vcx-gold)" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} />
+            <Line type="monotone" dataKey="coffeechats" name="커피챗 생성" stroke="var(--color-vcx-dark)" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} />
           </LineChart>
         </ResponsiveContainer>
       </div>
@@ -151,8 +151,8 @@ export default function AnalyticsPage() {
         padding: '28px',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-          <div style={{ width: '20px', height: '1.5px', background: '#c9a84c' }} />
-          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '18px', fontWeight: 700, color: '#1a1a1a', margin: 0 }}>
+          <div style={{ width: '20px', height: '1.5px', background: 'var(--color-vcx-gold)' }} />
+          <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '18px', fontWeight: 700, color: 'var(--color-vcx-dark)', margin: 0 }}>
             멤버 분야별 분포
           </h2>
         </div>
@@ -187,7 +187,7 @@ export default function AnalyticsPage() {
               {fieldDistribution.map((item, index) => (
                 <div key={item.name} style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
                   <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: PIE_COLORS[index % PIE_COLORS.length], flexShrink: 0 }} />
-                  <span style={{ fontSize: '13px', color: '#1a1a1a', flex: 1 }}>{item.name}</span>
+                  <span style={{ fontSize: '13px', color: 'var(--color-vcx-dark)', flex: 1 }}>{item.name}</span>
                   <span style={{ fontSize: '13px', color: '#888', fontWeight: 600 }}>{item.value}명</span>
                 </div>
               ))}

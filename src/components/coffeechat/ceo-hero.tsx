@@ -12,7 +12,7 @@ export function CeoHero({ sessionCount, totalApplicants, totalSlots }: CeoHeroPr
   return (
     <div
       style={{
-        background: '#1a1a1a',
+        background: 'var(--color-vcx-dark)',
         padding: '64px 0 72px',
         position: 'relative',
         overflow: 'hidden',
@@ -38,10 +38,10 @@ export function CeoHero({ sessionCount, totalApplicants, totalSlots }: CeoHeroPr
       >
         {/* Label */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
-          <div style={{ width: 28, height: 1, background: '#c9a84c' }} />
+          <div style={{ width: 28, height: 1, background: 'var(--color-vcx-gold)' }} />
           <span
             style={{
-              color: '#c9a84c',
+              color: 'var(--color-vcx-gold)',
               fontSize: 12,
               fontWeight: 600,
               fontFamily: 'system-ui, sans-serif',
@@ -56,7 +56,7 @@ export function CeoHero({ sessionCount, totalApplicants, totalSlots }: CeoHeroPr
           style={{
             fontSize: 'clamp(28px, 4vw, 46px)',
             fontWeight: 800,
-            color: '#f5f0e8',
+            color: 'var(--color-vcx-cream)',
             lineHeight: 1.25,
             margin: '0 0 20px',
             letterSpacing: '-1px',
@@ -84,7 +84,7 @@ export function CeoHero({ sessionCount, totalApplicants, totalSlots }: CeoHeroPr
         <p
           style={{
             fontSize: 13,
-            color: '#888',
+            color: 'var(--color-vcx-sub-4)',
             lineHeight: 1.8,
             maxWidth: 520,
             margin: 0,
@@ -115,7 +115,7 @@ export function CeoHero({ sessionCount, totalApplicants, totalSlots }: CeoHeroPr
                 style={{
                   fontSize: 24,
                   fontWeight: 800,
-                  color: '#c9a84c',
+                  color: 'var(--color-vcx-gold)',
                   fontFamily: 'Georgia, serif',
                 }}
               >
@@ -124,7 +124,7 @@ export function CeoHero({ sessionCount, totalApplicants, totalSlots }: CeoHeroPr
               <div
                 style={{
                   fontSize: 12,
-                  color: '#888',
+                  color: 'var(--color-vcx-sub-4)',
                   fontFamily: 'system-ui, sans-serif',
                 }}
               >

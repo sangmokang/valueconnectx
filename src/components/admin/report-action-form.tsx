@@ -35,7 +35,7 @@ export function ReportActionForm({ reportId, hasPost, hasComment }: ReportAction
 
   if (done) {
     return (
-      <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#888888', marginTop: '12px' }}>
+      <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: 'var(--color-vcx-sub-4)', marginTop: '12px' }}>
         처리 완료
       </p>
     )
@@ -56,7 +56,7 @@ export function ReportActionForm({ reportId, hasPost, hasComment }: ReportAction
         <button
           onClick={() => handleAction('hide_post')}
           disabled={loading}
-          style={{ ...btnBase, background: '#1a1a1a', color: '#c9a84c', border: 'none' }}
+          style={{ ...btnBase, background: 'var(--color-vcx-dark)', color: 'var(--color-vcx-gold)', border: 'none' }}
         >
           게시글 숨김
         </button>
@@ -65,7 +65,7 @@ export function ReportActionForm({ reportId, hasPost, hasComment }: ReportAction
         <button
           onClick={() => handleAction('hide_comment')}
           disabled={loading}
-          style={{ ...btnBase, background: '#1a1a1a', color: '#c9a84c', border: 'none' }}
+          style={{ ...btnBase, background: 'var(--color-vcx-dark)', color: 'var(--color-vcx-gold)', border: 'none' }}
         >
           댓글 숨김
         </button>
@@ -73,7 +73,7 @@ export function ReportActionForm({ reportId, hasPost, hasComment }: ReportAction
       <button
         onClick={() => handleAction('dismiss')}
         disabled={loading}
-        style={{ ...btnBase, background: 'transparent', color: '#888888', border: '1px solid #e0d9ce' }}
+        style={{ ...btnBase, background: 'transparent', color: 'var(--color-vcx-sub-4)', border: '1px solid var(--color-vcx-dark/10)' }}
       >
         신고 무시
       </button>

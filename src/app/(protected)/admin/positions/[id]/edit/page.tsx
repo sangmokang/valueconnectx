@@ -59,7 +59,7 @@ export default function AdminPositionEditPage({ params }: { params: Promise<{ id
   if (loading) {
     return (
       <div className="space-y-4">
-        <div className="bg-white border border-[#e0d9ce] p-6 h-64 animate-pulse" />
+        <div className="bg-white border border-vcx-dark/10 p-6 h-64 animate-pulse" />
       </div>
     )
   }
@@ -75,7 +75,7 @@ export default function AdminPositionEditPage({ params }: { params: Promise<{ id
   return (
     <div>
       <div className="mb-6">
-        <h2 className="font-vcx-serif font-bold text-[#1a1a1a] text-xl">포지션 수정</h2>
+        <h2 className="font-vcx-serif font-bold text-vcx-dark text-xl">포지션 수정</h2>
       </div>
       <PositionForm initialData={data} positionId={id} />
     </div>

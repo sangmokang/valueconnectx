@@ -24,8 +24,8 @@ export function AdminTabs() {
         return (
           <Link key={tab.href} href={tab.href} style={{
             padding: '12px 24px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', fontWeight: 600,
-            color: isActive ? '#c9a84c' : '#1a1a1a', textDecoration: 'none',
-            borderBottom: isActive ? '2px solid #c9a84c' : '2px solid transparent',
+            color: isActive ? 'var(--color-vcx-gold)' : 'var(--color-vcx-dark)', textDecoration: 'none',
+            borderBottom: isActive ? '2px solid var(--color-vcx-gold)' : '2px solid transparent',
           }}>
             {tab.label}
           </Link>

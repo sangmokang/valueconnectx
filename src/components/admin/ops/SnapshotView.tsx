@@ -46,7 +46,7 @@ export function SnapshotView({ snapshot }: { snapshot: Snapshot }) {
   return (
     <div style={{ border: '1px solid rgba(0,0,0,0.08)', background: '#fff' }}>
       <div style={{ padding: '20px 24px', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-        <h3 style={{ fontFamily: 'Georgia, serif', fontSize: '18px', fontWeight: 700, color: '#1a1a1a', margin: 0 }}>
+        <h3 style={{ fontFamily: 'Georgia, serif', fontSize: '18px', fontWeight: 700, color: 'var(--color-vcx-dark)', margin: 0 }}>
           환경 스냅샷
         </h3>
       </div>
@@ -57,9 +57,9 @@ export function SnapshotView({ snapshot }: { snapshot: Snapshot }) {
             배포 정보
           </h4>
           <div style={{ display: 'flex', gap: '32px', fontSize: '14px', fontFamily: 'system-ui, sans-serif' }}>
-            <div><span style={{ color: '#888' }}>환경:</span> <span style={{ color: '#1a1a1a', fontWeight: 500 }}>{snapshot.deployment.env}</span></div>
-            <div><span style={{ color: '#888' }}>커밋:</span> <span style={{ color: '#1a1a1a', fontFamily: 'monospace' }}>{snapshot.deployment.commitSha}</span></div>
-            <div><span style={{ color: '#888' }}>리전:</span> <span style={{ color: '#1a1a1a' }}>{snapshot.deployment.region}</span></div>
+            <div><span style={{ color: '#888' }}>환경:</span> <span style={{ color: 'var(--color-vcx-dark)', fontWeight: 500 }}>{snapshot.deployment.env}</span></div>
+            <div><span style={{ color: '#888' }}>커밋:</span> <span style={{ color: 'var(--color-vcx-dark)', fontFamily: 'monospace' }}>{snapshot.deployment.commitSha}</span></div>
+            <div><span style={{ color: '#888' }}>리전:</span> <span style={{ color: 'var(--color-vcx-dark)' }}>{snapshot.deployment.region}</span></div>
           </div>
         </div>
 
@@ -72,7 +72,7 @@ export function SnapshotView({ snapshot }: { snapshot: Snapshot }) {
             {Object.entries(snapshot.database.tables).map(([table, count]) => (
               <div key={table} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 12px', background: '#f5f0e8', fontSize: '13px', fontFamily: 'system-ui, sans-serif' }}>
                 <span style={{ color: '#555' }}>{TABLE_LABELS[table] || table}</span>
-                <span style={{ fontWeight: 600, color: count === -1 ? '#dc2626' : '#1a1a1a' }}>
+                <span style={{ fontWeight: 600, color: count === -1 ? '#dc2626' : 'var(--color-vcx-dark)' }}>
                   {count === -1 ? '오류' : count.toLocaleString()}
                 </span>
               </div>
@@ -88,7 +88,7 @@ export function SnapshotView({ snapshot }: { snapshot: Snapshot }) {
             </h4>
             <div style={{ padding: '12px', background: '#f5f0e8', border: '1px solid rgba(0,0,0,0.08)', marginBottom: '8px', fontFamily: 'system-ui, sans-serif' }}>
               <span style={{ color: '#555', fontSize: '13px' }}>전체 피드백 수</span>
-              <strong style={{ marginLeft: '8px', color: '#1a1a1a', fontSize: '15px' }}>
+              <strong style={{ marginLeft: '8px', color: 'var(--color-vcx-dark)', fontSize: '15px' }}>
                 {snapshot.feedback.total === -1 ? '오류' : snapshot.feedback.total.toLocaleString()}
               </strong>
             </div>
@@ -101,7 +101,7 @@ export function SnapshotView({ snapshot }: { snapshot: Snapshot }) {
                 snapshot.feedback.recent.map((item) => (
                   <div key={item.id} style={{ padding: '10px 12px', borderBottom: '1px solid rgba(0,0,0,0.06)', fontFamily: 'system-ui, sans-serif' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', fontSize: '13px' }}>
-                      <span style={{ color: '#1a1a1a', fontWeight: 600 }}>
+                      <span style={{ color: 'var(--color-vcx-dark)', fontWeight: 600 }}>
                         {item.source === 'peer' ? 'Peer' : 'CEO'} · {item.reviewer_role === 'host' ? '호스트' : '참여자'} · {item.overall_rating}/5
                       </span>
                       <span style={{ color: '#888' }}>{new Date(item.created_at).toLocaleString('ko-KR')}</span>

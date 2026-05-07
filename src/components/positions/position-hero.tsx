@@ -2,7 +2,7 @@ export function PositionHero() {
   return (
     <div
       className="relative overflow-hidden"
-      style={{ background: '#1a1a1a', padding: '64px 0 72px' }}
+      style={{ background: 'var(--color-vcx-dark)', padding: '64px 0 72px' }}
     >
       {/* Subtle radial glow */}
       <div
@@ -16,10 +16,10 @@ export function PositionHero() {
       <div className="mx-auto max-w-[1100px] px-6 md:px-12">
         {/* Label */}
         <div className="mb-6 flex items-center gap-2.5">
-          <div style={{ width: 28, height: 1, background: '#c9a84c' }} />
+          <div style={{ width: 28, height: 1, background: 'var(--color-vcx-gold)' }} />
           <span
             className="font-vcx-sans font-bold"
-            style={{ color: '#c9a84c', fontSize: 12 }}
+            style={{ color: 'var(--color-vcx-gold)', fontSize: 12 }}
           >
             선별 포지션 · VCX 큐레이션
           </span>

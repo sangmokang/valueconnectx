@@ -27,7 +27,7 @@ const inputStyle: React.CSSProperties = {
   border: '1px solid rgba(0,0,0,0.08)',
   borderRadius: 0,
   outline: 'none',
-  background: '#f7f3ed',
+  background: 'var(--color-vcx-beige-light)',
 }
 
 export function CorporateUserList() {
@@ -111,36 +111,36 @@ export function CorporateUserList() {
         />
         <button
           onClick={() => setShowCreate(!showCreate)}
-          style={{ padding: '8px 20px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', fontWeight: 600, color: '#f0ebe2', background: '#1a1a1a', border: 'none', borderRadius: 0, cursor: 'pointer' }}
+          style={{ padding: '8px 20px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', fontWeight: 600, color: 'var(--color-vcx-beige)', background: 'var(--color-vcx-dark)', border: 'none', borderRadius: 0, cursor: 'pointer' }}
         >
           기업 사용자 추가
         </button>
       </div>
 
       {showCreate && (
-        <form onSubmit={handleCreate} style={{ padding: '20px 24px', background: '#e8e2d9', marginBottom: '24px', borderLeft: '2px solid #c9a84c' }}>
+        <form onSubmit={handleCreate} style={{ padding: '20px 24px', background: 'var(--color-vcx-beige)', marginBottom: '24px', borderLeft: '2px solid var(--color-vcx-gold)' }}>
           {createError && (
             <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#EF4444', marginBottom: '12px' }}>{createError}</div>
           )}
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
             <div style={{ flex: '1 1 160px' }}>
-              <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888', marginBottom: '6px' }}>이름</label>
+              <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-vcx-sub-4)', marginBottom: '6px' }}>이름</label>
               <input type="text" value={form.name} onChange={(e) => setForm(f => ({ ...f, name: e.target.value }))} required placeholder="홍길동" style={{ ...inputStyle, width: '100%', boxSizing: 'border-box' }} />
             </div>
             <div style={{ flex: '1 1 200px' }}>
-              <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888', marginBottom: '6px' }}>이메일</label>
+              <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-vcx-sub-4)', marginBottom: '6px' }}>이메일</label>
               <input type="email" value={form.email} onChange={(e) => setForm(f => ({ ...f, email: e.target.value }))} required placeholder="name@company.com" style={{ ...inputStyle, width: '100%', boxSizing: 'border-box' }} />
             </div>
             <div style={{ flex: '1 1 160px' }}>
-              <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888', marginBottom: '6px' }}>회사</label>
+              <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-vcx-sub-4)', marginBottom: '6px' }}>회사</label>
               <input type="text" value={form.company} onChange={(e) => setForm(f => ({ ...f, company: e.target.value }))} required placeholder="회사명" style={{ ...inputStyle, width: '100%', boxSizing: 'border-box' }} />
             </div>
             <div style={{ flex: '1 1 160px' }}>
-              <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888', marginBottom: '6px' }}>직함</label>
+              <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-vcx-sub-4)', marginBottom: '6px' }}>직함</label>
               <input type="text" value={form.title} onChange={(e) => setForm(f => ({ ...f, title: e.target.value }))} required placeholder="대표이사" style={{ ...inputStyle, width: '100%', boxSizing: 'border-box' }} />
             </div>
             <div>
-              <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888', marginBottom: '6px' }}>역할</label>
+              <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-vcx-sub-4)', marginBottom: '6px' }}>역할</label>
               <select value={form.role} onChange={(e) => setForm(f => ({ ...f, role: e.target.value as typeof form.role }))} style={{ ...inputStyle, cursor: 'pointer' }}>
                 <option value="ceo">CEO</option>
                 <option value="founder">창업자</option>
@@ -148,7 +148,7 @@ export function CorporateUserList() {
                 <option value="hr_leader">HR 리더</option>
               </select>
             </div>
-            <button type="submit" disabled={createLoading} style={{ padding: '10px 20px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', fontWeight: 600, color: '#f0ebe2', background: '#1a1a1a', border: 'none', borderRadius: 0, cursor: 'pointer' }}>
+            <button type="submit" disabled={createLoading} style={{ padding: '10px 20px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', fontWeight: 600, color: 'var(--color-vcx-beige)', background: 'var(--color-vcx-dark)', border: 'none', borderRadius: 0, cursor: 'pointer' }}>
               {createLoading ? '저장 중...' : '저장'}
             </button>
           </div>
@@ -156,36 +156,36 @@ export function CorporateUserList() {
       )}
 
       {loading ? (
-        <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: '#888' }}>불러오는 중...</p>
+        <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: 'var(--color-vcx-sub-4)' }}>불러오는 중...</p>
       ) : data.length === 0 ? (
-        <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: '#888' }}>기업 사용자가 없습니다</p>
+        <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: 'var(--color-vcx-sub-4)' }}>기업 사용자가 없습니다</p>
       ) : (
         <div>
           {data.map((cu) => (
             <div key={cu.id} style={{ padding: '20px 24px', borderBottom: '1px solid rgba(0,0,0,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '6px' }}>
-                  <span style={{ fontFamily: 'system-ui, sans-serif', fontSize: '14px', fontWeight: 600, color: '#1a1a1a' }}>{cu.name}</span>
-                  <span style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#888' }}>{cu.title}</span>
-                  <span style={{ fontSize: '11px', fontFamily: 'system-ui, sans-serif', color: '#c9a84c', border: '1px solid #c9a84c', padding: '2px 8px' }}>
+                  <span style={{ fontFamily: 'system-ui, sans-serif', fontSize: '14px', fontWeight: 600, color: 'var(--color-vcx-dark)' }}>{cu.name}</span>
+                  <span style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: 'var(--color-vcx-sub-4)' }}>{cu.title}</span>
+                  <span style={{ fontSize: '11px', fontFamily: 'system-ui, sans-serif', color: 'var(--color-vcx-gold)', border: '1px solid var(--color-vcx-gold)', padding: '2px 8px' }}>
                     {ROLE_LABELS[cu.role] ?? cu.role}
                   </span>
                   <span style={{
                     fontSize: '11px', fontFamily: 'system-ui, sans-serif', padding: '2px 8px',
-                    color: cu.is_verified ? '#16a34a' : '#888',
+                    color: cu.is_verified ? '#16a34a' : 'var(--color-vcx-sub-4)',
                     border: `1px solid ${cu.is_verified ? '#16a34a' : 'rgba(0,0,0,0.15)'}`,
                   }}>
                     {cu.is_verified ? '인증됨' : '미인증'}
                   </span>
                 </div>
-                <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#888' }}>
+                <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: 'var(--color-vcx-sub-4)' }}>
                   {cu.email} · {cu.company} · {new Date(cu.created_at).toLocaleDateString('ko-KR')}
                 </div>
               </div>
               {!cu.is_verified && (
                 <button
                   onClick={() => handleVerify(cu.id)}
-                  style={{ padding: '8px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', fontWeight: 600, color: '#c9a84c', background: 'transparent', border: '1px solid #c9a84c', borderRadius: 0, cursor: 'pointer' }}
+                  style={{ padding: '8px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', fontWeight: 600, color: 'var(--color-vcx-gold)', background: 'transparent', border: '1px solid var(--color-vcx-gold)', borderRadius: 0, cursor: 'pointer' }}
                 >
                   인증
                 </button>
@@ -194,9 +194,9 @@ export function CorporateUserList() {
           ))}
           {total > 20 && (
             <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '24px' }}>
-              <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1} style={{ padding: '8px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', background: 'transparent', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 0, cursor: 'pointer', color: '#666' }}>이전</button>
-              <span style={{ padding: '8px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#888' }}>{page} / {Math.ceil(total / 20)}</span>
-              <button onClick={() => setPage(p => p + 1)} disabled={page >= Math.ceil(total / 20)} style={{ padding: '8px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', background: 'transparent', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 0, cursor: 'pointer', color: '#666' }}>다음</button>
+              <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1} style={{ padding: '8px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', background: 'transparent', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 0, cursor: 'pointer', color: 'var(--color-vcx-sub-3)' }}>이전</button>
+              <span style={{ padding: '8px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'var(--color-vcx-sub-4)' }}>{page} / {Math.ceil(total / 20)}</span>
+              <button onClick={() => setPage(p => p + 1)} disabled={page >= Math.ceil(total / 20)} style={{ padding: '8px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', background: 'transparent', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 0, cursor: 'pointer', color: 'var(--color-vcx-sub-3)' }}>다음</button>
             </div>
           )}
         </div>

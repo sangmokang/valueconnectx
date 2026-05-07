@@ -9,14 +9,14 @@ export default function CommunityCreatePage() {
         <div style={{ marginBottom: '32px' }}>
           <Link
             href="/community"
-            style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#888888', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px', marginBottom: '20px' }}
+            style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'var(--color-vcx-sub-4)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px', marginBottom: '20px' }}
           >
             ← 커뮤니티
           </Link>
-          <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.12em', color: '#c9a84c', textTransform: 'uppercase', marginBottom: '8px' }}>
+          <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.12em', color: 'var(--color-vcx-gold)', textTransform: 'uppercase', marginBottom: '8px' }}>
             Community
           </p>
-          <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '24px', fontWeight: 800, color: '#1a1a1a' }}>
+          <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '24px', fontWeight: 800, color: 'var(--color-vcx-dark)' }}>
             글 작성
           </h1>
         </div>

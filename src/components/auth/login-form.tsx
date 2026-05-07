@@ -32,12 +32,12 @@ export function LoginForm({ redirectTo }: { redirectTo?: string }) {
 
   const inputStyle = {
     width: '100%', padding: '14px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '14px',
-    color: '#1a1a1a', background: '#f7f3ed', border: '1px solid rgba(0,0,0,0.08)',
+    color: 'var(--color-vcx-dark)', background: 'var(--color-vcx-beige-light)', border: '1px solid rgba(0,0,0,0.08)',
     borderRadius: 0, outline: 'none', boxSizing: 'border-box' as const,
   }
   const labelStyle = {
     display: 'block' as const, fontFamily: 'system-ui, sans-serif', fontSize: '12px',
-    letterSpacing: '0.02em', color: '#888', marginBottom: '8px',
+    letterSpacing: '0.02em', color: 'var(--color-vcx-sub-4)', marginBottom: '8px',
   }
 
   return (
@@ -76,7 +76,7 @@ export function LoginForm({ redirectTo }: { redirectTo?: string }) {
       </div>
       <button type="submit" disabled={loading} style={{
         width: '100%', padding: '14px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', fontWeight: 600,
-        color: '#f0ebe2', background: loading ? '#444' : '#1a1a1a', border: 'none', borderRadius: 0,
+        color: 'var(--color-vcx-beige)', background: loading ? '#444444' : 'var(--color-vcx-dark)', border: 'none', borderRadius: 0,
         cursor: loading ? 'not-allowed' : 'pointer',
       }}>
         {loading ? '로그인 중...' : '로그인'}

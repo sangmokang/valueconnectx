@@ -4,11 +4,11 @@ import { LoungeFeed } from '@/components/community/lounge-feed'
 export default async function CommunityPage() {
   return (
     <ProtectedPageWrapper currentPath="/community">
-      <div style={{ background: '#f5f0e8', minHeight: '100vh', fontFamily: 'system-ui, sans-serif' }}>
+      <div style={{ background: 'var(--color-vcx-beige)', minHeight: '100vh', fontFamily: 'system-ui, sans-serif' }}>
         {/* HERO */}
         <div
           style={{
-            background: '#1a1a1a',
+            background: 'var(--color-vcx-dark)',
             padding: '56px 0 64px',
             position: 'relative',
             overflow: 'hidden',
@@ -38,10 +38,10 @@ export default async function CommunityPage() {
                 marginBottom: '20px',
               }}
             >
-              <div style={{ width: '28px', height: '1px', background: '#c9a84c' }} />
+              <div style={{ width: '28px', height: '1px', background: 'var(--color-vcx-gold)' }} />
               <span
                 style={{
-                  color: '#c9a84c',
+                  color: 'var(--color-vcx-gold)',
                   fontSize: '12px',
                   fontWeight: 600,
                   fontFamily: 'system-ui, sans-serif',
@@ -65,7 +65,7 @@ export default async function CommunityPage() {
                   style={{
                     fontSize: 'clamp(26px, 3.5vw, 42px)',
                     fontWeight: 800,
-                    color: '#f5f0e8',
+                    color: 'var(--color-vcx-cream)',
                     lineHeight: 1.25,
                     margin: '0 0 16px',
                     letterSpacing: '-1px',

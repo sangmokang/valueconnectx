@@ -10,7 +10,7 @@ export function RunbookLinks() {
   return (
     <div style={{ border: '1px solid rgba(0,0,0,0.08)', background: '#fff' }}>
       <div style={{ padding: '20px 24px', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-        <h3 style={{ fontFamily: 'Georgia, serif', fontSize: '18px', fontWeight: 700, color: '#1a1a1a', margin: 0 }}>
+        <h3 style={{ fontFamily: 'Georgia, serif', fontSize: '18px', fontWeight: 700, color: 'var(--color-vcx-dark)', margin: 0 }}>
           운영 런북
         </h3>
       </div>
@@ -30,14 +30,14 @@ export function RunbookLinks() {
             >
               <span style={{ fontSize: '20px' }}>{book.icon}</span>
               <div>
-                <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '14px', fontWeight: 600, color: '#1a1a1a' }}>
+                <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '14px', fontWeight: 600, color: 'var(--color-vcx-dark)' }}>
                   {book.id}. {book.title}
                 </div>
                 <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#888', marginTop: '2px' }}>
                   {book.description}
                 </div>
               </div>
-              <span style={{ marginLeft: 'auto', fontFamily: 'system-ui, sans-serif', fontSize: '11px', color: '#c9a84c', fontWeight: 500 }}>
+              <span style={{ marginLeft: 'auto', fontFamily: 'system-ui, sans-serif', fontSize: '11px', color: 'var(--color-vcx-gold)', fontWeight: 500 }}>
                 docs/ops/runbooks/{book.id}-*.md
               </span>
             </div>

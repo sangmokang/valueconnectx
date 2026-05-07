@@ -241,7 +241,7 @@ export function PositionForm({ initialData, positionId }: PositionFormProps) {
           <button
             type="submit"
             disabled={submitting}
-            className="px-4 py-2 text-sm font-vcx-sans bg-vcx-dark text-vcx-gold hover:bg-[#333333] transition-colors disabled:opacity-50"
+            className="px-4 py-2 text-sm font-vcx-sans bg-vcx-dark text-vcx-gold hover:bg-vcx-card transition-colors disabled:opacity-50"
             style={{ borderRadius: 0 }}
           >
             {submitting ? '저장 중...' : isEdit ? '수정' : '등록'}

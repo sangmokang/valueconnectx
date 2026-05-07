@@ -258,9 +258,9 @@ export function LoungeFeed() {
             style={{
               padding: '6px 12px',
               fontSize: '13px',
-              border: `1px solid ${activeCat === cat.key ? '#1a1a1a' : 'rgba(0,0,0,0.1)'}`,
-              background: activeCat === cat.key ? '#1a1a1a' : 'transparent',
-              color: activeCat === cat.key ? '#c9a84c' : '#555',
+              border: `1px solid ${activeCat === cat.key ? 'var(--color-vcx-dark)' : 'rgba(0,0,0,0.1)'}`,
+              background: activeCat === cat.key ? 'var(--color-vcx-dark)' : 'transparent',
+              color: activeCat === cat.key ? 'var(--color-vcx-gold)' : '#555',
               cursor: 'pointer',
               whiteSpace: 'nowrap',
               fontFamily: 'system-ui, sans-serif',
@@ -310,7 +310,7 @@ export function LoungeFeed() {
                 style={{
                   fontSize: '16px',
                   fontWeight: 800,
-                  color: '#1a1a1a',
+                  color: 'var(--color-vcx-dark)',
                   fontFamily: 'Georgia, serif',
                   marginBottom: '2px',
                 }}
@@ -332,7 +332,7 @@ export function LoungeFeed() {
                 onClick={() => setShowWrite(true)}
                 style={{
                   padding: '10px 20px',
-                  background: '#1a1a1a',
+                  background: 'var(--color-vcx-dark)',
                   color: '#f5f0e8',
                   border: 'none',
                   fontSize: '13.5px',
@@ -388,7 +388,7 @@ export function LoungeFeed() {
                   style={{
                     fontSize: '15px',
                     fontWeight: 700,
-                    color: '#1a1a1a',
+                    color: 'var(--color-vcx-dark)',
                     marginBottom: '6px',
                   }}
                 >

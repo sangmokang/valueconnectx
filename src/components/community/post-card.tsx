@@ -32,16 +32,16 @@ export function PostCard({ post }: { post: CommunityPost }) {
       <div
         style={{
           background: '#ffffff',
-          border: '1px solid #e0d9ce',
+          border: '1px solid rgba(26,26,26,0.1)',
           padding: '20px 24px',
           transition: 'border-color 0.15s',
           cursor: 'pointer',
         }}
         onMouseEnter={(e) => {
-          ;(e.currentTarget as HTMLDivElement).style.borderColor = '#c9a84c'
+          ;(e.currentTarget as HTMLDivElement).style.borderColor = 'var(--color-vcx-gold)'
         }}
         onMouseLeave={(e) => {
-          ;(e.currentTarget as HTMLDivElement).style.borderColor = '#e0d9ce'
+          ;(e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(26,26,26,0.1)'
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
@@ -51,8 +51,8 @@ export function PostCard({ post }: { post: CommunityPost }) {
               fontFamily: 'system-ui, sans-serif',
               padding: '2px 8px',
               background: isCompanyReview ? '#fff8e6' : '#f5f0eb',
-              color: isCompanyReview ? '#c9a84c' : '#888888',
-              border: `1px solid ${isCompanyReview ? '#c9a84c' : '#e0d9ce'}`,
+              color: isCompanyReview ? 'var(--color-vcx-gold)' : '#888888',
+              border: `1px solid ${isCompanyReview ? 'var(--color-vcx-gold)' : 'rgba(26,26,26,0.1)'}`,
               letterSpacing: '0.02em',
             }}
           >
@@ -70,7 +70,7 @@ export function PostCard({ post }: { post: CommunityPost }) {
             fontFamily: 'Georgia, serif',
             fontSize: '16px',
             fontWeight: 700,
-            color: '#1a1a1a',
+            color: 'var(--color-vcx-dark)',
             marginBottom: '8px',
             lineHeight: '1.4',
           }}
@@ -109,7 +109,7 @@ export function PostCard({ post }: { post: CommunityPost }) {
                 gap: '4px',
                 fontFamily: 'system-ui, sans-serif',
                 fontSize: '12px',
-                color: post.likes_count > 0 ? '#c9a84c' : '#aaaaaa',
+                color: post.likes_count > 0 ? 'var(--color-vcx-gold)' : '#aaaaaa',
               }}
             >
               ♥ {post.likes_count}

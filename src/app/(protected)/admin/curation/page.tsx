@@ -70,7 +70,7 @@ export default function CurationPage() {
         <div>
           <h2 style={{
             fontFamily: 'Georgia, serif', fontSize: '22px', fontWeight: 800,
-            color: '#1a1a1a', margin: '0 0 4px', letterSpacing: '-0.5px',
+            color: 'var(--color-vcx-dark)', margin: '0 0 4px', letterSpacing: '-0.5px',
           }}>
             큐레이션 피드 관리
           </h2>
@@ -81,7 +81,7 @@ export default function CurationPage() {
         <button
           onClick={openCreate}
           style={{
-            padding: '12px 24px', background: '#c9a84c', color: '#fff',
+            padding: '12px 24px', background: 'var(--color-vcx-gold)', color: '#fff',
             border: 'none', cursor: 'pointer', fontSize: '14px',
             fontFamily: 'system-ui, sans-serif', fontWeight: 700,
             letterSpacing: '0.04em',
@@ -156,7 +156,7 @@ export default function CurationPage() {
             }}>
               <h3 style={{
                 fontFamily: 'Georgia, serif', fontSize: '20px', fontWeight: 800,
-                color: '#1a1a1a', margin: 0,
+                color: 'var(--color-vcx-dark)', margin: 0,
               }}>
                 {modalMode === 'create' ? '새 피드 아이템 생성' : '피드 아이템 편집'}
               </h3>

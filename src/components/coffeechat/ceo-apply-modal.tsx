@@ -58,7 +58,7 @@ export function CeoApplyModal({ session, onClose, onSubmit }: CeoApplyModalProps
         <div
           style={{
             height: 3,
-            background: 'linear-gradient(90deg, #c9a84c, #a8882d)',
+            background: 'linear-gradient(90deg, var(--color-vcx-gold), #a8882d)',
           }}
         />
 
@@ -85,7 +85,7 @@ export function CeoApplyModal({ session, onClose, onSubmit }: CeoApplyModalProps
           <div
             style={{
               fontSize: 12,
-              color: '#888',
+              color: 'var(--color-vcx-sub-4)',
               marginBottom: 6,
               fontFamily: 'system-ui, sans-serif',
             }}
@@ -99,7 +99,7 @@ export function CeoApplyModal({ session, onClose, onSubmit }: CeoApplyModalProps
               fontWeight: 800,
               margin: '0 0 8px',
               fontFamily: 'Georgia, serif',
-              color: '#1a1a1a',
+              color: 'var(--color-vcx-dark)',
             }}
           >
             커피챗 신청
@@ -109,7 +109,7 @@ export function CeoApplyModal({ session, onClose, onSubmit }: CeoApplyModalProps
           <div
             style={{
               fontSize: 13,
-              color: '#888',
+              color: 'var(--color-vcx-sub-4)',
               marginBottom: 24,
               padding: '10px 14px',
               background: 'rgba(201,168,76,0.06)',
@@ -126,7 +126,7 @@ export function CeoApplyModal({ session, onClose, onSubmit }: CeoApplyModalProps
             <label
               style={{
                 fontSize: 11,
-                color: '#888',
+                color: 'var(--color-vcx-sub-4)',
                 fontWeight: 600,
                 display: 'block',
                 marginBottom: 8,
@@ -151,7 +151,7 @@ export function CeoApplyModal({ session, onClose, onSubmit }: CeoApplyModalProps
                 lineHeight: 1.75,
                 boxSizing: 'border-box',
                 fontFamily: 'system-ui, sans-serif',
-                color: '#1a1a1a',
+                color: 'var(--color-vcx-dark)',
               }}
             />
           </div>
@@ -182,7 +182,7 @@ export function CeoApplyModal({ session, onClose, onSubmit }: CeoApplyModalProps
                 fontSize: 14,
                 cursor: loading ? 'not-allowed' : 'pointer',
                 fontFamily: 'system-ui, sans-serif',
-                color: '#1a1a1a',
+                color: 'var(--color-vcx-dark)',
               }}
             >
               취소
@@ -193,7 +193,7 @@ export function CeoApplyModal({ session, onClose, onSubmit }: CeoApplyModalProps
               style={{
                 flex: 2,
                 padding: '13px',
-                background: loading ? '#555' : '#1a1a1a',
+                background: loading ? 'var(--color-vcx-sub-3)' : 'var(--color-vcx-dark)',
                 color: '#f5f0e8',
                 border: 'none',
                 fontSize: 14,

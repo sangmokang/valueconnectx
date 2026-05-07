@@ -49,7 +49,7 @@ export function PeerWriteModal({ onClose, onSubmit }: PeerWriteModalProps) {
             {/* Close button */}
             <button
               onClick={onClose}
-              className="absolute top-5 right-6 text-[20px] text-sub-4 hover:text-vcx-dark transition-colors bg-none border-none cursor-pointer"
+              className="absolute top-5 right-6 text-[20px] text-vcx-sub-4 hover:text-vcx-dark transition-colors bg-none border-none cursor-pointer"
               aria-label="닫기"
             >
               ✕
@@ -60,13 +60,13 @@ export function PeerWriteModal({ onClose, onSubmit }: PeerWriteModalProps) {
             </h3>
 
             {/* Info box */}
-            <div className="text-[13px] text-sub-2 font-vcx-sans mb-5 px-4 py-3 bg-vcx-beige">
+            <div className="text-[13px] text-vcx-sub-2 font-vcx-sans mb-5 px-4 py-3 bg-vcx-beige">
               💡 사연을 올리면 멤버들이 신청을 보내옵니다. 당신이 직접 신청자를 선택합니다.
             </div>
 
             {/* Want input */}
             <div className="mb-4">
-              <label className="block text-[11px] text-sub-4 font-semibold font-vcx-sans mb-1.5">
+              <label className="block text-[11px] text-vcx-sub-4 font-semibold font-vcx-sans mb-1.5">
                 어떤 분을 찾으시나요?
               </label>
               <input
@@ -80,7 +80,7 @@ export function PeerWriteModal({ onClose, onSubmit }: PeerWriteModalProps) {
 
             {/* Topic textarea */}
             <div className="mb-6">
-              <label className="block text-[11px] text-sub-4 font-semibold font-vcx-sans mb-1.5">
+              <label className="block text-[11px] text-vcx-sub-4 font-semibold font-vcx-sans mb-1.5">
                 이야기 나누고 싶은 주제
               </label>
               <textarea
@@ -109,7 +109,7 @@ export function PeerWriteModal({ onClose, onSubmit }: PeerWriteModalProps) {
               <button
                 onClick={handleSubmit}
                 disabled={loading || !want.trim() || !topic.trim()}
-                className="flex-[2] py-3 bg-vcx-dark text-vcx-beige text-[14px] font-bold font-vcx-sans hover:bg-[#333] transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-[2] py-3 bg-vcx-dark text-vcx-beige text-[14px] font-bold font-vcx-sans hover:bg-vcx-card transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? '올리는 중...' : '사연 올리기 →'}
               </button>

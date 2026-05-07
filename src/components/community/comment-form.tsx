@@ -46,11 +46,11 @@ export function CommentForm({ postId }: { postId: string }) {
         style={{
           width: '100%',
           padding: '10px 12px',
-          border: '1px solid #e0d9ce',
+          border: '1px solid rgba(26,26,26,0.1)',
           background: '#ffffff',
           fontFamily: 'system-ui, sans-serif',
           fontSize: '14px',
-          color: '#1a1a1a',
+          color: 'var(--color-vcx-dark)',
           outline: 'none',
           resize: 'vertical',
           minHeight: '80px',
@@ -67,7 +67,7 @@ export function CommentForm({ postId }: { postId: string }) {
             type="checkbox"
             checked={isAnonymous}
             onChange={(e) => setIsAnonymous(e.target.checked)}
-            style={{ accentColor: '#c9a84c', width: '14px', height: '14px' }}
+            style={{ accentColor: 'var(--color-vcx-gold)', width: '14px', height: '14px' }}
           />
           <span style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#555555' }}>
             익명
@@ -80,10 +80,10 @@ export function CommentForm({ postId }: { postId: string }) {
           style={{
             padding: '8px 20px',
             border: 'none',
-            background: isPending || !content.trim() ? '#cccccc' : '#1a1a1a',
+            background: isPending || !content.trim() ? '#cccccc' : 'var(--color-vcx-dark)',
             fontFamily: 'system-ui, sans-serif',
             fontSize: '13px',
-            color: '#c9a84c',
+            color: 'var(--color-vcx-gold)',
             cursor: isPending || !content.trim() ? 'not-allowed' : 'pointer',
             borderRadius: 0,
           }}

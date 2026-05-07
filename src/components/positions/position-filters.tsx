@@ -30,11 +30,11 @@ export function PositionFilters({ value, onChange }: PositionFiltersProps) {
                 padding: '14px 16px',
                 background: 'none',
                 border: 'none',
-                borderBottom: active ? '2px solid #c9a84c' : '2px solid transparent',
+                borderBottom: active ? '2px solid var(--color-vcx-gold)' : '2px solid transparent',
                 cursor: 'pointer',
                 fontSize: 13.5,
                 fontWeight: active ? 700 : 400,
-                color: active ? '#1a1a1a' : '#888888',
+                color: active ? 'var(--color-vcx-dark)' : 'var(--color-vcx-sub-4)',
                 fontFamily: 'system-ui, sans-serif',
               }}
             >

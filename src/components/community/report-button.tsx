@@ -64,7 +64,7 @@ export function ReportButton({ postId, commentId }: ReportButtonProps) {
             top: '24px',
             zIndex: 10,
             background: '#ffffff',
-            border: '1px solid #e0d9ce',
+            border: '1px solid rgba(26,26,26,0.1)',
             padding: '12px',
             width: '240px',
             boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
@@ -81,10 +81,10 @@ export function ReportButton({ postId, commentId }: ReportButtonProps) {
               style={{
                 width: '100%',
                 padding: '6px 8px',
-                border: '1px solid #e0d9ce',
+                border: '1px solid rgba(26,26,26,0.1)',
                 fontFamily: 'system-ui, sans-serif',
                 fontSize: '12px',
-                color: '#1a1a1a',
+                color: 'var(--color-vcx-dark)',
                 resize: 'vertical',
                 minHeight: '60px',
                 boxSizing: 'border-box',
@@ -100,7 +100,7 @@ export function ReportButton({ postId, commentId }: ReportButtonProps) {
                 onClick={() => setOpen(false)}
                 style={{
                   padding: '4px 10px',
-                  border: '1px solid #e0d9ce',
+                  border: '1px solid rgba(26,26,26,0.1)',
                   background: 'transparent',
                   fontFamily: 'system-ui, sans-serif',
                   fontSize: '12px',
@@ -117,10 +117,10 @@ export function ReportButton({ postId, commentId }: ReportButtonProps) {
                 style={{
                   padding: '4px 10px',
                   border: 'none',
-                  background: loading ? '#888888' : '#1a1a1a',
+                  background: loading ? '#888888' : 'var(--color-vcx-dark)',
                   fontFamily: 'system-ui, sans-serif',
                   fontSize: '12px',
-                  color: '#c9a84c',
+                  color: 'var(--color-vcx-gold)',
                   cursor: loading ? 'not-allowed' : 'pointer',
                   borderRadius: 0,
                 }}

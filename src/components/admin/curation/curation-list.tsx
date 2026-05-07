@@ -53,7 +53,7 @@ export function CurationList({ items, onEdit, onDelete }: CurationListProps) {
                 key={h}
                 style={{
                   padding: '12px 16px', textAlign: 'left', fontWeight: 700,
-                  color: '#1a1a1a', fontSize: '11px', letterSpacing: '0.08em',
+                  color: 'var(--color-vcx-dark)', fontSize: '11px', letterSpacing: '0.08em',
                   textTransform: 'uppercase', whiteSpace: 'nowrap',
                 }}
               >
@@ -72,7 +72,7 @@ export function CurationList({ items, onEdit, onDelete }: CurationListProps) {
               }}
             >
               <td style={{ padding: '14px 16px', whiteSpace: 'nowrap' }}>
-                <div style={{ fontWeight: 700, color: '#1a1a1a' }}>{item.company}</div>
+                <div style={{ fontWeight: 700, color: 'var(--color-vcx-dark)' }}>{item.company}</div>
                 {item.company_tag && (
                   <div style={{ fontSize: '11px', color: '#888', marginTop: '2px' }}>{item.company_tag}</div>
                 )}

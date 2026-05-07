@@ -45,7 +45,7 @@ export function IndustryNewsFeed() {
         }}
       >
         <div style={{ fontSize: '28px', marginBottom: '12px' }}>📰</div>
-        <div style={{ fontSize: '15px', fontWeight: 700, color: '#1a1a1a', marginBottom: '6px' }}>
+        <div style={{ fontSize: '15px', fontWeight: 700, color: 'var(--color-vcx-dark)', marginBottom: '6px' }}>
           업계 뉴스가 아직 없습니다
         </div>
         <div style={{ fontSize: '13.5px', color: '#888888' }}>
@@ -83,14 +83,14 @@ function NewsRow({ item, isLast }: { item: FeedItem; isLast: boolean }) {
         style={{
           width: '36px',
           height: '36px',
-          background: '#1a1a1a',
+          background: 'var(--color-vcx-dark)',
           flexShrink: 0,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
-        <span style={{ color: '#c9a84c', fontSize: '13px', fontWeight: 700, fontFamily: 'Georgia, serif' }}>
+        <span style={{ color: 'var(--color-vcx-gold)', fontSize: '13px', fontWeight: 700, fontFamily: 'Georgia, serif' }}>
           {(sourceDisplay ?? 'N').charAt(0).toUpperCase()}
         </span>
       </div>
@@ -98,7 +98,7 @@ function NewsRow({ item, isLast }: { item: FeedItem; isLast: boolean }) {
       {/* Content */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', flexWrap: 'wrap' }}>
-          <span style={{ fontSize: '12.5px', fontWeight: 700, color: '#1a1a1a', fontFamily: 'system-ui, sans-serif' }}>
+          <span style={{ fontSize: '12.5px', fontWeight: 700, color: 'var(--color-vcx-dark)', fontFamily: 'system-ui, sans-serif' }}>
             {item.company}
           </span>
           {sourceDisplay && sourceDisplay !== item.company && (
@@ -113,7 +113,7 @@ function NewsRow({ item, isLast }: { item: FeedItem; isLast: boolean }) {
           )}
         </div>
 
-        <div style={{ fontSize: '14px', fontWeight: 600, color: '#1a1a1a', fontFamily: 'system-ui, sans-serif', marginBottom: '6px', lineHeight: 1.5 }}>
+        <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--color-vcx-dark)', fontFamily: 'system-ui, sans-serif', marginBottom: '6px', lineHeight: 1.5 }}>
           {item.role}
         </div>
 
@@ -146,7 +146,7 @@ function NewsRow({ item, isLast }: { item: FeedItem; isLast: boolean }) {
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
           <Link
             href={`/feed/${item.id}`}
-            style={{ fontSize: '12.5px', color: '#c9a84c', fontWeight: 600, fontFamily: 'system-ui, sans-serif', textDecoration: 'none' }}
+            style={{ fontSize: '12.5px', color: 'var(--color-vcx-gold)', fontWeight: 600, fontFamily: 'system-ui, sans-serif', textDecoration: 'none' }}
           >
             자세히 보기 →
           </Link>

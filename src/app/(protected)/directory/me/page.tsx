@@ -25,7 +25,7 @@ export default async function ProfileEditPage() {
     <div className="max-w-2xl mx-auto px-4 py-8">
       <Link
         href="/directory"
-        className="mb-6 inline-flex min-h-9 items-center gap-1.5 text-xs font-vcx-sans text-[#888888] transition-colors hover:text-[#1a1a1a]"
+        className="mb-6 inline-flex min-h-9 items-center gap-1.5 text-xs font-vcx-sans text-vcx-sub-4 transition-colors hover:text-vcx-dark"
       >
         <span>←</span>
         <span>멤버 디렉토리로 돌아가기</span>
@@ -33,9 +33,9 @@ export default async function ProfileEditPage() {
 
       <div className="mb-6">
         <p className="vcx-section-label mb-1">내 프로필</p>
-        <h1 className="font-vcx-serif font-bold text-[#1a1a1a] text-3xl">프로필 수정</h1>
-        <p className="text-sm font-vcx-sans text-[#888888] mt-1">
-          안녕하세요, <span className="text-[#1a1a1a] font-medium">{member.name}</span>님
+        <h1 className="font-vcx-serif font-bold text-vcx-dark text-3xl">프로필 수정</h1>
+        <p className="text-sm font-vcx-sans text-vcx-sub-4 mt-1">
+          안녕하세요, <span className="text-vcx-dark font-medium">{member.name}</span>님
         </p>
       </div>
 
@@ -50,7 +50,7 @@ export default async function ProfileEditPage() {
         className="mb-6"
       />
 
-      <div className="bg-white border border-[#e0d9ce] p-6">
+      <div className="bg-white border border-vcx-dark/10 p-6">
         <ProfileEditForm
           initialData={{
             bio: member.bio,

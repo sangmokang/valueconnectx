@@ -47,11 +47,11 @@ export function PostForm({ defaultCategory }: { defaultCategory?: CategoryKey })
   const inputStyle = {
     width: '100%',
     padding: '10px 12px',
-    border: '1px solid #e0d9ce',
+    border: '1px solid rgba(26,26,26,0.1)',
     background: '#ffffff',
     fontFamily: 'system-ui, sans-serif',
     fontSize: '14px',
-    color: '#1a1a1a',
+    color: 'var(--color-vcx-dark)',
     outline: 'none',
     boxSizing: 'border-box' as const,
     borderRadius: 0,
@@ -82,7 +82,7 @@ export function PostForm({ defaultCategory }: { defaultCategory?: CategoryKey })
           style={{
             padding: '12px 16px',
             background: '#fff8e6',
-            border: '1px solid #c9a84c',
+            border: '1px solid var(--color-vcx-gold)',
             fontFamily: 'system-ui, sans-serif',
             fontSize: '13px',
             color: '#7a6020',
@@ -131,7 +131,7 @@ export function PostForm({ defaultCategory }: { defaultCategory?: CategoryKey })
           type="checkbox"
           checked={isAnonymous}
           onChange={(e) => setIsAnonymous(e.target.checked)}
-          style={{ accentColor: '#c9a84c', width: '16px', height: '16px' }}
+          style={{ accentColor: 'var(--color-vcx-gold)', width: '16px', height: '16px' }}
         />
         <span style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#555555' }}>
           익명으로 작성
@@ -150,7 +150,7 @@ export function PostForm({ defaultCategory }: { defaultCategory?: CategoryKey })
           onClick={() => router.back()}
           style={{
             padding: '10px 20px',
-            border: '1px solid #e0d9ce',
+            border: '1px solid rgba(26,26,26,0.1)',
             background: 'transparent',
             fontFamily: 'system-ui, sans-serif',
             fontSize: '14px',
@@ -167,10 +167,10 @@ export function PostForm({ defaultCategory }: { defaultCategory?: CategoryKey })
           style={{
             padding: '10px 28px',
             border: 'none',
-            background: isPending ? '#888888' : '#1a1a1a',
+            background: isPending ? '#888888' : 'var(--color-vcx-dark)',
             fontFamily: 'system-ui, sans-serif',
             fontSize: '14px',
-            color: '#c9a84c',
+            color: 'var(--color-vcx-gold)',
             cursor: isPending ? 'not-allowed' : 'pointer',
             borderRadius: 0,
           }}
