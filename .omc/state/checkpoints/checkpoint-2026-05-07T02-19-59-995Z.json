@@ -1,0 +1,19 @@
+{
+  "created_at": "2026-05-07T02:19:59.994Z",
+  "trigger": "auto",
+  "active_modes": {
+    "ralph": {
+      "iteration": 4,
+      "prompt": ""
+    },
+    "ultrawork": {
+      "original_prompt": "병렬로 실행가능한 구현을 시작 바랍니다. SDD, TDD 개념을 더하고, Slice를 쪼개서 병렬 실행하는데 하나 마칠때 마다 육안으로 확인할 것임. 버티컬 슬라이스. /ralph"
+    }
+  },
+  "todo_summary": {
+    "pending": 0,
+    "in_progress": 0,
+    "completed": 0
+  },
+  "wisdom_exported": false
+}

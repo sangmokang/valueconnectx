@@ -28,6 +28,22 @@
 - [chore] HUD state + history 업데이트 (commit:40a64a0)
 - [chore] design(brand): 하드코딩 hex → VCX 디자인 토큰 전환 (L-Std) (commit:8051d28)
 - [chore] design(brand): 2차 VCX 토큰 전환 — gnb/auth/coffeechat/admin/ui (L-Std) (commit:b8ba106)
+- [chore] CSS 토큰 정리 + Sprint 4 Go/No-Go + ADR-0010 Phase2 착수 (L-Std) (commit:73a85cb)
+- [chore] design(brand): 3차 VCX 토큰 전환 — coffeechat 잔여 4파일 (L-Std) (commit:5ed142f)
+- [docs] VERTICAL_SLICE_PHASE2.md 초안 — ADR-0010 착수 조건 #2 충족 (L-Std) (commit:e725f18)
+- [chore] 완료 플랜 아카이브 → 활성 2건 (ADR-0010 M3 ≤3 충족) (commit:c623d64)
+- [docs] ADR-0010 2차 서명 완료 — Phase 2 착수 승인 (소유자 지시로 쿨다운 면제) (commit:4d509e6)
+- [style] VCX 토큰 전환 — coffeechat/positions/directory 컴포넌트 (16파일) (commit:89c40c8)
+- [fix] peer-session-card text-sub-N → text-vcx-sub-N (vcx- 접두사 누락 수정) (commit:e8b3edb)
+- [style] --color-vcx-sub-* CSS 변수 + border-vcx-sub-* 유틸리티 추가 (commit:ffcae94)
+- [feat] 초대 시 인재 정보 pre-seed (invitee_name/company/title) (commit:fd15573)
+- [feat] Cold Start 자동화 — 초대 시 name/company/title pre-seed (L-Std) (commit:3b2476c)
+- [style] VCX 토큰 전환 — auth/admin/community/coffeechat/positions/directory (51파일) (commit:a13cd39)
+- [style] 인라인 스타일 hex → CSS 변수 전환 완료 (commit:06f1b58)
+- [feat] AI Brief V2 — 수수료 필터 + CEO 컬쳐핏 프롬프트 + 샘플 15건 (L-Std) (commit:0b45d32)
+- [feat] Community 강화 — rate-limit + admin CommunityReports + E2E spec (commit:f93905c)
+- [feat] Onboarding V2 — 전문 분야 프리셋 칩 + 프로필 편집 칩 UI (commit:f1ca462)
+- [fix] 031 — vcx_consume_invite에 invitee_name/company/title 반환 추가 (commit:a8a5569)
 
 ## 2026-05-07
 
