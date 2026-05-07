@@ -13,9 +13,9 @@ export async function POST(request: NextRequest) {
 
     let body
     try { body = await request.json() } catch { return NextResponse.json({ error: '유효하지 않은 요청 형식입니다' }, { status: 400 }) }
-    const { token, password, name, linkedin_url } = body
-    if (!token || !password || !name || !linkedin_url) return NextResponse.json({ error: '모든 필드를 입력해주세요' }, { status: 400 })
-    if (!/^https?:\/\/(www\.)?linkedin\.com\/in\//i.test(linkedin_url)) return NextResponse.json({ error: 'LinkedIn 프로필 URL이어야 합니다 (linkedin.com/in/...)' }, { status: 400 })
+    const { token, password, name, linkedin_url, company, title } = body
+    if (!token || !password || !name) return NextResponse.json({ error: '필수 항목을 입력해주세요' }, { status: 400 })
+    if (linkedin_url && !/^https?:\/\/(www\.)?linkedin\.com\/in\//i.test(linkedin_url)) return NextResponse.json({ error: 'LinkedIn 프로필 URL이어야 합니다 (linkedin.com/in/...)' }, { status: 400 })
     if (password.length < 8) return NextResponse.json({ error: '비밀번호는 8자 이상이어야 합니다' }, { status: 400 })
 
     const adminClient = createAdminClient()
@@ -70,6 +70,8 @@ export async function POST(request: NextRequest) {
       endorsed_by: invite.member_tier === 'endorsed' ? endorsedBy : null,
       endorsed_by_name: invite.member_tier === 'endorsed' ? endorsedByName : null,
       linkedin_url: linkedin_url || null,
+      current_company: company || invite.invitee_company || null,
+      title: title || invite.invitee_title || null,
     })
     if (memberError) return NextResponse.json({ error: '멤버 프로필 생성에 실패했습니다' }, { status: 500 })
 

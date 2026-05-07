@@ -88,6 +88,9 @@ export type Database = {
           accepted_at: string | null
           recommendation_id: string | null
           created_at: string
+          invitee_name: string | null
+          invitee_company: string | null
+          invitee_title: string | null
         }
         Insert: {
           id?: string
@@ -101,6 +104,9 @@ export type Database = {
           accepted_at?: string | null
           recommendation_id?: string | null
           created_at?: string
+          invitee_name?: string | null
+          invitee_company?: string | null
+          invitee_title?: string | null
         }
         Update: {
           status?: 'pending' | 'accepted' | 'expired' | 'revoked'
@@ -695,6 +701,9 @@ export type Database = {
           member_tier: 'core' | 'endorsed'
           recommendation_id: string | null
           expires_at: string
+          invitee_name: string | null
+          invitee_company: string | null
+          invitee_title: string | null
         }>
       }
       vcx_get_recipient_by_token: {

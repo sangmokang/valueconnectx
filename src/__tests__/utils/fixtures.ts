@@ -123,6 +123,9 @@ export function createInviteFixture(overrides?: Partial<VcxInviteRow>): VcxInvit
     accepted_at: null,
     recommendation_id: null,
     created_at: now,
+    invitee_name: null,
+    invitee_company: null,
+    invitee_title: null,
     ...overrides,
   }
 }

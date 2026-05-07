@@ -18,7 +18,7 @@ export async function GET(
 
     const { data: invite, error } = await adminClient
       .from('vcx_invites')
-      .select('email, invited_by_name, member_tier, expires_at, status')
+      .select('email, invited_by_name, member_tier, expires_at, status, invitee_name, invitee_company, invitee_title')
       .eq('token_hash', tokenHash).single()
 
     if (error || !invite) {
@@ -34,7 +34,7 @@ export async function GET(
       return NextResponse.json({ valid: false, reason: '초대 링크가 유효하지 않습니다' })
     }
 
-    return NextResponse.json({ valid: true, email: invite.email, invitedByName: invite.invited_by_name, memberTier: invite.member_tier })
+    return NextResponse.json({ valid: true, email: invite.email, invitedByName: invite.invited_by_name, memberTier: invite.member_tier, inviteeName: invite.invitee_name ?? null, inviteeCompany: invite.invitee_company ?? null, inviteeTitle: invite.invitee_title ?? null })
   } catch (error) {
     console.error('Verify error:', error)
     return NextResponse.json({ error: '서버 오류가 발생했습니다' }, { status: 500 })

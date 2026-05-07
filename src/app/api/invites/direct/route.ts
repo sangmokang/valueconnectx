@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
 
     let body
     try { body = await request.json() } catch { return NextResponse.json({ error: '유효하지 않은 요청 형식입니다' }, { status: 400 }) }
-    const { email, member_tier } = body
+    const { email, member_tier, invitee_name, invitee_company, invitee_title } = body
     if (!email || !member_tier) return NextResponse.json({ error: '필수 항목을 입력해주세요' }, { status: 400 })
 
     const adminClient = createAdminClient()
@@ -29,6 +29,9 @@ export async function POST(request: NextRequest) {
     const { data: invite, error: insertError } = await adminClient.from('vcx_invites').insert({
       email, invited_by: user.id, invited_by_name: admin.name,
       member_tier, token_hash: hashToken(rawToken), expires_at: calculateExpiry(),
+      invitee_name: invitee_name || null,
+      invitee_company: invitee_company || null,
+      invitee_title: invitee_title || null,
     }).select().single()
     if (insertError) return NextResponse.json({ error: '초대 생성에 실패했습니다' }, { status: 500 })
 
