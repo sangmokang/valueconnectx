@@ -42,45 +42,45 @@ export function PeerWriteModal({ onClose, onSubmit }: PeerWriteModalProps) {
           {/* Gold top bar */}
           <div
             className="h-[3px]"
-            style={{ background: 'linear-gradient(90deg, #c9a84c, #a07830)' }}
+            style={{ background: 'linear-gradient(90deg, var(--color-vcx-gold), #a07830)' }}
           />
 
           <div className="p-8 sm:p-9">
             {/* Close button */}
             <button
               onClick={onClose}
-              className="absolute top-5 right-6 text-[20px] text-[#aaa] hover:text-[#1a1a1a] transition-colors bg-none border-none cursor-pointer"
+              className="absolute top-5 right-6 text-[20px] text-sub-4 hover:text-vcx-dark transition-colors bg-none border-none cursor-pointer"
               aria-label="닫기"
             >
               ✕
             </button>
 
-            <h3 className="font-vcx-serif text-[20px] font-extrabold text-[#1a1a1a] mb-6">
+            <h3 className="font-vcx-serif text-[20px] font-extrabold text-vcx-dark mb-6">
               커피챗 사연 올리기
             </h3>
 
             {/* Info box */}
-            <div className="text-[13px] text-[#555] font-vcx-sans mb-5 px-4 py-3 bg-[#f5f0e8]">
+            <div className="text-[13px] text-sub-2 font-vcx-sans mb-5 px-4 py-3 bg-vcx-beige">
               💡 사연을 올리면 멤버들이 신청을 보내옵니다. 당신이 직접 신청자를 선택합니다.
             </div>
 
             {/* Want input */}
             <div className="mb-4">
-              <label className="block text-[11px] text-[#888] font-semibold font-vcx-sans mb-1.5">
+              <label className="block text-[11px] text-sub-4 font-semibold font-vcx-sans mb-1.5">
                 어떤 분을 찾으시나요?
               </label>
               <input
                 value={want}
                 onChange={(e) => setWant(e.target.value)}
                 placeholder="예: 헬스케어 도메인 경험의 PM"
-                className="w-full border border-black/12 px-3.5 py-2.5 text-[14px] font-vcx-sans text-[#1a1a1a] placeholder-[#bbb] focus:outline-none focus:border-[#c9a84c]"
+                className="w-full border border-black/12 px-3.5 py-2.5 text-[14px] font-vcx-sans text-vcx-dark placeholder-[#bbb] focus:outline-none focus:border-vcx-gold"
                 disabled={loading}
               />
             </div>
 
             {/* Topic textarea */}
             <div className="mb-6">
-              <label className="block text-[11px] text-[#888] font-semibold font-vcx-sans mb-1.5">
+              <label className="block text-[11px] text-sub-4 font-semibold font-vcx-sans mb-1.5">
                 이야기 나누고 싶은 주제
               </label>
               <textarea
@@ -88,7 +88,7 @@ export function PeerWriteModal({ onClose, onSubmit }: PeerWriteModalProps) {
                 onChange={(e) => setTopic(e.target.value)}
                 placeholder="어떤 인사이트를 나누고 싶으신지 자유롭게..."
                 rows={4}
-                className="w-full border border-black/12 px-3.5 py-2.5 text-[14px] font-vcx-sans text-[#1a1a1a] placeholder-[#bbb] focus:outline-none focus:border-[#c9a84c] resize-none leading-[1.75]"
+                className="w-full border border-black/12 px-3.5 py-2.5 text-[14px] font-vcx-sans text-vcx-dark placeholder-[#bbb] focus:outline-none focus:border-vcx-gold resize-none leading-[1.75]"
                 disabled={loading}
               />
             </div>
@@ -102,14 +102,14 @@ export function PeerWriteModal({ onClose, onSubmit }: PeerWriteModalProps) {
               <button
                 onClick={onClose}
                 disabled={loading}
-                className="flex-1 py-3 border border-black/12 bg-white text-[14px] font-vcx-sans text-[#1a1a1a] hover:bg-[#f5f0e8] transition-colors cursor-pointer disabled:opacity-50"
+                className="flex-1 py-3 border border-black/12 bg-white text-[14px] font-vcx-sans text-vcx-dark hover:bg-vcx-beige transition-colors cursor-pointer disabled:opacity-50"
               >
                 취소
               </button>
               <button
                 onClick={handleSubmit}
                 disabled={loading || !want.trim() || !topic.trim()}
-                className="flex-[2] py-3 bg-[#1a1a1a] text-[#f5f0e8] text-[14px] font-bold font-vcx-sans hover:bg-[#333] transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-[2] py-3 bg-vcx-dark text-vcx-beige text-[14px] font-bold font-vcx-sans hover:bg-[#333] transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? '올리는 중...' : '사연 올리기 →'}
               </button>

@@ -34,25 +34,25 @@ export function PeerSessionCard({ session, isApplied, onApply }: PeerSessionCard
             <span
               className="text-[11px] px-2 py-0.5 font-bold tracking-[0.05em] font-vcx-sans"
               style={{
-                background: session.authorBadge === 'Core' ? '#1a1a1a' : '#f5f0e8',
-                color: session.authorBadge === 'Core' ? '#c9a84c' : '#777',
+                background: session.authorBadge === 'Core' ? 'var(--color-vcx-dark)' : 'var(--color-vcx-beige)',
+                color: session.authorBadge === 'Core' ? 'var(--color-vcx-gold)' : 'var(--color-sub-3)',
               }}
             >
               {displayMemberTier(session.authorBadge)}
             </span>
-            <span className="text-[13px] text-[#1a1a1a] font-semibold font-vcx-sans">
+            <span className="text-[13px] text-vcx-dark font-semibold font-vcx-sans">
               {session.role}
             </span>
-            <span className="text-[12px] text-[#888] font-vcx-sans">{session.posted}</span>
+            <span className="text-[12px] text-sub-4 font-vcx-sans">{session.posted}</span>
           </div>
 
           {/* Want */}
-          <div className="text-[12px] text-[#888] mb-2 font-vcx-sans">
-            <span className="font-bold text-[#1a1a1a]">찾는 분:</span> {session.want}
+          <div className="text-[12px] text-sub-4 mb-2 font-vcx-sans">
+            <span className="font-bold text-vcx-dark">찾는 분:</span> {session.want}
           </div>
 
           {/* Topic quote */}
-          <p className="text-[14px] text-[#555] leading-[1.8] mb-4 italic font-vcx-serif">
+          <p className="text-[14px] text-sub-2 leading-[1.8] mb-4 italic font-vcx-serif">
             &ldquo;{session.topic}&rdquo;
           </p>
 
@@ -61,7 +61,7 @@ export function PeerSessionCard({ session, isApplied, onApply }: PeerSessionCard
             {session.tags.map((tag) => (
               <span
                 key={tag}
-                className="text-[11.5px] px-2.5 py-0.5 bg-[#f5f0e8] border border-black/8 text-[#777] font-vcx-sans"
+                className="text-[11.5px] px-2.5 py-0.5 bg-vcx-beige border border-black/8 text-sub-3 font-vcx-sans"
               >
                 {tag}
               </span>
@@ -78,16 +78,16 @@ export function PeerSessionCard({ session, isApplied, onApply }: PeerSessionCard
           ) : isOpen ? (
             <button
               onClick={() => onApply(session.id)}
-              className="px-5 py-2.5 bg-[#1a1a1a] text-[#f5f0e8] text-[13.5px] font-bold font-vcx-sans hover:bg-[#333] transition-colors"
+              className="px-5 py-2.5 bg-vcx-dark text-vcx-beige text-[13.5px] font-bold font-vcx-sans hover:bg-[#333] transition-colors"
             >
               신청하기 →
             </button>
           ) : (
-            <div className="px-4 py-2 text-[13px] font-vcx-sans text-[#999] border border-[#ddd]">
+            <div className="px-4 py-2 text-[13px] font-vcx-sans text-sub-5 border border-[#ddd]">
               마감
             </div>
           )}
-          <span className="text-[12px] text-[#888] font-vcx-sans">{session.applicants}명 신청중</span>
+          <span className="text-[12px] text-sub-4 font-vcx-sans">{session.applicants}명 신청중</span>
         </div>
       </div>
     </div>

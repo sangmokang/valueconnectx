@@ -25,8 +25,8 @@ export default function GlobalError({
             justifyContent: 'center',
             minHeight: '100vh',
             fontFamily: 'Georgia, serif',
-            background: '#f0ebe2',
-            color: '#1a1a1a',
+            background: 'var(--color-vcx-beige, #f0ebe2)',
+            color: 'var(--color-vcx-dark, #1a1a1a)',
             padding: '20px',
           }}
         >
@@ -36,7 +36,7 @@ export default function GlobalError({
           <p
             style={{
               fontSize: '14px',
-              color: '#666',
+              color: 'var(--color-vcx-sub-3, #888888)',
               marginBottom: '24px',
               fontFamily: 'system-ui, sans-serif',
             }}
@@ -46,8 +46,8 @@ export default function GlobalError({
           <button
             onClick={() => reset()}
             style={{
-              background: '#1a1a1a',
-              color: '#f0ebe2',
+              background: 'var(--color-vcx-dark, #1a1a1a)',
+              color: 'var(--color-vcx-beige, #f0ebe2)',
               padding: '12px 24px',
               border: 'none',
               cursor: 'pointer',

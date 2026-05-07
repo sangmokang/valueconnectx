@@ -40,6 +40,7 @@ export function createMemberFixture(overrides?: Partial<VcxMemberRow>): VcxMembe
     is_open_to_chat: true,
     profile_visibility: 'members_only',
     is_active: true,
+    fts: null,
     created_at: now,
     updated_at: now,
     ...overrides,

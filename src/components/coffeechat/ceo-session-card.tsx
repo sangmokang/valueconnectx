@@ -79,7 +79,7 @@ export function CeoSessionCard({
           style={{
             width: 52,
             height: 52,
-            background: '#1a1a1a',
+            background: 'var(--color-vcx-dark)',
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
@@ -88,11 +88,11 @@ export function CeoSessionCard({
           }}
         >
           <span
+            className="font-vcx-serif"
             style={{
-              color: '#c9a84c',
+              color: 'var(--color-vcx-gold)',
               fontSize: 18,
               fontWeight: 800,
-              fontFamily: 'Georgia, serif',
             }}
           >
             {getInitial(hostName)}
@@ -111,37 +111,37 @@ export function CeoSessionCard({
             }}
           >
             <span
+              className="font-vcx-serif"
               style={{
                 fontSize: 16,
                 fontWeight: 800,
-                color: '#1a1a1a',
-                fontFamily: 'Georgia, serif',
+                color: 'var(--color-vcx-dark)',
               }}
             >
               {hostName}
             </span>
             {hostTitle && (
-              <span style={{ fontSize: 13.5, color: '#555', fontFamily: 'system-ui, sans-serif' }}>
+              <span className="font-vcx-sans" style={{ fontSize: 13.5, color: 'var(--color-sub-2)' }}>
                 {hostTitle}
               </span>
             )}
-            <span style={{ fontSize: 12, color: '#888' }}>·</span>
+            <span style={{ fontSize: 12, color: 'var(--color-sub-4)' }}>·</span>
             <span
+              className="font-vcx-sans"
               style={{
                 fontSize: 13.5,
                 fontWeight: 700,
-                color: '#1a1a1a',
-                fontFamily: 'system-ui, sans-serif',
+                color: 'var(--color-vcx-dark)',
               }}
             >
               {company}
             </span>
             {companyDesc && (
               <span
+                className="font-vcx-sans"
                 style={{
                   fontSize: 12,
-                  color: '#888',
-                  fontFamily: 'system-ui, sans-serif',
+                  color: 'var(--color-sub-4)',
                 }}
               >
                 — {companyDesc}
@@ -151,12 +151,12 @@ export function CeoSessionCard({
 
           {/* Deadline + slots */}
           <div
+            className="font-vcx-sans"
             style={{
               fontSize: 13,
-              color: '#e85555',
+              color: 'var(--color-vcx-error)',
               fontWeight: 600,
               marginBottom: 10,
-              fontFamily: 'system-ui, sans-serif',
             }}
           >
             ⏰ {deadlineLabel} · 남은 자리 {slotsRemaining}석
@@ -167,14 +167,13 @@ export function CeoSessionCard({
             {(session.tags ?? []).map((tag) => (
               <span
                 key={tag}
+                className="font-vcx-sans"
                 style={{
                   fontSize: 11.5,
                   padding: '2px 9px',
-                  background: '#f5f0e8',
+                  background: 'var(--color-vcx-beige)',
                   border: '1px solid rgba(0,0,0,0.08)',
-                  color: '#777',
-                  borderRadius: 100,
-                  fontFamily: 'system-ui, sans-serif',
+                  color: 'var(--color-sub-3)',
                 }}
               >
                 {tag}
@@ -195,6 +194,7 @@ export function CeoSessionCard({
         >
           {isApplied ? (
             <div
+              className="font-vcx-sans"
               style={{
                 padding: '8px 16px',
                 background: 'rgba(34,197,94,0.1)',
@@ -202,7 +202,6 @@ export function CeoSessionCard({
                 color: '#16a34a',
                 fontSize: 13,
                 fontWeight: 700,
-                fontFamily: 'system-ui, sans-serif',
               }}
             >
               ✓ 신청 완료
@@ -213,25 +212,25 @@ export function CeoSessionCard({
                 e.stopPropagation()
                 onApply()
               }}
+              className="font-vcx-sans"
               style={{
                 padding: '10px 20px',
-                background: '#1a1a1a',
-                color: '#f5f0e8',
+                background: 'var(--color-vcx-dark)',
+                color: 'var(--color-vcx-beige)',
                 border: 'none',
                 fontSize: 13.5,
                 fontWeight: 700,
                 cursor: 'pointer',
-                fontFamily: 'system-ui, sans-serif',
               }}
             >
               신청하기 →
             </button>
           )}
           <span
+            className="font-vcx-sans"
             style={{
               fontSize: 12,
-              color: '#888',
-              fontFamily: 'system-ui, sans-serif',
+              color: 'var(--color-sub-4)',
             }}
           >
             {session.application_count}명 신청중
@@ -245,7 +244,7 @@ export function CeoSessionCard({
           style={{
             borderTop: '1px solid rgba(0,0,0,0.08)',
             padding: '24px 28px',
-            background: '#fdfcf9',
+            background: 'var(--color-vcx-off-white)',
           }}
         >
           <div
@@ -258,25 +257,25 @@ export function CeoSessionCard({
             {/* CEO message */}
             <div>
               <div
+                className="font-vcx-sans"
                 style={{
                   fontSize: 10,
-                  color: '#c9a84c',
+                  color: 'var(--color-vcx-gold)',
                   letterSpacing: '0.15em',
                   fontWeight: 700,
                   marginBottom: 12,
-                  fontFamily: 'system-ui, sans-serif',
                 }}
               >
                 이런 분과 이야기하고 싶습니다
               </div>
               <p
+                className="font-vcx-serif"
                 style={{
                   fontSize: 14,
-                  color: '#555',
+                  color: 'var(--color-sub-2)',
                   lineHeight: 1.85,
                   margin: 0,
                   fontStyle: 'italic',
-                  fontFamily: 'Georgia, serif',
                 }}
               >
                 &ldquo;{lookingFor}&rdquo;
@@ -286,13 +285,13 @@ export function CeoSessionCard({
             {/* Signal + CTA */}
             <div>
               <div
+                className="font-vcx-sans"
                 style={{
                   fontSize: 10,
-                  color: '#888',
+                  color: 'var(--color-sub-4)',
                   letterSpacing: '0.15em',
                   fontWeight: 700,
                   marginBottom: 12,
-                  fontFamily: 'system-ui, sans-serif',
                 }}
               >
                 핵심 시그널
@@ -301,17 +300,15 @@ export function CeoSessionCard({
                 style={{
                   padding: '14px 18px',
                   background: '#fff',
-                  borderLeft: '3px solid #c9a84c',
                   border: '1px solid rgba(0,0,0,0.07)',
-                  borderLeftWidth: 3,
-                  borderLeftColor: '#c9a84c',
+                  borderLeft: '3px solid var(--color-vcx-gold)',
                 }}
               >
                 <span
+                  className="font-vcx-sans"
                   style={{
                     fontSize: 13.5,
-                    color: '#1a1a1a',
-                    fontFamily: 'system-ui, sans-serif',
+                    color: 'var(--color-vcx-dark)',
                   }}
                 >
                   {signal || '세션 상세를 확인하세요'}
@@ -320,17 +317,17 @@ export function CeoSessionCard({
               {!isApplied && (
                 <button
                   onClick={onApply}
+                  className="font-vcx-sans"
                   style={{
                     marginTop: 16,
                     width: '100%',
                     padding: '12px',
-                    background: '#1a1a1a',
-                    color: '#f5f0e8',
+                    background: 'var(--color-vcx-dark)',
+                    color: 'var(--color-vcx-beige)',
                     border: 'none',
                     fontSize: 14,
                     fontWeight: 700,
                     cursor: 'pointer',
-                    fontFamily: 'system-ui, sans-serif',
                   }}
                 >
                   대화 신청하기 →

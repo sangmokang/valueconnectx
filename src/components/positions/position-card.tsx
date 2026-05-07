@@ -111,7 +111,7 @@ export function PositionCard({ position: pos, isOpen, onToggle }: PositionCardPr
               width: 52,
               height: 52,
               background: scoreHigh ? '#f0faf5' : '#fafaf0',
-              border: `1.5px solid ${scoreHigh ? '#22c55e' : '#c9a84c'}`,
+              border: `1.5px solid ${scoreHigh ? '#22c55e' : 'var(--color-vcx-gold)'}`,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -129,7 +129,7 @@ export function PositionCard({ position: pos, isOpen, onToggle }: PositionCardPr
             >
               {score}
             </span>
-            <span style={{ fontSize: 9, color: '#b0a898', letterSpacing: '0.05em' }}>MATCH</span>
+            <span style={{ fontSize: 9, color: 'var(--color-vcx-cream)', letterSpacing: '0.05em' }}>매치</span>
           </div>
         ) : null}
 
@@ -149,22 +149,22 @@ export function PositionCard({ position: pos, isOpen, onToggle }: PositionCardPr
               style={{
                 fontSize: 15.5,
                 fontWeight: 800,
-                color: '#1a1a1a',
+                color: 'var(--color-vcx-dark)',
                 fontFamily: 'Georgia, serif',
               }}
             >
               {pos.company_name}
             </span>
             {pos.domain && (
-              <span style={{ fontSize: 12, color: '#b0a898' }}>{pos.domain}</span>
+              <span style={{ fontSize: 12, color: 'var(--color-vcx-cream)' }}>{pos.domain}</span>
             )}
             {pos.exclusive && (
               <span
                 style={{
                   fontSize: 10,
                   padding: '2px 7px',
-                  background: '#1a1a1a',
-                  color: '#c9a84c',
+                  background: 'var(--color-vcx-dark)',
+                  color: 'var(--color-vcx-gold)',
                   fontWeight: 800,
                   letterSpacing: '0.05em',
                 }}
@@ -172,30 +172,30 @@ export function PositionCard({ position: pos, isOpen, onToggle }: PositionCardPr
                 EXCLUSIVE
               </span>
             )}
-            <span style={{ fontSize: 12, color: '#b0a898', marginLeft: 'auto' }}>
+            <span style={{ fontSize: 12, color: 'var(--color-vcx-cream)', marginLeft: 'auto' }}>
               {postedLabel}
             </span>
           </div>
 
           {/* Role title */}
-          <div style={{ fontSize: 17, fontWeight: 700, color: '#1a1a1a', marginBottom: 10 }}>
+          <div style={{ fontSize: 17, fontWeight: 700, color: 'var(--color-vcx-dark)', marginBottom: 10 }}>
             {pos.title}
           </div>
 
           {/* Meta + tags */}
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
             {pos.location && (
-              <span style={{ fontSize: 12.5, color: '#888', display: 'flex', alignItems: 'center', gap: 4 }}>
+              <span style={{ fontSize: 12.5, color: 'var(--color-sub-4)', display: 'flex', alignItems: 'center', gap: 4 }}>
                 📍 {pos.location}
               </span>
             )}
             {pos.level && (
-              <span style={{ fontSize: 12.5, color: '#888', display: 'flex', alignItems: 'center', gap: 4 }}>
+              <span style={{ fontSize: 12.5, color: 'var(--color-sub-4)', display: 'flex', alignItems: 'center', gap: 4 }}>
                 📊 {pos.level}
               </span>
             )}
             {pos.salary_range && (
-              <span style={{ fontSize: 12.5, color: '#888', display: 'flex', alignItems: 'center', gap: 4 }}>
+              <span style={{ fontSize: 12.5, color: 'var(--color-sub-4)', display: 'flex', alignItems: 'center', gap: 4 }}>
                 💰 {pos.salary_range}
               </span>
             )}
@@ -205,9 +205,9 @@ export function PositionCard({ position: pos, isOpen, onToggle }: PositionCardPr
                 style={{
                   fontSize: 11.5,
                   padding: '2px 9px',
-                  background: '#f5f0e8',
+                  background: 'var(--color-vcx-beige)',
                   border: '1px solid rgba(0,0,0,0.08)',
-                  color: '#777',
+                  color: 'var(--color-sub-4)',
                 }}
               >
                 {tag}
@@ -219,7 +219,7 @@ export function PositionCard({ position: pos, isOpen, onToggle }: PositionCardPr
         {/* Toggle / bookmark indicator */}
         <div style={{ display: 'flex', gap: 8, flexShrink: 0, alignItems: 'center' }}>
           {interest === 'bookmark' && (
-            <span style={{ fontSize: 13, color: '#c9a84c' }}>🔖</span>
+            <span style={{ fontSize: 13, color: 'var(--color-vcx-gold)' }}>🔖</span>
           )}
           <span
             style={{
@@ -241,7 +241,7 @@ export function PositionCard({ position: pos, isOpen, onToggle }: PositionCardPr
           style={{
             borderTop: '1px solid rgba(0,0,0,0.08)',
             padding: '28px',
-            background: '#fdfcf9',
+            background: 'var(--color-vcx-off-white)',
           }}
         >
           <div
@@ -257,7 +257,7 @@ export function PositionCard({ position: pos, isOpen, onToggle }: PositionCardPr
                 <div
                   style={{
                     fontSize: 10,
-                    color: '#c9a84c',
+                    color: 'var(--color-vcx-gold)',
                     letterSpacing: '0.15em',
                     fontWeight: 700,
                     marginBottom: 12,
@@ -265,7 +265,7 @@ export function PositionCard({ position: pos, isOpen, onToggle }: PositionCardPr
                 >
                   POSITION SUMMARY
                 </div>
-                <p style={{ fontSize: 14, color: '#555', lineHeight: 1.85, margin: 0 }}>
+                <p style={{ fontSize: 14, color: 'var(--color-sub-2)', lineHeight: 1.85, margin: 0 }}>
                   {pos.full_desc ?? pos.role_description}
                 </p>
               </div>
@@ -275,7 +275,7 @@ export function PositionCard({ position: pos, isOpen, onToggle }: PositionCardPr
                   <div
                     style={{
                       fontSize: 10,
-                      color: '#b0a898',
+                      color: 'var(--color-vcx-cream)',
                       letterSpacing: '0.15em',
                       fontWeight: 700,
                       marginBottom: 10,
@@ -289,9 +289,9 @@ export function PositionCard({ position: pos, isOpen, onToggle }: PositionCardPr
                       style={{ display: 'flex', gap: 10, marginBottom: 8, alignItems: 'flex-start' }}
                     >
                       <div
-                        style={{ width: 4, height: 4, background: '#c9a84c', flexShrink: 0, marginTop: 8 }}
+                        style={{ width: 4, height: 4, background: 'var(--color-vcx-gold)', flexShrink: 0, marginTop: 8 }}
                       />
-                      <span style={{ fontSize: 13.5, color: '#555', lineHeight: 1.65 }}>{req}</span>
+                      <span style={{ fontSize: 13.5, color: 'var(--color-sub-2)', lineHeight: 1.65 }}>{req}</span>
                     </div>
                   ))}
                 </div>
@@ -305,7 +305,7 @@ export function PositionCard({ position: pos, isOpen, onToggle }: PositionCardPr
                   <div
                     style={{
                       fontSize: 10,
-                      color: '#b0a898',
+                      color: 'var(--color-vcx-cream)',
                       letterSpacing: '0.15em',
                       fontWeight: 700,
                       marginBottom: 14,
@@ -321,13 +321,13 @@ export function PositionCard({ position: pos, isOpen, onToggle }: PositionCardPr
                         background: '#ffffff',
                         border: '1px solid rgba(0,0,0,0.07)',
                         marginBottom: 8,
-                        borderLeft: '3px solid #c9a84c',
+                        borderLeft: '3px solid var(--color-vcx-gold)',
                       }}
                     >
                       <span
                         style={{
                           fontSize: 13.5,
-                          color: '#1a1a1a',
+                          color: 'var(--color-vcx-dark)',
                           fontStyle: 'italic',
                           lineHeight: 1.6,
                           fontFamily: 'Georgia, serif',
@@ -348,8 +348,8 @@ export function PositionCard({ position: pos, isOpen, onToggle }: PositionCardPr
                   style={{
                     flex: 2,
                     padding: '12px',
-                    background: interest === 'interested' ? '#c9a84c' : '#1a1a1a',
-                    color: interest === 'interested' ? '#1a1a1a' : '#f5f0e8',
+                    background: interest === 'interested' ? 'var(--color-vcx-gold)' : 'var(--color-vcx-dark)',
+                    color: interest === 'interested' ? 'var(--color-vcx-dark)' : 'var(--color-vcx-beige)',
                     border: 'none',
                     fontSize: 14,
                     fontWeight: 700,
@@ -371,7 +371,7 @@ export function PositionCard({ position: pos, isOpen, onToggle }: PositionCardPr
                     background: 'transparent',
                     border: '1px solid rgba(0,0,0,0.12)',
                     fontSize: 14,
-                    color: interest === 'bookmark' ? '#c9a84c' : '#888',
+                    color: interest === 'bookmark' ? 'var(--color-vcx-gold)' : 'var(--color-sub-4)',
                     cursor: isPending ? 'not-allowed' : 'pointer',
                     fontFamily: 'system-ui, sans-serif',
                     opacity: isPending ? 0.6 : 1,

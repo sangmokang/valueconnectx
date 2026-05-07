@@ -1,3 +1,4 @@
+import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 
@@ -57,8 +58,9 @@ describe('OnboardingPage', () => {
     expect(screen.getByText('현재')).toBeInTheDocument()
     expect(screen.getByPlaceholderText('회사명')).toBeInTheDocument()
     expect(screen.getByPlaceholderText('예: 시니어 백엔드 엔지니어')).toBeInTheDocument()
-    // 섹션 3: 관심 분야
-    expect(screen.getByText('관심 분야')).toBeInTheDocument()
+    // 섹션 3: 전문 분야 (자유 태그)
+    expect(screen.getByText('전문 분야')).toBeInTheDocument()
+    expect(screen.getByPlaceholderText('예: 엔지니어링, 프로덕트')).toBeInTheDocument()
     // 제출 버튼
     expect(screen.getByRole('button', { name: '네트워크 입장하기' })).toBeInTheDocument()
   })
@@ -77,7 +79,7 @@ describe('OnboardingPage', () => {
     await waitFor(() => { expect(mockReplace).toHaveBeenCalledWith('/directory') })
   })
 
-  it('pre-fills form with existing partial profile data and removes duplicate invite fields', async () => {
+  it('pre-fills form with existing partial profile data including name', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
       mockGet({
         name: '홍길동',
@@ -88,10 +90,12 @@ describe('OnboardingPage', () => {
     ))
     render(<OnboardingPage />)
     await screen.findByRole('heading', { name: '당신의 이야기를 들려주세요' })
-    expect(screen.getByText('홍길동')).toBeInTheDocument()
+    // 이름 필드가 pre-fill 되어 있어야 함 (수정 가능한 input)
+    expect(screen.getByPlaceholderText('예: 김가치')).toHaveValue('홍길동')
+    // LinkedIn은 읽기전용 링크 카드로 표시
     expect(screen.getByRole('link', { name: 'https://linkedin.com/in/gildong' })).toBeInTheDocument()
-    expect(screen.queryByLabelText('이름 *')).not.toBeInTheDocument()
-    expect(screen.queryByLabelText('LinkedIn URL *')).not.toBeInTheDocument()
+    // LinkedIn input은 숨김 (readOnlyLinkedin 존재)
+    expect(screen.queryByPlaceholderText('https://www.linkedin.com/in/yourprofile')).not.toBeInTheDocument()
     expect(screen.getByPlaceholderText('회사명')).toHaveValue('스타트업')
     expect(screen.getByPlaceholderText('예: 시니어 백엔드 엔지니어')).toHaveValue('CTO')
     expect(screen.getByText('60%')).toBeInTheDocument()

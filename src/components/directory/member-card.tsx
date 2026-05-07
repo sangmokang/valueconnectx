@@ -29,7 +29,7 @@ export function MemberCard({ member }: MemberCardProps) {
   return (
     <Link
       href={`/directory/${member.id}`}
-      className="block bg-white border border-black/[0.08] no-underline hover:border-[#c9a84c] transition-colors duration-150"
+      className="block bg-white border border-black/[0.08] no-underline hover:border-vcx-gold transition-colors duration-150"
     >
       <div className="p-6 md:p-7 flex gap-5">
         {/* Avatar */}
@@ -42,11 +42,10 @@ export function MemberCard({ member }: MemberCardProps) {
           />
         ) : (
           <div
-            className="w-[52px] h-[52px] bg-[#1a1a1a] flex items-center justify-center flex-shrink-0"
+            className="w-[52px] h-[52px] bg-vcx-dark flex items-center justify-center flex-shrink-0"
           >
             <span
-              className="text-[#c9a84c] text-[18px] font-extrabold"
-              style={{ fontFamily: 'Georgia, serif' }}
+              className="text-vcx-gold text-[18px] font-extrabold font-vcx-serif"
             >
               {initial}
             </span>
@@ -58,22 +57,17 @@ export function MemberCard({ member }: MemberCardProps) {
           {/* Name + badge + join date */}
           <div className="flex items-center gap-2.5 mb-1 flex-wrap">
             <span
-              className="text-[16px] font-extrabold text-[#1a1a1a]"
-              style={{ fontFamily: 'Georgia, serif' }}
+              className="text-[16px] font-extrabold text-vcx-dark font-vcx-serif"
             >
               {member.name}
             </span>
             <span
-              className="px-2 py-0.5 text-[12px] font-bold"
-              style={{
-                background: isCore ? '#1a1a1a' : '#f5f0e8',
-                color: isCore ? '#c9a84c' : '#777',
-              }}
+              className={`px-2 py-0.5 text-[12px] font-bold ${isCore ? 'bg-vcx-dark text-vcx-gold' : 'bg-vcx-beige text-vcx-sub-4'}`}
             >
               {displayMemberTier(member.member_tier)}
             </span>
             {joinLabel && (
-              <span className="text-[12px] text-[#888] ml-auto">{joinLabel}</span>
+              <span className="text-[12px] text-vcx-sub-4 ml-auto">{joinLabel}</span>
             )}
           </div>
 
@@ -81,24 +75,23 @@ export function MemberCard({ member }: MemberCardProps) {
           {(member.current_company || member.title) && (
             <div className="mb-2">
               {member.current_company && (
-                <div className="text-[13.5px] text-[#555] font-medium">{member.current_company}</div>
+                <div className="text-[13.5px] text-vcx-sub-2 font-medium">{member.current_company}</div>
               )}
               {member.title && (
-                <div className="text-[13px] text-[#777]">{displayRoleLabel(member.title)}</div>
+                <div className="text-[13px] text-vcx-sub-4">{displayRoleLabel(member.title)}</div>
               )}
             </div>
           )}
 
           {/* Industry */}
           {member.industry && (
-            <div className="text-[12px] text-[#888] mb-2">{displayFieldLabel(member.industry)}</div>
+            <div className="text-[12px] text-vcx-sub-4 mb-2">{displayFieldLabel(member.industry)}</div>
           )}
 
           {/* Bio */}
           {member.bio && (
             <p
-              className="text-[14px] text-[#555] leading-[1.8] mb-3 italic line-clamp-2"
-              style={{ fontFamily: 'Georgia, serif' }}
+              className="text-[14px] text-vcx-sub-2 leading-[1.8] mb-3 italic line-clamp-2 font-vcx-serif"
             >
               &ldquo;{member.bio}&rdquo;
             </p>
@@ -110,13 +103,13 @@ export function MemberCard({ member }: MemberCardProps) {
               {member.professional_fields.slice(0, 3).map((field) => (
                 <span
                   key={field}
-                  className="bg-[#f5f0e8] border border-black/[0.08] px-2 py-0.5 text-[12px] text-[#777]"
+                  className="bg-vcx-beige border border-black/[0.08] px-2 py-0.5 text-[12px] text-vcx-sub-4"
                 >
                   {displayFieldLabel(field)}
                 </span>
               ))}
               {member.professional_fields.length > 3 && (
-                <span className="text-[12px] text-[#999]">
+                <span className="text-[12px] text-vcx-sub-5">
                   +{member.professional_fields.length - 3}
                 </span>
               )}
@@ -124,9 +117,9 @@ export function MemberCard({ member }: MemberCardProps) {
           )}
           {/* Open to chat */}
           {member.is_open_to_chat && (
-            <div className="flex items-center gap-1.5 mt-2 pt-2 border-t border-[#e8e2d9]">
-              <span className="w-1.5 h-1.5 bg-[#c9a84c] flex-shrink-0" style={{ borderRadius: 0 }} />
-              <span className="text-[12px] text-[#c9a84c] font-semibold">커피챗 가능</span>
+            <div className="flex items-center gap-1.5 mt-2 pt-2 border-t border-vcx-dark/10">
+              <span className="w-1.5 h-1.5 bg-vcx-gold flex-shrink-0" />
+              <span className="text-[12px] text-vcx-gold font-semibold">커피챗 가능</span>
             </div>
           )}
         </div>

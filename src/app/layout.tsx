@@ -19,7 +19,7 @@ export default function RootLayout({
         style={{
           margin: 0,
           padding: 0,
-          background: "#f0ebe2",
+          background: "var(--color-vcx-beige)",
           fontFamily: "Georgia, serif",
         }}
       >

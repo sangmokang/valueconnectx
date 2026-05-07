@@ -30,39 +30,39 @@
 ## 2. Acceptance Criteria (per step)
 
 ### S1 — 초대 수락 → 온보딩 → 디렉토리 진입
-- [ ] 초대 이메일 링크 클릭 → `/invite/accept` → `/login` → `/onboarding` → `/directory` 리다이렉트 체인 녹색
-- [ ] 온보딩 GNB 노출 버그 수정 (`gnb-visibility.tsx`에 `/onboarding` 포함)
-- [ ] 이름·LinkedIn 중복 수집 제거 (초대 수락 시 받은 값 pre-fill)
-- [ ] 전문 분야 한/영 혼재 해소 (자유 태그로 전환)
-- [ ] Progress bar 0% 시작 버그 수정 (기입력 데이터 반영)
-- [ ] Playwright: `tests/e2e/slice/s1-invite-onboarding.spec.ts` 녹색
+- [x] 초대 이메일 링크 클릭 → `/invite/accept` → `/login` → `/onboarding` → `/directory` 리다이렉트 체인 녹색
+- [x] 온보딩 GNB 노출 버그 수정 (`gnb-visibility.tsx`에 `/onboarding` 포함)
+- [x] 이름·LinkedIn 중복 수집 제거 (초대 수락 시 받은 값 pre-fill)
+- [x] 전문 분야 한/영 혼재 해소 (자유 태그로 전환)
+- [x] Progress bar 0% 시작 버그 수정 (기입력 데이터 반영)
+- [x] Playwright: `tests/e2e/slice/s1-invite-onboarding.spec.ts` 녹색
 
 ### S2 — 큐레이션 피드 MVP
-- [ ] `supabase/migrations/022_vcx_feed_items.sql` — `vcx_feed_items` 테이블 (company, tags, url, published_at, curator_note)
+- [x] `supabase/migrations/022_vcx_feed_items.sql` — `vcx_feed_items` 테이블 (company, tags, url, published_at, curator_note)
 - [ ] 관심 분야 태깅 UI (온보딩에서 수집, 프로필에서 편집)
-- [ ] `/api/feed?limit=&tags=` Route Handler + Zod 검증
-- [ ] `/feed` 페이지: 관심 태그 기반 필터링된 10건 + 매주 수동 업데이트
+- [x] `/api/feed?limit=&tags=` Route Handler + Zod 검증
+- [x] `/feed` 페이지: 관심 태그 기반 필터링된 10건 + 매주 수동 업데이트
 - [ ] Stibee 뉴스레터 1회 발송 + 오픈율/클릭율 측정 (prd6.0 §1.4 Week 1~4)
-- [ ] Playwright: `tests/e2e/slice/s2-feed-browse.spec.ts` 녹색
+- [x] Playwright: `tests/e2e/slice/s2-feed-browse.spec.ts` 녹색
 
 ### S3 — 디렉토리 탐색
 - [ ] 페이지네이션/무한스크롤 성능 점검 (rate limiter 정책 검토)
-- [ ] 비인증 사용자에 대한 `x-vcx-authenticated: false` 처리 경로 검증
+- [x] 비인증 사용자에 대한 `x-vcx-authenticated: false` 처리 경로 검증
 - [ ] 프로필 페이지 공개/비공개 플래그 (015 migration 기반) 재검증
-- [ ] Playwright: `tests/e2e/slice/s3-directory.spec.ts` 녹색
+- [x] Playwright: `tests/e2e/slice/s3-directory.spec.ts` 녹색
 
 ### S4 — 커피챗 신청 + AI Brief
-- [ ] Peer 커피챗 생성 플로우 재검증 (수수료 문구 0건 — `scripts/check-fee-hidden.sh` 통과)
+- [x] Peer 커피챗 생성 플로우 재검증 (수수료 문구 0건 — `scripts/check-fee-hidden.sh` 통과)
 - [ ] 커피챗 수락 시 AI Brief 자동 생성 (`f807e4f` 이후 동작 확인)
 - [ ] `PreBriefCard` UI 모바일 (Galaxy 360px) 녹색
-- [ ] Brief 생성 실패 시 fallback (ANTHROPIC_API_KEY 미설정 케이스 — `eab4597` 이후)
-- [ ] Playwright: `tests/e2e/slice/s4-coffeechat-brief.spec.ts` 녹색
+- [x] Brief 생성 실패 시 fallback (ANTHROPIC_API_KEY 미설정 케이스 — skeleton UI + catch 구현 확인)
+- [x] Playwright: `tests/e2e/slice/s4-coffeechat-brief.spec.ts` 녹색
 
 ### S5 — 세션 후 피드백
-- [ ] `post-session feedback form` (migration 021) 접근 가능
-- [ ] 제출 시 `session_feedback_submit` 이벤트 발화 (PostHog Sprint 2 통합 전까지는 `console.info`)
-- [ ] 어드민 `/admin/ops` 에서 피드백 집계 대시보드 (row count + 최근 10건)
-- [ ] Playwright: `tests/e2e/slice/s5-session-feedback.spec.ts` 녹색
+- [x] `post-session feedback form` (migration 021) 접근 가능
+- [x] 제출 시 `session_feedback_submit` 이벤트 발화 (PostHog Sprint 2 통합 전까지는 `console.info`)
+- [x] 어드민 `/admin/ops` 에서 피드백 집계 대시보드 (row count + 최근 10건)
+- [x] Playwright: `tests/e2e/slice/s5-session-feedback.spec.ts` 녹색
 
 ---
 

@@ -84,8 +84,7 @@ describe('GET /api/directory/me', () => {
       error: { message: 'not authenticated' },
     })
 
-    const req = makeGetRequest()
-    const res = await GET(req)
+    const res = await GET()
 
     expect(res.status).toBe(401)
     const body = await res.json()
@@ -98,8 +97,7 @@ describe('GET /api/directory/me', () => {
       error: null,
     })
 
-    const req = makeGetRequest()
-    const res = await GET(req)
+    const res = await GET()
 
     expect(res.status).toBe(401)
   })
@@ -117,8 +115,7 @@ describe('GET /api/directory/me', () => {
       }),
     })
 
-    const req = makeGetRequest()
-    const res = await GET(req)
+    const res = await GET()
 
     expect(res.status).toBe(404)
     const body = await res.json()
@@ -139,8 +136,7 @@ describe('GET /api/directory/me', () => {
       }),
     })
 
-    const req = makeGetRequest()
-    const res = await GET(req)
+    const res = await GET()
 
     expect(res.status).toBe(404)
   })
@@ -158,8 +154,7 @@ describe('GET /api/directory/me', () => {
       }),
     })
 
-    const req = makeGetRequest()
-    const res = await GET(req)
+    const res = await GET()
 
     expect(res.status).toBe(200)
     const body = await res.json()
@@ -183,8 +178,7 @@ describe('GET /api/directory/me', () => {
       }),
     })
 
-    const req = makeGetRequest()
-    const res = await GET(req)
+    const res = await GET()
 
     expect(res.status).toBe(200)
     const body = await res.json()
@@ -202,8 +196,7 @@ describe('GET /api/directory/me', () => {
   it('returns 500 when database throws an unexpected error', async () => {
     mocks.mockAuthGetUser.mockRejectedValue(new Error('unexpected error'))
 
-    const req = makeGetRequest()
-    const res = await GET(req)
+    const res = await GET()
 
     expect(res.status).toBe(500)
     const body = await res.json()

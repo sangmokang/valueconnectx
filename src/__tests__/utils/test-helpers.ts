@@ -28,7 +28,7 @@ export function mockRequest(
     ;(requestInit.headers as Headers).set('content-type', 'application/json')
   }
 
-  return new NextRequest(urlObj, requestInit)
+  return new NextRequest(urlObj, { ...requestInit, signal: requestInit.signal ?? undefined })
 }
 
 // Create a mock VcxUser for testing

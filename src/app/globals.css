@@ -68,6 +68,9 @@
   --color-sub-4: #888888;
   --color-sub-5: #999999;
   --color-deep-navy: #0F172A;
+  --color-vcx-cream: #b0a898;
+  --color-vcx-off-white: #fdfcf9;
+  --color-vcx-error: #e85555;
 
   /* VCX Typography */
   --font-serif: Georgia, serif;
@@ -183,6 +186,12 @@
   .text-vcx-sub-3 { color: #666666; }
   .text-vcx-sub-4 { color: #888888; }
   .text-vcx-sub-5 { color: #999999; }
+
+  .text-vcx-cream { color: #b0a898; }
+  .bg-vcx-cream { background-color: #b0a898; }
+  .bg-vcx-off-white { background-color: #fdfcf9; }
+  .text-vcx-error { color: #e85555; }
+  .bg-vcx-error { background-color: #e85555; }
 
   .border-vcx-dark { border-color: #1a1a1a; }
   .border-vcx-gold { border-color: #c9a84c; }

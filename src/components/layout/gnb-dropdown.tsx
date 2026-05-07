@@ -37,10 +37,10 @@ function ServiceDropdown({
         onClick={() => setOpen((v) => !v)}
         className="flex min-h-9 items-center gap-1 bg-transparent border-0 cursor-pointer text-[13.5px] select-none"
         style={{
-          color: isServiceActive ? "#1a1a1a" : "#666",
+          color: isServiceActive ? "var(--color-vcx-dark)" : "var(--color-sub-3)",
           fontWeight: isServiceActive ? 600 : 400,
           borderBottom: isServiceActive
-            ? "1.5px solid #c9a84c"
+            ? "1.5px solid var(--color-vcx-gold)"
             : "1.5px solid transparent",
         }}
         aria-expanded={open}
@@ -49,7 +49,7 @@ function ServiceDropdown({
         <span
           className="inline-block text-[9px] transition-transform duration-200"
           style={{
-            color: isServiceActive ? "#c9a84c" : "#bbb",
+            color: isServiceActive ? "var(--color-vcx-gold)" : "var(--color-vcx-silver)",
             transform: open ? "rotate(180deg)" : "none",
           }}
         >
@@ -59,7 +59,7 @@ function ServiceDropdown({
 
       {open && (
         <div className="absolute top-[calc(100%+12px)] left-1/2 -translate-x-1/2 bg-white border border-black/[0.08] shadow-[0_12px_40px_rgba(0,0,0,0.12)] min-w-[160px] z-[300] overflow-hidden">
-          <div className="h-0.5 bg-[#c9a84c]" />
+          <div className="h-0.5 bg-vcx-gold" />
           {items.map((sub, i) => {
             const isActive = sub.href === currentPath;
             return (
@@ -69,7 +69,7 @@ function ServiceDropdown({
                 onClick={() => setOpen(false)}
                 className="flex items-center gap-2 py-3 px-5 text-[13px] no-underline transition-colors"
                 style={{
-                  color: isActive ? "#1a1a1a" : "#666",
+                  color: isActive ? "var(--color-vcx-dark)" : "var(--color-sub-3)",
                   fontWeight: isActive ? 700 : 400,
                   background: isActive ? "#faf8f4" : "white",
                   borderBottom:
@@ -87,7 +87,7 @@ function ServiceDropdown({
                 }
               >
                 {isActive && (
-                  <div className="w-[3px] h-[14px] bg-[#c9a84c] shrink-0" />
+                  <div className="w-[3px] h-[14px] bg-vcx-gold shrink-0" />
                 )}
                 {sub.label}
               </Link>
@@ -122,16 +122,16 @@ export function DesktopNav({ currentPath }: { currentPath: string }) {
             href={item.href}
             className="flex min-h-9 items-center gap-1.5 no-underline"
             style={{
-              color: isActive ? "#1a1a1a" : "#666",
+              color: isActive ? "var(--color-vcx-dark)" : "var(--color-sub-3)",
               fontWeight: isActive ? 600 : 400,
               borderBottom: isActive
-                ? "1.5px solid #c9a84c"
+                ? "1.5px solid var(--color-vcx-gold)"
                 : "1.5px solid transparent",
             }}
           >
             {item.label}
             {item.badge && (
-              <span className="text-[12px] font-extrabold tracking-normal leading-tight px-1.5 py-0.5 bg-[#c9a84c] text-[#1a1a1a]">
+              <span className="text-[12px] font-extrabold tracking-normal leading-tight px-1.5 py-0.5 bg-vcx-gold text-vcx-dark">
                 {item.badge}
               </span>
             )}
@@ -186,7 +186,7 @@ export function MobileMenu({
     <>
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center justify-center w-11 h-11 bg-transparent border-0 cursor-pointer text-[#1a1a1a]"
+        className="flex items-center justify-center w-11 h-11 bg-transparent border-0 cursor-pointer text-vcx-dark"
         aria-label="메뉴 열기"
       >
         <Menu size={22} />
@@ -194,7 +194,7 @@ export function MobileMenu({
 
       {open && (
         <div
-          className="fixed inset-0 z-[500] bg-[#f5f0e8] flex flex-col overflow-y-auto"
+          className="fixed inset-0 z-[500] bg-vcx-beige-light flex flex-col overflow-y-auto"
           role="dialog"
           aria-modal="true"
           aria-label="모바일 네비게이션"
@@ -204,13 +204,13 @@ export function MobileMenu({
             <Link
               href="/"
               onClick={closeMenu}
-              className="flex min-h-11 items-center no-underline font-[Georgia,serif] font-extrabold text-base tracking-tight text-[#1a1a1a]"
+              className="flex min-h-11 items-center no-underline font-[Georgia,serif] font-extrabold text-base tracking-tight text-vcx-dark"
             >
-              ValueConnect <span className="text-[#c9a84c]">X</span>
+              ValueConnect <span className="text-vcx-gold">X</span>
             </Link>
             <button
               onClick={closeMenu}
-              className="flex items-center justify-center w-11 h-11 bg-transparent border-0 cursor-pointer text-[#1a1a1a]"
+              className="flex items-center justify-center w-11 h-11 bg-transparent border-0 cursor-pointer text-vcx-dark"
               aria-label="메뉴 닫기"
             >
               <X size={22} />
@@ -237,12 +237,12 @@ export function MobileMenu({
                     >
                       <span
                         className="text-[15px] font-medium"
-                        style={{ color: isActive ? "#c9a84c" : "#1a1a1a" }}
+                        style={{ color: isActive ? "var(--color-vcx-gold)" : "var(--color-vcx-dark)" }}
                       >
                         {item.label}
                       </span>
                       <span
-                        className="inline-block text-[9px] text-[#bbb] transition-transform duration-200"
+                        className="inline-block text-[9px] text-vcx-silver transition-transform duration-200"
                         style={{
                           transform: expanded ? "rotate(180deg)" : "none",
                         }}
@@ -261,7 +261,7 @@ export function MobileMenu({
                               onClick={closeMenu}
                               className="flex items-center gap-2 px-8 min-h-[48px] text-[14px] no-underline border-t border-black/[0.05]"
                               style={{
-                                color: isSubActive ? "#1a1a1a" : "#666",
+                                color: isSubActive ? "var(--color-vcx-dark)" : "var(--color-sub-3)",
                                 fontWeight: isSubActive ? 600 : 400,
                                 background: isSubActive
                                   ? "#faf8f4"
@@ -269,7 +269,7 @@ export function MobileMenu({
                               }}
                             >
                               {isSubActive && (
-                                <div className="w-[3px] h-[14px] bg-[#c9a84c] shrink-0" />
+                                <div className="w-[3px] h-[14px] bg-vcx-gold shrink-0" />
                               )}
                               {sub.label}
                             </Link>
@@ -287,15 +287,14 @@ export function MobileMenu({
                   key={item.label}
                   href={item.href}
                   onClick={closeMenu}
-                  className="flex items-center gap-2 px-4 min-h-[52px] text-[15px] no-underline border-b border-black/[0.06]"
+                  className="flex items-center gap-2 px-4 min-h-[52px] text-[15px] no-underline border-b border-black/[0.06] text-vcx-dark"
                   style={{
-                    color: "#1a1a1a",
                     fontWeight: isActive ? 700 : 500,
                   }}
                 >
                   {item.label}
                   {item.badge && (
-                    <span className="text-[12px] font-extrabold tracking-normal leading-tight px-1.5 py-0.5 bg-[#c9a84c] text-[#1a1a1a]">
+                    <span className="text-[12px] font-extrabold tracking-normal leading-tight px-1.5 py-0.5 bg-vcx-gold text-vcx-dark">
                       {item.badge}
                     </span>
                   )}
@@ -308,14 +307,14 @@ export function MobileMenu({
           <div className="shrink-0 px-4 py-6 border-t border-black/[0.08] flex flex-col gap-3">
             {isAuthenticated ? (
               <div className="flex items-center justify-between">
-                <div className="text-[13.5px] text-[#555]">
+                <div className="text-[13.5px] text-vcx-sub-2">
                   {userName && (
-                    <span className="font-medium text-[#1a1a1a]">
+                    <span className="font-medium text-vcx-dark">
                       {userName}
                     </span>
                   )}
                   {isAdmin && (
-                    <span className="ml-2 text-[12px] text-[#c9a84c] font-medium">
+                    <span className="ml-2 text-[12px] text-vcx-gold font-medium">
                       관리자
                     </span>
                   )}
@@ -327,14 +326,14 @@ export function MobileMenu({
                 <Link
                   href="/login"
                   onClick={closeMenu}
-                  className="flex items-center justify-center min-h-[48px] text-[14px] text-[#1a1a1a] no-underline border border-[#1a1a1a]"
+                  className="flex items-center justify-center min-h-[48px] text-[14px] text-vcx-dark no-underline border border-vcx-dark"
                 >
                   로그인
                 </Link>
                 <Link
                   href="/invite/accept"
                   onClick={closeMenu}
-                  className="flex items-center justify-center min-h-[48px] text-[14px] bg-[#1a1a1a] text-[#f5f0e8] no-underline"
+                  className="flex items-center justify-center min-h-[48px] text-[14px] bg-vcx-dark text-vcx-beige no-underline"
                 >
                   초대 확인하기 →
                 </Link>

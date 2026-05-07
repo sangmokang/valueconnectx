@@ -1,10 +1,9 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef, type KeyboardEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import {
-  CURATION_INTEREST_TAGS,
   INTEREST_TAG_LIMIT,
   normalizeInterestTag,
 } from '@/constants/profile'
@@ -48,9 +47,12 @@ export default function OnboardingPage() {
   const [error, setError] = useState<string | null>(null)
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof ProfileSnapshot, string>>>({})
 
-  // 읽기 전용 — 초대 시 입력된 값
-  const [readOnlyName, setReadOnlyName] = useState('')
+  // 읽기 전용 — 초대 시 입력된 LinkedIn URL
   const [readOnlyLinkedin, setReadOnlyLinkedin] = useState('')
+
+  // 자유 태그 입력 상태
+  const [tagInput, setTagInput] = useState('')
+  const tagInputRef = useRef<HTMLInputElement>(null)
 
   const [form, setForm] = useState<ProfileSnapshot>({
     name: '',
@@ -79,7 +81,6 @@ export default function OnboardingPage() {
           }
           const name = data?.name ?? ''
           const linkedin_url = data?.linkedin_url ?? ''
-          setReadOnlyName(name)
           setReadOnlyLinkedin(linkedin_url)
           setForm({
             name,
@@ -115,6 +116,29 @@ export default function OnboardingPage() {
       ...prev,
       professional_fields: prev.professional_fields.filter((f) => f !== field),
     }))
+  }
+
+  function handleTagKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault()
+      const raw = tagInput
+      setTagInput('')
+      addField(raw)
+    }
+  }
+
+  function handleTagInputBlur() {
+    if (tagInput.trim()) {
+      addField(tagInput)
+      setTagInput('')
+    }
+  }
+
+  function commitTagsFromInput(raw: string) {
+    // 쉼표 구분 일괄 처리
+    const parts = raw.split(',')
+    parts.forEach((p) => addField(p))
+    setTagInput('')
   }
 
   function validate(): boolean {
@@ -174,7 +198,7 @@ export default function OnboardingPage() {
       }
 
       await syncFeedInterests(form.professional_fields)
-      router.push('/directory')
+      window.location.href = '/directory'
     } catch {
       setError('네트워크 오류가 발생했습니다')
       setLoading(false)
@@ -233,46 +257,38 @@ export default function OnboardingPage() {
               </p>
             </div>
 
-            {/* 읽기 전용 카드 — 초대 시 입력됨 */}
-            {(readOnlyName || readOnlyLinkedin) && (
+            {/* 읽기 전용 카드 — 초대 시 입력된 LinkedIn URL */}
+            {readOnlyLinkedin && (
               <div className="mb-5 bg-vcx-beige-light border border-vcx-beige-dark px-4 py-3">
                 <div className="flex-1 min-w-0">
-                  {readOnlyName && (
-                    <p className="font-vcx-serif text-[16px] font-bold text-vcx-dark leading-tight">
-                      {readOnlyName}
-                    </p>
-                  )}
-                  {readOnlyLinkedin && (
-                    <a
-                      href={readOnlyLinkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-vcx-sans text-[12px] text-vcx-gold hover:underline truncate block mt-0.5"
-                    >
-                      {readOnlyLinkedin}
-                    </a>
-                  )}
+                  <a
+                    href={readOnlyLinkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-vcx-sans text-[12px] text-vcx-gold hover:underline truncate block"
+                  >
+                    {readOnlyLinkedin}
+                  </a>
                 </div>
               </div>
             )}
 
-            {!readOnlyName && (
-              <div className="mb-4">
-                <label className="font-vcx-sans text-[13px] font-medium text-vcx-sub-3 block mb-1.5">이름 *</label>
-                <input
-                  type="text"
-                  value={form.name}
-                  onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
-                  placeholder="예: 김가치"
-                  className={`w-full px-3.5 py-3 font-vcx-sans text-[14px] text-vcx-dark bg-vcx-beige-light border outline-none focus:border-vcx-gold ${
-                    fieldErrors.name ? 'border-red-500' : 'border-black/[0.08]'
-                  }`}
-                />
-                {fieldErrors.name && (
-                  <p className="font-vcx-sans text-[12px] text-red-500 mt-1">{fieldErrors.name}</p>
-                )}
-              </div>
-            )}
+            {/* 이름 — 초대 시 저장된 값이 있으면 pre-fill, 수정 가능 */}
+            <div className="mb-4">
+              <label className="font-vcx-sans text-[13px] font-medium text-vcx-sub-3 block mb-1.5">이름 *</label>
+              <input
+                type="text"
+                value={form.name}
+                onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
+                placeholder="예: 김가치"
+                className={`w-full px-3.5 py-3 font-vcx-sans text-[14px] text-vcx-dark bg-vcx-beige-light border outline-none focus:border-vcx-gold ${
+                  fieldErrors.name ? 'border-red-500' : 'border-black/[0.08]'
+                }`}
+              />
+              {fieldErrors.name && (
+                <p className="font-vcx-sans text-[12px] text-red-500 mt-1">{fieldErrors.name}</p>
+              )}
+            </div>
 
             {!readOnlyLinkedin && (
               <div className="mb-4">
@@ -370,43 +386,66 @@ export default function OnboardingPage() {
             </div>
           </div>
 
-          {/* ── 섹션 3: 관심 분야 (선택) ── */}
+          {/* ── 섹션 3: 전문 분야 (자유 태그) ── */}
           <div className="bg-white border border-vcx-beige-dark px-6 py-7">
             <div className="mb-4">
               <p className="font-vcx-sans text-[13px] font-bold text-vcx-gold tracking-[0.08em] uppercase border-b border-vcx-beige-dark pb-2">
-                관심 분야 <span className="text-[11px] font-normal normal-case tracking-normal ml-1 text-vcx-sub-5">(선택 · 최대 {INTEREST_TAG_LIMIT}개)</span>
+                전문 분야 <span className="text-[11px] font-normal normal-case tracking-normal ml-1 text-vcx-sub-5">(선택 · 최대 {INTEREST_TAG_LIMIT}개)</span>
               </p>
             </div>
 
             <p className="font-vcx-sans text-[13px] text-vcx-sub-4 mb-4 leading-relaxed">
-              관심 있는 분야를 선택하면 맞춤 큐레이션 피드가 제공됩니다.
+              전문 분야를 직접 입력하세요. 엔터 또는 쉼표로 태그를 추가합니다.
             </p>
 
-            <div className="flex flex-wrap gap-2">
-              {CURATION_INTEREST_TAGS.map((field) => {
-                const selected = form.professional_fields.includes(field)
-                return (
-                  <button
-                    key={field}
-                    type="button"
-                    onClick={() => selected ? removeField(field) : addField(field)}
-                    className={`px-3.5 py-2 font-vcx-sans text-[13px] border transition-colors ${
-                      selected
-                        ? 'border-vcx-gold bg-[#fdf9f2] text-vcx-gold font-semibold'
-                        : 'border-vcx-beige-dark bg-white text-vcx-sub-3 hover:border-vcx-gold hover:text-vcx-gold'
-                    }`}
-                  >
-                    {selected ? `✓ ${field}` : field}
-                  </button>
-                )
-              })}
-            </div>
-
+            {/* 추가된 태그 목록 */}
             {form.professional_fields.length > 0 && (
-              <p className="font-vcx-sans text-[12px] text-vcx-sub-5 mt-3">
-                {form.professional_fields.length}개 선택됨
-              </p>
+              <div className="flex flex-wrap gap-2 mb-3">
+                {form.professional_fields.map((field) => (
+                  <span
+                    key={field}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 font-vcx-sans text-[13px] border border-vcx-gold bg-[#fdf9f2] text-vcx-gold"
+                  >
+                    {field}
+                    <button
+                      type="button"
+                      onClick={() => removeField(field)}
+                      aria-label={`${field} 태그 삭제`}
+                      className="font-vcx-sans text-[14px] leading-none text-vcx-gold hover:text-vcx-dark"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
             )}
+
+            {/* 태그 입력 */}
+            {form.professional_fields.length < INTEREST_TAG_LIMIT && (
+              <input
+                ref={tagInputRef}
+                type="text"
+                value={tagInput}
+                onChange={(e) => {
+                  const val = e.target.value
+                  if (val.includes(',')) {
+                    commitTagsFromInput(val)
+                  } else {
+                    setTagInput(val)
+                  }
+                }}
+                onKeyDown={handleTagKeyDown}
+                onBlur={handleTagInputBlur}
+                placeholder="예: 엔지니어링, 프로덕트"
+                className="w-full px-3.5 py-3 font-vcx-sans text-[14px] text-vcx-dark bg-vcx-beige-light border border-black/[0.08] outline-none focus:border-vcx-gold"
+              />
+            )}
+
+            <p className="font-vcx-sans text-[12px] text-vcx-sub-5 mt-2">
+              {form.professional_fields.length > 0
+                ? `${form.professional_fields.length}개 입력됨 · 최대 ${INTEREST_TAG_LIMIT}개`
+                : `최대 ${INTEREST_TAG_LIMIT}개까지 입력 가능합니다`}
+            </p>
           </div>
 
           {/* Error */}

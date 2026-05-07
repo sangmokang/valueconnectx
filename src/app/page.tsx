@@ -1,18 +1,13 @@
 import Link from 'next/link'
-import { ArrowRight, CheckCircle2, Radio, Search, ShieldCheck } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { ServicePillars } from '@/components/service-pillars'
 
 const HERO_SIGNALS = [
-  { label: '초대 전용', value: '검증된 입장' },
-  { label: '검증 그래프', value: '신뢰 기반 네트워크' },
-  { label: '직접 대화', value: '결정권자 연결' },
+  { label: '초대 전용', value: '탁월한 성과를 입증한 분들을 Invitation-Only 로 모십니다' },
+  { label: '신뢰 기반', value: '고민을 나누고 서로에게 배우는 성장하는 공간' },
+  { label: '채용 Hot Line', value: '최적합 인재와 의사 결정권자간의 편한 커피챗' },
 ]
 
-const PLAYER_STEPS = [
-  { icon: Search, title: '관찰', desc: '시장 신호와 기회를 먼저 큐레이션합니다.' },
-  { icon: ShieldCheck, title: '검증', desc: '멤버와 포지션의 신뢰도를 분리해 확인합니다.' },
-  { icon: Radio, title: '연결', desc: '커뮤니티와 커피챗으로 다음 행동을 만듭니다.' },
-]
 
 export default function ServicePage() {
   return (
@@ -26,9 +21,8 @@ export default function ServicePage() {
               <span className="vcx-section-label">VALUECONNECT X · 초대 전용 네트워크</span>
             </div>
             <h1 className="font-vcx-serif text-[36px] font-bold leading-[1.06] text-vcx-white sm:text-[54px] lg:text-[64px]">
-              <span className="block whitespace-nowrap">탁월한 사람들이</span>
-              <span className="block text-vcx-gold">스스로 머무는</span>
-              <span className="block whitespace-nowrap">프라이빗 네트워크</span>
+              <span className="block">최고수준의 프로페셔널들의</span>
+              <span className="block text-vcx-gold">Community</span>
             </h1>
             <p className="mt-6 max-w-[620px] text-[15px] leading-7 text-vcx-silver sm:text-[16px] sm:leading-8">
               VCX는 검증된 핵심 인재에게 시장의 신호, 신뢰할 수 있는 포지션, 그리고 결정권자와의 직접 대화를 하나의 흐름으로 제공합니다.
@@ -58,35 +52,6 @@ export default function ServicePage() {
             </div>
           </div>
 
-          <div className="bg-vcx-surface shadow-vcx-dark-heavy">
-            <div className="border-b border-vcx-muted-dark px-4 py-3 sm:px-5">
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <p className="vcx-label text-vcx-silver">다음 추천 행동</p>
-                  <p className="mt-1 text-[15px] font-bold text-vcx-white">이번 주 네트워크 신호</p>
-                </div>
-                <CheckCircle2 className="size-5 text-vcx-gold" aria-hidden="true" />
-              </div>
-            </div>
-            <div className="grid gap-3 p-4 sm:p-5">
-              {PLAYER_STEPS.map((step, index) => (
-                <div key={step.title} className="grid grid-cols-[44px_1fr] gap-3 bg-vcx-surface-soft p-4">
-                  <div className="flex size-11 items-center justify-center bg-vcx-card text-vcx-gold">
-                    <step.icon className="size-5" aria-hidden="true" />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="flex items-center justify-between gap-3">
-                      <p className="text-[15px] font-bold text-vcx-white">{step.title}</p>
-                      <span className="font-vcx-sans text-[11px] font-bold text-vcx-silver">
-                        0{index + 1}
-                      </span>
-                    </div>
-                    <p className="mt-2 text-[13px] leading-6 text-vcx-silver">{step.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
