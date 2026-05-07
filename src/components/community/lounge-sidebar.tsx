@@ -75,7 +75,7 @@ export function LoungeSidebar({ active, counts, onSelect }: LoungeSidebarProps) 
             <span
               style={{
                 fontSize: '13.5px',
-                color: isActive ? 'var(--color-vcx-dark)' : '#666',
+                color: isActive ? 'var(--color-vcx-dark)' : 'var(--color-vcx-sub-3)',
                 fontWeight: isActive ? 700 : 400,
                 display: 'flex',
                 alignItems: 'center',

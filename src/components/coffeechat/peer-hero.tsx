@@ -34,7 +34,7 @@ export function PeerHero({ onWriteClick }: PeerHeroProps) {
             <p className="text-[15px] text-vcx-cream leading-[1.9] font-vcx-sans max-w-[520px] mb-4">
               갖고 있는 Agenda를 간단히 남겨주시거나, 꼭 특정 주제가 없더라도 네트워킹 확장을 위해 신청해주세요.
             </p>
-            <p className="text-[13px] text-sub-4 leading-[1.8] font-vcx-sans max-w-[520px] border-l-2 border-vcx-gold/40 pl-3">
+            <p className="text-[13px] text-vcx-sub-4 leading-[1.8] font-vcx-sans max-w-[520px] border-l-2 border-vcx-gold/40 pl-3">
               VCX는 네트워크 안에서 이루어지는 채용 연결도 함께 지원합니다. 대화가 채용으로 이어지는 경우, ValueConnect 팀에 먼저 알려주시면 합격자분께 리워드가 돌아갑니다.
             </p>
           </div>

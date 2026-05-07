@@ -35,7 +35,7 @@ export function CurationList({ items, onEdit, onDelete }: CurationListProps) {
         padding: '48px 24px', textAlign: 'center', border: '1px solid rgba(0,0,0,0.08)',
         background: '#fff', fontFamily: 'system-ui, sans-serif',
       }}>
-        <p style={{ fontSize: '14px', color: '#888', margin: 0 }}>등록된 피드 아이템이 없습니다</p>
+        <p style={{ fontSize: '14px', color: 'var(--color-vcx-sub-4)', margin: 0 }}>등록된 피드 아이템이 없습니다</p>
       </div>
     )
   }
@@ -74,7 +74,7 @@ export function CurationList({ items, onEdit, onDelete }: CurationListProps) {
               <td style={{ padding: '14px 16px', whiteSpace: 'nowrap' }}>
                 <div style={{ fontWeight: 700, color: 'var(--color-vcx-dark)' }}>{item.company}</div>
                 {item.company_tag && (
-                  <div style={{ fontSize: '11px', color: '#888', marginTop: '2px' }}>{item.company_tag}</div>
+                  <div style={{ fontSize: '11px', color: 'var(--color-vcx-sub-4)', marginTop: '2px' }}>{item.company_tag}</div>
                 )}
               </td>
               <td style={{ padding: '14px 16px', color: '#333', maxWidth: '200px' }}>
@@ -125,7 +125,7 @@ export function CurationList({ items, onEdit, onDelete }: CurationListProps) {
                   disabled={deletingId === item.id}
                   style={{
                     padding: '6px 14px',
-                    background: deletingId === item.id ? '#999' : 'transparent',
+                    background: deletingId === item.id ? 'var(--color-vcx-sub-5)' : 'transparent',
                     border: '1px solid rgba(192,57,43,0.4)',
                     cursor: deletingId === item.id ? 'not-allowed' : 'pointer',
                     fontSize: '12px', fontWeight: 600, color: '#c0392b',

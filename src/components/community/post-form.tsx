@@ -61,7 +61,7 @@ export function PostForm({ defaultCategory }: { defaultCategory?: CategoryKey })
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       {/* Category */}
       <div>
-        <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#555555', marginBottom: '8px' }}>
+        <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'var(--color-vcx-sub-2)', marginBottom: '8px' }}>
           카테고리 *
         </label>
         <select
@@ -96,7 +96,7 @@ export function PostForm({ defaultCategory }: { defaultCategory?: CategoryKey })
 
       {/* Title */}
       <div>
-        <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#555555', marginBottom: '8px' }}>
+        <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'var(--color-vcx-sub-2)', marginBottom: '8px' }}>
           제목 *
         </label>
         <input
@@ -112,7 +112,7 @@ export function PostForm({ defaultCategory }: { defaultCategory?: CategoryKey })
 
       {/* Content */}
       <div>
-        <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#555555', marginBottom: '8px' }}>
+        <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'var(--color-vcx-sub-2)', marginBottom: '8px' }}>
           내용 *
         </label>
         <textarea
@@ -133,7 +133,7 @@ export function PostForm({ defaultCategory }: { defaultCategory?: CategoryKey })
           onChange={(e) => setIsAnonymous(e.target.checked)}
           style={{ accentColor: 'var(--color-vcx-gold)', width: '16px', height: '16px' }}
         />
-        <span style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#555555' }}>
+        <span style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'var(--color-vcx-sub-2)' }}>
           익명으로 작성
         </span>
       </label>
@@ -154,7 +154,7 @@ export function PostForm({ defaultCategory }: { defaultCategory?: CategoryKey })
             background: 'transparent',
             fontFamily: 'system-ui, sans-serif',
             fontSize: '14px',
-            color: '#555555',
+            color: 'var(--color-vcx-sub-2)',
             cursor: 'pointer',
             borderRadius: 0,
           }}
@@ -167,7 +167,7 @@ export function PostForm({ defaultCategory }: { defaultCategory?: CategoryKey })
           style={{
             padding: '10px 28px',
             border: 'none',
-            background: isPending ? '#888888' : 'var(--color-vcx-dark)',
+            background: isPending ? 'var(--color-vcx-sub-4)' : 'var(--color-vcx-dark)',
             fontFamily: 'system-ui, sans-serif',
             fontSize: '14px',
             color: 'var(--color-vcx-gold)',

@@ -53,19 +53,19 @@ export function SnapshotView({ snapshot }: { snapshot: Snapshot }) {
       <div style={{ padding: '20px 24px' }}>
         {/* 배포 정보 */}
         <div style={{ marginBottom: '20px' }}>
-          <h4 style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', fontWeight: 600, color: '#888', marginBottom: '8px', letterSpacing: '0.05em' }}>
+          <h4 style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', fontWeight: 600, color: 'var(--color-vcx-sub-4)', marginBottom: '8px', letterSpacing: '0.05em' }}>
             배포 정보
           </h4>
           <div style={{ display: 'flex', gap: '32px', fontSize: '14px', fontFamily: 'system-ui, sans-serif' }}>
-            <div><span style={{ color: '#888' }}>환경:</span> <span style={{ color: 'var(--color-vcx-dark)', fontWeight: 500 }}>{snapshot.deployment.env}</span></div>
-            <div><span style={{ color: '#888' }}>커밋:</span> <span style={{ color: 'var(--color-vcx-dark)', fontFamily: 'monospace' }}>{snapshot.deployment.commitSha}</span></div>
-            <div><span style={{ color: '#888' }}>리전:</span> <span style={{ color: 'var(--color-vcx-dark)' }}>{snapshot.deployment.region}</span></div>
+            <div><span style={{ color: 'var(--color-vcx-sub-4)' }}>환경:</span> <span style={{ color: 'var(--color-vcx-dark)', fontWeight: 500 }}>{snapshot.deployment.env}</span></div>
+            <div><span style={{ color: 'var(--color-vcx-sub-4)' }}>커밋:</span> <span style={{ color: 'var(--color-vcx-dark)', fontFamily: 'monospace' }}>{snapshot.deployment.commitSha}</span></div>
+            <div><span style={{ color: 'var(--color-vcx-sub-4)' }}>리전:</span> <span style={{ color: 'var(--color-vcx-dark)' }}>{snapshot.deployment.region}</span></div>
           </div>
         </div>
 
         {/* DB 레코드 수 */}
         <div style={{ marginBottom: '20px' }}>
-          <h4 style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', fontWeight: 600, color: '#888', marginBottom: '8px', letterSpacing: '0.05em' }}>
+          <h4 style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', fontWeight: 600, color: 'var(--color-vcx-sub-4)', marginBottom: '8px', letterSpacing: '0.05em' }}>
             데이터베이스
           </h4>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '8px' }}>
@@ -83,7 +83,7 @@ export function SnapshotView({ snapshot }: { snapshot: Snapshot }) {
         {/* 피드백 집계 */}
         {snapshot.feedback && (
           <div style={{ marginBottom: '20px' }}>
-            <h4 style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', fontWeight: 600, color: '#888', marginBottom: '8px', letterSpacing: '0.05em' }}>
+            <h4 style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', fontWeight: 600, color: 'var(--color-vcx-sub-4)', marginBottom: '8px', letterSpacing: '0.05em' }}>
               세션 후 피드백
             </h4>
             <div style={{ padding: '12px', background: '#f5f0e8', border: '1px solid rgba(0,0,0,0.08)', marginBottom: '8px', fontFamily: 'system-ui, sans-serif' }}>
@@ -94,7 +94,7 @@ export function SnapshotView({ snapshot }: { snapshot: Snapshot }) {
             </div>
             <div style={{ border: '1px solid rgba(0,0,0,0.08)' }}>
               {snapshot.feedback.recent.length === 0 ? (
-                <p style={{ padding: '12px', margin: 0, color: '#888', fontFamily: 'system-ui, sans-serif', fontSize: '13px' }}>
+                <p style={{ padding: '12px', margin: 0, color: 'var(--color-vcx-sub-4)', fontFamily: 'system-ui, sans-serif', fontSize: '13px' }}>
                   최근 피드백이 없습니다.
                 </p>
               ) : (
@@ -104,7 +104,7 @@ export function SnapshotView({ snapshot }: { snapshot: Snapshot }) {
                       <span style={{ color: 'var(--color-vcx-dark)', fontWeight: 600 }}>
                         {item.source === 'peer' ? 'Peer' : 'CEO'} · {item.reviewer_role === 'host' ? '호스트' : '참여자'} · {item.overall_rating}/5
                       </span>
-                      <span style={{ color: '#888' }}>{new Date(item.created_at).toLocaleString('ko-KR')}</span>
+                      <span style={{ color: 'var(--color-vcx-sub-4)' }}>{new Date(item.created_at).toLocaleString('ko-KR')}</span>
                     </div>
                     <p style={{ margin: '4px 0 0', color: '#555', fontSize: '12px' }}>
                       {item.comment || (item.feedback_tags ?? []).join(', ') || '코멘트 없음'}
@@ -118,7 +118,7 @@ export function SnapshotView({ snapshot }: { snapshot: Snapshot }) {
 
         {/* 환경변수 상태 */}
         <div>
-          <h4 style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', fontWeight: 600, color: '#888', marginBottom: '8px', letterSpacing: '0.05em' }}>
+          <h4 style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', fontWeight: 600, color: 'var(--color-vcx-sub-4)', marginBottom: '8px', letterSpacing: '0.05em' }}>
             환경변수
           </h4>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>

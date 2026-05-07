@@ -184,7 +184,7 @@ export function LoungeWriteModal({ onClose, onSubmit }: LoungeWriteModalProps) {
                       fontSize: '13px',
                       border: `1.5px solid ${isActive ? 'var(--color-vcx-gold)' : 'rgba(0,0,0,0.1)'}`,
                       background: isActive ? 'rgba(201,168,76,0.1)' : 'transparent',
-                      color: isActive ? '#a07c2a' : '#666',
+                      color: isActive ? '#a07c2a' : 'var(--color-vcx-sub-3)',
                       cursor: 'pointer',
                       borderRadius: 0,
                       fontFamily: 'system-ui, sans-serif',

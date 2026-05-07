@@ -48,10 +48,10 @@ export function HealthStatus({ health }: { health: HealthData }) {
         <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'system-ui, sans-serif', fontSize: '14px' }}>
           <thead>
             <tr style={{ borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
-              <th style={{ textAlign: 'left', padding: '8px 0', color: '#888', fontWeight: 500, fontSize: '12px' }}>서비스</th>
-              <th style={{ textAlign: 'left', padding: '8px 0', color: '#888', fontWeight: 500, fontSize: '12px' }}>상태</th>
-              <th style={{ textAlign: 'left', padding: '8px 0', color: '#888', fontWeight: 500, fontSize: '12px' }}>응답 시간</th>
-              <th style={{ textAlign: 'left', padding: '8px 0', color: '#888', fontWeight: 500, fontSize: '12px' }}>비고</th>
+              <th style={{ textAlign: 'left', padding: '8px 0', color: 'var(--color-vcx-sub-4)', fontWeight: 500, fontSize: '12px' }}>서비스</th>
+              <th style={{ textAlign: 'left', padding: '8px 0', color: 'var(--color-vcx-sub-4)', fontWeight: 500, fontSize: '12px' }}>상태</th>
+              <th style={{ textAlign: 'left', padding: '8px 0', color: 'var(--color-vcx-sub-4)', fontWeight: 500, fontSize: '12px' }}>응답 시간</th>
+              <th style={{ textAlign: 'left', padding: '8px 0', color: 'var(--color-vcx-sub-4)', fontWeight: 500, fontSize: '12px' }}>비고</th>
             </tr>
           </thead>
           <tbody>
@@ -65,7 +65,7 @@ export function HealthStatus({ health }: { health: HealthData }) {
                   </td>
                   <td style={{ padding: '10px 0', color: style.color, fontWeight: 500 }}>{style.label}</td>
                   <td style={{ padding: '10px 0', color: '#555' }}>{check.latency_ms}ms</td>
-                  <td style={{ padding: '10px 0', color: '#888', fontSize: '13px' }}>{check.message || '—'}</td>
+                  <td style={{ padding: '10px 0', color: 'var(--color-vcx-sub-4)', fontSize: '13px' }}>{check.message || '—'}</td>
                 </tr>
               )
             })}
@@ -75,13 +75,13 @@ export function HealthStatus({ health }: { health: HealthData }) {
                 {health.checks.env_vars.missing.length > 0 ? '누락 있음' : '정상'}
               </td>
               <td style={{ padding: '10px 0', color: '#555' }}>—</td>
-              <td style={{ padding: '10px 0', color: '#888', fontSize: '13px' }}>
+              <td style={{ padding: '10px 0', color: 'var(--color-vcx-sub-4)', fontSize: '13px' }}>
                 {health.checks.env_vars.missing.length > 0 ? health.checks.env_vars.missing.join(', ') : '필수 변수 모두 설정됨'}
               </td>
             </tr>
           </tbody>
         </table>
-        <div style={{ marginTop: '16px', display: 'flex', gap: '24px', fontSize: '12px', color: '#888', fontFamily: 'system-ui, sans-serif' }}>
+        <div style={{ marginTop: '16px', display: 'flex', gap: '24px', fontSize: '12px', color: 'var(--color-vcx-sub-4)', fontFamily: 'system-ui, sans-serif' }}>
           <span>버전: {health.version}</span>
           <span>체크 시각: {new Date(health.timestamp).toLocaleString('ko-KR')}</span>
         </div>

@@ -13,7 +13,7 @@ export default async function CreatePeerChatPage() {
   return (
     <div className="min-h-screen bg-vcx-beige">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
-        <div className="mb-10 pb-6 border-b border-[#1a1a1a]">
+        <div className="mb-10 pb-6 border-b border-vcx-dark">
           <p className="vcx-section-label mb-2">멤버 커피챗</p>
           <h1 className="font-vcx-serif text-[28px] font-normal text-vcx-dark">
             커피챗 글 작성하기

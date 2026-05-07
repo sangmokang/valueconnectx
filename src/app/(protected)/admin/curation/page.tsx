@@ -74,7 +74,7 @@ export default function CurationPage() {
           }}>
             큐레이션 피드 관리
           </h2>
-          <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#888', margin: 0 }}>
+          <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'var(--color-vcx-sub-4)', margin: 0 }}>
             멤버에게 노출되는 피드 아이템을 생성, 편집, 삭제합니다
           </p>
         </div>
@@ -94,7 +94,7 @@ export default function CurationPage() {
       {/* 아이템 수 */}
       {!loading && !error && (
         <p style={{
-          fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#888',
+          fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'var(--color-vcx-sub-4)',
           marginBottom: '16px',
         }}>
           총 {items.length}개 아이템
@@ -105,7 +105,7 @@ export default function CurationPage() {
       {loading && (
         <div style={{
           padding: '48px 24px', textAlign: 'center',
-          fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: '#888',
+          fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: 'var(--color-vcx-sub-4)',
         }}>
           불러오는 중...
         </div>
@@ -164,7 +164,7 @@ export default function CurationPage() {
                 onClick={closeModal}
                 style={{
                   background: 'none', border: 'none', cursor: 'pointer',
-                  fontSize: '22px', color: '#888', lineHeight: 1,
+                  fontSize: '22px', color: 'var(--color-vcx-sub-4)', lineHeight: 1,
                 }}
                 aria-label="닫기"
               >

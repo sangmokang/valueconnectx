@@ -33,7 +33,7 @@ export function ReportButton({ postId, commentId }: ReportButtonProps) {
 
   if (submitted) {
     return (
-      <span style={{ fontFamily: 'system-ui, sans-serif', fontSize: '11px', color: '#888888' }}>
+      <span style={{ fontFamily: 'system-ui, sans-serif', fontSize: '11px', color: 'var(--color-vcx-sub-4)' }}>
         신고 완료
       </span>
     )
@@ -71,7 +71,7 @@ export function ReportButton({ postId, commentId }: ReportButtonProps) {
           }}
         >
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#555555', margin: 0 }}>
+            <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: 'var(--color-vcx-sub-2)', margin: 0 }}>
               신고 사유를 입력해주세요
             </p>
             <textarea
@@ -104,7 +104,7 @@ export function ReportButton({ postId, commentId }: ReportButtonProps) {
                   background: 'transparent',
                   fontFamily: 'system-ui, sans-serif',
                   fontSize: '12px',
-                  color: '#555555',
+                  color: 'var(--color-vcx-sub-2)',
                   cursor: 'pointer',
                   borderRadius: 0,
                 }}
@@ -117,7 +117,7 @@ export function ReportButton({ postId, commentId }: ReportButtonProps) {
                 style={{
                   padding: '4px 10px',
                   border: 'none',
-                  background: loading ? '#888888' : 'var(--color-vcx-dark)',
+                  background: loading ? 'var(--color-vcx-sub-4)' : 'var(--color-vcx-dark)',
                   fontFamily: 'system-ui, sans-serif',
                   fontSize: '12px',
                   color: 'var(--color-vcx-gold)',

@@ -33,7 +33,7 @@ export function RunbookLinks() {
                 <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '14px', fontWeight: 600, color: 'var(--color-vcx-dark)' }}>
                   {book.id}. {book.title}
                 </div>
-                <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#888', marginTop: '2px' }}>
+                <div style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: 'var(--color-vcx-sub-4)', marginTop: '2px' }}>
                   {book.description}
                 </div>
               </div>
@@ -43,7 +43,7 @@ export function RunbookLinks() {
             </div>
           ))}
         </div>
-        <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#888', marginTop: '12px' }}>
+        <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: 'var(--color-vcx-sub-4)', marginTop: '12px' }}>
           런북 파일은 프로젝트 저장소의 docs/ops/runbooks/ 디렉토리에서 확인하세요.
         </p>
       </div>

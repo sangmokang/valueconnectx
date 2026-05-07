@@ -37,7 +37,7 @@ export function CommentList({ comments, postId }: { comments: CommunityComment[]
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#888888' }}>
+              <span style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: 'var(--color-vcx-sub-4)' }}>
                 {comment.is_anonymous ? '익명' : '멤버'}
               </span>
               <span style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#bbbbbb' }}>
@@ -46,7 +46,7 @@ export function CommentList({ comments, postId }: { comments: CommunityComment[]
             </div>
             <ReportButton postId={postId} commentId={comment.id} />
           </div>
-          <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: '#333333', lineHeight: '1.6', margin: 0 }}>
+          <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: 'var(--color-vcx-card)', lineHeight: '1.6', margin: 0 }}>
             {comment.content}
           </p>
         </div>

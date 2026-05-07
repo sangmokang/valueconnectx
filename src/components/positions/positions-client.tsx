@@ -88,14 +88,14 @@ export function PositionsClient() {
         {error && (
           <div className="py-16 text-center">
             <p style={{ color: '#333', fontSize: 17, fontWeight: 700 }}>포지션 목록을 잠시 불러오지 못했습니다.</p>
-            <p style={{ color: '#888', fontSize: 14, marginTop: 8 }}>화면을 새로고침하면 다시 확인할 수 있습니다.</p>
+            <p style={{ color: 'var(--color-vcx-sub-4)', fontSize: 14, marginTop: 8 }}>화면을 새로고침하면 다시 확인할 수 있습니다.</p>
           </div>
         )}
 
         {!isLoading && !error && filtered.length === 0 && (
           <div className="py-16 text-center">
             <p style={{ color: '#333', fontSize: 17, fontWeight: 700 }}>검증된 포지션을 준비하고 있습니다.</p>
-            <p style={{ color: '#888', fontSize: 14, marginTop: 8 }}>관심 분야를 등록하면 운영팀이 선별한 기회를 가장 먼저 알려드립니다.</p>
+            <p style={{ color: 'var(--color-vcx-sub-4)', fontSize: 14, marginTop: 8 }}>관심 분야를 등록하면 운영팀이 선별한 기회를 가장 먼저 알려드립니다.</p>
           </div>
         )}
 

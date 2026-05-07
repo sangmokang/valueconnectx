@@ -145,7 +145,7 @@ export function LoungePostRow({
             <div
               style={{
                 fontSize: '13px',
-                color: '#888',
+                color: 'var(--color-vcx-sub-4)',
                 lineHeight: 1.6,
                 overflow: 'hidden',
                 display: '-webkit-box',
@@ -198,7 +198,7 @@ export function LoungePostRow({
                   background: 'var(--color-vcx-beige)',
                   padding: '1px 7px',
                   borderRadius: '100px',
-                  color: '#888',
+                  color: 'var(--color-vcx-sub-4)',
                   fontFamily: 'system-ui, sans-serif',
                 }}
               >

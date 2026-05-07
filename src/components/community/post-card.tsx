@@ -51,7 +51,7 @@ export function PostCard({ post }: { post: CommunityPost }) {
               fontFamily: 'system-ui, sans-serif',
               padding: '2px 8px',
               background: isCompanyReview ? '#fff8e6' : '#f5f0eb',
-              color: isCompanyReview ? 'var(--color-vcx-gold)' : '#888888',
+              color: isCompanyReview ? 'var(--color-vcx-gold)' : 'var(--color-vcx-sub-4)',
               border: `1px solid ${isCompanyReview ? 'var(--color-vcx-gold)' : 'rgba(26,26,26,0.1)'}`,
               letterSpacing: '0.02em',
             }}
@@ -82,7 +82,7 @@ export function PostCard({ post }: { post: CommunityPost }) {
           style={{
             fontFamily: 'system-ui, sans-serif',
             fontSize: '13px',
-            color: '#666666',
+            color: 'var(--color-vcx-sub-3)',
             lineHeight: '1.5',
             display: '-webkit-box',
             WebkitLineClamp: 2,
@@ -121,7 +121,7 @@ export function PostCard({ post }: { post: CommunityPost }) {
                 gap: '4px',
                 fontFamily: 'system-ui, sans-serif',
                 fontSize: '12px',
-                color: post.comments_count > 0 ? '#666666' : '#aaaaaa',
+                color: post.comments_count > 0 ? 'var(--color-vcx-sub-3)' : '#aaaaaa',
               }}
             >
               💬 {post.comments_count}

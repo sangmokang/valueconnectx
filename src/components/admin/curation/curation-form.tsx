@@ -280,7 +280,7 @@ export function CurationForm({ item, onSuccess, onCancel }: CurationFormProps) {
               <button
                 type="button"
                 onClick={() => removeTag(tag)}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888888', padding: 0, lineHeight: 1 }}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-vcx-sub-4)', padding: 0, lineHeight: 1 }}
               >×</button>
             </span>
           ))}
@@ -298,7 +298,7 @@ export function CurationForm({ item, onSuccess, onCancel }: CurationFormProps) {
             onClick={addTag}
             disabled={form.tags.length >= 10}
             style={{
-              padding: '10px 16px', background: form.tags.length >= 10 ? '#999999' : 'var(--color-vcx-dark)', color: '#fff',
+              padding: '10px 16px', background: form.tags.length >= 10 ? 'var(--color-vcx-sub-5)' : 'var(--color-vcx-dark)', color: '#fff',
               border: 'none', cursor: form.tags.length >= 10 ? 'not-allowed' : 'pointer', fontSize: '13px', fontFamily: 'system-ui, sans-serif',
               whiteSpace: 'nowrap',
             }}
@@ -358,7 +358,7 @@ export function CurationForm({ item, onSuccess, onCancel }: CurationFormProps) {
           type="submit"
           disabled={loading}
           style={{
-            padding: '12px 24px', background: loading ? '#999999' : 'var(--color-vcx-gold)', color: '#fff',
+            padding: '12px 24px', background: loading ? 'var(--color-vcx-sub-5)' : 'var(--color-vcx-gold)', color: '#fff',
             border: 'none', cursor: loading ? 'not-allowed' : 'pointer',
             fontSize: '14px', fontFamily: 'system-ui, sans-serif', fontWeight: 600,
           }}

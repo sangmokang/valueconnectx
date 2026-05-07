@@ -69,7 +69,7 @@ export function CommentForm({ postId }: { postId: string }) {
             onChange={(e) => setIsAnonymous(e.target.checked)}
             style={{ accentColor: 'var(--color-vcx-gold)', width: '14px', height: '14px' }}
           />
-          <span style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#555555' }}>
+          <span style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'var(--color-vcx-sub-2)' }}>
             익명
           </span>
         </label>

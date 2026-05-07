@@ -27,7 +27,7 @@ export default function OpsPage() {
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '24px', fontWeight: 700, color: 'var(--color-vcx-dark)', margin: 0 }}>
             서비스 운영 현황
           </h2>
-          <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#888', marginTop: '4px' }}>
+          <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'var(--color-vcx-sub-4)', marginTop: '4px' }}>
             Sentry: 에러 추적 · 헬스체크: 인프라 가용성 · Discord: 장애 알림
           </p>
         </div>
@@ -59,7 +59,7 @@ export default function OpsPage() {
 
       {isLoading && !data && (
         <div style={{ padding: '40px', textAlign: 'center' }}>
-          <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: '#888' }}>로딩 중...</p>
+          <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: 'var(--color-vcx-sub-4)' }}>로딩 중...</p>
         </div>
       )}
 

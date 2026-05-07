@@ -56,13 +56,13 @@ function KpiCard({ label, total, weekly }: { label: string; total: number; weekl
       flex: '1 1 200px',
       minWidth: '160px',
     }}>
-      <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#888', margin: '0 0 8px', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+      <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: 'var(--color-vcx-sub-4)', margin: '0 0 8px', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
         {label}
       </p>
       <p style={{ fontFamily: 'Georgia, serif', fontSize: '36px', fontWeight: 800, color: 'var(--color-vcx-dark)', margin: '0 0 6px', letterSpacing: '-1px' }}>
         {total.toLocaleString()}
       </p>
-      <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: weekly > 0 ? 'var(--color-vcx-gold)' : '#888', margin: 0, fontWeight: 600 }}>
+      <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: weekly > 0 ? 'var(--color-vcx-gold)' : 'var(--color-vcx-sub-4)', margin: 0, fontWeight: 600 }}>
         이번 주 +{weekly}
       </p>
     </div>
@@ -87,7 +87,7 @@ export default function AnalyticsPage() {
 
   if (loading) {
     return (
-      <div style={{ textAlign: 'center', padding: '80px 0', fontFamily: 'system-ui, sans-serif', color: '#888' }}>
+      <div style={{ textAlign: 'center', padding: '80px 0', fontFamily: 'system-ui, sans-serif', color: 'var(--color-vcx-sub-4)' }}>
         데이터를 불러오는 중...
       </div>
     )
@@ -130,8 +130,8 @@ export default function AnalyticsPage() {
         <ResponsiveContainer width="100%" height={260}>
           <LineChart data={dailyChart} margin={{ top: 4, right: 16, left: -16, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
-            <XAxis dataKey="label" tick={{ fontSize: 12, fill: '#888' }} />
-            <YAxis allowDecimals={false} tick={{ fontSize: 12, fill: '#888' }} />
+            <XAxis dataKey="label" tick={{ fontSize: 12, fill: 'var(--color-vcx-sub-4)' }} />
+            <YAxis allowDecimals={false} tick={{ fontSize: 12, fill: 'var(--color-vcx-sub-4)' }} />
             <Tooltip
               contentStyle={{ borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', fontSize: '13px' }}
               labelFormatter={(l) => `날짜: ${l}`}
@@ -157,7 +157,7 @@ export default function AnalyticsPage() {
           </h2>
         </div>
         {fieldDistribution.length === 0 ? (
-          <p style={{ color: '#888', fontSize: '14px', textAlign: 'center', padding: '40px 0' }}>
+          <p style={{ color: 'var(--color-vcx-sub-4)', fontSize: '14px', textAlign: 'center', padding: '40px 0' }}>
             분야 데이터가 없습니다
           </p>
         ) : (
@@ -188,7 +188,7 @@ export default function AnalyticsPage() {
                 <div key={item.name} style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
                   <div style={{ width: '12px', height: '12px', borderRadius: '3px', background: PIE_COLORS[index % PIE_COLORS.length], flexShrink: 0 }} />
                   <span style={{ fontSize: '13px', color: 'var(--color-vcx-dark)', flex: 1 }}>{item.name}</span>
-                  <span style={{ fontSize: '13px', color: '#888', fontWeight: 600 }}>{item.value}명</span>
+                  <span style={{ fontSize: '13px', color: 'var(--color-vcx-sub-4)', fontWeight: 600 }}>{item.value}명</span>
                 </div>
               ))}
             </div>

@@ -50,7 +50,7 @@ export function CategoryTabs({ current }: { current?: CategoryKey }) {
               border: '1px solid',
               borderColor: isActive ? 'var(--color-vcx-dark)' : 'rgba(26,26,26,0.1)',
               background: isActive ? 'var(--color-vcx-dark)' : 'transparent',
-              color: isActive ? 'var(--color-vcx-gold)' : '#555555',
+              color: isActive ? 'var(--color-vcx-gold)' : 'var(--color-vcx-sub-2)',
               transition: 'all 0.15s',
               whiteSpace: 'nowrap',
             }}

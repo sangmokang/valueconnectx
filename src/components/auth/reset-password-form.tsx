@@ -30,14 +30,14 @@ export function ResetPasswordForm() {
     <form onSubmit={handleSubmit}>
       {error && <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', padding: '12px 16px', marginBottom: '16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#EF4444', borderRadius: 0 }}>{error}</div>}
       <div style={{ marginBottom: '16px' }}>
-        <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888888', marginBottom: '8px' }}>새 비밀번호</label>
+        <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-vcx-sub-4)', marginBottom: '8px' }}>새 비밀번호</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required minLength={8} style={inputStyle} />
       </div>
       <div style={{ marginBottom: '24px' }}>
-        <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#888888', marginBottom: '8px' }}>비밀번호 확인</label>
+        <label style={{ display: 'block', fontFamily: 'system-ui, sans-serif', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-vcx-sub-4)', marginBottom: '8px' }}>비밀번호 확인</label>
         <input type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} placeholder="••••••••" required minLength={8} style={inputStyle} />
       </div>
-      <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', fontWeight: 600, color: 'var(--color-vcx-beige)', background: loading ? '#444444' : 'var(--color-vcx-dark)', border: 'none', borderRadius: 0, cursor: loading ? 'not-allowed' : 'pointer' }}>
+      <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', fontWeight: 600, color: 'var(--color-vcx-beige)', background: loading ? 'var(--color-vcx-sub-1)' : 'var(--color-vcx-dark)', border: 'none', borderRadius: 0, cursor: loading ? 'not-allowed' : 'pointer' }}>
         {loading ? '변경 중...' : '비밀번호 변경하기'}
       </button>
     </form>

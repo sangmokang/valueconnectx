@@ -76,7 +76,7 @@ export function LoginForm({ redirectTo }: { redirectTo?: string }) {
       </div>
       <button type="submit" disabled={loading} style={{
         width: '100%', padding: '14px', fontFamily: 'system-ui, sans-serif', fontSize: '14px', fontWeight: 600,
-        color: 'var(--color-vcx-beige)', background: loading ? '#444444' : 'var(--color-vcx-dark)', border: 'none', borderRadius: 0,
+        color: 'var(--color-vcx-beige)', background: loading ? 'var(--color-vcx-sub-1)' : 'var(--color-vcx-dark)', border: 'none', borderRadius: 0,
         cursor: loading ? 'not-allowed' : 'pointer',
       }}>
         {loading ? '로그인 중...' : '로그인'}

@@ -81,7 +81,7 @@ export default function BenefitPage() {
             >
               <div
                 className="mb-2 font-vcx-sans text-[13px] font-bold"
-                style={{ color: tier.dark ? 'var(--color-vcx-gold)' : '#888888' }}
+                style={{ color: tier.dark ? 'var(--color-vcx-gold)' : 'var(--color-vcx-sub-4)' }}
               >
                 {tier.name}
               </div>

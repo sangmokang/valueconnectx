@@ -48,7 +48,7 @@ export function IndustryNewsFeed() {
         <div style={{ fontSize: '15px', fontWeight: 700, color: 'var(--color-vcx-dark)', marginBottom: '6px' }}>
           업계 뉴스가 아직 없습니다
         </div>
-        <div style={{ fontSize: '13.5px', color: '#888888' }}>
+        <div style={{ fontSize: '13.5px', color: 'var(--color-vcx-sub-4)' }}>
           곧 최신 업계 소식이 업데이트됩니다
         </div>
       </div>
@@ -118,7 +118,7 @@ function NewsRow({ item, isLast }: { item: FeedItem; isLast: boolean }) {
         </div>
 
         {item.summary && (
-          <p style={{ fontSize: '13px', color: '#666666', fontFamily: 'system-ui, sans-serif', lineHeight: 1.7, margin: '0 0 8px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+          <p style={{ fontSize: '13px', color: 'var(--color-vcx-sub-3)', fontFamily: 'system-ui, sans-serif', lineHeight: 1.7, margin: '0 0 8px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
             {item.summary}
           </p>
         )}
@@ -132,7 +132,7 @@ function NewsRow({ item, isLast }: { item: FeedItem; isLast: boolean }) {
                   padding: '2px 8px',
                   fontSize: '11px',
                   border: '1px solid rgba(0,0,0,0.08)',
-                  color: '#888888',
+                  color: 'var(--color-vcx-sub-4)',
                   fontFamily: 'system-ui, sans-serif',
                   background: '#faf8f4',
                 }}

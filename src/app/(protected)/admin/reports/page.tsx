@@ -17,7 +17,7 @@ const STATUS_LABELS: Record<string, string> = {
 
 const STATUS_COLORS: Record<string, string> = {
   pending: 'var(--color-vcx-gold)',
-  reviewed: '#888888',
+  reviewed: 'var(--color-vcx-sub-4)',
   action_taken: 'var(--color-vcx-dark)',
 }
 
@@ -51,7 +51,7 @@ export default async function AdminReportsPage() {
           <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '24px', fontWeight: 800, color: 'var(--color-vcx-dark)', marginBottom: '8px' }}>
             신고 관리
           </h1>
-          <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#888888' }}>
+          <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'var(--color-vcx-sub-4)' }}>
             처리 대기 {pendingCount}건
           </p>
         </div>
@@ -81,7 +81,7 @@ export default async function AdminReportsPage() {
                         fontFamily: 'system-ui, sans-serif',
                         padding: '2px 8px',
                         background: report.status === 'pending' ? '#fff8e6' : '#f5f0eb',
-                        color: STATUS_COLORS[report.status] ?? '#888888',
+                        color: STATUS_COLORS[report.status] ?? 'var(--color-vcx-sub-4)',
                         border: `1px solid ${STATUS_COLORS[report.status] ?? 'rgba(26,26,26,0.1)'}`,
                       }}
                     >
@@ -93,7 +93,7 @@ export default async function AdminReportsPage() {
                   </div>
 
                   <div style={{ marginBottom: '12px' }}>
-                    <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: '#555555', marginBottom: '4px' }}>
+                    <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '12px', color: 'var(--color-vcx-sub-2)', marginBottom: '4px' }}>
                       신고 사유
                     </p>
                     <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '14px', color: 'var(--color-vcx-dark)', lineHeight: '1.5' }}>
@@ -103,7 +103,7 @@ export default async function AdminReportsPage() {
 
                   {post && (
                     <div style={{ marginBottom: '8px', padding: '10px 12px', background: '#f5f0eb', border: '1px solid rgba(26,26,26,0.1)' }}>
-                      <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '11px', color: '#888888', marginBottom: '4px' }}>
+                      <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '11px', color: 'var(--color-vcx-sub-4)', marginBottom: '4px' }}>
                         신고된 게시글 {post.status !== 'active' && `(${post.status})`}
                       </p>
                       <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'var(--color-vcx-dark)' }}>
@@ -114,7 +114,7 @@ export default async function AdminReportsPage() {
 
                   {comment && (
                     <div style={{ marginBottom: '8px', padding: '10px 12px', background: '#f5f0eb', border: '1px solid rgba(26,26,26,0.1)' }}>
-                      <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '11px', color: '#888888', marginBottom: '4px' }}>
+                      <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '11px', color: 'var(--color-vcx-sub-4)', marginBottom: '4px' }}>
                         신고된 댓글 {comment.status !== 'active' && `(${comment.status})`}
                       </p>
                       <p style={{ fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'var(--color-vcx-dark)', lineHeight: '1.5' }}>

@@ -31,7 +31,7 @@ const STATUS_COLORS: Record<string, string> = {
   pending: 'var(--color-vcx-gold)',
   confirmed: '#4c8dc9',
   paid: '#4caf50',
-  cancelled: '#888888',
+  cancelled: 'var(--color-vcx-sub-4)',
 }
 
 const STATUS_BG: Record<string, string> = {
@@ -188,7 +188,7 @@ export default function AdminHiringPage() {
           <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '22px', fontWeight: 800, color: 'var(--color-vcx-dark)', margin: 0, marginBottom: '4px' }}>
             수수료 관리
           </h2>
-          <p style={{ fontSize: '13px', color: '#888888', margin: 0 }}>
+          <p style={{ fontSize: '13px', color: 'var(--color-vcx-sub-4)', margin: 0 }}>
             총 {total}건 · 커피챗 채용 성사 수수료 및 Self Introduction Reward 추적
           </p>
         </div>
@@ -326,7 +326,7 @@ export default function AdminHiringPage() {
 
           {/* Preview */}
           {form.annual_salary && !isNaN(parseInt(form.annual_salary, 10)) && (
-            <div style={{ marginTop: '16px', padding: '12px 16px', background: '#fff8e6', border: '1px solid rgba(26,26,26,0.1)', fontSize: '13px', color: '#555555' }}>
+            <div style={{ marginTop: '16px', padding: '12px 16px', background: '#fff8e6', border: '1px solid rgba(26,26,26,0.1)', fontSize: '13px', color: 'var(--color-vcx-sub-2)' }}>
               예상 수수료:{' '}
               <strong style={{ color: 'var(--color-vcx-dark)' }}>
                 {formatKRW(Math.round((parseInt(form.annual_salary, 10) * (parseFloat(form.fee_percentage) || 10)) / 100))}
@@ -358,7 +358,7 @@ export default function AdminHiringPage() {
               type="button"
               onClick={() => { setShowForm(false); setForm(EMPTY_FORM); setFormError('') }}
               style={{
-                padding: '10px 24px', background: 'transparent', color: '#555555',
+                padding: '10px 24px', background: 'transparent', color: 'var(--color-vcx-sub-2)',
                 border: '1px solid #cccccc', cursor: 'pointer',
                 fontSize: '13px', fontFamily: 'system-ui, sans-serif',
               }}
@@ -380,7 +380,7 @@ export default function AdminHiringPage() {
               border: '1px solid',
               borderColor: statusFilter === s ? 'var(--color-vcx-gold)' : 'rgba(26,26,26,0.1)',
               background: statusFilter === s ? '#fff8e6' : '#ffffff',
-              color: statusFilter === s ? 'var(--color-vcx-gold)' : '#555555',
+              color: statusFilter === s ? 'var(--color-vcx-gold)' : 'var(--color-vcx-sub-2)',
               cursor: 'pointer', fontFamily: 'system-ui, sans-serif',
             }}
           >
@@ -404,7 +404,7 @@ export default function AdminHiringPage() {
             <thead>
               <tr style={{ borderBottom: '2px solid rgba(26,26,26,0.1)', textAlign: 'left' }}>
                 {['유형', '포지션', '연봉', '수수료', '리워드', '상태', '등록일', '액션'].map(h => (
-                  <th key={h} style={{ padding: '10px 12px', fontFamily: 'system-ui, sans-serif', fontWeight: 700, color: '#555555', whiteSpace: 'nowrap' }}>
+                  <th key={h} style={{ padding: '10px 12px', fontFamily: 'system-ui, sans-serif', fontWeight: 700, color: 'var(--color-vcx-sub-2)', whiteSpace: 'nowrap' }}>
                     {h}
                   </th>
                 ))}
@@ -423,7 +423,7 @@ export default function AdminHiringPage() {
                       <span style={{
                         fontSize: '11px', padding: '2px 8px',
                         background: record.coffeechat_type === 'ceo' ? '#fff8e6' : 'var(--color-vcx-beige)',
-                        color: record.coffeechat_type === 'ceo' ? 'var(--color-vcx-gold)' : '#555555',
+                        color: record.coffeechat_type === 'ceo' ? 'var(--color-vcx-gold)' : 'var(--color-vcx-sub-2)',
                         border: '1px solid',
                         borderColor: record.coffeechat_type === 'ceo' ? 'var(--color-vcx-gold)' : 'rgba(26,26,26,0.1)',
                       }}>
@@ -448,14 +448,14 @@ export default function AdminHiringPage() {
                       <span style={{
                         fontSize: '11px', padding: '3px 10px',
                         background: STATUS_BG[record.status] ?? '#f5f5f5',
-                        color: STATUS_COLORS[record.status] ?? '#888888',
+                        color: STATUS_COLORS[record.status] ?? 'var(--color-vcx-sub-4)',
                         border: '1px solid',
                         borderColor: STATUS_COLORS[record.status] ?? 'rgba(26,26,26,0.1)',
                       }}>
                         {STATUS_LABELS[record.status] ?? record.status}
                       </span>
                     </td>
-                    <td style={{ padding: '12px', whiteSpace: 'nowrap', color: '#888888', fontSize: '12px' }}>
+                    <td style={{ padding: '12px', whiteSpace: 'nowrap', color: 'var(--color-vcx-sub-4)', fontSize: '12px' }}>
                       {formatDate(record.created_at)}
                     </td>
                     <td style={{ padding: '12px', whiteSpace: 'nowrap' }}>
@@ -481,7 +481,7 @@ export default function AdminHiringPage() {
                             disabled={isUpdating}
                             style={{
                               padding: '5px 12px', fontSize: '11px', fontWeight: 600,
-                              background: 'transparent', color: '#888888',
+                              background: 'transparent', color: 'var(--color-vcx-sub-4)',
                               border: '1px solid #cccccc', cursor: isUpdating ? 'not-allowed' : 'pointer',
                               fontFamily: 'system-ui, sans-serif',
                               opacity: isUpdating ? 0.6 : 1,
@@ -512,7 +512,7 @@ const labelStyle: React.CSSProperties = {
 const labelText: React.CSSProperties = {
   fontSize: '12px',
   fontWeight: 600,
-  color: '#555555',
+  color: 'var(--color-vcx-sub-2)',
 }
 
 const inputStyle: React.CSSProperties = {

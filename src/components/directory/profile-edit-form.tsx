@@ -294,7 +294,7 @@ export function ProfileEditForm({ initialData }: ProfileEditFormProps) {
         className={`w-full py-3 text-sm font-vcx-sans font-medium transition-colors ${
           loading
             ? 'bg-vcx-sub-4 text-white cursor-not-allowed'
-            : 'bg-vcx-dark text-vcx-gold hover:bg-[#333333]'
+            : 'bg-vcx-dark text-vcx-gold hover:bg-vcx-card'
         }`}
         style={{ borderRadius: 0 }}
       >

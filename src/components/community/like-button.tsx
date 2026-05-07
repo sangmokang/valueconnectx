@@ -60,7 +60,7 @@ export function LikeButton({ postId, initialCount = 0, initialLiked = false }: L
         padding: '5px 12px',
         border: `1px solid ${liked ? 'var(--color-vcx-gold)' : 'rgba(26,26,26,0.1)'}`,
         background: liked ? '#fff8e6' : 'transparent',
-        color: liked ? 'var(--color-vcx-gold)' : '#888888',
+        color: liked ? 'var(--color-vcx-gold)' : 'var(--color-vcx-sub-4)',
         fontFamily: 'system-ui, sans-serif',
         fontSize: '13px',
         cursor: loading ? 'not-allowed' : 'pointer',
