@@ -50,7 +50,7 @@ describe('FeedCard', () => {
     expect(screen.getByText('AI Infra')).toBeInTheDocument()
     expect(screen.getByText('AI / ML')).toBeInTheDocument()
     expect(screen.getByText('딥테크')).toBeInTheDocument()
-    expect(screen.getByText('EXCLUSIVE')).toBeInTheDocument()
+    expect(screen.getByText('HOT LINE')).toBeInTheDocument()
   })
 
   it('emits curation feed actions from card controls', () => {
