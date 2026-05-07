@@ -43,16 +43,16 @@ export function PeerSessionCard({ session, isApplied, onApply }: PeerSessionCard
             <span className="text-[13px] text-vcx-dark font-semibold font-vcx-sans">
               {session.role}
             </span>
-            <span className="text-[12px] text-sub-4 font-vcx-sans">{session.posted}</span>
+            <span className="text-[12px] text-vcx-sub-4 font-vcx-sans">{session.posted}</span>
           </div>
 
           {/* Want */}
-          <div className="text-[12px] text-sub-4 mb-2 font-vcx-sans">
+          <div className="text-[12px] text-vcx-sub-4 mb-2 font-vcx-sans">
             <span className="font-bold text-vcx-dark">찾는 분:</span> {session.want}
           </div>
 
           {/* Topic quote */}
-          <p className="text-[14px] text-sub-2 leading-[1.8] mb-4 italic font-vcx-serif">
+          <p className="text-[14px] text-vcx-sub-2 leading-[1.8] mb-4 italic font-vcx-serif">
             &ldquo;{session.topic}&rdquo;
           </p>
 
@@ -61,7 +61,7 @@ export function PeerSessionCard({ session, isApplied, onApply }: PeerSessionCard
             {session.tags.map((tag) => (
               <span
                 key={tag}
-                className="text-[11.5px] px-2.5 py-0.5 bg-vcx-beige border border-black/8 text-sub-3 font-vcx-sans"
+                className="text-[11.5px] px-2.5 py-0.5 bg-vcx-beige border border-black/8 text-vcx-sub-3 font-vcx-sans"
               >
                 {tag}
               </span>
@@ -87,7 +87,7 @@ export function PeerSessionCard({ session, isApplied, onApply }: PeerSessionCard
               마감
             </div>
           )}
-          <span className="text-[12px] text-sub-4 font-vcx-sans">{session.applicants}명 신청중</span>
+          <span className="text-[12px] text-vcx-sub-4 font-vcx-sans">{session.applicants}명 신청중</span>
         </div>
       </div>
     </div>
