@@ -67,6 +67,11 @@
   --color-sub-3: #666666;
   --color-sub-4: #888888;
   --color-sub-5: #999999;
+  --color-vcx-sub-1: #444444;
+  --color-vcx-sub-2: #555555;
+  --color-vcx-sub-3: #666666;
+  --color-vcx-sub-4: #888888;
+  --color-vcx-sub-5: #999999;
   --color-deep-navy: #0F172A;
   --color-vcx-cream: #b0a898;
   --color-vcx-off-white: #fdfcf9;
@@ -195,6 +200,10 @@
 
   .border-vcx-dark { border-color: #1a1a1a; }
   .border-vcx-gold { border-color: #c9a84c; }
+  .border-vcx-beige { border-color: #f0ebe2; }
+  .border-vcx-sub-3 { border-color: #666666; }
+  .border-vcx-sub-4 { border-color: #888888; }
+  .border-vcx-sub-5 { border-color: #999999; }
   .border-vcx-surface { border-color: #252525; }
   .border-vcx-muted-dark { border-color: #4d4d4d; }
 
