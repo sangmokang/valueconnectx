@@ -55,3 +55,13 @@ wiki/orchestrator/reports/
 
 # claude worktrees (embedded git repos)
 .claude/worktrees/
+
+# OMC runtime state & sessions (local dev only)
+.omc/sessions/
+.omc/ralplan-state*.json
+.omc/state/ralph-state.json
+.omc/state/ultrawork-state.json
+.omc/state/hud-state.json
+.omc/state/subagent-tracking.json
+.omc/state/history-last-commit.txt
+.omc/state/user-prompts.raw.jsonl
