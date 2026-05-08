@@ -150,7 +150,7 @@ test.describe('Phase 1 Slice — S2: 큐레이션 피드 열람 및 관심사 �
 
     await page.goto('/feed')
 
-    await expect(page.getByText('멤버 전용 콘텐츠입니다')).toBeVisible()
+    await expect(page.getByTestId('member-only-guard')).toBeVisible()
     await expect(page.locator('a[href="/login?redirect=%2Ffeed"]', { hasText: '로그인' })).toBeVisible()
   })
 

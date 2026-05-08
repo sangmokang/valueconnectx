@@ -174,7 +174,7 @@ test.describe("Phase 1 Slice — S1: 초대 수락 + 로그인 + 온보딩", () 
       await loginAs(page, TEST_USER);
       await page.goto("/onboarding");
       await expect(
-        page.getByRole("heading", { name: "당신의 이야기를 들려주세요" })
+        page.getByTestId("onboarding-heading")
       ).toBeVisible({ timeout: 15000 });
 
       // AC3: GNB 미노출 — 온보딩 집중 UX
@@ -232,7 +232,7 @@ test.describe("Phase 1 Slice — S1: 초대 수락 + 로그인 + 온보딩", () 
       await loginAs(page, TEST_USER);
       await page.goto("/onboarding");
       await expect(
-        page.getByRole("heading", { name: "당신의 이야기를 들려주세요" })
+        page.getByTestId("onboarding-heading")
       ).toBeVisible({ timeout: 15000 });
 
       // LinkedIn URL 입력 필드 라벨은 "선택" 표시를 포함해야 한다 (필수 별표 * 가 아니다)
@@ -241,16 +241,16 @@ test.describe("Phase 1 Slice — S1: 초대 수락 + 로그인 + 온보딩", () 
       ).toBeVisible();
 
       // 필수 4개 필드만 채우고 LinkedIn URL 은 비운 채로 제출
-      const company = page.getByPlaceholder("회사명");
-      const titleInput = page.getByPlaceholder("예: 시니어 백엔드 엔지니어");
-      const bioInput = page.getByPlaceholder(/10년차 백엔드 엔지니어/);
+      const company = page.getByTestId("onboarding-company-input");
+      const titleInput = page.getByTestId("onboarding-title-input");
+      const bioInput = page.getByTestId("onboarding-bio-input");
 
       await company.fill("ValueConnect");
       await titleInput.fill("Engineer");
       await bioInput.fill("S1 E2E 테스트 자기소개입니다. linkedin 미입력.");
 
       // LinkedIn 필드는 비워두고 제출 — D-0004 회귀 방지
-      await page.getByRole("button", { name: "네트워크 입장하기" }).click();
+      await page.getByTestId("onboarding-submit-btn").click();
 
       // AC6: 온보딩 완료 → /directory 리다이렉트
       await expect(page).toHaveURL(/\/directory(\?|$)/, { timeout: 15000 });
@@ -276,18 +276,18 @@ test.describe("Phase 1 Slice — S1: 초대 수락 + 로그인 + 온보딩", () 
       await loginAs(page, TEST_USER);
       await page.goto("/onboarding");
       await expect(
-        page.getByRole("heading", { name: "당신의 이야기를 들려주세요" })
+        page.getByTestId("onboarding-heading")
       ).toBeVisible({ timeout: 15000 });
 
-      await page.getByPlaceholder("회사명").fill("ValueConnect");
+      await page.getByTestId("onboarding-company-input").fill("ValueConnect");
       await page
-        .getByPlaceholder("예: 시니어 백엔드 엔지니어")
+        .getByTestId("onboarding-title-input")
         .fill("Engineer");
       await page
-        .getByPlaceholder(/10년차 백엔드 엔지니어/)
+        .getByTestId("onboarding-bio-input")
         .fill("S1 E2E 완료 시나리오입니다.");
 
-      await page.getByRole("button", { name: "네트워크 입장하기" }).click();
+      await page.getByTestId("onboarding-submit-btn").click();
 
       await expect(page).toHaveURL(/\/directory(\?|$)/, { timeout: 15000 });
       // /directory 도달 시 GNB 가 다시 노출되어야 한다
@@ -316,11 +316,11 @@ test.describe("Phase 1 Slice — S1: 초대 수락 + 로그인 + 온보딩", () 
       await loginAs(page, TEST_USER);
       await page.goto("/onboarding");
       await expect(
-        page.getByRole("heading", { name: "당신의 이야기를 들려주세요" })
+        page.getByTestId("onboarding-heading")
       ).toBeVisible({ timeout: 15000 });
 
       // 프리셋 칩 "엔지니어링" 이 존재하는지 확인
-      const chip = page.getByRole("button", { name: "엔지니어링 빠른 선택" });
+      const chip = page.getByTestId("preset-chip-engineering");
       await expect(chip).toBeVisible();
 
       // 클릭 → aria-pressed="true" (선택됨)
@@ -348,7 +348,7 @@ test.describe("Phase 1 Slice — S1: 초대 수락 + 로그인 + 온보딩", () 
       await loginAs(page, TEST_USER);
       await page.goto("/onboarding");
       await expect(
-        page.getByRole("heading", { name: "당신의 이야기를 들려주세요" })
+        page.getByTestId("onboarding-heading")
       ).toBeVisible({ timeout: 15000 });
 
       // 페이지 내 nav 중 "ValueConnect" 로고 텍스트가 있는 nav 가 0개여야 한다

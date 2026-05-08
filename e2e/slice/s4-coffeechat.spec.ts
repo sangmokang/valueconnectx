@@ -124,20 +124,20 @@ test.describe('Phase 1 Slice - S4: 커피챗 신청 및 AI Brief 생성', () => 
       await expect(applicantPage.getByRole('heading', { name: chat.title })).toBeVisible({
         timeout: STATUS_TRANSITION_TIMEOUT,
       })
-      await applicantPage.getByRole('button', { name: '비밀 신청하기' }).click()
-      await applicantPage.getByPlaceholder('간단한 자기소개나 신청 이유를 적어주세요').fill(
+      await applicantPage.getByTestId('coffeechat-apply-btn').click()
+      await applicantPage.getByTestId('coffeechat-application-textarea').fill(
         'AI Brief 품질 검증을 위해 신청합니다. 실제 대화 전 핵심 질문을 정리하고 싶습니다.'
       )
-      await applicantPage.getByRole('button', { name: '신청하기', exact: true }).click()
-      await expect(applicantPage.getByText('신청 완료')).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
+      await applicantPage.getByTestId('coffeechat-submit-btn').click()
+      await expect(applicantPage.getByTestId('coffeechat-status-applied').first()).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
 
       await gotoWithRetry(authorPage, chat.url)
       await expect(authorPage.getByRole('heading', { name: chat.title })).toBeVisible({
         timeout: STATUS_TRANSITION_TIMEOUT,
       })
-      await expect(authorPage.getByRole('heading', { name: /신청자 목록/ })).toBeVisible()
-      await authorPage.getByRole('button', { name: '수락' }).first().click()
-      await expect(authorPage.getByText('수락됨')).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
+      await expect(authorPage.getByTestId('coffeechat-applicants-heading')).toBeVisible()
+      await authorPage.getByTestId('coffeechat-accept-btn').first().click()
+      await expect(authorPage.getByTestId('coffeechat-status-accepted').first()).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
 
       await applicantPage.reload()
       await expect(applicantPage.getByTestId('ai-brief-card')).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
@@ -154,7 +154,7 @@ test.describe('Phase 1 Slice - S4: 커피챗 신청 및 AI Brief 생성', () => 
     await page.goto('/coffeechat')
 
     await expect(page).not.toHaveURL(/\/404/)
-    await expect(page.getByText('멤버 전용 콘텐츠입니다')).toBeVisible()
+    await expect(page.getByTestId('member-only-guard')).toBeVisible()
     await expect(page.locator('body')).toBeVisible()
     await expect(page.locator('a[href="/login?redirect=%2Fcoffeechat"]', { hasText: '로그인' })).toBeVisible()
     await expect(page.getByText(/수수료|요금/)).toHaveCount(0)
@@ -170,7 +170,7 @@ test.describe('Phase 1 Slice - S4: 커피챗 신청 및 AI Brief 생성', () => 
     await page.setViewportSize({ width: 360, height: 740 })
 
     await page.goto('/coffeechat')
-    await expect(page.getByText('멤버 전용 콘텐츠입니다')).toBeVisible()
+    await expect(page.getByTestId('member-only-guard')).toBeVisible()
 
     const hasHorizontalOverflow = await page.evaluate(() => {
       const root = document.documentElement

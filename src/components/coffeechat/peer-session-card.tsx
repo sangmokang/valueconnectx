@@ -72,7 +72,10 @@ export function PeerSessionCard({ session, isApplied, onApply }: PeerSessionCard
         {/* Right: action */}
         <div className="flex-shrink-0 flex flex-col items-end gap-2">
           {isApplied ? (
-            <div className="px-4 py-2 text-[13px] font-bold font-vcx-sans text-[#16a34a] bg-[rgba(34,197,94,0.1)] border border-[rgba(34,197,94,0.3)]">
+            <div
+              data-testid="coffeechat-status-applied"
+              className="px-4 py-2 text-[13px] font-bold font-vcx-sans text-[#16a34a] bg-[rgba(34,197,94,0.1)] border border-[rgba(34,197,94,0.3)]"
+            >
               ✓ 신청 완료
             </div>
           ) : isOpen ? (

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { getVcxAuthContext } from '@/lib/auth/get-vcx-auth-context'
 import { unauthorized, notFound, forbidden, serverError } from '@/lib/api/error'
 
 type PeerBriefApplication = {
@@ -43,13 +43,12 @@ function buildFallbackBrief(chat: PeerChatBriefRow, application: PeerBriefApplic
 }
 
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const supabase = await createClient()
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) return unauthorized()
+    const { user, supabase } = await getVcxAuthContext(request)
+    if (!user) return unauthorized()
 
     const { id: chatId } = await params
 

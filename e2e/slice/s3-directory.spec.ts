@@ -77,10 +77,10 @@ test.describe("Phase 1 Slice — S3: 멤버 디렉토리 열람 및 프로필 �
     // 미들웨어는 리다이렉트하지 않고 x-vcx-authenticated: false 헤더만 설정
     // ProtectedPageWrapper가 LoginWall을 렌더한다
     await expect(page).not.toHaveURL(/\/login/);
-    await expect(page.getByText("멤버 전용 콘텐츠입니다")).toBeVisible({
+    await expect(page.getByTestId("member-only-guard")).toBeVisible({
       timeout: 15000,
     });
-    await expect(page.getByText("초대된 멤버만 열람할 수 있습니다")).toBeVisible();
+    await expect(page.getByTestId("member-only-subtext")).toBeVisible();
     await expect(
       page.locator('a[href="/login?redirect=%2Fdirectory"]', {
         hasText: "로그인",
@@ -104,7 +104,7 @@ test.describe("Phase 1 Slice — S3: 멤버 디렉토리 열람 및 프로필 �
     // 404 또는 LoginWall 중 하나가 표시된다
     const is404 = await page.locator("text=404").isVisible().catch(() => false);
     const isLoginWall = await page
-      .getByText("멤버 전용 콘텐츠입니다")
+      .getByTestId("member-only-guard")
       .isVisible()
       .catch(() => false);
     expect(is404 || isLoginWall).toBe(true);
@@ -116,7 +116,7 @@ test.describe("Phase 1 Slice — S3: 멤버 디렉토리 열람 및 프로필 �
     await page.setViewportSize({ width: 360, height: 740 });
 
     await page.goto("/directory");
-    await expect(page.getByText("멤버 전용 콘텐츠입니다")).toBeVisible({
+    await expect(page.getByTestId("member-only-guard")).toBeVisible({
       timeout: 15000,
     });
 
@@ -131,7 +131,7 @@ test.describe("Phase 1 Slice — S3: 멤버 디렉토리 열람 및 프로필 �
     page,
   }) => {
     await page.goto("/directory");
-    await expect(page.getByText("멤버 전용 콘텐츠입니다")).toBeVisible({
+    await expect(page.getByTestId("member-only-guard")).toBeVisible({
       timeout: 15000,
     });
     await expect(page.getByText(/수수료/)).toHaveCount(0);
@@ -214,7 +214,7 @@ test.describe("Phase 1 Slice — S3: 멤버 디렉토리 열람 및 프로필 �
     await page.waitForLoadState("networkidle");
 
     // 멤버 전용 콘텐츠(LoginWall)가 아닌 실제 프로필이 보여야 한다
-    await expect(page.getByText("멤버 전용 콘텐츠입니다")).toHaveCount(0);
+    await expect(page.getByTestId("member-only-guard")).toHaveCount(0);
     await expect(page.getByText("멤버 디렉토리로 돌아가기")).toBeVisible({
       timeout: 15000,
     });
@@ -257,7 +257,7 @@ test.describe("Phase 1 Slice — S3: 멤버 디렉토리 열람 및 프로필 �
     // 404 또는 멤버 전용 로그인 월 중 하나가 표시된다
     const is404 = await page.locator("text=404").isVisible().catch(() => false);
     const isLoginWall = await page
-      .getByText("멤버 전용 콘텐츠입니다")
+      .getByTestId("member-only-guard")
       .isVisible()
       .catch(() => false);
     expect(is404 || isLoginWall).toBe(true);

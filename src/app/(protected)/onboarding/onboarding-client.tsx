@@ -18,6 +18,20 @@ interface ProfileSnapshot {
   professional_fields: string[]
 }
 
+// 프리셋 칩 testid 매핑 — E2E 안정 셀렉터 (PROFESSIONAL_FIELDS 한글값 → 영문 슬러그)
+const PRESET_CHIP_TESTID: Record<string, string> = {
+  '엔지니어링': 'preset-chip-engineering',
+  '프로덕트': 'preset-chip-product',
+  '디자인': 'preset-chip-design',
+  '데이터': 'preset-chip-data',
+  '마케팅': 'preset-chip-marketing',
+  '세일즈': 'preset-chip-sales',
+  '운영': 'preset-chip-operations',
+  '인사': 'preset-chip-hr',
+  '재무': 'preset-chip-finance',
+  '전략': 'preset-chip-strategy',
+}
+
 // 완성도 가중치 (합계 100)
 // linkedin_url 은 선택값이지만 가중치를 유지하여 입력 시 진행도가 올라가도록 한다.
 const WEIGHTS = {
@@ -223,7 +237,10 @@ export default function OnboardingPage() {
           <p className="vcx-label text-vcx-gold tracking-[0.2em] mb-3">
             WELCOME
           </p>
-          <h1 className="font-vcx-serif text-[28px] font-extrabold text-vcx-dark mb-3 leading-tight">
+          <h1
+            data-testid="onboarding-heading"
+            className="font-vcx-serif text-[28px] font-extrabold text-vcx-dark mb-3 leading-tight"
+          >
             당신의 이야기를 들려주세요
           </h1>
           <p className="font-vcx-sans text-[14px] text-vcx-sub-4 leading-relaxed">
@@ -283,11 +300,11 @@ export default function OnboardingPage() {
                 onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
                 placeholder="예: 김가치"
                 className={`w-full px-3.5 py-3 font-vcx-sans text-[14px] text-vcx-dark bg-vcx-beige-light border outline-none focus:border-vcx-gold ${
-                  fieldErrors.name ? 'border-red-500' : 'border-black/[0.08]'
+                  fieldErrors.name ? 'border-vcx-error' : 'border-black/[0.08]'
                 }`}
               />
               {fieldErrors.name && (
-                <p className="font-vcx-sans text-[12px] text-red-500 mt-1">{fieldErrors.name}</p>
+                <p className="font-vcx-sans text-[12px] text-vcx-error mt-1">{fieldErrors.name}</p>
               )}
             </div>
 
@@ -302,11 +319,11 @@ export default function OnboardingPage() {
                   onChange={(e) => setForm((p) => ({ ...p, linkedin_url: e.target.value }))}
                   placeholder="https://www.linkedin.com/in/yourprofile"
                   className={`w-full px-3.5 py-3 font-vcx-sans text-[14px] text-vcx-dark bg-vcx-beige-light border outline-none focus:border-vcx-gold ${
-                    fieldErrors.linkedin_url ? 'border-red-500' : 'border-black/[0.08]'
+                    fieldErrors.linkedin_url ? 'border-vcx-error' : 'border-black/[0.08]'
                   }`}
                 />
                 {fieldErrors.linkedin_url && (
-                  <p className="font-vcx-sans text-[12px] text-red-500 mt-1">{fieldErrors.linkedin_url}</p>
+                  <p className="font-vcx-sans text-[12px] text-vcx-error mt-1">{fieldErrors.linkedin_url}</p>
                 )}
                 <p className="font-vcx-sans text-[12px] text-vcx-sub-5 mt-1">
                   LinkedIn URL을 입력하시면 경력을 자동으로 요약해드립니다.
@@ -320,6 +337,7 @@ export default function OnboardingPage() {
                 당신을 한 문장으로 소개해주세요 *
               </label>
               <textarea
+                data-testid="onboarding-bio-input"
                 value={form.bio}
                 onChange={(e) => {
                   if (e.target.value.length <= 150) {
@@ -329,12 +347,12 @@ export default function OnboardingPage() {
                 placeholder="예: 10년차 백엔드 엔지니어. 대규모 시스템 설계에 관심이 많습니다."
                 rows={3}
                 className={`w-full px-3.5 py-3 font-vcx-serif text-[15px] text-vcx-dark bg-vcx-beige-light border outline-none focus:border-vcx-gold resize-none leading-relaxed ${
-                  fieldErrors.bio ? 'border-red-500' : 'border-black/[0.08]'
+                  fieldErrors.bio ? 'border-vcx-error' : 'border-black/[0.08]'
                 }`}
               />
               <div className="flex justify-between items-center mt-1">
                 {fieldErrors.bio
-                  ? <p className="font-vcx-sans text-[12px] text-red-500">{fieldErrors.bio}</p>
+                  ? <p className="font-vcx-sans text-[12px] text-vcx-error">{fieldErrors.bio}</p>
                   : <span />
                 }
                 <p className="font-vcx-sans text-[11px] text-vcx-sub-5 text-right">
@@ -356,16 +374,17 @@ export default function OnboardingPage() {
             <div className="mb-4">
               <label className="font-vcx-sans text-[13px] font-medium text-vcx-sub-3 block mb-1.5">현재 회사 *</label>
               <input
+                data-testid="onboarding-company-input"
                 type="text"
                 value={form.current_company}
                 onChange={(e) => setForm((p) => ({ ...p, current_company: e.target.value }))}
                 placeholder="회사명"
                 className={`w-full px-3.5 py-3 font-vcx-sans text-[14px] text-vcx-dark bg-vcx-beige-light border outline-none focus:border-vcx-gold ${
-                  fieldErrors.current_company ? 'border-red-500' : 'border-black/[0.08]'
+                  fieldErrors.current_company ? 'border-vcx-error' : 'border-black/[0.08]'
                 }`}
               />
               {fieldErrors.current_company && (
-                <p className="font-vcx-sans text-[12px] text-red-500 mt-1">{fieldErrors.current_company}</p>
+                <p className="font-vcx-sans text-[12px] text-vcx-error mt-1">{fieldErrors.current_company}</p>
               )}
             </div>
 
@@ -373,16 +392,17 @@ export default function OnboardingPage() {
             <div>
               <label className="font-vcx-sans text-[13px] font-medium text-vcx-sub-3 block mb-1.5">직함 *</label>
               <input
+                data-testid="onboarding-title-input"
                 type="text"
                 value={form.title}
                 onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))}
                 placeholder="예: 시니어 백엔드 엔지니어"
                 className={`w-full px-3.5 py-3 font-vcx-sans text-[14px] text-vcx-dark bg-vcx-beige-light border outline-none focus:border-vcx-gold ${
-                  fieldErrors.title ? 'border-red-500' : 'border-black/[0.08]'
+                  fieldErrors.title ? 'border-vcx-error' : 'border-black/[0.08]'
                 }`}
               />
               {fieldErrors.title && (
-                <p className="font-vcx-sans text-[12px] text-red-500 mt-1">{fieldErrors.title}</p>
+                <p className="font-vcx-sans text-[12px] text-vcx-error mt-1">{fieldErrors.title}</p>
               )}
             </div>
           </div>
@@ -407,12 +427,13 @@ export default function OnboardingPage() {
                   <button
                     key={field}
                     type="button"
+                    data-testid={PRESET_CHIP_TESTID[field]}
                     aria-label={`${field} 빠른 선택`}
                     aria-pressed={isSelected}
                     onClick={() => isSelected ? removeField(field) : addField(field)}
                     className={`px-3 py-1.5 font-vcx-sans text-[12px] border transition-colors ${
                       isSelected
-                        ? 'border-vcx-gold text-vcx-gold bg-[#fdf9f2]'
+                        ? 'border-vcx-gold text-vcx-gold bg-vcx-gold-soft'
                         : 'border-vcx-beige-dark text-vcx-sub-4 bg-white hover:border-vcx-gold hover:text-vcx-gold'
                     }`}
                   >
@@ -428,7 +449,7 @@ export default function OnboardingPage() {
                 {form.professional_fields.map((field) => (
                   <span
                     key={field}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 font-vcx-sans text-[13px] border border-vcx-gold bg-[#fdf9f2] text-vcx-gold"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 font-vcx-sans text-[13px] border border-vcx-gold bg-vcx-gold-soft text-vcx-gold"
                   >
                     {field}
                     <button
@@ -474,13 +495,14 @@ export default function OnboardingPage() {
 
           {/* Error */}
           {error && (
-            <div className="bg-red-500/[0.08] border border-red-500/20 px-4 py-3 font-vcx-sans text-[13px] text-red-500">
+            <div className="bg-vcx-error/8 border border-vcx-error/20 px-4 py-3 font-vcx-sans text-[13px] text-vcx-error">
               {error}
             </div>
           )}
 
           {/* Submit */}
           <Button
+            data-testid="onboarding-submit-btn"
             type="submit"
             variant="gold"
             disabled={loading}

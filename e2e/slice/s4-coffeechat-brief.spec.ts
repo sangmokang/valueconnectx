@@ -277,4 +277,110 @@ test.describe('Phase 1 Slice - S4: AI Brief 내용 품질 검증', () => {
       await applicantContext.close()
     }
   })
+
+  test('S4 AC2: 호스트가 신청을 수락하면 host_brief가 비동기 큐를 통해 DB에 자동 채워진다', async ({ browser }) => {
+    test.skip(
+      !(await hasPeerCoffeechatSchema()),
+      'E2E Supabase admin 권한 또는 peer_coffee_chats 스키마가 없어 자동 생성 검증을 건너뜁니다.'
+    )
+    test.skip(
+      !process.env.ANTHROPIC_API_KEY,
+      'ANTHROPIC_API_KEY 부재로 AI Brief 자동 생성 검증을 건너뜁니다.'
+    )
+
+    const admin = getAdminClient()
+    if (!admin) {
+      test.skip(true, 'Supabase admin 클라이언트를 생성할 수 없습니다.')
+      return
+    }
+
+    const authorContext = await browser.newContext()
+    const applicantContext = await browser.newContext()
+    const authorPage = await authorContext.newPage()
+    const applicantPage = await applicantContext.newPage()
+    let chatId: string | null = null
+
+    try {
+      // Given: 새 커피챗 + 양쪽 로그인 + 신청 생성
+      const chat = await createPeerCoffeechat()
+      chatId = chat.id
+      await loginAs(authorPage, AUTHOR)
+      await loginAs(applicantPage, APPLICANT)
+
+      await gotoWithRetry(applicantPage, chat.url)
+      await expect(applicantPage.getByRole('heading', { name: chat.title })).toBeVisible({
+        timeout: STATUS_TRANSITION_TIMEOUT,
+      })
+      await applicantPage.getByRole('button', { name: '비밀 신청하기' }).click()
+      await applicantPage
+        .getByPlaceholder('간단한 자기소개나 신청 이유를 적어주세요')
+        .fill('AC2 host_brief 자동 생성 검증을 위한 신청입니다. 핵심 질문 정리가 필요합니다.')
+      await applicantPage.getByRole('button', { name: '신청하기', exact: true }).click()
+      await expect(applicantPage.getByText('신청 완료')).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
+
+      // Given (시드 보강): 수락 직전 application 의 host_brief = null 강제 보장
+      const { data: pending } = await admin
+        .from('peer_coffee_applications')
+        .select('id, host_brief')
+        .eq('chat_id', chat.id)
+        .eq('status', 'pending')
+        .limit(1)
+        .single()
+      expect(pending?.id).toBeTruthy()
+      const applicationId = pending!.id as string
+      await admin
+        .from('peer_coffee_applications')
+        .update({ host_brief: null, applicant_brief: null, brief_generated_at: null, brief_error: null })
+        .eq('id', applicationId)
+
+      // When: 호스트가 UI 에서 수락 (PUT /applications/[appId] 트리거 → 비동기 큐 작동)
+      await gotoWithRetry(authorPage, chat.url)
+      await expect(authorPage.getByRole('heading', { name: chat.title })).toBeVisible({
+        timeout: STATUS_TRANSITION_TIMEOUT,
+      })
+      await expect(authorPage.getByRole('heading', { name: /신청자 목록/ })).toBeVisible()
+      await authorPage.getByRole('button', { name: '수락' }).first().click()
+      await expect(authorPage.getByText('수락됨')).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
+
+      // Then: 5초 간격, 최대 30초 polling — host_brief IS NOT NULL 까지 대기
+      // 비동기 큐(generatePeerBriefAsync, fire-and-forget) 이므로 응답 본문이 아닌 DB 폴링 필요
+      let resolvedBrief: string | null = null
+      const deadline = Date.now() + 30_000
+      while (Date.now() < deadline) {
+        const { data: row } = await admin
+          .from('peer_coffee_applications')
+          .select('host_brief, brief_generated_at, brief_error')
+          .eq('id', applicationId)
+          .single()
+        if (row?.host_brief) {
+          resolvedBrief = row.host_brief as string
+          break
+        }
+        if (row?.brief_error) {
+          throw new Error(`AI Brief 생성 실패: ${row.brief_error}`)
+        }
+        await applicantPage.waitForTimeout(5_000)
+      }
+
+      // Assertion 1: host_brief 가 30초 이내에 채워졌는가
+      expect(resolvedBrief, 'host_brief 가 30초 이내에 자동 생성되지 않았습니다').not.toBeNull()
+      // Assertion 2: brief 가 충분한 길이의 텍스트인가 (Claude 응답 sanity check)
+      expect((resolvedBrief ?? '').trim().length).toBeGreaterThanOrEqual(20)
+      // Assertion 3: 한국어 음절(가-힣)이 포함되어 있는가 — 한국어 brief 보장
+      expect(resolvedBrief ?? '').toMatch(/[가-힣]/)
+      // Assertion 4: 수수료 관련 키워드 0건 (멤버 UI 카피 정책)
+      expect(resolvedBrief ?? '').not.toMatch(/수수료|요금|fee|commission|25%/i)
+      // Assertion 5: brief_generated_at 타임스탬프가 기록되었는가
+      const { data: finalRow } = await admin
+        .from('peer_coffee_applications')
+        .select('brief_generated_at')
+        .eq('id', applicationId)
+        .single()
+      expect(finalRow?.brief_generated_at).toBeTruthy()
+    } finally {
+      if (chatId) await deletePeerCoffeechat(chatId).catch(() => undefined)
+      await authorContext.close()
+      await applicantContext.close()
+    }
+  })
 })

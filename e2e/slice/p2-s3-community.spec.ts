@@ -77,10 +77,10 @@ test.describe("Phase 2 Slice — S3: 커뮤니티 게시글 조회 및 상호작
     // 미들웨어는 리다이렉트하지 않고 x-vcx-authenticated: false 헤더만 설정
     // ProtectedPageWrapper가 LoginWall을 렌더한다
     await expect(page).not.toHaveURL(/\/login/);
-    await expect(page.getByText("멤버 전용 콘텐츠입니다")).toBeVisible({
+    await expect(page.getByTestId("member-only-guard")).toBeVisible({
       timeout: 15000,
     });
-    await expect(page.getByText("초대된 멤버만 열람할 수 있습니다")).toBeVisible();
+    await expect(page.getByTestId("member-only-subtext")).toBeVisible();
     await expect(
       page.locator('a[href="/login?redirect=%2Fcommunity"]', {
         hasText: "로그인",
@@ -95,7 +95,7 @@ test.describe("Phase 2 Slice — S3: 커뮤니티 게시글 조회 및 상호작
     await page.setViewportSize({ width: 360, height: 740 });
 
     await page.goto("/community");
-    await expect(page.getByText("멤버 전용 콘텐츠입니다")).toBeVisible({
+    await expect(page.getByTestId("member-only-guard")).toBeVisible({
       timeout: 15000,
     });
 
@@ -110,7 +110,7 @@ test.describe("Phase 2 Slice — S3: 커뮤니티 게시글 조회 및 상호작
     page,
   }) => {
     await page.goto("/community");
-    await expect(page.getByText("멤버 전용 콘텐츠입니다")).toBeVisible({
+    await expect(page.getByTestId("member-only-guard")).toBeVisible({
       timeout: 15000,
     });
     await expect(page.getByText(/수수료/)).toHaveCount(0);

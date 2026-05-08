@@ -34,106 +34,46 @@ export function CeoApplyModal({ session, onClose, onSubmit }: CeoApplyModalProps
   return (
     <div
       onClick={onClose}
-      style={{
-        position: 'fixed',
-        inset: 0,
-        background: 'rgba(0,0,0,0.65)',
-        zIndex: 300,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 24,
-      }}
+      className="fixed inset-0 bg-black/65 z-[300] flex items-center justify-center p-6"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        style={{
-          background: '#fff',
-          width: '100%',
-          maxWidth: 560,
-          position: 'relative',
-        }}
+        className="bg-white w-full max-w-[560px] relative"
       >
-        {/* Gold top bar */}
+        {/* Gold top bar — linear-gradient retained as inline style (Tailwind cannot express) */}
         <div
+          className="h-[3px]"
           style={{
-            height: 3,
             background: 'linear-gradient(90deg, var(--color-vcx-gold), #a8882d)',
           }}
         />
 
-        <div style={{ padding: '32px 36px' }}>
+        <div className="px-9 py-8">
           {/* Close button */}
           <button
             onClick={onClose}
-            style={{
-              position: 'absolute',
-              top: 20,
-              right: 24,
-              background: 'none',
-              border: 'none',
-              fontSize: 20,
-              cursor: 'pointer',
-              color: '#aaa',
-              fontFamily: 'system-ui, sans-serif',
-            }}
+            className="absolute top-5 right-6 bg-none border-none text-[20px] cursor-pointer text-vcx-sub-5 font-vcx-sans"
           >
             ✕
           </button>
 
           {/* Company · CEO */}
-          <div
-            style={{
-              fontSize: 12,
-              color: 'var(--color-vcx-sub-4)',
-              marginBottom: 6,
-              fontFamily: 'system-ui, sans-serif',
-            }}
-          >
+          <div className="font-vcx-sans text-[12px] text-vcx-sub-4 mb-1.5">
             {session.company} · {session.hostName} {session.hostTitle}
           </div>
 
-          <h3
-            style={{
-              fontSize: 20,
-              fontWeight: 800,
-              margin: '0 0 8px',
-              fontFamily: 'Georgia, serif',
-              color: 'var(--color-vcx-dark)',
-            }}
-          >
+          <h3 className="font-vcx-serif text-[20px] font-extrabold m-0 mb-2 text-vcx-dark">
             커피챗 신청
           </h3>
 
           {/* Privacy notice */}
-          <div
-            style={{
-              fontSize: 13,
-              color: 'var(--color-vcx-sub-4)',
-              marginBottom: 24,
-              padding: '10px 14px',
-              background: 'rgba(201,168,76,0.06)',
-              border: '1px solid rgba(201,168,76,0.15)',
-              fontFamily: 'system-ui, sans-serif',
-              lineHeight: 1.6,
-            }}
-          >
+          <div className="font-vcx-sans text-[13px] text-vcx-sub-4 mb-6 px-3.5 py-2.5 bg-vcx-gold/[0.06] border border-vcx-gold/15 leading-[1.6]">
             신청 내용은 CEO에게만 전달됩니다. 현 직장에는 일체 공개되지 않습니다.
           </div>
 
           {/* Message textarea */}
-          <div style={{ marginBottom: 16 }}>
-            <label
-              style={{
-                fontSize: 11,
-                color: 'var(--color-vcx-sub-4)',
-                fontWeight: 600,
-                display: 'block',
-                marginBottom: 8,
-                fontFamily: 'system-ui, sans-serif',
-                letterSpacing: '0.05em',
-              }}
-            >
+          <div className="mb-4">
+            <label className="font-vcx-sans text-[11px] text-vcx-sub-4 font-semibold block mb-2 tracking-[0.05em]">
               어떤 이야기를 나누고 싶으신가요? (선택)
             </label>
             <textarea
@@ -141,66 +81,30 @@ export function CeoApplyModal({ session, onClose, onSubmit }: CeoApplyModalProps
               onChange={(e) => setMessage(e.target.value)}
               rows={5}
               placeholder={`${session.hostName} CEO와 어떤 대화를 나누고 싶으신지 자유롭게 적어주세요.`}
-              style={{
-                width: '100%',
-                padding: '12px 14px',
-                border: '1px solid rgba(0,0,0,0.12)',
-                fontSize: 14,
-                resize: 'none',
-                outline: 'none',
-                lineHeight: 1.75,
-                boxSizing: 'border-box',
-                fontFamily: 'system-ui, sans-serif',
-                color: 'var(--color-vcx-dark)',
-              }}
+              className="font-vcx-sans w-full px-3.5 py-3 border border-black/10 text-[14px] resize-none outline-none leading-[1.75] box-border text-vcx-dark"
             />
           </div>
 
           {error && (
-            <div
-              style={{
-                fontSize: 13,
-                color: '#e85555',
-                marginBottom: 12,
-                fontFamily: 'system-ui, sans-serif',
-              }}
-            >
+            <div className="font-vcx-sans text-[13px] text-vcx-error mb-3">
               {error}
             </div>
           )}
 
           {/* Buttons */}
-          <div style={{ display: 'flex', gap: 10 }}>
+          <div className="flex gap-2.5">
             <button
               onClick={onClose}
               disabled={loading}
-              style={{
-                flex: 1,
-                padding: '13px',
-                border: '1px solid rgba(0,0,0,0.12)',
-                background: 'none',
-                fontSize: 14,
-                cursor: loading ? 'not-allowed' : 'pointer',
-                fontFamily: 'system-ui, sans-serif',
-                color: 'var(--color-vcx-dark)',
-              }}
+              className={`font-vcx-sans flex-1 py-3 border border-black/10 bg-transparent text-[14px] text-vcx-dark ${loading ? 'cursor-not-allowed' : 'cursor-pointer'}`}
             >
               취소
             </button>
             <button
               onClick={handleSubmit}
               disabled={loading}
-              style={{
-                flex: 2,
-                padding: '13px',
-                background: loading ? 'var(--color-vcx-sub-3)' : 'var(--color-vcx-dark)',
-                color: '#f5f0e8',
-                border: 'none',
-                fontSize: 14,
-                fontWeight: 700,
-                cursor: loading ? 'not-allowed' : 'pointer',
-                fontFamily: 'system-ui, sans-serif',
-              }}
+              className={`font-vcx-sans flex-[2] py-3 text-[14px] font-bold border-none ${loading ? 'bg-vcx-sub-3 cursor-not-allowed' : 'bg-vcx-dark cursor-pointer'}`}
+              style={{ color: '#f5f0e8' }}
             >
               {loading ? '신청 중...' : '대화 신청하기 →'}
             </button>

@@ -75,6 +75,7 @@
   --color-deep-navy: #0F172A;
   --color-vcx-cream: #b0a898;
   --color-vcx-off-white: #fdfcf9;
+  --color-vcx-gold-soft: #fdf9f2;
   --color-vcx-error: #e85555;
 
   /* VCX Typography */
@@ -195,8 +196,12 @@
   .text-vcx-cream { color: #b0a898; }
   .bg-vcx-cream { background-color: #b0a898; }
   .bg-vcx-off-white { background-color: #fdfcf9; }
+  .bg-vcx-gold-soft { background-color: #fdf9f2; }
   .text-vcx-error { color: #e85555; }
   .bg-vcx-error { background-color: #e85555; }
+  .bg-vcx-error\/8 { background-color: rgba(232, 85, 85, 0.08); }
+  .border-vcx-error { border-color: #e85555; }
+  .border-vcx-error\/20 { border-color: rgba(232, 85, 85, 0.2); }
 
   .border-vcx-dark { border-color: #1a1a1a; }
   .border-vcx-gold { border-color: #c9a84c; }
