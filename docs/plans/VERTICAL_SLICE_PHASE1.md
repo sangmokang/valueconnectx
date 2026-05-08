@@ -42,7 +42,7 @@
 - [x] 관심 분야 태깅 UI (온보딩에서 수집, 프로필에서 편집)
 - [x] `/api/feed?limit=&tags=` Route Handler + Zod 검증
 - [x] `/feed` 페이지: 관심 태그 기반 필터링된 10건 + 매주 수동 업데이트
-- [ ] Stibee 뉴스레터 1회 발송 + 오픈율/클릭율 측정 (prd6.0 §1.4 Week 1~4)
+- [ ] 자체 뉴스레터 1회 발송 + 오픈율/클릭율 측정 (ADR-0009, Resend 자체 인프라; prd6.0 §1.4 Week 1~4)
 - [x] Playwright: `tests/e2e/slice/s2-feed-browse.spec.ts` 녹색
 
 ### S3 — 디렉토리 탐색
@@ -124,7 +124,7 @@
 | `/api/feed` Route Handler | Self | S2 | 테스트 포함 |
 | `/feed` MVP | Self | S2 | SWR + 필터 |
 | Admin 피드 생성 UI | Self | — | `/admin/feed` |
-| Stibee 수동 뉴스레터 1회 | Self | — | 오픈율 측정 |
+| 자체 뉴스레터 수동 1회 발송 (ADR-0009) | Self | — | 오픈율 측정 |
 | PostHog 무료 tier 통합 | Self | — | 6 이벤트 계측 |
 | Playwright S2 E2E | Self | S2 | spec 녹색 |
 | `scripts/weekly-metrics.sh` | Self | — | `.omc/state/weekly-metrics.json` append |

@@ -46,25 +46,32 @@ features:
   - id: F-FEED
     name: 큐레이션 피드 (Hook)
     slice: S2
-    status: stub
-    maturity: mvp_required
+    status: live
+    maturity: validate_only
     owners: [self]
     prd_refs: ['prd6.0 §1.4', 'prd6.0 §2 Core Feature 1']
     pages:
       - src/app/(protected)/feed/page.tsx
+      - src/app/(protected)/feed/[id]/page.tsx
+      - src/app/(protected)/admin/curation/page.tsx
     apis:
       - GET /api/feed?limit=&tags=
-      - POST /api/admin/feed/items
+      - GET /api/feed/[id]
+      - POST /api/feed/[id]/response
+      - POST /api/admin/feed
     migrations:
-      - supabase/migrations/020_vcx_curation_feed.sql  # 기존 (확인 후 재활용)
-      - supabase/migrations/022_vcx_feed_items.sql     # Sprint 2 신규 (or 020 확장) — ADR-0006 후보
+      - supabase/migrations/020_vcx_curation_feed.sql   # base schema
+      - supabase/migrations/022_vcx_feed_admin_policies.sql  # admin RLS (resolves ADR-0006)
+      - supabase/migrations/023_vcx_newsletter.sql      # 자체 뉴스레터 인프라 (ADR-0009)
+      - supabase/migrations/029_vcx_feed_news_type.sql  # news 타입 추가
     adr_followup:
-      - ADR-0006: 020 재활용 vs 022 신규 중 택일 (Sprint 2 kickoff)
+      - ADR-0006: 020 재활용 + 022 admin 정책 추가로 종결 (Sprint 2)
+      - ADR-0009: Stibee → Resend 자체 발송 인프라로 전환
     acceptance:
       - 관심 태그 기반 필터링된 10건 이상 표시
       - 어드민이 수동으로 피드 아이템 생성 가능
       - 비인증 사용자에게는 제한 뷰
-      - Stibee 수동 뉴스레터 1회 발송 + 오픈율 측정
+      - 자체 뉴스레터 발송 인프라 (Resend, ADR-0009) 1회 발송 + 오픈율 측정
     e2e: tests/e2e/slice/s2-feed-browse.spec.ts
 
   - id: F-DIRECTORY

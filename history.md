@@ -45,6 +45,8 @@
 - [feat] Onboarding V2 — 전문 분야 프리셋 칩 + 프로필 편집 칩 UI (commit:f1ca462)
 - [fix] 031 — vcx_consume_invite에 invitee_name/company/title 반환 추가 (commit:a8a5569)
 - [chore] 계획 아카이브와 QA 증거를 Phase 2 추적 가능 상태로 남김 (commit:415c087)
+- [chore] 계획 아카이브와 QA 증거를 Phase 2 추적 가능 상태로 남김 (commit:415c087)
+- [feat] 서비스 소개 페이지 '관찰/검증/연결' 3단계 카드 추가 (commit:75601b9)
 
 ## 2026-05-07
 

@@ -272,7 +272,7 @@ Phase 1 DoD = **M1 = 5, M2 = 5, M3 ≤ 3**.
 | `/feed` MVP (수동 큐레이션 10건 표시) | Page live + SWR |
 | 어드민 피드 아이템 생성 API | `/api/admin/feed/items` |
 | `/api/feed?tags=` 개인화 필터 | Route Handler + 테스트 |
-| Stibee 수동 뉴스레터 1회 발송 | 오픈율·클릭율 측정 (prd6.0 §1.4) |
+| 자체 뉴스레터 수동 1회 발송 (ADR-0009, Resend) | 오픈율·클릭율 측정 (prd6.0 §1.4) |
 
 ### Sprint 3 (2026-05-02 ~ 05-08) — "Coffee Chat Loop + AI Brief Quality"
 
