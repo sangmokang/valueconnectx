@@ -44,6 +44,7 @@
 - [feat] Community 강화 — rate-limit + admin CommunityReports + E2E spec (commit:f93905c)
 - [feat] Onboarding V2 — 전문 분야 프리셋 칩 + 프로필 편집 칩 UI (commit:f1ca462)
 - [fix] 031 — vcx_consume_invite에 invitee_name/company/title 반환 추가 (commit:a8a5569)
+- [chore] 계획 아카이브와 QA 증거를 Phase 2 추적 가능 상태로 남김 (commit:415c087)
 
 ## 2026-05-07
 

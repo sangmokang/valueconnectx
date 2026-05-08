@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, CheckCircle2, Radio, Search, ShieldCheck } from 'lucide-react'
 import { ServicePillars } from '@/components/service-pillars'
 
 const HERO_SIGNALS = [
@@ -8,6 +8,11 @@ const HERO_SIGNALS = [
   { label: '채용 Hot Line', value: '최적합 인재와 의사 결정권자간의 편한 커피챗' },
 ]
 
+const PLAYER_STEPS = [
+  { icon: Search, title: '관찰', desc: '시장 신호와 기회를 먼저 큐레이션합니다.' },
+  { icon: ShieldCheck, title: '검증', desc: '멤버와 포지션의 신뢰도를 분리해 확인합니다.' },
+  { icon: Radio, title: '연결', desc: '커뮤니티와 커피챗으로 다음 행동을 만듭니다.' },
+]
 
 export default function ServicePage() {
   return (
@@ -52,6 +57,35 @@ export default function ServicePage() {
             </div>
           </div>
 
+          <div className="bg-vcx-surface shadow-vcx-dark-heavy">
+            <div className="border-b border-vcx-muted-dark px-4 py-3 sm:px-5">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p className="vcx-label text-vcx-silver">다음 추천 행동</p>
+                  <p className="mt-1 text-[15px] font-bold text-vcx-white">이번 주 네트워크 신호</p>
+                </div>
+                <CheckCircle2 className="size-5 text-vcx-gold" aria-hidden="true" />
+              </div>
+            </div>
+            <div className="grid gap-3 p-4 sm:p-5">
+              {PLAYER_STEPS.map((step, index) => (
+                <div key={step.title} className="grid grid-cols-[44px_1fr] gap-3 bg-vcx-surface-soft p-4">
+                  <div className="flex size-11 items-center justify-center bg-vcx-card text-vcx-gold">
+                    <step.icon className="size-5" aria-hidden="true" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="text-[15px] font-bold text-vcx-white">{step.title}</p>
+                      <span className="font-vcx-sans text-[11px] font-bold text-vcx-silver">
+                        0{index + 1}
+                      </span>
+                    </div>
+                    <p className="mt-2 text-[13px] leading-6 text-vcx-silver">{step.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
