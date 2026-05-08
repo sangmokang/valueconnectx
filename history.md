@@ -12,6 +12,12 @@
 
 ---
 
+## 2026-05-09
+
+- [chore] .omc 런타임 상태 파일 제외 (sessions, ralph-state, ultrawork-state 등) (commit:9ba3bbb)
+- [test] E2E 셀렉터 data-testid 교체 — CEO·Peer 페이지 + 신청 리스트 + s5 스펙 (commit:ff6dfd5)
+- [docs] SKILL-supabase-ssr — Bearer+Cookie Fallback 패턴 문서화 (commit:3400034)
+
 ## 2026-05-08
 
 - [design] **브랜드 일관성 전면 정비 — 하드코딩 hex → VCX 디자인 토큰 전환 (Multi-Agent, commit:8051d28)**
@@ -47,6 +53,10 @@
 - [chore] 계획 아카이브와 QA 증거를 Phase 2 추적 가능 상태로 남김 (commit:415c087)
 - [chore] 계획 아카이브와 QA 증거를 Phase 2 추적 가능 상태로 남김 (commit:415c087)
 - [feat] 서비스 소개 페이지 '관찰/검증/연결' 3단계 카드 추가 (commit:75601b9)
+- [fix] x-vcx-authenticated 헤더를 requestHeaders 로 전달 (D-0007) (commit:a90d522)
+- [feat] P2-S1/S2 신규 E2E spec + migration 032 + S1~S4 회귀 픽스 (commit:3641d2f)
+- [docs] DEBT_LEDGER + Manifest + ADR-0011 + Phase2 PRD + QA 증거 + 런치/카피/ops (commit:d961077)
+- [chore] .omc/plans 14건 archive 이동 + ai-ops-agent.md 갱신 (commit:4ef2d6a)
 
 ## 2026-05-07
 
