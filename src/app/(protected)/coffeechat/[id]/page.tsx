@@ -266,7 +266,10 @@ export default async function PeerChatDetailPage({ params }: PageProps) {
         {/* Author: applications section */}
         {isAuthor && (
           <div className="mt-12 pt-8 border-t border-vcx-dark">
-            <h2 className="font-vcx-serif text-[22px] font-normal text-vcx-dark mb-2">
+            <h2
+              data-testid="coffeechat-applicants-heading"
+              className="font-vcx-serif text-[22px] font-normal text-vcx-dark mb-2"
+            >
               신청자 목록 ({applications.length}명)
             </h2>
             <p className="text-[13px] font-vcx-sans text-vcx-sub-4 mb-6">

@@ -110,19 +110,19 @@ async function createAcceptedPeerCoffeechat(browser: Browser) {
   await expect(applicantPage.getByRole('heading', { name: title })).toBeVisible({
     timeout: STATUS_TRANSITION_TIMEOUT,
   })
-  await applicantPage.getByRole('button', { name: '비밀 신청하기' }).click()
-  await applicantPage.getByPlaceholder('간단한 자기소개나 신청 이유를 적어주세요').fill(
+  await applicantPage.getByTestId('coffeechat-apply-btn').click()
+  await applicantPage.getByTestId('coffeechat-application-textarea').fill(
     '세션 이후 피드백 제출 흐름을 검증하기 위해 신청합니다.'
   )
-  await applicantPage.getByRole('button', { name: '신청하기', exact: true }).click()
-  await expect(applicantPage.getByText('신청 완료')).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
+  await applicantPage.getByTestId('coffeechat-submit-btn').click()
+  await expect(applicantPage.getByTestId('coffeechat-status-applied').first()).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
 
   await gotoWithRetry(authorPage, chatUrl)
   await expect(authorPage.getByRole('heading', { name: title })).toBeVisible({
     timeout: STATUS_TRANSITION_TIMEOUT,
   })
-  await authorPage.getByRole('button', { name: '수락' }).first().click()
-  await expect(authorPage.getByText('수락됨')).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
+  await authorPage.getByTestId('coffeechat-accept-btn').first().click()
+  await expect(authorPage.getByTestId('coffeechat-status-accepted').first()).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
 
   const closeResponse = await authorPage.request.put(`/api/peer-coffeechat/${chatId}`, {
     data: { status: 'closed' },
@@ -172,7 +172,7 @@ test.describe('Phase 1 Slice - S5: 세션 완료 후 피드백 제출', () => {
     await page.goto('/coffeechat', { waitUntil: 'networkidle' })
 
     await expect(page).not.toHaveURL(/\/404/)
-    await expect(page.getByText('멤버 전용 콘텐츠입니다')).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
+    await expect(page.getByTestId('member-only-guard')).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
     await expect(page.locator('a[href="/login?redirect=%2Fcoffeechat"]', { hasText: '로그인' })).toBeVisible({ timeout: STATUS_TRANSITION_TIMEOUT })
   })
 

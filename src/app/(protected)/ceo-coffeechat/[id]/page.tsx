@@ -203,7 +203,10 @@ export default async function SessionDetailPage({ params }: PageProps) {
         {/* Host: applications section */}
         {isHost && (
           <div className="mt-12 pt-8 border-t border-vcx-dark">
-            <h2 className="font-vcx-serif text-[22px] font-normal text-vcx-dark mb-6">
+            <h2
+              data-testid="coffeechat-applicants-heading"
+              className="font-vcx-serif text-[22px] font-normal text-vcx-dark mb-6"
+            >
               신청자 목록 ({applications.length}명)
             </h2>
             <ApplicationList sessionId={id} initialApplications={applications} />

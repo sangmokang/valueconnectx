@@ -114,7 +114,16 @@ export function ApplicationList({ sessionId, initialApplications }: ApplicationL
                   <span className="vcx-label px-1.5 py-0.5 bg-vcx-beige text-vcx-sub-3">
                     {tierLabel[app.applicant.member_tier] ?? app.applicant.member_tier}
                   </span>
-                  <span className={`vcx-label px-1.5 py-0.5 border ${statusStyle[app.status]}`}>
+                  <span
+                    data-testid={
+                      app.status === 'accepted'
+                        ? 'coffeechat-status-accepted'
+                        : app.status === 'pending'
+                          ? 'coffeechat-status-applied'
+                          : undefined
+                    }
+                    className={`vcx-label px-1.5 py-0.5 border ${statusStyle[app.status]}`}
+                  >
                     {statusLabel[app.status]}
                   </span>
                 </div>
@@ -144,6 +153,7 @@ export function ApplicationList({ sessionId, initialApplications }: ApplicationL
             {app.status === 'pending' && (
               <div className="flex gap-2 flex-shrink-0">
                 <Button
+                  data-testid="coffeechat-accept-btn"
                   size="xs"
                   variant="gold"
                   onClick={() => updateStatus(app.id, 'accepted')}
