@@ -55,7 +55,7 @@ VCX 운영 안전성과 가시성을 확보하기 위해 다음을 구현한다:
 ## Task Flow
 
 ```
-[Step 1: 헬스체크 API + Vercel Cron]
+[Step 1: 헬스체크 API + Vercel Cron] 
     → [Step 2: Slack Webhook 통합]
     → [Step 3: 환경 스냅샷 API]
     → [Step 4: 3단계 안전 게이트 문서 + 검증 로직]
