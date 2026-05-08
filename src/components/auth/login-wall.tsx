@@ -16,10 +16,10 @@ export function LoginWall({ currentPath = '/' }: LoginWallProps) {
             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
           </svg>
         </div>
-        <h2 className="font-vcx-serif text-[20px] sm:text-[22px] font-extrabold text-vcx-dark mb-3 tracking-[-0.5px]">
+        <h2 data-testid="member-only-guard" className="font-vcx-serif text-[20px] sm:text-[22px] font-extrabold text-vcx-dark mb-3 tracking-[-0.5px]">
           멤버 전용 콘텐츠입니다
         </h2>
-        <p className="font-vcx-sans text-[14px] text-vcx-sub-3 leading-[1.7] mb-8">
+        <p data-testid="member-only-subtext" className="font-vcx-sans text-[14px] text-vcx-sub-3 leading-[1.7] mb-8">
           초대된 멤버만 열람할 수 있습니다
         </p>
         <div className="flex flex-col gap-3">

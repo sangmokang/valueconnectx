@@ -161,8 +161,10 @@ export async function middleware(request: NextRequest) {
   }
 
   if (isSemiPublicRoute(pathname)) {
-    response.headers.set('x-vcx-authenticated', user ? 'true' : 'false')
-    return response
+    requestHeaders.set('x-vcx-authenticated', user ? 'true' : 'false')
+    const semiRes = NextResponse.next({ request: { headers: requestHeaders } })
+    response.cookies.getAll().forEach(c => semiRes.cookies.set(c.name, c.value))
+    return semiRes
   }
 
   if (isAdminRoute(pathname)) {
@@ -186,17 +188,21 @@ export async function middleware(request: NextRequest) {
 
   if (isProtectedRoute(pathname)) {
     if (!user) {
-      response.headers.set('x-vcx-authenticated', 'false')
-      return response
+      requestHeaders.set('x-vcx-authenticated', 'false')
+      const protRes = NextResponse.next({ request: { headers: requestHeaders } })
+      response.cookies.getAll().forEach(c => protRes.cookies.set(c.name, c.value))
+      return protRes
     }
     // DB call 2: member + corporate 단일 RPC 호출
     const { data: info, error: rpcError } = await supabase.rpc('vcx_get_user_info', { p_user_id: user.id })
     if (rpcError) {
       console.error('[미들웨어] vcx_get_user_info RPC 실패(protected):', rpcError.message)
-      response.headers.set('x-vcx-authenticated', 'false')
-      return response
+      requestHeaders.set('x-vcx-authenticated', 'false')
+      const protRes = NextResponse.next({ request: { headers: requestHeaders } })
+      response.cookies.getAll().forEach(c => protRes.cookies.set(c.name, c.value))
+      return protRes
     }
-    response.headers.set('x-vcx-authenticated', (!info?.member && !info?.corporate) ? 'false' : 'true')
+    requestHeaders.set('x-vcx-authenticated', (!info?.member && !info?.corporate) ? 'false' : 'true')
 
     // 멤버 프로필 미완성 시 온보딩 강제 리다이렉트 (corporate 유저 제외)
     if (
@@ -209,7 +215,9 @@ export async function middleware(request: NextRequest) {
       }
     }
 
-    return response
+    const protRes = NextResponse.next({ request: { headers: requestHeaders } })
+    response.cookies.getAll().forEach(c => protRes.cookies.set(c.name, c.value))
+    return protRes
   }
 
   return response
