@@ -36,7 +36,14 @@ export function ApplyButton({ sessionId, sessionTitle, sessionStatus, hasApplied
 
         {applied ? (
           <div className="text-center py-3">
-            <span className="vcx-label px-3 py-1.5 border border-vcx-gold text-vcx-gold">
+            <span
+              data-testid={
+                applicationStatus === 'accepted'
+                  ? 'coffeechat-status-accepted'
+                  : 'coffeechat-status-applied'
+              }
+              className="vcx-label px-3 py-1.5 border border-vcx-gold text-vcx-gold"
+            >
               {applicationStatus === 'accepted' ? '수락됨' : applicationStatus === 'rejected' ? '거절됨' : '신청 완료'}
             </span>
             {applicationStatus === 'accepted' && hostContactEmail ? (
@@ -64,6 +71,7 @@ export function ApplyButton({ sessionId, sessionTitle, sessionStatus, hasApplied
               이 신청은 다른 멤버에게 공개되지 않습니다
             </p>
             <Button
+              data-testid="coffeechat-apply-btn"
               variant="gold"
               className="w-full"
               onClick={() => setModalOpen(true)}

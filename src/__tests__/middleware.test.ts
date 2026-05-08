@@ -166,7 +166,12 @@ describe('middleware', () => {
     mockRpc.mockResolvedValue({ data: { member: { id: 'user-123', name: '테스트', current_company: '테스트회사', title: 'Engineer', linkedin_url: 'https://linkedin.com/in/test' }, corporate: null } })
     const req = makeRequest('/coffeechat')
     const res = await middleware(req)
-    expect(res.headers.get('x-vcx-authenticated')).toBe('true')
+    // D-0007: middleware sets x-vcx-authenticated on forwarded request headers
+    // (consumed by protected-page-wrapper via next/headers headers()).
+    // NextResponse.next({ request: { headers } }) exposes them via the
+    // x-middleware-request-* convention on the response object.
+    expect(res.headers.get('x-middleware-request-x-vcx-authenticated')).toBe('true')
+    expect(res.headers.get('x-middleware-override-headers') ?? '').toContain('x-vcx-authenticated')
   })
 
   it('9. applies directory profile scraping limits separately from base API limit', async () => {

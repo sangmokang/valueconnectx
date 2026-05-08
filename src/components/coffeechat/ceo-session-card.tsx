@@ -194,6 +194,7 @@ export function CeoSessionCard({
         >
           {isApplied ? (
             <div
+              data-testid="coffeechat-status-applied"
               className="font-vcx-sans"
               style={{
                 padding: '8px 16px',

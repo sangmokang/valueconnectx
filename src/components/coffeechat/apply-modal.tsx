@@ -84,6 +84,7 @@ export function ApplyModal({ sessionId, sessionTitle, onClose, onSuccess }: Appl
                 신청 메시지 (선택)
               </label>
               <textarea
+                data-testid="coffeechat-application-textarea"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="간단한 자기소개나 신청 이유를 적어주세요"
@@ -110,6 +111,7 @@ export function ApplyModal({ sessionId, sessionTitle, onClose, onSuccess }: Appl
                 취소
               </Button>
               <Button
+                data-testid="coffeechat-submit-btn"
                 type="submit"
                 variant="gold"
                 disabled={loading}

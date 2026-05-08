@@ -58,7 +58,14 @@ export function PeerApplyButton({ chatId, chatTitle, chatStatus, hasApplied, app
 
         {applied ? (
           <div className="text-center py-3">
-            <span className="vcx-label px-3 py-1.5 border border-vcx-gold text-vcx-gold">
+            <span
+              data-testid={
+                applicationStatus === 'accepted'
+                  ? 'coffeechat-status-accepted'
+                  : 'coffeechat-status-applied'
+              }
+              className="vcx-label px-3 py-1.5 border border-vcx-gold text-vcx-gold"
+            >
               {applicationStatus === 'accepted' ? '수락됨' : applicationStatus === 'rejected' ? '거절됨' : '신청 완료'}
             </span>
             {applicationStatus === 'accepted' && authorContactEmail ? (
@@ -86,6 +93,7 @@ export function PeerApplyButton({ chatId, chatTitle, chatStatus, hasApplied, app
               이 신청은 다른 멤버에게 공개되지 않습니다
             </p>
             <Button
+              data-testid="coffeechat-apply-btn"
               variant="gold"
               className="w-full"
               onClick={() => setModalOpen(true)}
@@ -141,6 +149,7 @@ export function PeerApplyButton({ chatId, chatTitle, chatStatus, hasApplied, app
                     신청 메시지 <span className="text-red-500">*</span>
                   </label>
                   <textarea
+                    data-testid="coffeechat-application-textarea"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="간단한 자기소개나 신청 이유를 적어주세요"
@@ -168,6 +177,7 @@ export function PeerApplyButton({ chatId, chatTitle, chatStatus, hasApplied, app
                     취소
                   </Button>
                   <Button
+                    data-testid="coffeechat-submit-btn"
                     type="submit"
                     variant="gold"
                     disabled={loading || !message.trim()}
