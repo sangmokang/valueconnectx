@@ -1,61 +1,50 @@
 import Link from 'next/link'
-import { BriefcaseBusiness, Coffee, MessageSquareText, Radio, UsersRound } from 'lucide-react'
+import { Coffee, MessageSquareText, Radio, UsersRound } from 'lucide-react'
 
 const PILLARS = [
   {
     num: '01',
     label: '큐레이션 피드',
     title: '채용시장 큐레이션 피드',
-    desc: '관심 분야를 등록하면 해당 시장의 동향과 핵심 기회가 매주 요약되어 도착합니다. 시장을 읽는 가장 빠른 방법.',
+    desc: '관심 분야를 등록하면 해당 시장의 동향과 핵심 기회가 매주 요약되어 도착합니다. 시장을 읽는 가장 빠른 방법입니다.',
     insight:
-      '네트워크가 아직 작아도 개인적 가치가 즉시 발생하는 서비스를 먼저 만듭니다. 인재를 끌어오는 첫 번째 이유는 커뮤니티가 아니라, 혼자서도 가치를 느끼는 정보입니다.',
+      '제한된 정보라고 하더라도 최고의 프로페셔널 분들께 도움이 되는 채용 정보를 제공하고 싶습니다.',
     Icon: Radio,
-    progressClass: 'w-[18%]',
+    progressClass: 'w-[25%]',
     href: '/feed',
   },
   {
     num: '02',
     label: '커뮤니티 라운지',
     title: '커뮤니티 라운지',
-    desc: '초대 전용 익명 커뮤니티. 익명이 솔직함을 만들고, 솔직함이 신뢰를 만든다. 이직 이야기, 리더십 고민, 연봉 협상 — 실명으로는 꺼내기 어려운 것들.',
+    desc: '초대 전용 커뮤니티입니다. 개개인이 겪는 여러 어렵고 민감한 주제를 조금은 편하게 소통 나눌 수 있기를 바랍니다.',
     insight:
-      '커뮤니티 없이는 최고 수준의 인재가 머물지 않는다. VCX의 커뮤니티는 채용의 수단이 아닌 목적 그 자체다.',
+      '이직 이야기, 리더십 고민, 연봉 협상처럼 실명으로는 꺼내기 어려운 주제도 신뢰할 수 있는 사람들과 나눌 수 있는 공간을 지향합니다.',
     Icon: MessageSquareText,
-    progressClass: 'w-[36%]',
+    progressClass: 'w-[50%]',
     href: '/community',
   },
   {
     num: '03',
     label: 'CEO 커피챗',
-    title: '서로의 결을 확인하는 자리',
-    desc: '공개 정보로는 알 수 없는 것들 — 조직의 언어, 리더십의 결, 일하는 방식. CEO와 직접 대화하며 서로의 컬쳐핏을 확인합니다.',
+    title: '최고 의사 결정권자와의 편한 소통',
+    desc: '공개 정보로는 알 수 없는 조직의 고민, 리더십의 결, 일하는 방식을 최고 의사 결정권자와 직접 대화하며 확인합니다.',
     insight:
-      '최고의 인재는 연봉이 아니라 함께 일할 사람을 보고 결정한다. CEO 커피챗은 그 판단의 밀도를 높이는 구조다.',
+      '최고의 인재는 연봉만이 아니라 함께 일할 사람과 조직의 방향을 보고 결정합니다. CEO 커피챗은 그 판단의 밀도를 높이는 구조입니다.',
     Icon: Coffee,
-    progressClass: 'w-[54%]',
+    progressClass: 'w-[75%]',
     href: '/ceo-coffeechat',
   },
   {
     num: '04',
     label: '멤버 커피챗',
-    title: '같은 고도의 대화',
-    desc: "멤버가 사연을 올리고 신청자를 직접 선택하는 P2P 네트워킹.",
+    title: '같은 눈높이의 고민상담',
+    desc: '멤버가 사연을 올리고 신청자를 직접 선택하는 P2P 네트워킹입니다.',
     insight:
-      '정보 격차를 좁히는 단서는 가까운 지인보다 서로 다른 맥락을 가진 멤버와의 느슨한 연결에서 올 때가 많습니다.',
+      '철이 철을 날카롭게 하듯이 같은 고민을 하고 있는 동료들에게 어떻게 문제를 해결했고 성장했는지 소통 나눠본다면 결국 문제를 해결해 나갈 수 있을 것입니다.',
     Icon: UsersRound,
-    progressClass: 'w-[72%]',
+    progressClass: 'w-full',
     href: '/coffeechat',
-  },
-  {
-    num: '05',
-    label: '포지션 보드',
-    title: '큐레이션 피드',
-    desc: "검증된 시장 신호와 핵심 기회를 관심 분야 기준으로 선별합니다. 공개 채널을 훑지 않아도 이번 주 확인할 흐름을 먼저 볼 수 있습니다.",
-    insight:
-      "정보 과부하의 시대에 진짜 희소 자원은 '좋은 필터'다. 스펙이 아닌 결(texture)로 선별되는 포지션은 의사결정의 질을 바꾼다.",
-    Icon: BriefcaseBusiness,
-    progressClass: 'w-[90%]',
-    href: '/feed',
   },
 ]
 

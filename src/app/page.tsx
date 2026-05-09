@@ -3,15 +3,15 @@ import { ArrowRight, CheckCircle2, Radio, Search, ShieldCheck } from 'lucide-rea
 import { ServicePillars } from '@/components/service-pillars'
 
 const HERO_SIGNALS = [
-  { label: '초대 전용', value: '탁월한 성과를 입증한 분들을 Invitation-Only 로 모십니다' },
+  { label: '초대 전용', value: '탁월한 성과를 입증한 분들을 Invitation-Only로 모십니다' },
   { label: '신뢰 기반', value: '고민을 나누고 서로에게 배우는 성장하는 공간' },
-  { label: '채용 Hot Line', value: '최적합 인재와 의사 결정권자간의 편한 커피챗' },
+  { label: '채용 Hot Line', value: '최적합 인재와 의사 결정권자 간의 편한 커피챗' },
 ]
 
 const PLAYER_STEPS = [
-  { icon: Search, title: '관찰', desc: '시장 신호와 기회를 먼저 큐레이션합니다.' },
-  { icon: ShieldCheck, title: '검증', desc: '멤버와 포지션의 신뢰도를 분리해 확인합니다.' },
-  { icon: Radio, title: '연결', desc: '커뮤니티와 커피챗으로 다음 행동을 만듭니다.' },
+  { icon: Search, title: '탐색', desc: '시장에 어떤 사람들이 참여하고 있고, 나의 다음 커리어는 어디가 좋을지 편하게 이야기 나눕니다.' },
+  { icon: ShieldCheck, title: '검증', desc: '멤버와 포지션을 양쪽으로 검증합니다.' },
+  { icon: Radio, title: '연결', desc: '커뮤니티와 커피챗으로 서로 배우고 성장해요.' },
 ]
 
 export default function ServicePage() {
@@ -26,11 +26,14 @@ export default function ServicePage() {
               <span className="vcx-section-label">VALUECONNECT X · 초대 전용 네트워크</span>
             </div>
             <h1 className="font-vcx-serif text-[36px] font-bold leading-[1.06] text-vcx-white sm:text-[54px] lg:text-[64px]">
-              <span className="block">최고수준의 프로페셔널들의</span>
+              <span className="block">최고 수준의 프로페셔널들의</span>
               <span className="block text-vcx-gold">Community</span>
             </h1>
             <p className="mt-6 max-w-[620px] text-[15px] leading-7 text-vcx-silver sm:text-[16px] sm:leading-8">
               VCX는 검증된 핵심 인재에게 시장의 신호, 신뢰할 수 있는 포지션, 그리고 결정권자와의 직접 대화를 하나의 흐름으로 제공합니다.
+            </p>
+            <p className="mt-3 max-w-[620px] text-[15px] leading-7 text-vcx-silver sm:text-[16px] sm:leading-8">
+              밸류커넥트는 최고 수준의 핵심 인재분들이 서로 돕고 성장하며 최적의 커리어 기회를 만날 수 있도록 ValueConnect X라는 자리를 만들었습니다.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
@@ -61,8 +64,7 @@ export default function ServicePage() {
             <div className="border-b border-vcx-muted-dark px-4 py-3 sm:px-5">
               <div className="flex items-center justify-between gap-4">
                 <div>
-                  <p className="vcx-label text-vcx-silver">다음 추천 행동</p>
-                  <p className="mt-1 text-[15px] font-bold text-vcx-white">이번 주 네트워크 신호</p>
+                  <p className="vcx-label text-vcx-silver">서비스에 대해서</p>
                 </div>
                 <CheckCircle2 className="size-5 text-vcx-gold" aria-hidden="true" />
               </div>
@@ -93,9 +95,9 @@ export default function ServicePage() {
         <div className="mx-auto max-w-[1180px] px-4 py-12 sm:px-6 sm:py-16 lg:px-10">
           <div className="mb-8 flex flex-col gap-3 border-b border-vcx-surface pb-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <span className="vcx-section-label">다섯 가지 핵심 경험</span>
+              <span className="vcx-section-label">VALUECONNECT X</span>
               <h2 className="mt-3 font-vcx-serif text-[28px] font-bold leading-tight text-vcx-white sm:text-[36px]">
-                한 번 들어오면 계속 돌아오게 만드는 구조
+                주요 기능 소개
               </h2>
             </div>
             <p className="max-w-[360px] text-[13px] leading-6 text-vcx-silver">
@@ -111,7 +113,7 @@ export default function ServicePage() {
               <span className="vcx-section-label">VCX가 보는 문제</span>
             </div>
             <p className="max-w-[760px] font-vcx-serif text-[22px] font-bold leading-[1.45] text-vcx-white sm:text-[28px]">
-              &ldquo;지금 가장 중요한 것은 사람을 모으는 것이 아니라, 사람이 머무는 이유를 설계하는 것이다.&rdquo;
+              AI 시대에 채용은 희박해지고, 그럴 수록 조직과 시장에서 성과를 내는 사람은 더더욱 중요합니다.
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <Link
