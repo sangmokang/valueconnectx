@@ -12,11 +12,32 @@
 
 ---
 
+## 2026-05-14
+
+- [docs] 톱티어 인재 소싱 전략 검증 메모 신규 작성 — `docs/strategy/talent-sourcing-validation-202605.md` (source:chat:런칭 전 supply 확보 가설 stress-test)
+- [prompt] 푸터 + 개인정보보호 약관 신규 요구 — 사업자정보(밸류커넥트 주식회사 646-87-02542·대표 강상모·문의 sangmokang@valueconnect.kr·서울시 서초구 사평대로335 3층 306-2호) 노출 지시 (source:chat:Footer 구현 요청)
+- [decision] CTO standup 시작 + 오늘 할 일 멀티 에이전트 병렬 실행 지시 (source:chat:/goal CTO Stand up meeting)
+- [prompt] 런칭 액션 플랜 문서 존재 여부 확인 요청 (source:chat:런칭 계획 문서 확인)
+- [feat] 푸터 + 개인정보처리방침/이용약관 페이지 신규 (commit:f32b026)
+- [chore] Merge: feat(landing) Footer + Privacy/Terms — 사용자 신규 지시 (D-1) (commit:01fc56c)
+- [docs] D-Day 사용자 액션 런북 신규 — `docs/runbook/d-day-user-actions.md` (D-0017 migration push + D-0019 DNS/Vercel 1-page 체크리스트) (source:chat:multi-agent dispatch Agent D)
+- [decision] D-1 멀티 에이전트 4건 종합 — A(QA Gate) B(Footer+Privacy) C(D-0016 RCA) D(런북) 모두 완료. M1 ADR-0012 공식 적용: Playwright 36/36 pass, fail=0, skip=0 → **5/5 GREEN**. lint 0 errors / 9 warnings (known). build PASS (/privacy /terms 컴파일 확인). check-fee-hidden 0건. **D-1 Go (조건부): D-0017+D-0019 사용자 액션만 잔존** (source:chat:CTO standup multi-agent synthesis)
+- [decision] D-0016 RCA 결론 — middleware 가 Bearer 헤더 미인지 → 401 즉시 반환 (route handler 도달 못함). 권고: `getVcxAuthContext` 헬퍼 추출 후 middleware 주입. D-0017 와 함께 닫아야 진정 GREEN. Phase 2 트랙 분리 (Phase 1 차단 아님) (source:chat:Agent C root-cause-analyst)
+
+## 2026-05-13
+
+- [decision] 런칭 액션 전략 브레인스토밍 — C레벨 추천망·리워드 구조·세그먼트별 희소 스킬셋 잠재 네트워크·검증 방식 4축 제시 (source:chat:톱티어 인재 소싱 아이디어 검증)
+
+---
+
 ## 2026-05-09
 
 - [chore] .omc 런타임 상태 파일 제외 (sessions, ralph-state, ultrawork-state 등) (commit:9ba3bbb)
 - [test] E2E 셀렉터 data-testid 교체 — CEO·Peer 페이지 + 신청 리스트 + s5 스펙 (commit:ff6dfd5)
 - [docs] SKILL-supabase-ssr — Bearer+Cookie Fallback 패턴 문서화 (commit:3400034)
+- [test] middleware vitest GREEN + 신청자측 coffeechat testid 정합 (commit:e3dc03c)
+- [feat] 033 vcx_invites lower(email) unique + Phase 1 D-7 QA gate 기록 (commit:59fd64e)
+- [chore] Align landing copy with approved VCX positioning (commit:f19df23)
 
 ## 2026-05-08
 
