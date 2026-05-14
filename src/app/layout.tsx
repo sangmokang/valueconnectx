@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { GNBVisibility } from "@/components/layout/gnb-visibility";
+import { FooterVisibility } from "@/components/layout/footer-visibility";
 import Providers from "@/app/providers";
 import "./globals.css";
 
@@ -25,6 +26,7 @@ export default function RootLayout({
       >
         <GNBVisibility />
         <Providers>{children}</Providers>
+        <FooterVisibility />
       </body>
     </html>
   );
