@@ -30,8 +30,9 @@ export function UserMenu({ userName, isAdmin }: { userName: string; isAdmin: boo
       </button>
       {open && (
         <div style={{ position: 'absolute', top: '100%', right: 0, background: 'var(--color-vcx-beige)', border: '1px solid rgba(0,0,0,0.08)', minWidth: '160px', zIndex: 100, borderRadius: 0 }}>
-          <Link href="/directory/me" onClick={() => setOpen(false)} style={{ display: 'block', padding: '12px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'var(--color-vcx-dark)', textDecoration: 'none', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>프로필</Link>
-          {isAdmin && <Link href="/admin/recommendations" onClick={() => setOpen(false)} style={{ display: 'block', padding: '12px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'var(--color-vcx-gold)', textDecoration: 'none', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>관리</Link>}
+          <Link href="/me" onClick={() => setOpen(false)} style={{ display: 'block', padding: '12px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'var(--color-vcx-dark)', textDecoration: 'none', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>마이페이지</Link>
+          <Link href="/directory/me" onClick={() => setOpen(false)} style={{ display: 'block', padding: '12px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'var(--color-vcx-dark)', textDecoration: 'none', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>프로필 편집</Link>
+          {isAdmin && <Link href="/admin" onClick={() => setOpen(false)} style={{ display: 'block', padding: '12px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'var(--color-vcx-gold)', textDecoration: 'none', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>관리</Link>}
           <button onClick={handleLogout} style={{ display: 'block', width: '100%', textAlign: 'left', padding: '12px 16px', fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: 'var(--color-vcx-sub-4)', background: 'transparent', border: 'none', cursor: 'pointer' }}>로그아웃</button>
         </div>
       )}

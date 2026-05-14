@@ -38,12 +38,12 @@ describe('UserMenu', () => {
     const user = userEvent.setup()
     render(<UserMenu userName="홍길동" isAdmin={false} />)
 
-    expect(screen.queryByText('프로필')).not.toBeInTheDocument()
+    expect(screen.queryByText('마이페이지')).not.toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: /홍길동/ }))
-    expect(screen.getByText('프로필')).toBeInTheDocument()
+    expect(screen.getByText('마이페이지')).toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: /홍길동/ }))
-    expect(screen.queryByText('프로필')).not.toBeInTheDocument()
+    expect(screen.queryByText('마이페이지')).not.toBeInTheDocument()
   })
 
   it('shows "관리" link when isAdmin=true', async () => {
@@ -53,7 +53,7 @@ describe('UserMenu', () => {
     await user.click(screen.getByRole('button', { name: /관리자/ }))
     const adminLink = screen.getByRole('link', { name: '관리' })
     expect(adminLink).toBeInTheDocument()
-    expect(adminLink).toHaveAttribute('href', '/admin/recommendations')
+    expect(adminLink).toHaveAttribute('href', '/admin')
   })
 
   it('hides "관리" link when isAdmin=false', async () => {
