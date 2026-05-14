@@ -1,4 +1,4 @@
-export const publicRoutes = ['/', '/service-overview']
+export const publicRoutes = ['/', '/service-overview', '/privacy', '/terms']
 export const semiPublicRoutes = ['/positions']
 export const protectedRoutes = ['/coffeechat', '/ceo-coffeechat', '/community', '/directory', '/onboarding', '/feed']
 export const adminRoutes = ['/admin']
