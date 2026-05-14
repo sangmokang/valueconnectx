@@ -28,11 +28,18 @@ interface MemberProfileProps {
 export function MemberProfile({ member }: MemberProfileProps) {
   return (
     <div className="max-w-2xl mx-auto">
-      {/* Header — dark hero */}
-      <div className="bg-vcx-dark p-6 sm:p-8 mb-4">
+      {/* Header — dark hero with subtle gold radial halo (top-left light source) */}
+      <div className="bg-[radial-gradient(ellipse_400px_at_15%_20%,rgba(201,168,76,0.18),transparent_60%)] bg-vcx-dark p-6 sm:p-8 mb-4">
         {/* Tier badge row */}
         <div className="mb-4">
-          <Badge variant={member.member_tier}>
+          <Badge
+            variant={member.member_tier}
+            className={
+              member.member_tier === 'endorsed'
+                ? 'bg-vcx-gold/12 text-vcx-gold border border-vcx-gold/35 px-3 py-1.5 text-[12px] tracking-[0.10em]'
+                : 'border border-vcx-gold/40 px-3 py-1.5 text-[12px] tracking-[0.10em]'
+            }
+          >
             {displayMemberTier(member.member_tier)}
           </Badge>
         </div>
@@ -43,10 +50,10 @@ export function MemberProfile({ member }: MemberProfileProps) {
             <img
               src={member.avatar_url}
               alt={member.name}
-              className="w-16 h-16 sm:w-20 sm:h-20 object-cover flex-shrink-0 border border-vcx-gold/30"
+              className="w-16 h-16 sm:w-20 sm:h-20 object-cover flex-shrink-0 border border-vcx-gold/70 shadow-[0_0_24px_rgba(201,168,76,0.12)]"
             />
           ) : (
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-vcx-card border border-vcx-gold/40 flex items-center justify-center flex-shrink-0">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-vcx-card border border-vcx-gold/70 shadow-[inset_0_0_20px_rgba(201,168,76,0.15),0_0_24px_rgba(201,168,76,0.12)] flex items-center justify-center flex-shrink-0">
               <span className="text-vcx-gold text-2xl font-vcx-serif font-bold">
                 {member.name.charAt(0)}
               </span>
