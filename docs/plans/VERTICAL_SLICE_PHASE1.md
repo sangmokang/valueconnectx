@@ -70,7 +70,7 @@
 
 | 지표 | 목표 | 측정 |
 |---|---|---|
-| **M1 Slice Pages Green** | 5/5 | Playwright artifact 5건 녹색 |
+| **M1 Slice Pages Green** | 5/5 | Playwright artifact 5건 녹색. **skip 정책: migration-pending 만 허용** (intentional 은 집계 제외, fixture-missing 은 0건 강제 — `docs/PROCESS.md` §5.1.1 / ADR-0012) |
 | **M2 ADR Closed** | 5/5 | `docs/prd/ADR/ADR-000{1..5}-*.md` 존재 + 서명 |
 | **M3 Plan Active Count** | ≤ 3 | `docs/plans/**/*.md` + `.omc/plans/**/*.md` 활성 |
 | **Debt Ledger 초기 4건 해소** | 4/4 | D-0001 ~ D-0004 closed |
@@ -87,7 +87,9 @@
 - CEO 커피챗 심화 기능 (기본 플로우만 유지)
 - 커뮤니티 신규 카테고리/이모지 반응 개선 (017 migration 유지)
 - 포지션 게시판 신규 기능 (018 migration 유지)
-- Admin 신규 기능 (기존 9개 유지, `/admin/ops` 피드백 대시보드만 추가)
+- Admin 신규 기능 — **D-1 (2026-05-14) 부분 완화 (ADR-0013)**:
+  - 허용: `/me` (회원 마이페이지 4섹션 — 프로필/커피챗/커뮤니티/알림+설정), `/admin` 통합 대시보드 KPI 위젯, `/admin/ops` 피드백 대시보드
+  - 금지 (freeze 유지): `/admin/curation`, `/admin/recommendations`, `/admin/feed`, `/admin/positions`, `/admin/hiring`, `/admin/invites`, `/admin/corporate-users`, `/admin/analytics`, `/admin/reports`
 - AI Resume Intelligence (Phase 2 후보)
 - Multi-vertical 확장 (Phase 3+ 백로그)
 - Domain Expert Routing (VCX 제품 아님)
@@ -177,3 +179,4 @@
 |---|---|---|---|
 | 2026-04-17 | 1.0 | 초안 작성 | ________ (48h 쿨다운 중) |
 | 2026-04-19 | 1.0 | 재서명 + 강제력 발생 | ________ |
+| 2026-05-14 | 1.1 | ADR-0013 적용 — D-1 admin 부분 완화 (`/me` + `/admin` 대시보드 허용) | Sangmo Kang |

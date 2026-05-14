@@ -23,6 +23,14 @@
 - [docs] D-Day 사용자 액션 런북 신규 — `docs/runbook/d-day-user-actions.md` (D-0017 migration push + D-0019 DNS/Vercel 1-page 체크리스트) (source:chat:multi-agent dispatch Agent D)
 - [decision] D-1 멀티 에이전트 4건 종합 — A(QA Gate) B(Footer+Privacy) C(D-0016 RCA) D(런북) 모두 완료. M1 ADR-0012 공식 적용: Playwright 36/36 pass, fail=0, skip=0 → **5/5 GREEN**. lint 0 errors / 9 warnings (known). build PASS (/privacy /terms 컴파일 확인). check-fee-hidden 0건. **D-1 Go (조건부): D-0017+D-0019 사용자 액션만 잔존** (source:chat:CTO standup multi-agent synthesis)
 - [decision] D-0016 RCA 결론 — middleware 가 Bearer 헤더 미인지 → 401 즉시 반환 (route handler 도달 못함). 권고: `getVcxAuthContext` 헬퍼 추출 후 middleware 주입. D-0017 와 함께 닫아야 진정 GREEN. Phase 2 트랙 분리 (Phase 1 차단 아님) (source:chat:Agent C root-cause-analyst)
+- [docs] D-Day 사용자 액션 런북 + history D-1 멀티 에이전트 종합 (commit:d28a1e6)
+- [prompt] 어드민 화면 기획 + 구현 시작 — 2-페르소나 (밸류커넥트용 + 회원용) (source:chat:/goal admin 화면 기획)
+- [decision] D-1 admin 스코프 부분 완화 — VERTICAL_SLICE_PHASE1.md §4 freeze 화이트리스트 2건(`/me`, `/admin` 대시보드) 한정 허용 — ADR-0013 Accepted (L-Std, 1-hand, 48h 면제). 9개 admin 하위 freeze 유지 (source:chat:Agent A writer)
+- [feat] /me 회원 통합 마이페이지 신규 — 4섹션 탭 (프로필·커피챗·커뮤니티·알림+설정) + /api/me/coffeechats + /api/me/community + 7건 vitest (commit:worktree-agent-abbb25317a48df462)
+- [feat] /admin 통합 대시보드 KPI 위젯 — 6 KPI (가입자·이번주·커피챗·커뮤니티·AI Brief·피드백) + KPI 헬퍼 + 3건 단위 테스트 (commit:worktree-agent-aa92b6848e2e84fac)
+- [decision] D-1 admin 멀티 에이전트 종합 — A(ADR-0013) + B(/me 4섹션) + C(/admin KPI) 3-agent 모두 GREEN. fresh QA gate 결과: build ✓ 52페이지, lint 0e/9w(known), focused vitest 10/10 PASS (lucide-react 풀 스위트 hang는 known D-7 baseline 786/788 유지), fee-hidden 0건. main 머지 + push 완료. **D-1 추가 회귀 0건** (source:chat:multi-agent admin synthesis)
+- [feat] /privacy /terms publicRoutes 등록 + 이용약관 11조 본문 + 12 vitest (commit:056ae16)
+- [style] 멤버 hero 카드 gold radial halo + 뱃지 위계 상향 (commit:d50659d)
 
 ## 2026-05-13
 
