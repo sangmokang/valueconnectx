@@ -1,0 +1,155 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "W02 local refactoring evidence summary",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "workUnit",
+    "state",
+    "strictStatus",
+    "mergeReady",
+    "baseCommit",
+    "redCommit",
+    "branch",
+    "generatedAt",
+    "checks",
+    "pending",
+    "changedFiles",
+    "evidenceLimitations"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "workUnit": {
+      "const": "W02"
+    },
+    "state": {
+      "const": "LOCAL_CHANGE_VERIFIED"
+    },
+    "strictStatus": {
+      "const": "FAIL"
+    },
+    "mergeReady": {
+      "const": false
+    },
+    "baseCommit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "redCommit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "branch": {
+      "const": "refactor/w02-test-db-guard"
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "status",
+          "scope",
+          "evidence"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "NOT_RUN"
+            ]
+          },
+          "scope": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "counts": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "PASS"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "evidence": {
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "pending": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "exitCondition"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "exitCondition": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "changedFiles": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[^/].+"
+      }
+    },
+    "evidenceLimitations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}
