@@ -28,7 +28,7 @@ describe('ForgotPasswordForm', () => {
 
   it('renders email input and submit button', () => {
     render(<ForgotPasswordForm />)
-    expect(screen.getByRole('textbox')).toBeInTheDocument()
+    expect(screen.getByRole('textbox', { name: /^이메일$/ })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: '재설정 링크 보내기' })).toBeInTheDocument()
   })
 
