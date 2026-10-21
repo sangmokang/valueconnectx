@@ -1,11 +1,12 @@
 import { defineConfig, devices } from '@playwright/test'
+import { getE2EEnvironment } from './src/lib/testing/database'
+
+const { port: e2ePort, baseURL: e2eBaseURL } = getE2EEnvironment()
 
 // 데모 로그인 기본 계정 (시드 스크립트가 생성)
 process.env.E2E_USER_EMAIL ||= 'jihoon.park@vcx-seed.com'
 process.env.E2E_USER_PASSWORD ||= 'VcxSeed2026!'
 
-const e2ePort = process.env.E2E_PORT || '3100'
-const e2eBaseURL = process.env.E2E_BASE_URL || `http://127.0.0.1:${e2ePort}`
 const e2eWorkers = Number(process.env.E2E_WORKERS || 1)
 
 export default defineConfig({
@@ -31,8 +32,9 @@ export default defineConfig({
   ],
   webServer: {
     command: `npm run dev -- --hostname 127.0.0.1 --port ${e2ePort}`,
+    env: { NODE_ENV: 'development' },
     url: e2eBaseURL,
-    reuseExistingServer: process.env.E2E_REUSE_SERVER === '1',
+    reuseExistingServer: false,
     timeout: 120000,
   },
 })

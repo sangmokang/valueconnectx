@@ -1,38 +1,11 @@
 import { test, expect } from '@playwright/test'
-import { createClient } from '@supabase/supabase-js'
-import { readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
+import { createTestAdminClient as getAdminClient } from '../../src/lib/testing/database'
 import { gotoWithRetry, loginAs } from '../helpers/auth'
 
 const PASSWORD = 'VcxSeed2026!'
 const AUTHOR = { email: 'jihoon.park@vcx-seed.com', password: PASSWORD }
 const APPLICANT = { email: 'hyuna.lee@vcx-seed.com', password: PASSWORD }
 const STATUS_TRANSITION_TIMEOUT = 15000
-
-function loadEnv() {
-  const envPath = resolve(process.cwd(), '.env.local')
-  try {
-    for (const line of readFileSync(envPath, 'utf-8').split('\n')) {
-      const trimmed = line.trim()
-      if (!trimmed || trimmed.startsWith('#')) continue
-      const index = trimmed.indexOf('=')
-      if (index === -1) continue
-      const key = trimmed.slice(0, index)
-      const value = trimmed.slice(index + 1)
-      process.env[key] ||= value
-    }
-  } catch {
-    // CI can provide environment variables directly.
-  }
-}
-
-function getAdminClient() {
-  loadEnv()
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
-  if (!url || !key) return null
-  return createClient(url, key, { auth: { autoRefreshToken: false, persistSession: false } })
-}
 
 async function ensureMember(email: string, name: string) {
   const admin = getAdminClient()

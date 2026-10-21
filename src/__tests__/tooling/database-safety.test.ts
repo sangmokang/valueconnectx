@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { EventEmitter } from 'node:events'
 import { cleanupTestData, seedTestUser } from '../../../e2e/helpers/seed'
 import globalSetup from '../../../e2e/global-setup'
+import { getE2EEnvironment, getTestDatabaseCredentials } from '@/lib/testing/database'
 
 const { mockCreateClient, mockSpawn } = vi.hoisted(() => ({
   mockCreateClient: vi.fn(),
@@ -27,6 +28,9 @@ beforeEach(() => {
   vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', 'not-a-real-service-key')
   vi.stubEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY', 'not-a-real-anon-key')
   vi.stubEnv('SKIP_DEMO_SEED', '')
+  vi.stubEnv('E2E_BASE_URL', '')
+  vi.stubEnv('E2E_REUSE_SERVER', '')
+  vi.stubEnv('E2E_PORT', '3100')
   mockCreateClient.mockImplementation(() => { throw new Error('CLIENT_CONSTRUCTED') })
   mockSpawn.mockImplementation(() => {
     const child = new EventEmitter()
@@ -46,6 +50,12 @@ describe('관리자 시험 데이터 쓰기 경계', () => {
     'http://user:password@localhost:54321',
     'http://localhost:54321?target=production',
     'http://localhost:54321#production',
+    'http://localhost:54321/a/..',
+    'http://localhost:54321/%2e%2e',
+    'http://localhost:54321?',
+    'http://localhost:54321#',
+    ' http://localhost:54321',
+    'http://localhost:54321\\',
   ])('미허용 주소에서는 클라이언트를 생성하지 않는다: %s', async (url) => {
     vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', url)
     const error = await seedTestUser(user).catch((cause: unknown) => cause)
@@ -79,9 +89,41 @@ describe('관리자 시험 데이터 쓰기 경계', () => {
     expect(createUser).toHaveBeenCalledOnce()
     expect(insert).toHaveBeenCalledOnce()
   })
+
+  it.each(['http://localhost:54321', 'http://127.0.0.1:54321/'])('정상 주소 %s를 허용한다', (url) => {
+    vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', url)
+    expect(getTestDatabaseCredentials().url).toBe(url.replace(/\/$/, ''))
+  })
+
+  it('직접 seed에서 SUPABASE_URL 단독 지정과 같은 origin 별칭을 허용한다', () => {
+    vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', '')
+    vi.stubEnv('SUPABASE_URL', 'http://localhost:54321/')
+    expect(getTestDatabaseCredentials().url).toBe('http://localhost:54321')
+    vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', 'http://localhost:54321')
+    expect(getTestDatabaseCredentials().url).toBe('http://localhost:54321')
+  })
+
+  it('유효한 대상의 cleanup은 기존 삭제 흐름을 실행한다', async () => {
+    const query = { delete: vi.fn().mockReturnThis(), eq: vi.fn().mockResolvedValue({ error: null }) }
+    mockCreateClient.mockReturnValue({
+      from: vi.fn().mockReturnValue(query),
+      auth: { admin: { listUsers: vi.fn().mockResolvedValue({ data: { users: [] } }) } },
+    })
+    await cleanupTestData()
+    expect(query.delete).toHaveBeenCalled()
+    expect(mockCreateClient).toHaveBeenCalledOnce()
+  })
 })
 
 describe('E2E setup 경계', () => {
+  it.each([
+    ['E2E_BASE_URL', 'https://production.example.invalid'],
+    ['E2E_REUSE_SERVER', '1'],
+  ])('%s가 앱 격리를 우회하지 못한다', async (key, value) => {
+    vi.stubEnv(key, value)
+    await expect(globalSetup()).rejects.toThrow(/^\[TEST_DB_TARGET\]/)
+    expect(mockSpawn).not.toHaveBeenCalled()
+  })
   it('대상 주소가 미허용이면 seed subprocess를 시작하지 않는다', async () => {
     vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', 'https://production-project.supabase.co')
     await expect(globalSetup()).rejects.toThrow(/^\[TEST_DB_TARGET\]/)
@@ -110,5 +152,21 @@ describe('E2E setup 경계', () => {
     vi.stubEnv('SKIP_DEMO_SEED', '1')
     await globalSetup()
     expect(mockSpawn).not.toHaveBeenCalled()
+  })
+
+  it.each(['0', '1023', '65536', '3100;echo unsafe', 'NaN'])('잘못된 포트 %s를 거부한다', (port) => {
+    vi.stubEnv('E2E_PORT', port)
+    expect(() => getE2EEnvironment()).toThrow(/^\[TEST_DB_TARGET\]/)
+  })
+
+  it('E2E는 SUPABASE_URL만으로 앱의 DB를 추정하지 않는다', () => {
+    vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', '')
+    vi.stubEnv('SUPABASE_URL', 'http://localhost:54321')
+    expect(() => getE2EEnvironment()).toThrow(/^\[TEST_DB_TARGET\]/)
+  })
+
+  it('유효한 로컬 앱 설정을 반환한다', () => {
+    vi.stubEnv('E2E_BASE_URL', 'http://localhost:3100/')
+    expect(getE2EEnvironment()).toEqual({ port: '3100', baseURL: 'http://localhost:3100' })
   })
 })

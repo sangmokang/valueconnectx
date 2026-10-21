@@ -1,18 +1,4 @@
-import { createClient } from '@supabase/supabase-js'
-
-// Create admin client for E2E seeding (uses env vars directly)
-function getAdminClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || ''
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-
-  if (!url || !key) {
-    throw new Error('Missing Supabase credentials for E2E tests. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.')
-  }
-
-  return createClient(url, key, {
-    auth: { autoRefreshToken: false, persistSession: false },
-  })
-}
+import { createTestAdminClient as getAdminClient } from '../../src/lib/testing/database'
 
 export async function seedTestUser(user: {
   email: string

@@ -1,7 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-import { createClient } from "@supabase/supabase-js";
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { createTestAdminClient as getAdminClient } from "../../src/lib/testing/database";
 import { loginAs, TEST_USER } from "../helpers/auth";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -11,33 +9,6 @@ import { loginAs, TEST_USER } from "../helpers/auth";
 // 본 스펙은 D-0001 (GNB 노출), D-0002 (진행 바 0%), D-0004 (linkedin_url 선택)
 // 회귀 방지를 포함한다.
 // ─────────────────────────────────────────────────────────────────────────────
-
-function loadEnv() {
-  const envPath = resolve(process.cwd(), ".env.local");
-  try {
-    for (const line of readFileSync(envPath, "utf-8").split("\n")) {
-      const trimmed = line.trim();
-      if (!trimmed || trimmed.startsWith("#")) continue;
-      const index = trimmed.indexOf("=");
-      if (index === -1) continue;
-      const key = trimmed.slice(0, index);
-      const value = trimmed.slice(index + 1);
-      process.env[key] ||= value;
-    }
-  } catch {
-    // CI 는 환경변수를 직접 주입한다.
-  }
-}
-
-function getAdminClient() {
-  loadEnv();
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) return null;
-  return createClient(url, key, {
-    auth: { autoRefreshToken: false, persistSession: false },
-  });
-}
 
 async function hasMembersTable(): Promise<boolean> {
   const admin = getAdminClient();

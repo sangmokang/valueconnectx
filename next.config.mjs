@@ -1,8 +1,15 @@
 import { withSentryConfig } from '@sentry/nextjs'
+import { createRequire } from 'node:module'
+
+const require = createRequire(import.meta.url)
+const testDatabasePolicy = require('./config/test-database.json')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   async headers() {
+    const developmentConnections = process.env.NODE_ENV === 'development'
+      ? testDatabasePolicy.allowedOrigins.flatMap((origin) => [origin, origin.replace('http:', 'ws:')])
+      : []
     return [
       {
         source: '/(.*)',
@@ -39,7 +46,10 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: blob: https:",
               "font-src 'self' data:",
-              "connect-src 'self' https://*.supabase.co https://*.sentry.io https://*.ingest.sentry.io wss://*.supabase.co",
+              [
+                "connect-src 'self' https://*.supabase.co https://*.sentry.io https://*.ingest.sentry.io wss://*.supabase.co",
+                ...developmentConnections,
+              ].join(' '),
               "frame-ancestors 'none'",
               "base-uri 'self'",
               "form-action 'self'",

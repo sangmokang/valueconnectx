@@ -4,40 +4,14 @@
  * 실행: npx tsx scripts/seed-dummy-data.ts
  * 정리: npx tsx scripts/seed-dummy-data.ts --cleanup
  *
- * 환경변수: .env.local에서 자동 로드
+ * 환경변수: 명시적으로 주입. config/test-database.json의 시험 DB만 허용.
  */
 
-import { createClient, type SupabaseClient } from '@supabase/supabase-js'
+import type { SupabaseClient } from '@supabase/supabase-js'
 import { randomUUID } from 'crypto'
-import { readFileSync } from 'fs'
-import { resolve } from 'path'
+import { createTestAdminClient } from '../src/lib/testing/database'
 
-// .env.local 수동 파싱 (dotenv 미설치 대비)
-const envPath = resolve(__dirname, '../.env.local')
-try {
-  const envContent = readFileSync(envPath, 'utf-8')
-  for (const line of envContent.split('\n')) {
-    const trimmed = line.trim()
-    if (!trimmed || trimmed.startsWith('#')) continue
-    const eqIndex = trimmed.indexOf('=')
-    if (eqIndex === -1) continue
-    const key = trimmed.slice(0, eqIndex)
-    const value = trimmed.slice(eqIndex + 1)
-    if (!process.env[key]) process.env[key] = value
-  }
-} catch { /* .env.local 없으면 환경변수에서 직접 읽기 */ }
-
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!
-
-if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
-  console.error('❌ NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY required in .env.local')
-  process.exit(1)
-}
-
-const admin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
-  auth: { autoRefreshToken: false, persistSession: false },
-})
+const admin = createTestAdminClient()
 
 // ─── 더미 데이터 정의 ─────────────────────────────────────────
 
