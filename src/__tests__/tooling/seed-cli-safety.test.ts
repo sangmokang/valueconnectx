@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { spawnSync } from 'node:child_process'
-import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs'
+import { copyFileSync, cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 
@@ -19,6 +19,7 @@ beforeEach(() => {
     mkdirSync(dirname(join(fixture, file)), { recursive: true })
     copyFileSync(resolve(file), join(fixture, file))
   }
+  cpSync(resolve('scripts/demo-seed'), join(fixture, 'scripts/demo-seed'), { recursive: true })
   symlinkSync(resolve('node_modules'), join(fixture, 'node_modules'), 'dir')
   writeFileSync(join(fixture, 'block-network.cjs'), `
     const blocked = () => {
@@ -38,7 +39,7 @@ afterEach(() => rmSync(fixture, { recursive: true, force: true }))
 function runTool(script: string, args: string[], credentials: Record<string, string | undefined>) {
   return spawnSync(process.execPath, [
     '--require', join(fixture, 'block-network.cjs'),
-    '--import', 'tsx',
+    ...(script.endsWith('.ts') ? ['--import', 'tsx'] : []),
     script,
     ...args,
   ], {
