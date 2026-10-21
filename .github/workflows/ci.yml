@@ -21,7 +21,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
@@ -29,6 +29,55 @@ jobs:
 
       - name: Run lint
         run: npm run lint
+
+  verify:
+    name: Tests, types and build
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-anon-key
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run database safety tests
+        run: npm run test:tooling
+
+      - name: Run all unit tests
+        run: npm test -- --maxWorkers=1
+
+      - name: Check TypeScript
+        run: npm run typecheck
+
+      - name: Build with placeholder configuration
+        run: npm run build
+
+      - name: Install public smoke browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Check public pages on desktop and mobile
+        run: |
+          node_modules/.bin/next start --hostname 127.0.0.1 --port 3198 > /tmp/vcx-public-app.log 2>&1 &
+          app_pid=$!
+          trap 'kill "$app_pid" 2>/dev/null || true' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent --output /dev/null http://127.0.0.1:3198; then
+              break
+            fi
+            sleep 1
+          done
+          curl --fail --silent --output /dev/null http://127.0.0.1:3198
+          npm run test:web:public
 
   fee-hidden:
     name: ADR-0001 fee disclosure check
